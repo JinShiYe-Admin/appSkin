@@ -1,0 +1,232 @@
+{
+  "html/page4/index.html": {
+    "href": "html/page4/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "js/utils/storageKeyName.js",
+      "js/utils/mui.min.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/vue.js",
+      "js/utils/utils.js",
+      "js/utils/store.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/events.js",
+      "js/libs/jquery.js",
+      "js/utils/pushPermission.js",
+      "js/utils/clearIcon.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/page5/index.html": {
+    "href": "html/page5/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "js/utils/storageKeyName.js",
+      "js/utils/mui.min.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/vue.js",
+      "js/utils/utils.js",
+      "js/utils/store.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/events.js",
+      "js/libs/jquery.js",
+      "js/utils/pushPermission.js",
+      "js/utils/clearIcon.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/page1/index.html": {
+    "href": "html/page1/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "img/homeSchool/u298.png",
+      "img/homeSchool/u292.png",
+      "img/homeSchool/u296.png",
+      "img/homeSchool/schoolPage8.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/page2/index.html": {
+    "href": "html/page2/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "img/homeSchool/schoolPage8.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/more/index.html": {
+    "href": "html/more/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "js/utils/storageKeyName.js",
+      "js/utils/mui.min.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/vue.js",
+      "js/utils/utils.js",
+      "js/utils/store.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/events.js",
+      "js/libs/jquery.js",
+      "js/utils/pushPermission.js",
+      "js/utils/clearIcon.js",
+      "img/homeSchool/schoolPage8.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/page6/index.html": {
+    "href": "html/page6/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "js/utils/storageKeyName.js",
+      "js/utils/mui.min.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/vue.js",
+      "js/utils/utils.js",
+      "js/utils/store.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/events.js",
+      "js/libs/jquery.js",
+      "js/utils/pushPermission.js",
+      "js/utils/clearIcon.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/page3/index.html": {
+    "href": "html/page3/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "js/utils/storageKeyName.js",
+      "js/utils/mui.min.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/vue.js",
+      "js/utils/utils.js",
+      "js/utils/store.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/events.js",
+      "js/libs/jquery.js",
+      "js/utils/pushPermission.js",
+      "js/utils/clearIcon.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/login/index.html": {
+    "href": "html/login/index.html",
+    "resources": [
+      "css/mui.min.css",
+      "fonts/iconfont.css",
+      "fonts/iconfont2.css",
+      "css/common.css",
+      "js/utils/mui.min.js",
+      "js/utils/vue.js",
+      "js/utils/storageKeyName.js",
+      "js/utils/store.js",
+      "js/utils/utils.js",
+      "js/libs/jquery.js",
+      "js/utils/vconsole.min.js"
+    ],
+    "refer": [
+      "html/page4/index.html",
+      "html/page5/index.html",
+      "html/page1/index.html",
+      "html/page2/index.html",
+      "html/more/index.html",
+      "html/page6/index.html",
+      "html/page3/index.html"
+    ],
+    "priority": 0
+  },
+  "html/mine/modifyPassword.html": {
+    "href": "html/mine/modifyPassword.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/common.css",
+      "js/utils/storageKeyName.js",
+      "js/utils/mui.min.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/vue.js",
+      "js/utils/utils.js",
+      "js/utils/store.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/events.js",
+      "js/libs/jquery.js"
+    ],
+    "refer": [
+      "html/login/index.html"
+    ],
+    "priority": 0
+  },
+  "html/login/register.html": {
+    "href": "html/login/register.html",
+    "resources": [
+      "js/utils/storageKeyName.js",
+      "js/utils/vconsole.min.js",
+      "js/utils/mui.min.js",
+      "js/utils/vue.js",
+      "js/libs/RSA/Barrett.js",
+      "js/libs/RSA/BigInt.js",
+      "js/libs/RSA/RSA.js",
+      "js/libs/encryption/RSAEncrypt.js",
+      "js/libs/encryption/sortSign.js",
+      "js/libs/crypto-js/require.js",
+      "js/libs/encryption/signHmacSHA1.js",
+      "js/libs/jquery.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/store.js",
+      "js/utils/utils.js",
+      "js/utils/events.js",
+      "css/mui.min.css",
+      "css/common.css",
+      "img/register/phone.png",
+      "img/register/idencode.png",
+      "img/register/username.png",
+      "img/register/password.png"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "html/login/loginIndex.html": {
+    "href": "html/login/loginIndex.html",
+    "resources": [
+      "js/utils/storageKeyName.js",
+      "js/utils/vconsole.min.js",
+      "js/libs/RSA/Barrett.js",
+      "js/libs/RSA/BigInt.js",
+      "js/libs/RSA/RSA.js",
+      "js/libs/encryption/RSAEncrypt.js",
+      "js/libs/crypto-js/require.js",
+      "js/libs/encryption/signHmacSHA1.js",
+      "js/libs/jquery.js",
+      "js/libs/encryption/sortSign.js",
+      "js/utils/publicProtocolNew.js",
+      "js/utils/store.js",
+      "js/utils/utils.js",
+      "js/utils/events.js",
+      "js/utils/md5.js",
+      "css/mui.min.css",
+      "js/utils/mui.min.js",
+      "css/common.css",
+      "img/login/username.png",
+      "img/login/password.png"
+    ],
+    "refer": [
+      "html/login/index.html",
+      "html/mine/modifyPassword.html",
+      "html/login/register.html"
+    ],
+    "priority": 0
+  }
+}

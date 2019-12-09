@@ -1,0 +1,474 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="../../js/utils/mui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+		<style type="text/css">
+			.regisgerColo {
+				border-color: #00CFBD;
+				color: #00CFBD;
+				border-radius: 20px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!--<a  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>-->
+			<h1 class="mui-title">登录</h1>
+			<a id="zhuce" class="mui-icon  mui-pull-right" style="color: white;font-size: 16px;padding-top: 20px;">注册</a>
+		</header>
+		<div class="mui-content">
+			<div style="height: 200px;font-size: 18px;color: #00cfbd;;padding: 100px 0px;text-align: center;">欢迎登录</div>
+			<div class="mui-input-row">
+				<label style="margin-top: -5px;">
+                <image src="../../img/login/username.png" style="width: 25px;height: 25px;" />
+            </label>
+				<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入用户名">
+			</div>
+			<hr style=" height:1px;border:none;border-top:1px solid #aeaeae;;margin: -12px 20px 5px 60px ;" />
+
+			<div class="mui-input-row ">
+				<label>
+                <image src="../../img/login/password.png" style="width: 27px;height: 27px;" />
+            </label>
+				<input id='password' type="password" class="mui-input-clear mui-input " placeholder="请输入密码" style="margin-top: 5px;">
+			</div>
+			<hr style=" height:1px;border:none;border-top:1px solid #aeaeae;;margin: -12px 20px 0px 60px ;" />
+
+			<div style="padding: 0px 20px;">
+				<button id='login' type="button" class="mui-btn mui-btn-block mui-btn-primary" style="background: #00cfbd; border:none; margin-top: 30px;height: 40px;padding-top: 8px;border-radius: 20px;">登录</button>
+				<!--<button id='register' type="button" class="mui-btn mui-btn-block mui-btn-outlined regisgerColo" style=" margin-top: 30px;height: 40px;padding-top: 8px;">注册</button>-->
+			</div>
+		</div>
+	</body>
+	<script src="../../js/utils/storageKeyName.js"></script>
+	<script src="../../js/utils/vconsole.min.js"></script>
+	<!--加密-->
+	<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/libs/encryption/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+	<script src='../../js/libs/crypto-js/require.js'></script>
+	<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+	<script src='../../js/libs/jquery.js'></script>
+	<script src='../../js/libs/encryption/sortSign.js'></script>
+	<!---->
+	
+	<script src="../../js/utils/publicProtocol.js"></script>
+	<script src="../../js/utils/store.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/utils/events.js"></script>
+	<script src='../../js/utils/md5.js'></script>
+	<script type="text/javascript">
+		//		$(function() {
+		//			
+		//		});
+		mui.init({
+			statusBarBackground: '#00CFBD'
+		});
+		var tempModel = {};
+		var loginFlag = 0; //0自动登录，1不自动登录
+		mui.plusReady(function() {
+			tempModel = {
+				uuid: plus.device.uuid,
+				appid: plus.runtime.appid
+			}
+			if(tempModel.uuid == '') {
+				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+				tempModel.uuid = publicPar.uuid;
+				tempModel.appid = publicPar.appid;
+			}
+			console.log('plus.device.uuid:' + tempModel.uuid);
+			console.log('plus.runtime.appid:' + tempModel.appid);
+			store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
+
+			var backButtonPress = 0;
+			setUUID();
+		});
+		document.getElementById("login").addEventListener('tap', function(event) {
+			console.log("登录");
+			var tempName = document.getElementById("account").value;
+			var tempPW = document.getElementById("password").value;
+			console.log('tempName111:' + tempName + ',tempPW' + tempPW);
+			//判断输入是否符合要求
+			if(checkInput(tempName)) {
+				if(checkInput(tempPW)) {
+					//login登录
+					getEncryptKeyLogin(tempName, tempPW);
+				} else {
+
+				}
+			} else {
+
+			}
+		});
+
+		window.addEventListener('quit', function(data) {
+			console.log("data" + JSON.stringify(data.detail));
+			var tempData = data.detail;
+			loginFlag = 1;
+		});
+
+		/**
+		 * 获取本地推送标识信息
+		 */
+		function getPushInfo() {
+			var info = plus.push.getClientInfo();
+			outSet("获取客户端推送标识信息：");
+			outLine("id: " + info.id);
+			outLine("token: " + info.token);
+			outLine("clientid: " + info.clientid);
+			outLine("appid: " + info.appid);
+			outLine("appkey: " + info.appkey);
+		}
+
+		//注册按钮
+		document.getElementById('zhuce').addEventListener('tap', function() {
+			utils.mOpenWithData("../../html/login/register.html", {});
+		})
+
+		//获取秘钥
+		var getEncryptKeyLogin = function(tempName, tempPW) {
+			console.log('tempName:'+tempName+',tempPW:'+tempPW);
+			//握手
+			var enData0 = {};
+			//不需要加密的数据
+			var comData0 = {
+				platform_code: window.storageKeyName.PLATFORMCODE //平台代码
+			};
+			// events.showWaiting();
+			//发送网络请求，data为网络返回值
+			postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/skin/login/getEncryptKey', enData0, comData0, 0, function(data) {
+				console.log('2121212data:' + JSON.stringify(data));
+				// events.closeWaiting();
+				if(data.code == '0000') {
+					store.set(window.storageKeyName.SHAKEHAND, data.data.encryptKey);
+					loginPro(tempName, tempPW, data.data.encryptKey);
+				} else {
+					if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+						mui.toast('网络异常，请检查网络设置！');
+					} else {
+						mui.toast(data.msg);
+					}
+				}
+			});
+		}
+
+		//login登录
+		var loginPro = function(tempName, tempPW, key) {
+			var enData1 = {
+			};
+			//不需要加密的数据
+			var comData1 = {
+				password: hex_md5(key + tempPW), //秘钥+密码再MD5加密
+				platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+				app_code: window.storageKeyName.APPCODE, //应用系统代码
+				unit_code: '-1', //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+				login_name: tempName //登录名
+			};
+			events.showWaiting();
+			//登录
+			postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/skin/login', enData1, comData1, 0, function(data1) {
+				events.closeWaiting();
+				console.log('login.data:'+JSON.stringify(data1));
+				if(data1.code == 0) {
+					loginFlag = 1;
+					data1.data.userName0 = tempName;
+					data1.data.passWord0 = tempPW;
+					store.set(window.storageKeyName.PERSONALINFO, data1.data);
+					var tempFlag = 0;
+					//获取权限
+					var enData2 = {};
+					//不需要加密的数据
+					var comData2 = {
+						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+						app_code: window.storageKeyName.APPCODE, //应用系统代码
+						grd_id: 0, //年级id，全部年级则传-1,不需要判断年级则传0
+						cls_id: 0, //班级id，年级下全部班级则传-1，不需要判断班级则传0
+						stu_id: 0, //学生id，全部学生则传-1，不需要判断学生则传0
+						sub_code: 0, //科目代码，全部科目则传“-1”，不需要判断年级则传“0”
+						access: data1.data.user.app_code + window.storageKeyName.SCHNOTICEADD + ',' +data1.data.user.app_code + window.storageKeyName.SCHNOTICESCH, //权限符，需要判断权限的权限符，多个则用逗号拼接
+						access_token: data1.data.access_token //用户令牌
+					};
+					events.showWaiting();
+					//获取权限
+					postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/sub/acl/permissionByPosition', enData2, comData2, 0, function(data2) {
+						console.log('权限permissionByPosition:' + JSON.stringify(data2));
+						events.closeWaiting();
+						if(data2.code == 0) {
+							var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
+							//合并对象
+							var tempArray = data2.data.result.split(',');
+							//权限
+							tempPerInfo.schNoticeAdd = tempArray[0]; //学校通知--新建
+							tempPerInfo.schNoticeSch = tempArray[1]; //学校通知--可发全校
+							store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
+							tempFlag++;
+							console.log('tempFlag00:' + tempFlag);
+							if(tempFlag == 3) {
+								//跳转界面
+								gotoPage(tempPW);
+							}
+						} else {
+							mui.toast(data2.msg);
+						}
+					});
+					//登录用户岗位信息
+					//不需要加密的数据
+					var comData3 = {
+						platform_code: data1.data.user.platform_code, //平台代码
+						app_code: data1.data.user.app_code, //应用系统代码
+						index_code: '' ,//页面权限符,必传,从登录皮肤处获得
+						unit_code: data1.data.user.unit_code ,//学校代码,必传
+						user_code: data1.data.user.user_code ,//用户代码,必传
+						access_token: data1.data.access_token //用户令牌
+					};
+					console.log('comData3:'+JSON.stringify(comData3));
+					events.showWaiting();
+					//登录用户岗位信息
+					postDataEncry(window.storageKeyName.INTERFACE_HR+ 'api/sub/user/getUserImg', {}, comData3, 0, function(data3) {
+						console.log('data3:' + JSON.stringify(data3));
+						events.closeWaiting();
+						if(data3.code == 0) {
+							var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
+							tempPerInfo.hrImg_url = data3.data.user_img;
+
+							store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
+							tempFlag++;
+							console.log('tempFlag01:' + tempFlag);
+							if(tempFlag == 3) {
+								//跳转界面
+								gotoPage(tempPW);
+							}
+						} else {
+							mui.toast(data3.msg);
+						}
+					});
+					
+					//1.4获取菜单
+					//不需要加密的数据
+					var comData4 = {
+						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+						app_type: "1", //应用系统类型，0：WEB，1：APP，如需获取全部类型则传“*”
+						app_code: window.storageKeyName.APPCODE, //应用系统代码
+						access_token: data1.data.access_token //用户令牌
+					};
+					events.showWaiting();
+					//登录用户岗位信息
+					postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/skin/acl/menu', {}, comData4, 0, function(data4) {
+						console.log('data4:' + JSON.stringify(data4));
+						events.closeWaiting();
+						if(data4.code == '0000') {
+							store.set(window.storageKeyName.MENULIST, data4.data);
+							tempFlag++;
+							console.log('tempFlag02:' + tempFlag);
+							if(tempFlag == 3) {
+								//跳转界面
+								gotoPage(tempPW);
+							}
+						} else {
+							mui.toast(data4.msg);
+						}
+					});
+				}  else {
+					mui.toast(data1.msg);
+				}
+			});
+		}
+
+		//对象数组按指定字段进行排序
+		function compare(property) {
+			return function(obj1, obj2) {
+				var value1 = obj1[property];
+				var value2 = obj2[property];
+				return value1 - value2; // 升序
+			}
+		}
+
+		//给数组去重
+		Array.prototype.unique = function(key) {
+			var arr = this;
+			var n = [arr[0]];
+			for(var i = 1; i < arr.length; i++) {
+				if(key === undefined) {
+					if(n.indexOf(arr[i]) == -1) n.push(arr[i]);
+				} else {
+					inner: {
+						var has = false;
+						for(var j = 0; j < n.length; j++) {
+							if(arr[i][key] == n[j][key]) {
+								has = true;
+								break inner;
+							}
+						}
+					}
+					if(!has) {
+						n.push(arr[i]);
+					}
+				}
+			}
+			return n;
+		}
+		
+		var gotoPage = function(tempPW) {
+			var tempData = store.get(window.storageKeyName.PERSONALINFO);
+			//将personal 中的key更改为指定的值
+			tempData.user_name = tempData.user.user_name;
+			tempData.sex = tempData.user.sex;
+			tempData.pid = tempData.user.pid;
+			tempData.unit_name = tempData.user.unit_name;
+			tempData.login_name = tempData.user.login_name;
+			tempData.platform_code = tempData.user.platform_code;
+			tempData.user_code = tempData.user.user_code;
+			tempData.img_url = tempData.user.img_url;
+			tempData.platform_name = tempData.user.platform_name;
+			tempData.unit_code = tempData.user.unit_code;
+			tempData.id = tempData.user.id;
+			tempData.type_code = tempData.user.type_code;
+			tempData.app_code = tempData.user.app_code;
+			delete tempData['user'];
+			console.log('new tempData:' + JSON.stringify(tempData));
+			store.set(window.storageKeyName.PERSONALINFO, tempData);
+			if(tempPW == '123456') {
+				var tempModel = {
+					flag: 1 //0是主动修改密码，1是判断是默认密码，自动让修改
+				}
+				utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
+			} else {
+				if(tempData.user_code == '0') { //无权限
+					utils.hrefSessionStorage('../../html/login/index2.html', {});
+				} else {
+					utils.hrefSessionStorage('../../html/login/index.html', {});
+				}
+			}
+		}
+		
+		//数组去重
+			function arrayUnique2(arr, name) {
+				var hash = {};
+				return arr.reduce(function(item, next) {
+					hash[next[name]] ? '' : hash[next[name]] = true && item.push(next);
+					return item;
+				}, []);
+			}
+
+		var gotoIndex = function() {
+			var tempData = store.get(window.storageKeyName.PERSONALINFO);
+			//将personal 中的key更改为指定的值
+			tempData.unit_code = tempData.user.unit_code;
+			tempData.unit_name = tempData.user.unit_name;
+			tempData.img_url = tempData.user.img_url;
+			tempData.user_name = tempData.user.user_name;
+			tempData.user_code = tempData.user.id;
+			tempData.login_name = tempData.user.login_name;
+			tempData.app_code = tempData.user.app_code;
+			if(tempData.masterclss == null) {
+				tempData.masterclss = [];
+			}
+			if(tempData.dpts == null) {
+				tempData.dpts = [];
+			}
+			if(tempData.subs == null) {
+				tempData.subs = [];
+			}
+			if(tempData.clss == null) {
+				tempData.clss = [];
+			}
+			if(tempData.grds == null) {
+				tempData.grds = [];
+			}
+//			tempData.clss = tempData.clss.concat(tempData.masterclss);
+			delete tempData['user'];
+			console.log('new tempData:' + JSON.stringify(tempData));
+			store.set(window.storageKeyName.PERSONALINFO, tempData);
+			if(tempPW == '123456') {
+				var tempModel = {
+					flag: 1 //0是主动修改密码，1是判断是默认密码，自动让修改
+				}
+				utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
+			} else {
+				plus.webview.open('../../html/login/index.html');
+				var wvs = plus.webview.all();
+				for(var i = 0, len = wvs.length; i < len; i++) {
+//					if(wvs[i].getURL().indexOf('homeSchoolIndex.html') != -1 ||
+//						wvs[i].getURL().indexOf('sciedu_home.html') != -1 ||
+//						wvs[i].getURL().indexOf('courseIndex.html') != -1) {
+//						continue;
+//					}
+					plus.webview.close(wvs[i]);
+				}
+				var curr = plus.webview.currentWebview();
+				curr.close();
+			}
+		}
+
+		//更换personal 对象的key 值
+		var repalceKey = function(obj, oldKey, newKey) {
+			if(obj instanceof Array) {
+				for(var i in obj) {
+					obj[i][newKey] = obj[i][oldKey];
+					delete obj[i][oldKey];
+				}
+			} else {
+				obj[newKey] = obj[oldKey];
+				delete obj[oldKey];
+			}
+		}
+
+		//从ios原生得到信息
+		var setUUID = function(tempStr) {
+			if(loginFlag == 0) {
+				//			var tempModel0 = $.parseJSON(tempStr);
+				//				store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
+				
+				//判断上次是否登录过，自动登录
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				console.log('personal:' + JSON.stringify(personal));
+				if(personal) {
+					if(personal.unit_code == 'undefined' || personal.unit_code == null || personal.userName0 == null) {
+						//login登录
+//						loginPro('00000000000', '123');
+					} else {
+						document.getElementById("account").value = personal.userName0;
+						document.getElementById("password").value = personal.passWord0;
+						//login登录
+						getEncryptKeyLogin(personal.userName0, personal.passWord0);
+					}
+				} else {
+//					loginPro('00000000000', '000000');
+				}
+			} else {
+
+			}
+		}
+
+		//判断是否输入了值
+		var checkInput = function(text) {
+			if(text.trim().length == 0) {
+				mui.toast('请输入账号密码');
+				return false;
+			}
+			if(isNull(text)) {
+				mui.toast('请输入账号密码');
+				return false;
+			}
+			return true;
+		}
+
+		//判断输入字符串是否为空或者全部都是空格
+		function isNull(str) {
+			if(str == "") return true;
+			var regu = "^[ ]+$";
+			var re = new RegExp(regu);
+			return re.test(str);
+		}
+	</script>
+
+</html>
