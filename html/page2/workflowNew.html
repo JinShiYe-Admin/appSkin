@@ -37,11 +37,11 @@
 				<div class="" style="margin-top: 0px;">
 					<div class="mui-input-row">
 						<span class="titleTemp">标题</span>
-						<input type="text" v-model="title" class="selectBtn" placeholder="请输入标题" value="">
+						<input type="text" v-model="title" maxlength="50" class="selectBtn" placeholder="请输入标题" value="">
 					</div>
 					<div class="mui-input-row">
 						<span style="float: left;" class="titleTemp">内容</span>
-						<textarea style="width: 83%;margin-left: 8px;" v-model="content" id="textarea" rows="5" placeholder="请输入内容"></textarea>
+						<textarea style="width: 83%;margin-left: 8px;" maxlength="300" v-model="content" id="textarea" rows="5" placeholder="请输入内容"></textarea>
 					</div>
 				</div>
 				<div id="MultiMedia">

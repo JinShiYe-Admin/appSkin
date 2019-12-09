@@ -135,12 +135,12 @@
 		<div class="mui-content" v-show="flag>0" id="noticeDetailData" style="background-color: white;">
 			<div id="">
 				<template v-if="pageFlag==0">
-					<input type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
+					<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
 					 placeholder="请输入我的标签" />
 				</template>
 				<template v-else>
 					<button v-show="pageFlag==1" v-on:click.stop="saveTag()" type="button" class="down-btn" style="float: right;margin-right: 10px;margin-top: 7px;background: #00CFBD;border-color: #00CFBD;color: white;">保存</button>
-					<input type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
+					<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
 					 placeholder="请输入我的标签" />
 				</template>
 				<p style="font-size: 14px;color: #666;float: right;margin-top: 15px;">我的标签：</p>

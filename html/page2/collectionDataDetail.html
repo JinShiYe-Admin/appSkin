@@ -158,7 +158,7 @@
 		<div class="mui-content" v-show="flag>0" id="noticeDetailData" style="background-color: white;">
 			<div id="">
 				<button v-on:click.stop="saveTag()" type="button" class="down-btn" style="float: right;margin-right: 10px;margin-top: 7px;background: #00CFBD;border-color: #00CFBD;color: white;">保存</button>
-				<input type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
+				<input type="text" maxlength="10" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
 				 placeholder="请输入我的标签" />
 				<p style="font-size: 14px;color: #666;float: right;margin-top: 15px;">我的标签：</p>
 			</div>
@@ -525,11 +525,23 @@
 							mui.toast("备注不能超过50字", "cancel");
 							return;
 						}
-						if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+						if (multiMedia.data.PictureArray.length == 0) {
 							mui.toast("请先选择附件", "cancel");
-							// addNotice(wd, '3', '', '', 0, '');
+							return;
+						}
+						var fj = [];
+						console.log('56.修改接收的协同事务标签:' + JSON.stringify(multiMedia.data.PictureArray));
+						for(var i = 0; i < multiMedia.data.PictureArray.length; i++) {
+							if(multiMedia.data.PictureArray[i].path.indexOf('http://') != -1 || multiMedia.data.PictureArray[i].path.indexOf('https://') != -1) {
+								continue
+							}
+							fj.push('1');
+						}
+						var wd = events.showWaiting();
+						if(fj.length == 0) {
+							var oriName = multiMedia.data.PictureArray[0].path.substring(multiMedia.data.PictureArray[0].path.lastIndexOf("/") + 1);
+							addNotice(wd, '3', multiMedia.data.PictureArray[0].path, '', 0, oriName);
 						} else {
-							var wd = events.showWaiting();
 							uploadFile(wd); //上传文件
 						}
 					},
