@@ -37,6 +37,8 @@
 }
 .mui-poppicker-btn-ok {
 	float: right;
+	background-color: #00CFBD;
+	border-color: #00CFBD;
 }
 .mui-poppicker-clear {
 	clear: both;

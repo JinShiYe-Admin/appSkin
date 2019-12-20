@@ -192,12 +192,14 @@
 								var urlStr = encodeURI(model.CalendarAddr)
 								plus.runtime.openURL(urlStr);
 							} else{
+								events.showWaiting();
 								var tempData = {
 									schoolCalendarId: model.AnnouncementId, //公告ID
 									index_code:model.access.split('#')[1],
 									op_code:''
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getCalendarById', {}, tempData, 2,function(data) {
+									events.closeWaiting();
 									if(data.code == 0) {
 										model.CalendarAddr = data.data.CalendarAddr;
 										var urlStr = encodeURI(data.data.CalendarAddr);
@@ -276,6 +278,7 @@
 
 			//32.获取浏览的公告（周程/校历）列表
 			function getPageDataArray() {
+				events.showWaiting();
 				//需要加密的数据
 				comData = {
 					schoolId: personal.unit_code, //学校ID
@@ -289,12 +292,10 @@
 					index_code: curPage.access.split('#')[1],
 					op_code: ''
 				}
-				// 等待的对话框
-				// var wd = events.showWaiting();
 				//32.获取浏览的公告（周程/校历）列表
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getReceiveAnnouncement', {}, comData, 2, function(
 					data) {
-					// wd.close();
+						events.closeWaiting();
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;

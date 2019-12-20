@@ -22,14 +22,14 @@
 					<span style="font-size: 17px;font-weight: 100;">请选择接收人</span>
 				</a>
 				<!-- <h1 class="mui-title">请选择接收人</h1> -->
-				<a @tap="sure()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">确定</a>
-				<a @tap="selectAll1()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;margin-right: 35px;">反选</a>
-				<a @tap="selectAll()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;margin-right: 20px;">全选</a>
+				<a @click.stop="sure()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">确定</a>
+				<a @click.stop="returnSelectAll()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;margin-right: 35px;">反选</a>
+				<a @click.stop="selectAll()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;margin-right: 20px;">全选</a>
 			</template>
 			<template v-else-if="headNeedOrder == 1">
 				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 				<h1 class="mui-title">请选择接收人</h1>
-				<a @tap="sure()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">确定</a>
+				<a @click.stop="sure()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">确定</a>
 			</template>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: -14px;" id="contentData">
@@ -97,6 +97,7 @@
 							if (tempArray.length==0) {
 								mui.toast('请选择接收人');
 							} else{
+								tempArray = tempArray.unique('user_code');
 								mui.fire(plus.webview.currentWebview().opener(), 'selectPeople', {
 									peopleArray: tempArray
 								});
@@ -110,12 +111,12 @@
 							tempM.selectFlag = 1;
 						}
 					},
-					selectAll1:function(){
+					returnSelectAll:function(){
 						for (var i = 0; i < contentData.peopleArray.length; i++) {
 							var tempM = contentData.peopleArray[i];
 							if (tempM.selectFlag == 0) {
 								tempM.selectFlag = 1;
-							} else{
+							} else if (tempM.selectFlag == 1){
 								tempM.selectFlag = 0;
 							}
 						}
@@ -134,17 +135,33 @@
 				methods:{
 					selectPeople:function(model){
 						if (model.selectFlag == 0) {
-							model.selectFlag = 1;
 							if (contentData.contentNeedOrder == 1) {
+								model.selectFlag = 1;
 								contentData.orderArray.push(model);
+							}else{
+								console.log('11111');
+								for (var i = 0; i < contentData.peopleArray.length; i++) {
+									var tempM = contentData.peopleArray[i];
+									if (tempM.user_code == model.user_code) {
+										console.log('22222');
+										tempM.selectFlag = 1;
+									}
+								}
 							}
 						} else{
-							model.selectFlag = 0;
 							if (contentData.contentNeedOrder == 1) {
+								model.selectFlag = 0;
 								for (var i = 0; i < contentData.orderArray.length; i++) {
 									var tempM = contentData.orderArray[i];
 									if (tempM.user_code == model.user_code&&tempM.dpt_code == model.dpt_code) {
 										contentData.orderArray.splice(i,1);
+									}
+								}
+							}else{
+								for (var i = 0; i < contentData.peopleArray.length; i++) {
+									var tempM = contentData.peopleArray[i];
+									if (tempM.user_code == model.user_code) {
+										tempM.selectFlag = 0;
 									}
 								}
 							}
@@ -165,14 +182,16 @@
 
 			// 获取接收人列表
 			var getPeopleList = function() {
+				events.showWaiting();
 				var temp = curPage.access.split('#');
 				var comData = {
 					unit_code: personal.unit_code, //
 					index_code: temp[1] //
 				}
 				//获取接收人列表
-				postDataEncry(window.storageKeyName.INTERFACE_HR + 'api/sub/dptUserOfApp', {}, comData, 1, function(
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUserOfApp', {}, comData, 1, function(
 					data) {
+						events.closeWaiting();
 					console.log('获取接收人列表:' + JSON.stringify(data));
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.list.length; i++) {
@@ -190,6 +209,31 @@
 						mui.toast(data.msg);
 					}
 				});
+			}
+			
+			//给数组去重
+			Array.prototype.unique = function(key) {
+				var arr = this;
+				var n = [arr[0]];
+				for(var i = 1; i < arr.length; i++) {
+					if(key === undefined) {
+						if(n.indexOf(arr[i]) == -1) n.push(arr[i]);
+					} else {
+						inner: {
+							var has = false;
+							for(var j = 0; j < n.length; j++) {
+								if(arr[i][key] == n[j][key]) {
+									has = true;
+									break inner;
+								}
+							}
+						}
+						if(!has) {
+							n.push(arr[i]);
+						}
+					}
+				}
+				return n;
 			}
 		</script>
 	</body>

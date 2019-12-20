@@ -237,6 +237,7 @@
 					saveTag: function() {
 						console.log('saveTag');
 						if (noticeDetailData.tag != noticeDetailData.detailModel.Tag) {
+							events.showWaiting();
 							//
 							var comData = {
 								noticeId: noticeDetailData.detailModel.NoticeId, //通知ID
@@ -252,6 +253,7 @@
 								url = window.storageKeyName.INTERFACE_OA + 'notice/setReceiveNoticeTag';
 							}
 							postDataEncry(url, {}, comData, 2, function(data) {
+								events.closeWaiting();
 								console.log('修改接收的通知标签:' + JSON.stringify(data));
 								if (data.code == 0 && data.data.Result == 1) {
 									mui.toast("保存成功");
@@ -265,6 +267,7 @@
 
 			//获取详情
 			var getNoticeByReceiveId_sendId_Detail = function(flag) {
+				events.showWaiting();
 				var comData0 = {};
 				var url;
 				if (flag == 0) { //15.通过通知接收表ID获取通知
@@ -285,6 +288,7 @@
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2,
 					function(data) {
+						events.closeWaiting();
 						console.log('data:' + JSON.stringify(data));
 						if (data.code == 0) {
 							// var localSkey = utils.getDataFromUrl(window.location.href);

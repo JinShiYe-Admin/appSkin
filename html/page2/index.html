@@ -49,6 +49,9 @@
 				<li v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(model)">
 						<img class="circular-square" :src=model.icon />
+						<!-- <span class="mui-badge mui-btn-red">{{model.NoReadCnt}}</span> -->
+						<span v-if="model.NoReadCnt>0" class="mui-badge mui-btn-red">{{model.NoReadCnt}}</span>
+						<span v-else="" class="mui-badge mui-btn-red" style="display: none;"></span>
 						<div class="mui-media-body divNameCss" style="font-size: 14px;">{{model.name}}</div>
 					</a>
 				</li>
@@ -59,6 +62,15 @@
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/utils.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/jquery.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<!---->
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
@@ -113,36 +125,43 @@
 							name:'公告',
 							icon:'../../img/homeSchool/schoolPage8.png',
 							id:'1',
+							NoReadCnt:0,
 							access:'schapp#OA:Notify:MyRead:index'
 						},{
 							name:'通知',
 							icon:'../../img/homeSchool/schoolPage1.png',
 							id:'2',
+							NoReadCnt:0,
 							access:'schapp#OA:Notice'
 						},{
 							name:'事务',
 							icon:'../../img/homeSchool/schoolPage2.png',
 							id:'3',
+							NoReadCnt:0,
 							access:'schapp#OA:CooperateNotice'
 						},{
 							name:'工作流',
 							icon:'../../img/homeSchool/schoolPage3.png',
 							id:'4',
+							NoReadCnt:0,
 							access:'schapp#OA:Approve'
 						},{
 							name:'资料收集',
 							icon:'../../img/homeSchool/schoolPage4.png',
 							id:'5',
+							NoReadCnt:0,
 							access:'schapp#OA:DataCollection'
 						},{
 							name:'校历',
 							icon:'../../img/homeSchool/schoolPage5.png',
 							id:'6',
+							NoReadCnt:0,
 							access:'schapp#OA:Xiaoli:MyRead:index'
 						},{
 							name:'周程',
 							icon:'../../img/homeSchool/schoolPage6.png',
 							id:'7',
+							NoReadCnt:0,
 							access:'schapp#OA:Zhoucheng:MyRead:index'
 						},
 					]
@@ -185,11 +204,15 @@
 							if (tempM1.access == tempM0.access) {
 								tempM1.name = tempM0.name;
 								tempM1.access = tempM0.access;
+								tempM1.redspot_url = tempM0.redspot_url;
 								contentData.showArray.push(tempM1);
 							}
 						}
 					}
+					//获取未读数
+					getUnReadCntFun();
 				}
+				
 				//安卓的连续点击两次退出程序
 				var backButtonPress = 0;
 				//重写返回键
@@ -223,7 +246,33 @@
 				window.addEventListener('home_setHeadImg', function(data) {
 					tempHead.headImg = data.detail.img_url;
 				});
+				//获取未读数
+				window.addEventListener('getNoticeNoReadCnt', function(data) {
+					//获取未读数
+					getUnReadCntFun();
+				});
 			});
+			
+			// 获取未读数
+			var getUnReadCntFun = function(){
+				for (var a = 0; a < contentData.showArray.length; a++) {
+					var tempM0 = contentData.showArray[a];
+					if (tempM0.redspot_url!=null) {
+						// 获取未读数
+						getUnReadCut(tempM0.access,tempM0.redspot_url,function(data){
+							console.log('getUnReadCut:'+JSON.stringify(data));
+							if (data.code == 0) {
+								for (var b = 0; b < contentData.showArray.length; b++) {
+									var tempM1 = contentData.showArray[b];
+									if (tempM1.access == data.data.list[0].access) {
+										tempM1.NoReadCnt = data.data.list[0].dotnum;
+									}
+								}
+							}
+						});
+					}
+				}
+			}
 			
 			//关闭侧滑
 			window.addEventListener('closeMinePage', function(data) {

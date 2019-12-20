@@ -53,6 +53,10 @@ header {
 	color: white;
 }
 
+.mui-icon-left-nav{
+	color: white;
+}
+
 .nvbt {
 	width: 15%;
 	height: 100%;
@@ -74,6 +78,21 @@ header {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.biaoti {
+	width: 70%;
+	height: 100%;
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #000000;
+}
+
+.tempCss {
+	float: left;
+	color: gray;
 }
 
 .content {

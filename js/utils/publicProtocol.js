@@ -31,19 +31,64 @@ var modifyTimeFormat = function(str) {
 
 
 //判断当前选择时间是否小于是当前实际时间
-var contrastTime = function (selctTime) {
-	selctTime = selctTime.replace(/-/g,'');
-	selctTime = selctTime.replace(/ /g,'');
-	selctTime = selctTime.replace(/:/g,'');
+var contrastTime = function(selctTime) {
+	selctTime = selctTime.replace(/-/g, '');
+	selctTime = selctTime.replace(/ /g, '');
+	selctTime = selctTime.replace(/:/g, '');
 	var d = new Date();
 	var tempS = events.format(d, "yyyy-MM-dd hh:mm");
-	tempS = tempS.replace(/-/g,'');
-	tempS = tempS.replace(/ /g,'');
-	tempS = tempS.replace(/:/g,'');
-	if (parseFloat(tempS)<parseFloat(selctTime)) {
+	tempS = tempS.replace(/-/g, '');
+	tempS = tempS.replace(/ /g, '');
+	tempS = tempS.replace(/:/g, '');
+	if (parseFloat(tempS) < parseFloat(selctTime)) {
 		return 0;
 	}
 	return 1;
+}
+
+//获取未读数
+var getUnReadCut = function(access,url, callback) {
+	var personal = store.get(window.storageKeyName.PERSONALINFO);
+	//不需要加密的数据
+	var comData2 = {
+		platform_code: personal.platform_code, //平台代码
+		app_code: personal.app_code, //应用系统代码
+		index_code: access.split("#")[1], //页面码,页面对应的权限码:index结尾的页面码,必传,由前端从皮得到
+		unit_code: personal.unit_code, //单位代码
+		user_code: personal.user_code, //用户代码
+		access_token: personal.access_token,
+		numtp: 0,
+	};
+	//获取权限
+	postDataEncry(url, {}, comData2, 0, function(
+		data2) {
+		console.log('权限permissionByPosition:' + JSON.stringify(data2));
+		callback(data2);
+	});
+}
+
+//获取按钮权限,3.3:根据选择的年级班级科目查询权限符（前端调用，判断按钮是否显示，供子系统调用）
+var getPermissionByPosition = function(op_code,access, callback) {
+	var personal = store.get(window.storageKeyName.PERSONALINFO);
+	//不需要加密的数据
+	var comData2 = {
+		platform_code: personal.platform_code, //平台代码
+		app_code: personal.app_code, //应用系统代码
+		unit_code: personal.unit_code, //单位代码
+		index_code: access.split("#")[1], //页面码,页面对应的权限码:index结尾的页面码,必传,由前端从皮得到
+		op_code: op_code, //操作码,操作码,如add,edit,delete等功能操作码
+		grd_code: 0, //年级代码，全部年级则传-1,不需要判断年级则传0
+		cls_code: 0, //班级代码，年级下全部班级则传-1，不需要判断班级则传0
+		stu_code: 0, //学生代码，全部学生则传-1，不需要判断学生则传0
+		sub_code: 0, //科目代码，全部科目则传“-1”，不需要判断年级则传“0”
+		access_token: personal.access_token //用户令牌
+	};
+	//获取权限
+	postDataEncry(window.storageKeyName.INTERFACE_SSO_SUB + 'acl/permissionByPosition', {}, comData2, 0, function(
+		data2) {
+		console.log('权限permissionByPosition:' + JSON.stringify(data2));
+		callback(data2);
+	});
 }
 
 //url,
@@ -221,24 +266,24 @@ var jQAjaxPost = function(url, data, callback) {
 		contentType: "application/json",
 		async: true,
 		success: function(success_data) { //请求成功的回调
-			console.log('jQAP-Success:'+ url+','+ JSON.stringify(success_data));
+			console.log('jQAP-Success:' + url + ',' + JSON.stringify(success_data));
 			if (success_data.code == 6 || success_data.code == 'sup6') { //令牌过期
 				//续订令牌
-				var personal = store.get(window.storageKeyName.PERSONALINFO);
-				//需要参数
-				var comData = {
-					access_token: personal.utoken
-				};
+				// var personal = store.get(window.storageKeyName.PERSONALINFO);
+				// //需要参数
+				// var comData = {
+				// 	access_token: personal.utoken
+				// };
 				//令牌续订
-				postDataEncry('api/token/refresh', {}, comData, 0, function(data1) {
+				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'token/refresh', {}, {}, 2, function(data1) {
+					console.log('data1:' + JSON.stringify(data1));
 					if (data1.code == 0) {
 						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
-						tempInfo00.utoken = data1.RspData.access_token;
+						tempInfo00.access_token = data1.data.access_token;
 						store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
 						var urlArr = url.split('/');
 						var tempData = JSON.parse(data);
-						tempData.utoken = data1.RspData.access_token;
-						tempData.access_token = data1.RspData.access_token;
+						tempData.access_token = data1.data.access_token;
 						delete tempData.sign;
 						console.log('urlArr:' + urlArr[urlArr.length - 1]);
 						console.log('data:' + JSON.stringify(tempData));

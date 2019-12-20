@@ -127,9 +127,15 @@
 		</header>
 		<div class="mui-content" v-show="flag>0" id="noticeDetailData" style="background-color: white;">
 			<div id="">
-				<button v-on:click.stop="saveTag()" type="button" class="down-btn" style="float: right;margin-right: 10px;margin-top: 7px;background: #00CFBD;border-color: #00CFBD;color: white;">保存</button>
-				<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
-				 placeholder="请输入我的标签" />
+				<template v-if="detailModel.ApproveStatus==2">
+					<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
+					 placeholder="请输入我的标签" />
+				</template>
+				<template v-if="detailModel.ApproveStatus!=2">
+					<button v-on:click.stop="saveTag()" type="button" class="down-btn" style="float: right;margin-right: 10px;margin-top: 7px;background: #00CFBD;border-color: #00CFBD;color: white;">保存</button>
+					<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
+					 placeholder="请输入我的标签" />
+				</template>
 				<p style="font-size: 14px;color: #666;float: right;margin-top: 15px;">我的标签：</p>
 			</div>
 			<br /><br />
@@ -145,11 +151,11 @@
 			<template v-if="detailModel.ApproveStatus == 2">
 				<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
 				<a style="color: black;size: 15px;margin-left: 15px;">批复</a>
-				<div style="padding-top: 5px;height: 170px;">
-					<textarea maxlength="50" v-model="content" style="border: 1px solid gainsboro;margin-left: 10px;width: 95%;"
+				<button v-on:click.stop="replyContent(2)" type="button" style="float: right;margin-right: 15px;background: #00CFBD;border-color: #00CFBD;color: white;margin-top: 0px;margin-bottom: 10px;">退回工作流</button>
+				<div style="padding-top: 5px;height: 180px;">
+					<textarea v-model="content" style="border: 1px solid gainsboro;margin-left: 10px;width: 95%;"
 					 placeholder="请输入要批复的内容" rows="4"></textarea>
-					<button v-on:click.stop="replyContent(2)" type="button" class="down-btn" style="float: right;margin-right: 15px;margin-top: -10px;background: orangered;border-color: orangered;color: white;">退回</button>
-					<button v-on:click.stop="replyContent(1)" type="button" class="down-btn" style="float: right;margin-top: -10px;background: #00CFBD;border-color: #00CFBD;color: white;">同意</button>
+					<button v-on:click.stop="replyContent(1)" type="button" style="float: right;margin-right: 15px;background: #00CFBD;border-color: #00CFBD;color: white;margin-top: -10px;margin-bottom: 10px;">确定</button>
 				</div>
 			</template>
 			<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
@@ -215,6 +221,7 @@
 						var btnArray = ['取消', '确定'];
 						mui.confirm('确定撤销吗？', '提醒', btnArray, function(e) {
 							if (e.index == 1) {
+								events.showWaiting();
 								var comData = {
 									applyId: noticeDetailData.detailModel.ApplyId,
 									index_code: curPage.access.split('#')[1],
@@ -222,6 +229,7 @@
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApplyUndo', {}, comData, 2,
 									function(data) {
+										events.closeWaiting();
 										if (data.code == 0 && data.data.Result == 1) {
 											mui.toast("成功");
 											tempVue.moreFlag = 0;
@@ -250,6 +258,7 @@
 					saveTag: function() {
 						console.log('saveTag');
 						if (noticeDetailData.tag != noticeDetailData.detailModel.Tag) {
+							events.showWaiting();
 							//19.修改发送的申请标签
 							var comData = {
 								applyId: noticeDetailData.detailModel.ApplyId, //申请ID
@@ -267,9 +276,9 @@
 							//
 							postDataEncry(url, {}, comData, 2,
 								function(data) {
+									events.closeWaiting();
 									console.log('修改标签:' + JSON.stringify(data));
 									if (data.code == 0 && data.data.Result == 1) {
-										mui.toast("保存成功");
 										noticeDetailData.detailModel.Tag = noticeDetailData.tag;
 									}else{
 										mui.toast(data.msg);
@@ -278,6 +287,7 @@
 						}
 					},
 					replyContent: function(flag) {
+						noticeDetailData.saveTag();
 						if (noticeDetailData.content.trim().length == 0) {
 							mui.toast("请输入批复内容", "cancel");
 							return;
@@ -286,6 +296,15 @@
 							mui.toast("批复内容不能超过50字", "cancel");
 							return;
 						}
+						// var tempContent = '';
+						// if (noticeDetailData.content.length>0) {
+						// 	tempContent = noticeDetailData.content;
+						// } else if (flag == 1) {
+						// 	tempContent = '同意';
+						// } else if (flag == 2) {
+						// 	tempContent = '退回';
+						// }
+						events.showWaiting();
 						//18.审批事务及文件申请
 						var tempData1 = {
 							approveId: curPage.ApproveId, //审批ID
@@ -311,6 +330,7 @@
 
 			//获取详情
 			var getNoticeByReceiveId_sendId_Detail = function(flag) {
+				events.showWaiting();
 				var comData0 = {};
 				var url;
 				if (flag == 0) { //24.通过审批ID获取事务及文件申请及审批
@@ -330,6 +350,7 @@
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
+					events.closeWaiting();
 					console.log('data:' + JSON.stringify(data));
 					if (data.code == 0) {
 						if (data.data.ApplyEncName) {

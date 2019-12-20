@@ -8,6 +8,14 @@
 		<link rel="stylesheet" href="../../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<style>
+			div {
+				word-break: break-all;
+			}
+			
+			div p {
+				word-break;
+				: break-all;
+			}
 			.contentCSS {
 				margin-left: 15px;
 				margin-right: 15px;
@@ -17,6 +25,8 @@
 			}
 			
 			.titleCSS {
+				margin-left: 15px;
+				margin-right: 15px;
 				font-size: 18px;
 				color: #000;
 			}
@@ -48,7 +58,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;" id="tempHead">
 			<a class="mui-icon mui-icon-left-nav mui-pull-left mui-action-back" style="color: white;"></a>
-			<h1 class="mui-title" style="color: white;">详情</h1>
+			<h1 class="mui-title" style="color: white;">周程详情</h1>
 		</header>
 		<div class="mui-content" id="contentData" style="background: #fff;">
 			<template>
@@ -107,13 +117,17 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
+				events.showWaiting();
 				var tempData = {
 					schoolWeekWorkId: curPage.AnnouncementId, //公告ID
 					index_code:curPage.access.split('#')[1],
 					op_code:''
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getWeekWorkById', {}, tempData, 2,function(data) {
+					events.closeWaiting();
 					if(data.code == 0) {
+						data.data.BeginTime = data.data.BeginTime.split(' ')[0];
+						data.data.EndTime = data.data.EndTime.split(' ')[0];
 						contentData.pageModel = data.data;
 					} else {
 						mui.toast(data.msg);

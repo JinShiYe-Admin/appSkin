@@ -344,7 +344,7 @@ var UploadHeadImage = (function($, mod) {
 			access_token: personal.access_token //用户令牌
 		};
 		// events.showWaiting();
-		postDataEncry(window.storageKeyName.INTERFACE_SUP + 'api/skin/user/upUserInfo', {}, comData0, 0, function(data3) {
+		postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'user/upUserInfo', {}, comData0, 0, function(data3) {
 			console.log('UpUserInfo:' + JSON.stringify(data3));
 			// events.showWaiting();
 			wd.close();

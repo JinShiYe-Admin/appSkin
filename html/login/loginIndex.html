@@ -145,7 +145,7 @@
 			};
 			// events.showWaiting();
 			//发送网络请求，data为网络返回值
-			postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/skin/login/getEncryptKey', enData0, comData0, 0, function(data) {
+			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login/getEncryptKey', enData0, comData0, 0, function(data) {
 				console.log('2121212data:' + JSON.stringify(data));
 				// events.closeWaiting();
 				if(data.code == '0000') {
@@ -175,7 +175,7 @@
 			};
 			events.showWaiting();
 			//登录
-			postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/skin/login', enData1, comData1, 0, function(data1) {
+			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login', enData1, comData1, 0, function(data1) {
 				events.closeWaiting();
 				console.log('login.data:'+JSON.stringify(data1));
 				if(data1.code == 0) {
@@ -184,42 +184,6 @@
 					data1.data.passWord0 = tempPW;
 					store.set(window.storageKeyName.PERSONALINFO, data1.data);
 					var tempFlag = 0;
-					//获取权限
-					var enData2 = {};
-					//不需要加密的数据
-					var comData2 = {
-						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
-						app_code: window.storageKeyName.APPCODE, //应用系统代码
-						grd_id: 0, //年级id，全部年级则传-1,不需要判断年级则传0
-						cls_id: 0, //班级id，年级下全部班级则传-1，不需要判断班级则传0
-						stu_id: 0, //学生id，全部学生则传-1，不需要判断学生则传0
-						sub_code: 0, //科目代码，全部科目则传“-1”，不需要判断年级则传“0”
-						access: data1.data.user.app_code + window.storageKeyName.SCHNOTICEADD + ',' +data1.data.user.app_code + window.storageKeyName.SCHNOTICESCH, //权限符，需要判断权限的权限符，多个则用逗号拼接
-						access_token: data1.data.access_token //用户令牌
-					};
-					events.showWaiting();
-					//获取权限
-					postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/sub/acl/permissionByPosition', enData2, comData2, 0, function(data2) {
-						console.log('权限permissionByPosition:' + JSON.stringify(data2));
-						events.closeWaiting();
-						if(data2.code == 0) {
-							var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
-							//合并对象
-							var tempArray = data2.data.result.split(',');
-							//权限
-							tempPerInfo.schNoticeAdd = tempArray[0]; //学校通知--新建
-							tempPerInfo.schNoticeSch = tempArray[1]; //学校通知--可发全校
-							store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
-							tempFlag++;
-							console.log('tempFlag00:' + tempFlag);
-							if(tempFlag == 3) {
-								//跳转界面
-								gotoPage(tempPW);
-							}
-						} else {
-							mui.toast(data2.msg);
-						}
-					});
 					//登录用户岗位信息
 					//不需要加密的数据
 					var comData3 = {
@@ -233,7 +197,7 @@
 					console.log('comData3:'+JSON.stringify(comData3));
 					events.showWaiting();
 					//登录用户岗位信息
-					postDataEncry(window.storageKeyName.INTERFACE_HR+ 'api/sub/user/getUserImg', {}, comData3, 0, function(data3) {
+					postDataEncry(window.storageKeyName.INTERFACE_HR_SUB+ 'user/getUserImg', {}, comData3, 0, function(data3) {
 						console.log('data3:' + JSON.stringify(data3));
 						events.closeWaiting();
 						if(data3.code == 0) {
@@ -243,7 +207,7 @@
 							store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
 							tempFlag++;
 							console.log('tempFlag01:' + tempFlag);
-							if(tempFlag == 3) {
+							if(tempFlag == 2) {
 								//跳转界面
 								gotoPage(tempPW);
 							}
@@ -262,16 +226,20 @@
 					};
 					events.showWaiting();
 					//登录用户岗位信息
-					postDataEncry(window.storageKeyName.INTERFACE_SUP+'api/skin/acl/menu', {}, comData4, 0, function(data4) {
+					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'acl/menu', {}, comData4, 0, function(data4) {
 						console.log('data4:' + JSON.stringify(data4));
 						events.closeWaiting();
 						if(data4.code == '0000') {
-							store.set(window.storageKeyName.MENULIST, data4.data);
-							tempFlag++;
-							console.log('tempFlag02:' + tempFlag);
-							if(tempFlag == 3) {
-								//跳转界面
-								gotoPage(tempPW);
+							if (data4.data.list.length>0) {
+								store.set(window.storageKeyName.MENULIST, data4.data);
+								tempFlag++;
+								console.log('tempFlag02:' + tempFlag);
+								if(tempFlag == 2) {
+									//跳转界面
+									gotoPage(tempPW);
+								}
+							} else{
+								mui.toast('应用系统无权限，请联系管理员');
 							}
 						} else {
 							mui.toast(data4.msg);

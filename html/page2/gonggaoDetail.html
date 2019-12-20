@@ -8,6 +8,14 @@
 		<link rel="stylesheet" href="../../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<style>
+			div {
+				word-break: break-all;
+			}
+			
+			div p {
+				word-break;
+				: break-all;
+			}
 			.contentCSS {
 				margin-left: 15px;
 				margin-right: 15px;
@@ -16,6 +24,8 @@
 			}
 			
 			.titleCSS {
+				margin-left: 15px;
+				margin-right: 15px;
 				font-size: 18px;
 				color: #000;
 			}
@@ -47,7 +57,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav" style="background-color:#00CFBD;" id="tempHead">
 			<a class="mui-icon mui-icon-left-nav mui-pull-left mui-action-back" style="color: white;"></a>
-			<h1 class="mui-title" style="color: white;">详情</h1>
+			<h1 class="mui-title" style="color: white;">公告详情</h1>
 		</header>
 		<div class="mui-content" id="contentData" style="background: #fff;">
 			<template>
@@ -108,12 +118,14 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
+				events.showWaiting();
 				var tempData = {
 					announcementId: curPage.AnnouncementId, //公告ID
 					index_code:curPage.access.split('#')[1],
 					op_code:''
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getAnnouncementById', {}, tempData, 2,function(data) {
+					events.closeWaiting();
 					if(data.code == 0) {
 						// if (data.data.Status == 1) {//1 待审2 发出3 撤回4 被退
 						// 	data.data.StatusName = '待审';

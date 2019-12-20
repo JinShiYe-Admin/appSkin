@@ -98,39 +98,8 @@
 				height: 40px;
 				border-radius: 50%;
 			}
-
-			/* .oneLine {
-				white-space: nowrap;
-				-o-text-overflow: ellipsis;
-				text-overflow: ellipsis;
-			} */
-
-			/* .mui-table-view-cell:before {
-				position: absolute;
-				right: 0;
-				bottom: 0;
-				left: 15px;
-				height: 1px;
-				content: '';
-				-webkit-transform: scaleY(.5);
-				transform: scaleY(.5);
-				background-color: #c8c7cc;
-			}
-			
-			.mui-table-view-cell:last-child:after,
-			.mui-table-view-cell:last-child:before {
-				height: 1px;
-			} */
 			.time {
 				float: right;
-				color: gray;
-			}
-
-			.biaoti {
-				color: #000000;
-			}
-
-			.tempCss {
 				color: gray;
 			}
 
@@ -142,9 +111,9 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a @click="muiback" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="ntitle" class="mui-title">资料收集</h1>
-			<a @click="add()" class="mui-icon  mui-pull-right" style="font-size: 25px;">+</a>
+			<a v-show="showAdd>0" @click="add()" class="mui-icon  mui-pull-right" style="font-size: 25px;">+</a>
 		</header>
 		<div class="mui-content">
 			<div id="slider" class="mui-slider mui-fullscreen">
@@ -281,11 +250,16 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					
+					showAdd:1//0不显示添加按钮，1显示
 				},
 				methods: {
 					add:function(){
 						utils.mOpenWithData("../../html/page2/collectionDataNew.html", curPage);
+					},
+					muiback: function() {
+						//在主界面重新获取通知未读数
+						mui.fire(plus.webview.currentWebview().opener(), 'getNoticeNoReadCnt', {});
+						mui.back();
 					}
 				}
 			});
@@ -353,6 +327,7 @@
 			var curPage = {};
 			// 获取数据
 			function getData(self, flag) {
+				events.showWaiting();
 				var comData0 = {};
 				var url = '';
 				comData0 = {
@@ -381,14 +356,15 @@
 					comData0.status = '0'; //状态,0 全部1 需交2 已交
 					comData0.page_number = datasource.receive0.pageIndex; //当前页数
 				} else if (datasource.sliderFlag == 1) {
-					comData0.status = '2'; //状态,0 全部1 需交2 已交
+					comData0.status = '1'; //状态,0 全部1 需交2 已交
 					comData0.page_number = datasource.receive1.pageIndex; //当前页数
 				} else if (datasource.sliderFlag == 2) {
-					comData0.status = '1'; //状态,0 全部1 需交2 已交
+					comData0.status = '2'; //状态,0 全部1 需交2 已交
 					comData0.page_number = datasource.receive2.pageIndex; //当前页数
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
+					events.closeWaiting();
 					console.log('data:'+JSON.stringify(data));
 					if (data.code!=0) {
 						mui.toast(data.msg);
@@ -473,6 +449,13 @@
 				$.ready(function() {
 					curPage = utils.getDataFromUrl(window.location.href);
 					console.log('2222:' + JSON.stringify(curPage));
+					//获取权限
+					getPermissionByPosition('add',curPage.access,function(data) {
+						console.log('getPermissionByPosition:'+JSON.stringify(data));
+						if (data.code==0&&data.data.result == 1) {
+							tempVue.showAdd = 1;
+						}
+					});
 					getData(null, 0);
 					//循环初始化所有下拉刷新，上拉加载。
 					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
