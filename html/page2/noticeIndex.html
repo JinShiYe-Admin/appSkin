@@ -434,76 +434,79 @@
 					}
 				});
 			}
-			(function($) {
-				//阻尼系数
-				var deceleration = mui.os.ios ? 0.003 : 0.0009;
-				$('.mui-scroll-wrapper').scroll({
-					bounce: false,
-					indicators: true, //是否显示滚动条
-					deceleration: deceleration
-				});
-				$.ready(function() {
-					curPage = utils.getDataFromUrl(window.location.href);
-					console.log('2222:' + JSON.stringify(curPage));
-					//获取权限
-					getPermissionByPosition('add',curPage.access,function(data) {
-						console.log('getPermissionByPosition:'+JSON.stringify(data));
-						if (data.code==0&&data.data.result == 1) {
-							tempVue.showAdd = 1;
-						}
+			
+			mui.plusReady(function() {
+				(function($) {
+					//阻尼系数
+					var deceleration = mui.os.ios ? 0.003 : 0.0009;
+					$('.mui-scroll-wrapper').scroll({
+						bounce: false,
+						indicators: true, //是否显示滚动条
+						deceleration: deceleration
 					});
-					getData(null, 0);
-					//循环初始化所有下拉刷新，上拉加载。
-					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
-						$(pullRefreshEl).pullToRefresh({
-							down: {
-								callback: function() {
-									var self = this;
-									if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
-										mui.toast('网络连接失败,请重新尝试一下');
-										self.endPullDownToRefresh();
-									} else {
-										if (datasource.sliderFlag == 0) {
-											datasource.receive0.refreshFlag = 0;
-											datasource.receive0.pageIndex = 1;
-										} else if (datasource.sliderFlag == 1) {
-											datasource.receive1.refreshFlag = 0;
-											datasource.receive1.pageIndex = 1;
-										} else if (datasource.sliderFlag == 2) {
-											datasource.receive2.refreshFlag = 0;
-											datasource.receive2.pageIndex = 1;
-										} else if (datasource.sliderFlag == 3) {
-											datasource.send.refreshFlag = 0;
-											datasource.send.pageIndex = 1;
-										}
-										getData(self, 0);
-									}
-								}
-							},
-							up: {
-								callback: function() {
-									var self = this;
-									if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
-										mui.toast('网络连接失败,请重新尝试一下');
-										self.endPullUpToRefresh();
-									} else {
-										if (datasource.sliderFlag == 0) {
-											datasource.receive0.refreshFlag = 1;
-										} else if (datasource.sliderFlag == 1) {
-											datasource.receive1.refreshFlag = 1;
-										} else if (datasource.sliderFlag == 2) {
-											datasource.receive2.refreshFlag = 1;
-										} else if (datasource.sliderFlag == 3) {
-											datasource.send.refreshFlag = 1;
-										}
-										getData(self, 1);
-									}
-								}
+					$.ready(function() {
+						curPage = utils.getDataFromUrl(window.location.href);
+						console.log('2222:' + JSON.stringify(curPage));
+						//获取权限
+						getPermissionByPosition('add',curPage.access,function(data) {
+							console.log('getPermissionByPosition:'+JSON.stringify(data));
+							if (data.code==0&&data.data.result == 1) {
+								tempVue.showAdd = 1;
 							}
 						});
+						getData(null, 0);
+						//循环初始化所有下拉刷新，上拉加载。
+						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										var self = this;
+										if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+											mui.toast('网络连接失败,请重新尝试一下');
+											self.endPullDownToRefresh();
+										} else {
+											if (datasource.sliderFlag == 0) {
+												datasource.receive0.refreshFlag = 0;
+												datasource.receive0.pageIndex = 1;
+											} else if (datasource.sliderFlag == 1) {
+												datasource.receive1.refreshFlag = 0;
+												datasource.receive1.pageIndex = 1;
+											} else if (datasource.sliderFlag == 2) {
+												datasource.receive2.refreshFlag = 0;
+												datasource.receive2.pageIndex = 1;
+											} else if (datasource.sliderFlag == 3) {
+												datasource.send.refreshFlag = 0;
+												datasource.send.pageIndex = 1;
+											}
+											getData(self, 0);
+										}
+									}
+								},
+								up: {
+									callback: function() {
+										var self = this;
+										if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+											mui.toast('网络连接失败,请重新尝试一下');
+											self.endPullUpToRefresh();
+										} else {
+											if (datasource.sliderFlag == 0) {
+												datasource.receive0.refreshFlag = 1;
+											} else if (datasource.sliderFlag == 1) {
+												datasource.receive1.refreshFlag = 1;
+											} else if (datasource.sliderFlag == 2) {
+												datasource.receive2.refreshFlag = 1;
+											} else if (datasource.sliderFlag == 3) {
+												datasource.send.refreshFlag = 1;
+											}
+											getData(self, 1);
+										}
+									}
+								}
+							});
+						});
 					});
-				});
-			})(mui);
+				})(mui);
+			})
 		</script>
 	</body>
 
