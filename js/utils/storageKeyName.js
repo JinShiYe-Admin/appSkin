@@ -26,22 +26,22 @@ var storageKeyName = (function(mod) {
 			
 			
 			
-			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/sup/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/sup/api/hr/'; //单点登录,供人事系统使用
-			// mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/sup/api/sub/'; //单点登录,供各子系统用
-			// mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/hr/api/sub/'; //人事接口,供子系统用
-			// mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			// mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oaapi/';//oa接口
+			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/sup/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/sup/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/sup/api/sub/'; //单点登录,供各子系统用
+			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhr/api/sub/'; //人事接口,供子系统用
+			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhr/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			mod.INTERFACE_OA = 'http://192.168.0.32:8080/oasubapi/sub/api/';//oa接口
 			
 			
 			
 			
-			mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/sup2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/sup2/api/hr/'; //单点登录,供人事系统使用
-			mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/sup2/api/sub/'; //单点登录,供各子系统用
-			mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hr/api/sub/'; //人事接口,供子系统用
-			mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			mod.INTERFACE_OA = 'http://jbyj.jiaobaowang.net/SchoolOARestService/';//oa接口
+			// mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/sup2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			// mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/sup2/api/hr/'; //单点登录,供人事系统使用
+			// mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/sup2/api/sub/'; //单点登录,供各子系统用
+			// mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hr/api/sub/'; //人事接口,供子系统用
+			// mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			// mod.INTERFACE_OA = 'http://jbyj.jiaobaowang.net/SchoolOARestService/';//oa接口
 			
 			
 			
@@ -64,7 +64,7 @@ var storageKeyName = (function(mod) {
 			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
 			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
 			//	---七牛空间和接口---开发---end---
-			mod.PLATFORMCODE = 'PT0001'; //平台代码
+			mod.PLATFORMCODE = 'PT0005'; //平台代码
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.MENULIST = 'menuList'; //获取菜单列表
 			mod.MOREMENU = 'moremenu'; //更多菜单列表
