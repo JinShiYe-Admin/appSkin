@@ -22,12 +22,30 @@ var storageKeyName = (function(mod) {
 			// mod.INTERFACE_SUP = 'http://139.129.252.49:8080/sup2/'; //系统接口
 			// mod.INTERFACE_PERSON = 'http://139.129.252.49:8080/hr/'; //系统接口
 			// mod.INTERFACE_OA = 'http://jbyj.jiaobaowang.net/SchoolOARestService/';//oa接口
-			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/sup/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/sup/api/hr/'; //单点登录,供人事系统使用
-			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/sup/api/sub/'; //单点登录,供各子系统用
-			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/hr/api/sub/'; //人事接口,供子系统用
-			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oaapi/';//oa接口
+			
+			
+			
+			
+			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/sup/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/sup/api/hr/'; //单点登录,供人事系统使用
+			// mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/sup/api/sub/'; //单点登录,供各子系统用
+			// mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/hr/api/sub/'; //人事接口,供子系统用
+			// mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			// mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oaapi/';//oa接口
+			
+			
+			
+			
+			mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/sup2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/sup2/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/sup2/api/sub/'; //单点登录,供各子系统用
+			mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hr/api/sub/'; //人事接口,供子系统用
+			mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			mod.INTERFACE_OA = 'http://jbyj.jiaobaowang.net/SchoolOARestService/';//oa接口
+			
+			
+			
+			
 			mod.TEACHERIMG = 'http://jsypay.jiaobaowang.net/jsyadmin/upuserimg.ashx?userid='; //老师上传头像
 			mod.ANDROIDUPDATEURL='http://192.168.1.121:8081/app/versionCode.xml';//安卓升级地址
 			mod.ALIPAYSERVER='http://192.168.1.121:8081/app/versionCode.xml';//支付宝支付地址
