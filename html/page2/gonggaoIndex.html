@@ -8,6 +8,9 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/common.css" rel="stylesheet" />
 		<style>
+			[v-cloak] {
+				visibility: hidden;
+			}
 			html,
 			body {
 				background-color: #efeff4;
@@ -221,6 +224,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
+				events.showWaiting();
 				//32.获取浏览的公告（周程/校历）列表
 				getPageDataArray();
 
@@ -278,7 +282,6 @@
 
 			//32.获取浏览的公告（周程/校历）列表
 			function getPageDataArray() {
-				events.showWaiting();
 				//需要加密的数据
 				comData = {
 					schoolId: personal.unit_code, //学校ID
@@ -299,12 +302,24 @@
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;
+						for (var i = 0; i < data.data.list.length; i++) {
+							var tempM = data.data.list[i];
+							if (tempM.SendManPic == ''||tempM.SendManPic == null) {
+								tempM.SendManPic = setImg(tempM.SendManPic);
+							}
+						}
 						pageIndex++;
 						if (flagRef == 0) { //刷新
 							datasource.pageArray = data.data.list;
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
 						} else { //加载更多
 							//合并数组
 							datasource.pageArray = datasource.pageArray.concat(data.data.list);
+							if (data.data.list.length == 0) {
+								mui.toast('已加载全部');
+							}
 						}
 						if (mui(".mui-table-view-cell").length < 10) {
 							mui(".mui-pull-loading")[0].innerHTML = "";

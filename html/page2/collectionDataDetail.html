@@ -12,6 +12,9 @@
 		<link rel="stylesheet" href="../../css/utils/preview.css" />
 		<link rel="stylesheet" href="../../css/utils/audiopopover.css" />
 		<style type="text/css">
+			[v-cloak] {
+				visibility: hidden;
+			}
 			.contentCSS {
 				margin-left: 15px;
 				margin-right: 15px;
@@ -156,12 +159,6 @@
 			<a v-if="moreFlag>0" @click="revoke()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">{{moreName}}</a>
 		</header>
 		<div class="mui-content" v-show="flag>0" id="noticeDetailData" style="background-color: white;">
-			<!-- <div id="">
-				<button v-on:click.stop="saveTag()" type="button" class="down-btn" style="float: right;margin-right: 10px;margin-top: 7px;background: #00CFBD;border-color: #00CFBD;color: white;">保存</button>
-				<input type="text" maxlength="10" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: -10px;font-size: 14px;width: 150px;height: 35px;"
-				 placeholder="请输入我的标签" />
-				<p style="font-size: 14px;color: #666;float: right;margin-top: 15px;">我的标签：</p>
-			</div> -->
 			<template v-if="detailModel.InfoUploadCloseStatus == 1&&detailModel.InfoUploadStatus==1">
 				<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
 				 placeholder="请输入我的标签" />
@@ -182,7 +179,7 @@
 					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.InfoCollectEncAddr[index])">{{extraFile}}</a>
 				</p>
 			</template>
-			<template v-if="pageFlag == 0">
+			<template v-if="pageFlag == 0||detailModel.InfoCollectStatus !=4">
 				<div v-if="detailModel.InfoUploadCloseStatus == 1">
 					<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
 					<a v-if="detailModel.InfoUploadContent.length > 0" style="color: black;size: 15px;margin-left: 15px;">重新提交</a>
@@ -215,7 +212,7 @@
 							<a class="" style="font-size: 14px;color: #666;">
 								{{replyModel.ReceiveManName}}
 							</a>
-							<button @click="openCloseUpload(replyModel)" type="button" :class="replyModel.InfoUploadCloseStatus==1?closeBtn:openBtn"
+							<button v-if="detailModel.InfoCollectStatus !=4" @click="openCloseUpload(replyModel)" type="button" :class="replyModel.InfoUploadCloseStatus==1?closeBtn:openBtn"
 							 class="mui-btn">{{replyModel.InfoUploadCloseStatusName}}</button>
 						</div>
 					</li>
@@ -239,31 +236,15 @@
 										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.UploadEncAddr[indexEnc])">{{extraFile}}</a>
 									</p>
 								</template>
-								<button @click="openCloseUpload(replyModel)" type="button" :class="replyModel.InfoUploadCloseStatus==1?closeBtn:openBtn"
+								<button v-if="detailModel.InfoCollectStatus !=4" @click="openCloseUpload(replyModel)" type="button" :class="replyModel.InfoUploadCloseStatus==1?closeBtn:openBtn"
 								 class="mui-btn">{{replyModel.InfoUploadCloseStatusName}}</button>
-								<button @click="backUpload(replyModel)" type="button" style="float: right;margin-top: 3px;background: orangered;border-color: orangered;color: white;margin-right: 10px;"
+								<button v-if="detailModel.InfoCollectStatus !=4&&replyModel.InfoUploadCloseStatus!=2" @click="backUpload(replyModel)" type="button" style="float: right;margin-top: 3px;background: orangered;border-color: orangered;color: white;margin-right: 10px;"
 								 class="mui-btn">退回</button>
 							</a>
 						</div>
 					</li>
 				</ul>
 			</template>
-			<!-- <template v-if="pageFlag == 0&&detailModel.InfoUploadStatus == 2">
-				<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
-				<form class="mui-input-group">
-					<div class="mui-input-row" style="min-height: 50px;">
-						<span style="float: left;margin-top: 15px;" class="titleTemp">上交备注</span>
-						<span style="float: right;margin-right: 30px;margin-top: 15px;">{{detailModel.InfoUploadContent}}</span>
-					</div>
-					<div class="mui-input-row" style="min-height: 50px;">
-						<template v-for="(extraFile,indexEnc) in detailModel.UploadEncName">
-							<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
-								<a style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.UploadEncAddr[indexEnc])">{{extraFile}}</a>
-							</p>
-						</template>
-					</div>
-				</form>
-			</template> -->
 			<div id="videoPopover" class="mui-popover">
 				<video id="video" style="position: absolute;z-index: 999;" controls="controls" webkit-playsinline playsinline>
 					您的浏览器不支持 video 标签。
@@ -436,6 +417,8 @@
 											if (data.code == 0 && data.data.Result == 1) {
 												mui.toast("成功");
 												tempVue.moreFlag = 0;
+												//获取详情
+												getNoticeByReceiveId_sendId_Detail(curPage.flag);
 											}
 										});
 								}
@@ -449,11 +432,13 @@
 										index_code: curPage.access.split('#')[1],
 										op_code: ''
 									}
-									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectClose', {}, comData, 1,
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectClose', {}, comData, 2,
 										function(data) {
 											if (data.code == 0 && data.data.Result == 1) {
 												mui.toast("成功");
 												tempVue.moreFlag = 0;
+												//获取详情
+												getNoticeByReceiveId_sendId_Detail(curPage.flag);
 											}
 										});
 								}

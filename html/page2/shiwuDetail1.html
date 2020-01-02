@@ -12,26 +12,23 @@
 		<link rel="stylesheet" href="../../css/utils/preview.css" />
 		<link rel="stylesheet" href="../../css/utils/audiopopover.css" />
 		<style type="text/css">
-			[v-cloak] {
-				visibility: hidden;
-			}
 			.contentCSS {
 				margin-left: 15px;
 				margin-right: 15px;
 				font-size: 14px;
 				color: #666;
 			}
-
+			
 			.titleCSS {
 				font-size: 18px;
 				color: #000;
 			}
-
+			
 			.name-timeCSS {
 				font-size: 12px;
 				color: #999;
 			}
-
+			
 			.encName {
 				margin-left: 15px;
 				margin-right: 15px;
@@ -104,12 +101,12 @@
 			div {
 				word-break: break-all;
 			}
-
+			
 			div p {
 				word-break;
 				: break-all;
 			}
-
+			
 			.peopleImg {
 				width: 40px;
 				height: 40px;
@@ -124,7 +121,7 @@
 				display: block;
 				margin-top: -50px;
 			}
-
+			
 			.MultiMediaHidden {
 				display: none;
 			}
@@ -137,8 +134,8 @@
 			<h1 class="mui-title">事务详情</h1>
 			<a v-if="moreFlag>0" @click="revoke()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">{{moreName}}</a>
 		</header>
-		<!-- <div class="mui-content" id="noticeDetailData" v-show="flag>0" style="background-color: white;"> -->
-		<div class="mui-content" id="noticeDetailData" v-cloak style="background-color: white;">
+		<div class="mui-content" id="noticeDetailData" v-show="flag>0" style="background-color: white;">
+		<!-- <div class="mui-content" id="noticeDetailData" style="background-color: white;"> -->
 			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3">
 				<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
 				 placeholder="请输入我的标签" />
@@ -169,15 +166,6 @@
 					<button v-on:click.stop="replyContent()" type="button" class="down-btn" style="float: right;margin-right: 15px;margin-top: -10px;background: #00CFBD;border-color: #00CFBD;color: white;">确定</button>
 				</div>
 			</template>
-			<!-- <div id="MultiMedia" :class="(pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3)?classA:classB">
-			</div> -->
-			<!-- <div v-show="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3" id="MultiMedia" style="margin-top: -50px;">
-			</div> -->
-			<!-- <div id="MultiMedia" v-show="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3" :class="pageFlag==0?classA:classB">
-			</div> -->
-			<div id="MultiMedia" style="margin-top: -50px;">
-			</div>
-
 			<template v-if="detailModel.list&&detailModel.list.length>0">
 				<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
 				<p class="titleCSS" style="font-size: 14px;color: #333;margin-top: 10px;margin-left: 10px;">回复列表</p>
@@ -201,7 +189,7 @@
 					</li>
 				</ul>
 			</template>
-			<div id="videoPopover" class="mui-popover">
+			<!-- <div id="videoPopover" class="mui-popover">
 				<video id="video" style="position: absolute;z-index: 999;" controls="controls" webkit-playsinline playsinline>
 					您的浏览器不支持 video 标签。
 				</video>
@@ -223,7 +211,7 @@
 					</div>
 					<audio id="audio_audio" autoplay="autoplay" preload="auto"></audio>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
@@ -403,21 +391,21 @@
 				noticeDetailData.pageFlag = curPage.flag;
 				//获取详情
 				getNoticeByReceiveId_sendId_Detail(curPage.flag);
-				init(); //初始化控件
+				// init(); //初始化控件
 				noticeDetailData.dataFlag = 1;
 			});
 
 			//多媒体控件
-			multiMedia = MultiMedia.multiMedia({
-				MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
-				Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
-				Picture: true, //是否显示图片图标
-				Audio: false, //是否显示音频图标
-				Video: false, //是否显示视频图标
-				TotalPicture: 9, //图片的个数
-				TotalAudio: 1, //音频的个数
-				TotalVideo: 1, //视频的个数
-			});
+			// multiMedia = MultiMedia.multiMedia({
+			// 	MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
+			// 	Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
+			// 	Picture: true, //是否显示图片图标
+			// 	Audio: false, //是否显示音频图标
+			// 	Video: false, //是否显示视频图标
+			// 	TotalPicture: 9, //图片的个数
+			// 	TotalAudio: 1, //音频的个数
+			// 	TotalVideo: 1, //视频的个数
+			// });
 
 			/*
 			 * 初始化控件
@@ -588,12 +576,7 @@
 
 									});
 							}
-							console.log('123456789');
-							if (noticeDetailData.pageFlag==0&&data.data.NoticeStatus==1&&data.data.NoticeProgress!=3) {
-								document.getElementById("MultiMedia").style.display = 'block';
-							}else{
-								document.getElementById("MultiMedia").style.display = 'none';
-							}
+
 						} else {
 							mui.toast(data.msg);
 						}

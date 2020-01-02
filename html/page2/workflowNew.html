@@ -411,6 +411,7 @@
 						setTimeout(function() {
 							mui.back();
 						}, 1000);
+						mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
 					} else {
 						mui.toast(data.msg)
 						sendFlag = 0;

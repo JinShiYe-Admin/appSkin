@@ -11,6 +11,9 @@
 		<link rel="stylesheet" href="../../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<style>
+			[v-cloak] {
+				visibility: hidden;
+			}
 			html,
 			body {
 				background-color: #efeff4;
@@ -250,7 +253,7 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					showAdd:1//0不显示添加按钮，1显示
+					showAdd:0//0不显示添加按钮，1显示
 				},
 				methods: {
 					add:function(){
@@ -322,12 +325,20 @@
 				var i = event.detail.slideNumber;
 				datasource.clickSlider(i);
 			})
+			
+			window.addEventListener('refreshMinePage', function(data) {
+				if (datasource.sliderFlag == 3) {
+					datasource.send.refreshFlag = 0;
+					datasource.send.pageIndex = 1;
+					events.showWaiting();
+					getData(null, 0);
+				}
+			});
 
 			mui.init();
 			var curPage = {};
 			// 获取数据
 			function getData(self, flag) {
-				events.showWaiting();
 				var comData0 = {};
 				var url = '';
 				comData0 = {
@@ -375,6 +386,15 @@
 							self.endPullDownToRefresh();
 						} else {
 							self.endPullUpToRefresh();
+						}
+					}
+					if (comData0.page_number == 1) { //刷新
+						if (data.data.list.length == 0) {
+							mui.toast('暂无数据');
+						}
+					} else { //加载更多
+						if (data.data.list.length == 0) {
+							mui.toast('已加载全部');
 						}
 					}
 					for (var i = 0; i < data.data.list.length; i++) {
@@ -454,6 +474,7 @@
 								tempVue.showAdd = 1;
 							}
 						});
+						events.showWaiting();
 						getData(null, 0);
 						//循环初始化所有下拉刷新，上拉加载。
 						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {

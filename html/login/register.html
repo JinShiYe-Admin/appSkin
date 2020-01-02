@@ -384,7 +384,7 @@
 							mui.toast('请输入用户账号');
 						} else if(escape(register.uaccount).indexOf("%u") >= 0) {
 							mui.toast('用户账号不能输入汉字');
-						} else if(register.uaccount.length > 18) {
+						} else if(register.uaccount.length > 18||register.uaccount.length < 4) {
 							mui.toast('字符长度不能超过18位');
 						} else if(register.upassword == '') {
 							mui.toast('请输入用户密码');
@@ -395,7 +395,7 @@
 						} else if(!checkPass(register.confirmpassword)) {
 							mui.toast('密码需为数字和字母的组合');
 						} else if(register.confirmpassword.length > 18 || register.confirmpassword.length < 6) {
-							mui.toast('密码长度需为6到18个字符');
+							mui.toast('密码需为6到18位数字和字母的组合');
 						}
 						//						else if(register.code == '' || register.code.length != 6) {
 						//							mui.toast('请输入正确的验证码');

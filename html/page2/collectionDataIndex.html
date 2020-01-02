@@ -15,6 +15,10 @@
 			body {
 				background-color: #efeff4;
 			}
+			
+			[v-cloak] {
+				visibility: hidden;
+			}
 
 			.mui-bar~.mui-content .mui-fullscreen {
 				top: 44px;
@@ -98,6 +102,7 @@
 				height: 40px;
 				border-radius: 50%;
 			}
+
 			.time {
 				float: right;
 				color: gray;
@@ -250,10 +255,10 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					showAdd:1//0不显示添加按钮，1显示
+					showAdd: 0 //0不显示添加按钮，1显示
 				},
 				methods: {
-					add:function(){
+					add: function() {
 						utils.mOpenWithData("../../html/page2/collectionDataNew.html", curPage);
 					},
 					muiback: function() {
@@ -306,11 +311,11 @@
 							getData(null, 0);
 						}
 					},
-					clickLi:function(model){
-						console.log('clickLi.model:'+JSON.stringify(model));
+					clickLi: function(model) {
+						console.log('clickLi.model:' + JSON.stringify(model));
 						if (datasource.sliderFlag == 3) {
 							model.flag = 1;
-						} else{
+						} else {
 							model.flag = 0;
 						}
 						model.access = curPage.access;
@@ -322,12 +327,20 @@
 				var i = event.detail.slideNumber;
 				datasource.clickSlider(i);
 			})
+			
+			window.addEventListener('refreshMinePage', function(data) {
+				if (datasource.sliderFlag == 3) {
+					datasource.send.refreshFlag = 0;
+					datasource.send.pageIndex = 1;
+					events.showWaiting();
+					getData(null, 0);
+				}
+			});
 
 			mui.init();
 			var curPage = {};
 			// 获取数据
 			function getData(self, flag) {
-				events.showWaiting();
 				var comData0 = {};
 				var url = '';
 				comData0 = {
@@ -339,16 +352,16 @@
 					progress: '0', //进程,0 全部1 新建2 收集中3 完毕
 					beginTime: '20170101', //查询开始时间
 					endTime: '30180127', //查询结束时间
-					page_size: '10' ,//每页记录数
-					index_code:curPage.access.split('#')[1],
-					op_code:''
+					page_size: '10', //每页记录数
+					index_code: curPage.access.split('#')[1],
+					op_code: ''
 				}
 				if (datasource.sliderFlag == 3) {
 					comData0.sendManId = personal.user_code; //发送人ID
 					comData0.status = '0'; //状态,0 全部1 发出2 关闭3 部分关闭4 撤回
 					comData0.page_number = datasource.send.pageIndex; //当前页数
 					url = window.storageKeyName.INTERFACE_OA + 'infoCollect/getSendInfoCollect';
-				}else{
+				} else {
 					comData0.receiveManId = personal.user_code; //接收人ID
 					url = window.storageKeyName.INTERFACE_OA + 'infoCollect/getReceiveInfoCollect';
 				}
@@ -365,8 +378,8 @@
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
 					events.closeWaiting();
-					console.log('data:'+JSON.stringify(data));
-					if (data.code!=0) {
+					console.log('data:' + JSON.stringify(data));
+					if (data.code != 0) {
 						mui.toast(data.msg);
 						return;
 					}
@@ -377,9 +390,18 @@
 							self.endPullUpToRefresh();
 						}
 					}
+					if (comData0.page_number == 1) { //刷新
+						if (data.data.list.length == 0) {
+							mui.toast('暂无数据');
+						}
+					} else { //加载更多
+						if (data.data.list.length == 0) {
+							mui.toast('已加载全部');
+						}
+					}
 					for (var i = 0; i < data.data.list.length; i++) {
 						var tempM = data.data.list[i];
-						if (tempM.SendManPic == ''||tempM.SendManPic == null) {
+						if (tempM.SendManPic == '' || tempM.SendManPic == null) {
 							tempM.SendManPic = setImg(tempM.SendManPic);
 						}
 					}
@@ -396,7 +418,7 @@
 							}
 						}
 						datasource.receive0.data = datasource.receive0.data.concat(data.data.list);
-						if (data.data.list.length>0) {
+						if (data.data.list.length > 0) {
 							datasource.receive0.pageIndex++;
 						}
 					} else if (datasource.sliderFlag == 1) {
@@ -404,7 +426,7 @@
 							datasource.receive1.data = [];
 						}
 						datasource.receive1.data = datasource.receive1.data.concat(data.data.list);
-						if (data.data.list.length>0) {
+						if (data.data.list.length > 0) {
 							datasource.receive1.pageIndex++;
 						}
 					} else if (datasource.sliderFlag == 2) {
@@ -412,7 +434,7 @@
 							datasource.receive2.data = [];
 						}
 						datasource.receive2.data = datasource.receive2.data.concat(data.data.list);
-						if (data.data.list.length>0) {
+						if (data.data.list.length > 0) {
 							datasource.receive2.pageIndex++;
 						}
 					} else if (datasource.sliderFlag == 3) {
@@ -432,82 +454,85 @@
 							}
 						}
 						datasource.send.data = datasource.send.data.concat(data.data.list);
-						if (data.data.list.length>0) {
+						if (data.data.list.length > 0) {
 							datasource.send.pageIndex++;
 						}
 					}
 				});
 			}
-			(function($) {
-				//阻尼系数
-				var deceleration = mui.os.ios ? 0.003 : 0.0009;
-				$('.mui-scroll-wrapper').scroll({
-					bounce: false,
-					indicators: true, //是否显示滚动条
-					deceleration: deceleration
-				});
-				$.ready(function() {
-					curPage = utils.getDataFromUrl(window.location.href);
-					console.log('2222:' + JSON.stringify(curPage));
-					//获取权限
-					getPermissionByPosition('add',curPage.access,function(data) {
-						console.log('getPermissionByPosition:'+JSON.stringify(data));
-						if (data.code==0&&data.data.result == 1) {
-							tempVue.showAdd = 1;
-						}
+			mui.plusReady(function() {
+				(function($) {
+					//阻尼系数
+					var deceleration = mui.os.ios ? 0.003 : 0.0009;
+					$('.mui-scroll-wrapper').scroll({
+						bounce: false,
+						indicators: true, //是否显示滚动条
+						deceleration: deceleration
 					});
-					getData(null, 0);
-					//循环初始化所有下拉刷新，上拉加载。
-					$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
-						$(pullRefreshEl).pullToRefresh({
-							down: {
-								callback: function() {
-									var self = this;
-									if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
-										mui.toast('网络连接失败,请重新尝试一下');
-										self.endPullDownToRefresh();
-									} else {
-										if (datasource.sliderFlag == 0) {
-											datasource.receive0.refreshFlag = 0;
-											datasource.receive0.pageIndex = 1;
-										} else if (datasource.sliderFlag == 1) {
-											datasource.receive1.refreshFlag = 0;
-											datasource.receive1.pageIndex = 1;
-										} else if (datasource.sliderFlag == 2) {
-											datasource.receive2.refreshFlag = 0;
-											datasource.receive2.pageIndex = 1;
-										} else if (datasource.sliderFlag == 3) {
-											datasource.send.refreshFlag = 0;
-											datasource.send.pageIndex = 1;
-										}
-										getData(self, 0);
-									}
-								}
-							},
-							up: {
-								callback: function() {
-									var self = this;
-									if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
-										mui.toast('网络连接失败,请重新尝试一下');
-										self.endPullUpToRefresh();
-									} else {
-										if (datasource.sliderFlag == 0) {
-											datasource.receive0.refreshFlag = 1;
-										} else if (datasource.sliderFlag == 1) {
-											datasource.receive1.refreshFlag = 1;
-										} else if (datasource.sliderFlag == 2) {
-											datasource.receive2.refreshFlag = 1;
-										} else if (datasource.sliderFlag == 3) {
-											datasource.send.refreshFlag = 1;
-										}
-										getData(self, 1);
-									}
-								}
+					$.ready(function() {
+						curPage = utils.getDataFromUrl(window.location.href);
+						console.log('2222:' + JSON.stringify(curPage));
+						//获取权限
+						getPermissionByPosition('add', curPage.access, function(data) {
+							console.log('getPermissionByPosition:' + JSON.stringify(data));
+							if (data.code == 0 && data.data.result == 1) {
+								tempVue.showAdd = 1;
 							}
 						});
+						events.showWaiting();
+						getData(null, 0);
+						//循环初始化所有下拉刷新，上拉加载。
+						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										var self = this;
+										if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+											mui.toast('网络连接失败,请重新尝试一下');
+											self.endPullDownToRefresh();
+										} else {
+											if (datasource.sliderFlag == 0) {
+												datasource.receive0.refreshFlag = 0;
+												datasource.receive0.pageIndex = 1;
+											} else if (datasource.sliderFlag == 1) {
+												datasource.receive1.refreshFlag = 0;
+												datasource.receive1.pageIndex = 1;
+											} else if (datasource.sliderFlag == 2) {
+												datasource.receive2.refreshFlag = 0;
+												datasource.receive2.pageIndex = 1;
+											} else if (datasource.sliderFlag == 3) {
+												datasource.send.refreshFlag = 0;
+												datasource.send.pageIndex = 1;
+											}
+											getData(self, 0);
+										}
+									}
+								},
+								up: {
+									callback: function() {
+										var self = this;
+										if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+											mui.toast('网络连接失败,请重新尝试一下');
+											self.endPullUpToRefresh();
+										} else {
+											if (datasource.sliderFlag == 0) {
+												datasource.receive0.refreshFlag = 1;
+											} else if (datasource.sliderFlag == 1) {
+												datasource.receive1.refreshFlag = 1;
+											} else if (datasource.sliderFlag == 2) {
+												datasource.receive2.refreshFlag = 1;
+											} else if (datasource.sliderFlag == 3) {
+												datasource.send.refreshFlag = 1;
+											}
+											getData(self, 1);
+										}
+									}
+								}
+							});
+						});
 					});
-				});
-			})(mui);
+				})(mui);
+			});
 		</script>
 	</body>
 
