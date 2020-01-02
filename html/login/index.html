@@ -56,42 +56,42 @@
 						href: "../../html/page1/index.html",
 						tempID: 'defaultTab',
 						cls: 'mui-icon iconfont icon-jiaxiaohudong',
-						permission: 'schapp#Work',
+						permission: 'schapp_Work',
 						childList:[]
 					},{
 						name: "page2",
 						href: "../../html/page2/index.html",
 						tempID: 'kecheng',
 						cls: 'mui-icon iconfont icon-timu',
-						permission: 'schapp#OA',
+						permission: 'schapp_OA',
 						childList:[]
 					}, {
 						name: "page3",
 						href: "../../html/page3/index.html",
 						tempID: 'kejiao',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp#Behavior',
+						permission: 'schapp_Behavior',
 						childList:[]
 					}, {
 						name: "page4",
 						href: "../../html/page4/index.html",
 						tempID: 'kejiao1',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp#Comment',
+						permission: 'schapp_Comment',
 						childList:[]
 					}, {
 						name: "page5",
 						href: "../../html/page5/index.html",
 						tempID: 'kejiao2',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp#Resource',
+						permission: 'schapp_Resource',
 						childList:[]
 					}, {
 						name: "page6",
 						href: "../../html/page6/index.html",
 						tempID: 'kejiao3',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp#Evaluation',
+						permission: 'schapp_Evaluation',
 						childList:[]
 					}]
 				}
@@ -106,7 +106,7 @@
 					var tempM1 = tempMenu.list[0].childList[i];
 					for(var a = 0; a < indexPage.pageArray.length; a++) {
 						var tempM0 = indexPage.pageArray[a];
-						if(tempM0.permission == tempM1.access) {
+						if(tempM0.permission == tempM1.url) {
 							tempM0.name = tempM1.name;
 							tempM0.childList = tempM1.childList;
 							tempA.push(tempM0);

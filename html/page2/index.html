@@ -126,49 +126,43 @@
 							icon:'../../img/homeSchool/schoolPage8.png',
 							id:'1',
 							NoReadCnt:0,
-							access:'schapp#OA:Notify:MyRead:index'
+							access:'schapp_OA_Notify'
 						},{
 							name:'通知',
 							icon:'../../img/homeSchool/schoolPage1.png',
 							id:'2',
 							NoReadCnt:0,
-							access:'schapp#OA:Notice'
+							access:'schapp_OA_Notice'
 						},{
 							name:'事务',
 							icon:'../../img/homeSchool/schoolPage2.png',
 							id:'3',
 							NoReadCnt:0,
-							access:'schapp#OA:CooperateNotice'
+							access:'schapp_OA_CooperateNotice'
 						},{
 							name:'工作流',
 							icon:'../../img/homeSchool/schoolPage3.png',
 							id:'4',
 							NoReadCnt:0,
-							access:'schapp#OA:Approve'
+							access:'schapp_OA_Approve'
 						},{
 							name:'资料收集',
 							icon:'../../img/homeSchool/schoolPage4.png',
 							id:'5',
 							NoReadCnt:0,
-							access:'schapp#OA:DataCollection'
+							access:'schapp_OA_DataCollection'
 						},{
 							name:'校历',
 							icon:'../../img/homeSchool/schoolPage5.png',
 							id:'6',
 							NoReadCnt:0,
-							access:'schapp#OA:Xiaoli:MyRead:index'
+							access:'schapp_OA_Xiaoli'
 						},{
 							name:'周程',
 							icon:'../../img/homeSchool/schoolPage6.png',
 							id:'7',
 							NoReadCnt:0,
-							access:'schapp#OA:Zhoucheng:MyRead:index'
-						},{
-							name:'工资',
-							icon:'../../img/homeSchool/schoolPage5.png',
-							id:'8',
-							NoReadCnt:5,
-							access:'schapp#OA:Zhoucheng:MyRead:index'
+							access:'schapp_OA_Zhoucheng'
 						},
 					]
 				},
@@ -192,8 +186,6 @@
 						}else if (model.id == 7) {
 							model.type = 2;
 							utils.mOpenWithData("../../html/page2/gonggaoIndex.html", model);
-						}else if (model.id == 8) {
-							utils.mOpenWithData("../../html/page2/gongziIndex.html", model);
 						} else {
 							mui.toast('无权限');
 						}
@@ -209,13 +201,10 @@
 						var tempM0 = ws.preload.childList[i];
 						for (var a = 0; a < contentData.tempArray.length; a++) {
 							var tempM1 = contentData.tempArray[a];
-							if (tempM1.access == tempM0.access) {
+							if (tempM1.access == tempM0.url) {
 								tempM1.name = tempM0.name;
 								tempM1.access = tempM0.access;
 								tempM1.redspot_url = tempM0.redspot_url;
-								if(tempM1.id==8){//TODO 临时，正式接OA数据要去掉
-									tempM1.name ='工资'
-								}
 								contentData.showArray.push(tempM1);
 							}
 						}
