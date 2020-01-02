@@ -13,6 +13,7 @@
 				background-color: #efeff4;
 			}
 			
+			
 			.mui-bar~.mui-content .mui-fullscreen {
 				top: 44px;
 				height: auto;
@@ -111,6 +112,27 @@
 				font-size: 14px;
 				color: gray;
 			}
+			
+			.mui-media-body{
+				margin-top: 6px;
+			}
+			
+			.mui-ellipsis{
+				margin-top: 3px;
+				margin-bottom: -3px;
+			}
+			
+			.mui-table-view-cell{
+				padding: 6px 15px;
+			}
+			
+			.mui-table-view-cell.mui-active{
+				background: transparent;
+			}
+			
+			.mui-table-view-cell:after{
+					height: 0;
+			}
 		</style>
 	</head>
 
@@ -121,13 +143,19 @@
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			 <div class="mui-card">
-			 	<div class="mui-card-header">页眉</div>
+			 	<div class="mui-card-header">
+					<div class="mui-media-body">
+						{{pageDetail.name}}
+						<p class='mui-ellipsis'>{{pageDetail.time}}</p>
+					</div>
+				</div>
 			 	<div class="mui-card-content">
-			 		<div class="mui-card-content-inner">
-			 			包含页眉页脚的卡片，页眉常用来显示面板标题，页脚用来显示额外信息或支持的操作（比如点赞、评论等）
-			 		</div>
+			 		 <ul class="mui-table-view">
+			 		 	<li v-for="item in pageDetail.list" class="mui-table-view-cell">
+			 		 			<div style="width: 100px;float: left;">{{item.name}}</div><div style="float: left;margin-left: 5px;">{{item.value}}</div>
+			 		 	</li>
+			 		 </ul>
 			 	</div>
-			 	<div class="mui-card-footer">页脚</div>
 			 </div>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -166,7 +194,7 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					pageDetail:{}//工资详情
+					pageDetail:{name:"王老师（班主任）",time:"2019年11月",list:[{name:"基本工资",value:"1000"},{name:"绩效工资",value:"500"},{name:"住房补助",value:"500"},{name:"交通补助",value:"500"},{name:"扣税",value:"100"}]}//工资详情
 				}
 			});
 			mui.init();
