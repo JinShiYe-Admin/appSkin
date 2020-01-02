@@ -314,15 +314,11 @@
 						console.log('clickLi.model:' + JSON.stringify(model));
 						if (datasource.sliderFlag == 3) {
 							model.flag = 1;
-							model.access = curPage.access;
-							utils.mOpenWithData("../../html/page2/shiwuDetail1.html", model);
 						} else {
 							model.flag = 0;
-							model.access = curPage.access;
-							utils.mOpenWithData("../../html/page2/shiwuDetail.html", model);
 						}
-						// model.access = curPage.access;
-						// utils.mOpenWithData("../../html/page2/shiwuDetail.html", model);
+						model.access = curPage.access;
+						utils.mOpenWithData("../../html/page2/shiwuDetail.html", model);
 					}
 				}
 			});
