@@ -168,7 +168,7 @@
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
 												<div>
-													<a class="biaoti nvtt">{{model.NoticeTitle}}</a>
+													<a class="biaoti nvtt" style="width: 80%;">{{model.NoticeTitle}}</a>
 												</div>
 												<div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
@@ -190,7 +190,7 @@
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
 												<div>
-													<a class="biaoti nvtt">{{model.NoticeTitle}}</a>
+													<a class="biaoti nvtt" style="width: 80%;">{{model.NoticeTitle}}</a>
 												</div>
 												<div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
@@ -353,7 +353,7 @@
 					endTime: '30180127', //查询结束时间
 					page_size: '10', //每页记录数
 					index_code: curPage.access.split('#')[1],
-					op_code: ''
+					op_code: 'index'
 				}
 				if (datasource.sliderFlag == 3) {
 					comData0.sendManId = personal.user_code; //发送人ID

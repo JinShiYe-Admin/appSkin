@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="../../css/mui.min.css">
 		<link rel="stylesheet" type="text/css" href="../../fonts/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../../fonts/iconfont2.css" />
-		<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<style>
 			.mui-bar-tab .mui-tab-item.mui-active {
 				color: #00CFBD;
@@ -50,49 +50,48 @@
 				el: "#indexPage",
 				data: {
 					showArray: [],
-					pageArray: [
-					{
+					pageArray: [{
 						name: "page1",
 						href: "../../html/page1/index.html",
 						tempID: 'defaultTab',
 						cls: 'mui-icon iconfont icon-jiaxiaohudong',
 						permission: 'schapp_Work',
-						childList:[]
-					},{
+						childList: []
+					}, {
 						name: "page2",
 						href: "../../html/page2/index.html",
 						tempID: 'kecheng',
 						cls: 'mui-icon iconfont icon-timu',
 						permission: 'schapp_OA',
-						childList:[]
+						childList: []
 					}, {
 						name: "page3",
 						href: "../../html/page3/index.html",
 						tempID: 'kejiao',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
 						permission: 'schapp_Behavior',
-						childList:[]
+						childList: []
 					}, {
 						name: "page4",
 						href: "../../html/page4/index.html",
 						tempID: 'kejiao1',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
 						permission: 'schapp_Comment',
-						childList:[]
+						childList: []
 					}, {
 						name: "page5",
 						href: "../../html/page5/index.html",
 						tempID: 'kejiao2',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
 						permission: 'schapp_Resource',
-						childList:[]
+						childList: []
 					}, {
 						name: "page6",
 						href: "../../html/page6/index.html",
 						tempID: 'kejiao3',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
 						permission: 'schapp_Evaluation',
-						childList:[]
+						childList: []
 					}]
 				}
 			});
@@ -100,23 +99,23 @@
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
 				var tempMenu = store.get(window.storageKeyName.MENULIST);
-				console.log('tempMenu:'+JSON.stringify(tempMenu));
+				console.log('tempMenu:' + JSON.stringify(tempMenu));
 				var tempA = [];
-				for(var i = 0; i < tempMenu.list[0].childList.length; i++) {
+				for (var i = 0; i < tempMenu.list[0].childList.length; i++) {
 					var tempM1 = tempMenu.list[0].childList[i];
-					for(var a = 0; a < indexPage.pageArray.length; a++) {
+					for (var a = 0; a < indexPage.pageArray.length; a++) {
 						var tempM0 = indexPage.pageArray[a];
-						if(tempM0.permission == tempM1.url) {
+						if (tempM0.permission == tempM1.url) {
 							tempM0.name = tempM1.name;
 							tempM0.childList = tempM1.childList;
 							tempA.push(tempM0);
 						}
 					}
 				}
-				if (tempA.length>5) {
+				if (tempA.length > 5) {
 					var tempArrayM = tempA.slice(4);
 					store.set(window.storageKeyName.MOREMENU, tempArrayM);
-					tempA = tempA.slice(0,4);
+					tempA = tempA.slice(0, 4);
 					tempA.push({
 						name: "更多",
 						href: "../../html/more/index.html",
@@ -132,7 +131,7 @@
 				//重写返回键
 				mui.back = function(event) {
 					backButtonPress++;
-					if(backButtonPress > 1) {
+					if (backButtonPress > 1) {
 						plus.runtime.quit();
 					} else {
 						plus.nativeUI.toast('再按一次退出应用');
@@ -142,6 +141,23 @@
 					}, 1000);
 					return false;
 				};
+				if (indexPage.showArray.length == 0) {
+					mui.toast('暂无可用菜单');
+					setTimeout(function() {
+						store.remove(window.storageKeyName.PERSONALINFO);
+						plus.webview.open('../../html/login/loginIndex.html');
+						var curr = plus.webview.currentWebview();
+						var wvs = plus.webview.all();
+						for (var i = 0, len = wvs.length; i < len; i++) {
+							//关闭除login页面外的其他页面
+							if (wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+								continue;
+							}
+							plus.webview.close(wvs[i]);
+						}
+						curr.close();
+					}, 1000);
+				}
 				var defaultUrl = indexPage.showArray[0].href;
 				var self = plus.webview.currentWebview();
 				var tempM = indexPage.showArray[0];
@@ -156,15 +172,15 @@
 				//选项卡点击事件
 				mui('.mui-bar-tab').on('tap', 'a', function(e) {
 					var targetTab = this.getAttribute('href');
-					console.log('11111111222:'+targetTab);
-					if(targetTab == activeTab) {
+					console.log('11111111222:' + targetTab);
+					if (targetTab == activeTab) {
 						return;
 					} else {
 						var viewIsExists = plus.webview.getWebviewById(targetTab);
-						if(viewIsExists == null || viewIsExists == '' || viewIsExists == undefined) {
-							for(var i = 0; i < indexPage.showArray.length; i++) {
+						if (viewIsExists == null || viewIsExists == '' || viewIsExists == undefined) {
+							for (var i = 0; i < indexPage.showArray.length; i++) {
 								var tempM = indexPage.showArray[i];
-								if(targetTab == tempM.href) {
+								if (targetTab == tempM.href) {
 									var pageIndex = plus.webview.getWebviewById(targetTab);
 									var newSub = plus.webview.create(targetTab, targetTab, subpage_style, {
 										preload: tempM
@@ -186,17 +202,17 @@
 				});
 				setTimeout(function() {
 					var defaultTab = document.getElementById(indexPage.showArray[0].tempID);
-					console.log('11111111defaultTab:'+defaultTab);
+					console.log('11111111defaultTab:' + defaultTab);
 					//模拟首页点击
 					mui.trigger(defaultTab, 'tap');
 					//切换选项卡高亮
 					var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
-					if(defaultTab !== current) {
+					if (defaultTab !== current) {
 						current.classList.remove('mui-active');
 						defaultTab.classList.add('mui-active');
 					}
 				}, 1000);
-				
+
 			});
 		</script>
 	</body>

@@ -121,7 +121,7 @@
 		<div class="mui-content">
 			<div id="slider" class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-					<div class="mui-scroll">
+					<!-- <div class="mui-scroll">
 						<a @tap="clickSlider(0)" class="mui-control-item mui-active" href="#item1mobile">
 							全部
 						</a>
@@ -134,27 +134,61 @@
 						<a @tap="clickSlider(3)" class="mui-control-item" href="#item5mobile">
 							我发出的
 						</a>
-					</div>
+					</div> -->
+					<!-- <div class="mui-content"> -->
+					    <div class="mui-row">
+					        <div class="mui-col-sm-5 mui-col-xs-12">
+					            <li class="mui-table-view-cell">
+					                <a class="mui-navigate-right" href="#item1mobile">
+					                    Item 1    
+					                </a>
+					            </li>
+					        </div>
+					        <div class="mui-col-sm-5 mui-col-xs-12">
+					            <li class="mui-table-view-cell">
+					                <a class="mui-navigate-right" href="#item2mobile">
+					                    Item 2
+					                </a>
+					            </li>
+					        </div>
+							<div class="mui-col-sm-5 mui-col-xs-12">
+							    <li class="mui-table-view-cell">
+							        <a class="mui-navigate-right" href="#item3mobile">
+							            Item 3
+							        </a>
+							    </li>
+							</div>
+							<div class="mui-col-sm-5 mui-col-xs-12">
+							    <li class="mui-table-view-cell">
+							        <a class="mui-navigate-right" href="#item5mobile">
+							            Item 4
+							        </a>
+							    </li>
+							</div>
+					    </div>
+					<!-- </div> -->
 				</div>
 				<div class="mui-slider-group">
 					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
 						<div class="mui-scroll-wrapper">
 							<div class="mui-scroll">
 								<ul class="mui-table-view">
-									<li v-for="model in receive0.data" class="mui-table-view-cell" @tap="clickLi(model)">
-										<div class="mui-table">
-											<div class="mui-table-cell">
-												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
-												<div>
-													<a class="tempCss">[{{model.DoneStatusName}}]</a><a class="biaoti">{{model.NoticeTitle}}</a>
-												</div>
-												<div>
-													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												Item 1
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 2
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 3
+											</a>
+										</li>
+									</ul>
 							</div>
 						</div>
 					</div>
@@ -162,20 +196,22 @@
 						<div class="mui-scroll-wrapper">
 							<div class="mui-scroll">
 								<ul class="mui-table-view">
-									<li v-for="model in receive1.data" class="mui-table-view-cell" @tap="clickLi(model)">
-										<div class="mui-table">
-											<div class="mui-table-cell">
-												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
-												<div>
-													<a class="biaoti" style="width: 80%;">{{model.NoticeTitle}}</a>
-												</div>
-												<div>
-													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												Item 2
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 2
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 3
+											</a>
+										</li>
+									</ul>
 							</div>
 						</div>
 					</div>
@@ -184,20 +220,22 @@
 						<div class="mui-scroll-wrapper">
 							<div class="mui-scroll">
 								<ul class="mui-table-view">
-									<li v-for="model in receive2.data" class="mui-table-view-cell" @tap="clickLi(model)">
-										<div class="mui-table">
-											<div class="mui-table-cell">
-												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
-												<div>
-													<a class="biaoti" style="width: 80%;">{{model.NoticeTitle}}</a>
-												</div>
-												<div>
-													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												Item 3
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 2
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 3
+											</a>
+										</li>
+									</ul>
 							</div>
 						</div>
 					</div>
@@ -205,20 +243,22 @@
 						<div class="mui-scroll-wrapper">
 							<div class="mui-scroll">
 								<ul class="mui-table-view">
-									<li v-for="model in send.data" class="mui-table-view-cell" @tap="clickLi(model)">
-										<div class="mui-table">
-											<div class="mui-table-cell">
-												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
-												<div>
-													<a class="tempCss">[{{model.NoticeStatusName}}]</a><a class="biaoti">{{model.NoticeTitle}}</a>
-												</div>
-												<div>
-													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												Item 4
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 2
+											</a>
+										</li>
+										<li class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												 Item 3
+											</a>
+										</li>
+									</ul>
 							</div>
 						</div>
 					</div>
@@ -299,15 +339,15 @@
 					clickSlider: function(id) {
 						// mui('.mui-slider').slider().gotoItem(id);
 						datasource.sliderFlag = id;
-						if (id == 0 && datasource.receive0.data.length == 0) {
-							getData(null, 0);
-						} else if (id == 1 && datasource.receive1.data.length == 0) {
-							getData(null, 0);
-						} else if (id == 2 && datasource.receive2.data.length == 0) {
-							getData(null, 0);
-						} else if (id == 3 && datasource.send.data.length == 0) {
-							getData(null, 0);
-						}
+						// if (id == 0 && datasource.receive0.data.length == 0) {
+						// 	getData(null, 0);
+						// } else if (id == 1 && datasource.receive1.data.length == 0) {
+						// 	getData(null, 0);
+						// } else if (id == 2 && datasource.receive2.data.length == 0) {
+						// 	getData(null, 0);
+						// } else if (id == 3 && datasource.send.data.length == 0) {
+						// 	getData(null, 0);
+						// }
 					},
 					clickLi:function(model){
 						console.log('clickLi.model:'+JSON.stringify(model));
@@ -326,14 +366,14 @@
 				datasource.clickSlider(i);
 			})
 			
-			window.addEventListener('refreshMinePage', function(data) {
-				if (datasource.sliderFlag == 3) {
-					datasource.send.refreshFlag = 0;
-					datasource.send.pageIndex = 1;
-					events.showWaiting();
-					getData(null, 0);
-				}
-			});
+			// window.addEventListener('refreshMinePage', function(data) {
+			// 	if (datasource.sliderFlag == 3) {
+			// 		datasource.send.refreshFlag = 0;
+			// 		datasource.send.pageIndex = 1;
+			// 		events.showWaiting();
+			// 		getData(null, 0);
+			// 	}
+			// });
 
 			mui.init();
 			var curPage = {};
@@ -474,8 +514,8 @@
 								tempVue.showAdd = 1;
 							}
 						});
-						events.showWaiting();
-						getData(null, 0);
+						// events.showWaiting();
+						// getData(null, 0);
 						//循环初始化所有下拉刷新，上拉加载。
 						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
 							$(pullRefreshEl).pullToRefresh({
@@ -499,7 +539,7 @@
 												datasource.send.refreshFlag = 0;
 												datasource.send.pageIndex = 1;
 											}
-											getData(self, 0);
+											// getData(self, 0);
 										}
 									}
 								},
@@ -519,7 +559,7 @@
 											} else if (datasource.sliderFlag == 3) {
 												datasource.send.refreshFlag = 1;
 											}
-											getData(self, 1);
+											// getData(self, 1);
 										}
 									}
 								}

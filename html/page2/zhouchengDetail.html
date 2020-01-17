@@ -121,7 +121,7 @@
 				var tempData = {
 					schoolWeekWorkId: curPage.AnnouncementId, //公告ID
 					index_code:curPage.access.split('#')[1],
-					op_code:''
+					op_code: 'index'
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getWeekWorkById', {}, tempData, 2,function(data) {
 					events.closeWaiting();

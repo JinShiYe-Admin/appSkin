@@ -410,7 +410,7 @@
 									var comData = {
 										infoCollectId: noticeDetailData.detailModel.InfoCollectId,
 										index_code: curPage.access.split('#')[1],
-										op_code: ''
+										op_code: 'index'
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUndo', {}, comData, 2,
 										function(data) {
@@ -430,7 +430,7 @@
 										infoCollectId: noticeDetailData.detailModel.InfoCollectId,
 										isClose:'2',//关闭状态,1 打开2 关闭
 										index_code: curPage.access.split('#')[1],
-										op_code: ''
+										op_code: 'index'
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectClose', {}, comData, 2,
 										function(data) {
@@ -477,7 +477,7 @@
 								infoCollectId: noticeDetailData.detailModel.InfoCollectId, //信息收集ID
 								tag: noticeDetailData.tag, //标签
 								index_code: curPage.access.split('#')[1],
-								op_code: ''
+								op_code: 'index'
 							}
 							var url = '';
 							if (curPage.flag == 1) { //我发送的
@@ -506,7 +506,7 @@
 								receiveManId: personal.user_code, //阅读人ID
 								tag: noticeDetailData.tag, //标签
 								index_code: curPage.access.split('#')[1],
-								op_code: ''
+								op_code: 'index'
 							}
 							//68.修改接收的信息收集标签
 							postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setReceiveInfoCollectTag', {}, comData, 2,
@@ -563,7 +563,7 @@
 									receiveManId: model.ReceiveManId, //上交人ID
 									operType: tempFlag, //操作，1 打开2 被关闭
 									index_code: curPage.access.split('#')[1],
-									op_code: ''
+									op_code: 'index'
 								}
 								//66.打开/关闭某人信息收集
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUploadOper', {}, tempData1,
@@ -590,7 +590,7 @@
 									infoCollectId: noticeDetailData.detailModel.InfoCollectId, //信息收集ID
 									receiveManId: model.ReceiveManId, //上交人ID
 									index_code: curPage.access.split('#')[1],
-									op_code: ''
+									op_code: 'index'
 								}
 								//65.退回信息上交
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoUploadBack', {}, tempData1,
@@ -627,7 +627,7 @@
 					encName: encName, //附件名称
 					encAddr: encAddr, //附件地址
 					index_code: curPage.access.split('#')[1],
-					op_code: ''
+					op_code: 'index'
 				}
 				//28.回复通知公告
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUpload', {}, tempData1, 2,
@@ -654,14 +654,14 @@
 					comData0 = {
 						infoUploadId: curPage.InfoCollectManId, //信息收集接收表ID
 						index_code: curPage.access.split('#')[1],
-						op_code: ''
+						op_code: 'index'
 					}
 					url = window.storageKeyName.INTERFACE_OA + 'infoCollect/getInfoCollectByReceiveId';
 				} else { //71.通过信息收集ID获取信息收集
 					comData0 = {
 						infoCollectId: curPage.InfoCollectId, //信息收集ID
 						index_code: curPage.access.split('#')[1],
-						op_code: ''
+						op_code: 'index'
 					}
 					url = window.storageKeyName.INTERFACE_OA + 'infoCollect/getInfoCollectById';
 				}

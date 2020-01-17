@@ -104,6 +104,7 @@
 			}
 			
 			.biaoti {
+				width: 80%;
 				color: #000000;
 				white-space: nowrap;
 				text-overflow:ellipsis;
@@ -199,7 +200,7 @@
 								var tempData = {
 									schoolCalendarId: model.AnnouncementId, //公告ID
 									index_code:model.access.split('#')[1],
-									op_code:''
+									op_code:'index'
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getCalendarById', {}, tempData, 2,function(data) {
 									events.closeWaiting();
@@ -293,7 +294,7 @@
 					page_number: pageIndex, //当前页数
 					page_size: '10', //每页记录数
 					index_code: curPage.access.split('#')[1],
-					op_code: ''
+					op_code: 'index'
 				}
 				//32.获取浏览的公告（周程/校历）列表
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getReceiveAnnouncement', {}, comData, 2, function(

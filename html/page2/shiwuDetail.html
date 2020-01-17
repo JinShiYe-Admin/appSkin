@@ -278,7 +278,7 @@
 									var comData = {
 										noticeId: noticeDetailData.detailModel.NoticeId,
 										index_code: curPage.access.split('#')[1],
-										op_code: ''
+										op_code: 'index'
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/setNoticeUndo', {}, comData, 2,
 										function(data) {
@@ -297,7 +297,7 @@
 									var comData = {
 										noticeId: noticeDetailData.detailModel.NoticeId,
 										index_code: curPage.access.split('#')[1],
-										op_code: ''
+										op_code: 'index'
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/setNoticeClose', {}, comData, 2,
 										function(data) {
@@ -340,7 +340,7 @@
 								noticeId: noticeDetailData.detailModel.NoticeId, //通知ID
 								noticeTag: noticeDetailData.tag, //标签
 								index_code: curPage.access.split('#')[1],
-								op_code: ''
+								op_code: 'index'
 							}
 							var url = '';
 							if (curPage.flag == 1) { //我发送的
@@ -487,7 +487,7 @@
 					encName: encName, //附件名称
 					encAddr: encAddr, //附件地址
 					index_code: curPage.access.split('#')[1],
-					op_code: ''
+					op_code: 'index'
 				}
 				//28.回复通知公告
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/addNoticeReply', {}, tempData1, 2,
@@ -514,14 +514,14 @@
 					comData0 = {
 						noticeManId: curPage.NoticeManId, //协同事务接收表ID
 						index_code: curPage.access.split('#')[1],
-						op_code: ''
+						op_code: 'index'
 					}
 					url = window.storageKeyName.INTERFACE_OA + 'cooperateNotice/getNoticeByReceiveId';
 				} else { //59.通过协同事务ID获取协同事务
 					comData0 = {
 						noticeId: curPage.NoticeId, //协同事务ID
 						index_code: curPage.access.split('#')[1],
-						op_code: ''
+						op_code: 'index'
 					}
 					url = window.storageKeyName.INTERFACE_OA + 'cooperateNotice/getNoticeById';
 				}
@@ -568,7 +568,7 @@
 									noticeId: data.data.NoticeId, //通知ID
 									receiveManId: personal.user_code, //阅读人ID
 									index_code: curPage.access.split('#')[1],
-									op_code: ''
+									op_code: 'index'
 								}
 								//54.阅读收到的协同事务
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/setReceiveNoticeRead', {}, comData1, 2,
@@ -580,7 +580,7 @@
 								var comData1 = {
 									noticeId: data.data.NoticeId, //通知ID
 									index_code: curPage.access.split('#')[1],
-									op_code: ''
+									op_code: 'index'
 								}
 								//53.阅读发出的协同事务
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/setSendNoticeRead', {}, comData1, 2,

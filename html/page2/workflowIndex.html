@@ -172,7 +172,7 @@
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.ApplyManPic />
 												<div>
-													<a class="biaoti">{{model.ApplyTitle}}</a>
+													<a class="biaoti" style="width: 80%;">{{model.ApplyTitle}}</a>
 												</div>
 												<div>
 													<a class="tempCss">{{model.ApplyManName}}</a><a class="mui-ellipsis time">{{model.CreateTime}}</a>
@@ -194,7 +194,7 @@
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.ApplyManPic />
 												<div>
-													<a class="biaoti">{{model.ApplyTitle}}</a>
+													<a class="biaoti" style="width: 80%;">{{model.ApplyTitle}}</a>
 												</div>
 												<div>
 													<a class="tempCss">{{model.ApplyManName}}</a><a class="mui-ellipsis time">{{model.CreateTime}}</a>
@@ -215,7 +215,7 @@
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.ApplyManPic />
 												<div>
-													<a class="biaoti">{{model.ApplyTitle}}</a>
+													<a class="biaoti" style="width: 80%;">{{model.ApplyTitle}}</a>
 												</div>
 												<div>
 													<a class="tempCss">{{model.ApplyManName}}</a><a class="mui-ellipsis time">{{model.CreateTime}}</a>
@@ -386,7 +386,7 @@
 					endTime: '30180127', //查询结束时间
 					page_size: '10', //每页记录数
 					index_code: curPage.access.split('#')[1],
-					op_code: ''
+					op_code: 'index'
 				}
 				if (datasource.sliderFlag == 4) {
 					comData0.applyManId = personal.user_code; //发送人ID

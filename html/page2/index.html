@@ -44,7 +44,7 @@
 			</a>
 			<h1 class="mui-title">{{headTitle}}</h1>
 		</header>
-		<div class="mui-content" style="margin-top: 0px;" id="contentData">
+		<div v-cloak class="mui-content" style="margin-top: 0px;" id="contentData">
 			<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
 				<li v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
 					<a href="#" @click="clickFunction(model)">
@@ -163,6 +163,12 @@
 							id:'7',
 							NoReadCnt:0,
 							access:'schapp_OA_Zhoucheng'
+						},{
+							name:'工资条',
+							icon:'../../img/homeSchool/schoolPage7.png',
+							id:'8',
+							NoReadCnt:0,
+							access:'schapp_OA_Payment'
 						},
 					]
 				},
@@ -173,7 +179,8 @@
 							model.type = 1;
 							utils.mOpenWithData("../../html/page2/gonggaoIndex.html", model);
 						} else if (model.id == 2) {
-							utils.mOpenWithData("../../html/page2/noticeIndex.html", model);
+							// utils.mOpenWithData("../../html/page2/noticeIndex.html", model);
+							utils.mOpenWithData("../../html/page2/tempIndex.html", model);
 						} else if (model.id == 3) {
 							utils.mOpenWithData("../../html/page2/shiwuIndex.html", model);
 						} else if (model.id == 4) {
@@ -186,7 +193,9 @@
 						}else if (model.id == 7) {
 							model.type = 2;
 							utils.mOpenWithData("../../html/page2/gonggaoIndex.html", model);
-						} else {
+						}else if (model.id == 8) {
+							utils.mOpenWithData("../../html/page2/gongziIndex.html", model);
+						}  else {
 							mui.toast('无权限');
 						}
 					}

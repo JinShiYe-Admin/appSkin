@@ -8,6 +8,9 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/common.css" rel="stylesheet" />
 		<style>
+			[v-cloak] {
+				visibility: hidden;
+			}
 			html,
 			body {
 				background-color: #efeff4;
@@ -96,11 +99,12 @@
 			}
 			.time {
 				font-size: 14px;
-				float: left;
+				float: right;
 				color: gray;
 			}
 			
 			.biaoti {
+				width: 80%;
 				color: #000000;
 				white-space: nowrap;
 				text-overflow:ellipsis;
@@ -119,14 +123,21 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">{{titleName}}</h1>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0" v-cloak>
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
 						<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-media-body">
-								{{model.title}}
-								<p class='mui-ellipsis'>{{model.time}}</p>
+							<div class="mui-table">
+								<div class="mui-table-cell">
+									<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
+									<div>
+										<div class="biaoti">{{model.LetterName}}</div>
+									</div>
+									<div>
+										<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+									</div>
+								</div>
 							</div>
 						</li>
 					</ul>
@@ -153,8 +164,6 @@
 		<script src='../../js/libs/jquery.js'></script>
 		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<script type="text/javascript">
-			console.log('personal:'); 
-			
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
@@ -165,25 +174,18 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName:''
+					titleName: ''
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					pageArray:[
-						{title:"2019年11月工资单",time:"2019年11月"},
-						{title:"2019年10月工资单",time:"2019年10月"},
-						{title:"2019年09月工资单",time:"2019年09月"},
-						{title:"2019年08月工资单",time:"2019年08月"},
-						{title:"2019年07月工资单",time:"2019年07月"},
-						{title:"2019年06月工资单",time:"2019年06月"},
-						]//界面总数组
+					pageArray: [] //界面总数组
 				},
 				methods: {
-					clickLi:function(model){
+					clickLi: function(model) {
 						// 1 公告2 周程3 校历
-						console.log('clickLi.model:'+JSON.stringify(model));
+						console.log('clickLi.model:' + JSON.stringify(model));
 						model.access = curPage.access;
 						utils.mOpenWithData("../../html/page2/gongziDetail.html", model);
 					}
@@ -193,8 +195,11 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('2222:' + JSON.stringify(curPage)); 
+				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
+				events.showWaiting();
+				//79.获取某人接收的通知单列表
+				getPageDataArray();
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -214,8 +219,8 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
-							//32.获取浏览的公告（周程/校历）列表
-							// getPageDataArray();
+							//79.获取某人接收的通知单列表
+							getPageDataArray();
 							setTimeout(function() {
 								//结束下拉刷新
 								self.endPullDownToRefresh();
@@ -228,8 +233,8 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								//32.获取浏览的公告（周程/校历）列表
-								// getPageDataArray();
+								//79.获取某人接收的通知单列表
+								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
 									self.endPullUpToRefresh();
@@ -245,7 +250,58 @@
 						}
 					}
 				});
+
 			});
+
+			//79.获取某人接收的通知单列表
+			function getPageDataArray() {
+				//需要加密的数据
+				comData = {
+					schoolId: personal.unit_code, //学校ID
+					name: '', //通知单名称
+					type: 1, //类型,1 工资条2 成绩单
+					noticeManId: personal.user_code, //通知人ID
+					beginTime: '20170101', //查询开始时间
+					endTime: '30180127', //查询结束时间
+					page_number: pageIndex, //当前页数
+					page_size: '10', //每页记录数
+					index_code: curPage.access.split('#')[1],
+					op_code: 'index'
+				}
+				//79.获取某人接收的通知单列表
+				postDataEncry(window.storageKeyName.INTERFACE_OA + 'noticeLetter/getReceiveNoticeLetterByMan', {}, comData, 2, function(
+					data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						//总页数
+						totalPageCount = data.data.total_page;
+						for (var i = 0; i < data.data.list.length; i++) {
+							var tempM = data.data.list[i];
+							if (tempM.SendManPic == '' || tempM.SendManPic == null) {
+								tempM.SendManPic = setImg(tempM.SendManPic);
+							}
+						}
+						pageIndex++;
+						if (flagRef == 0) { //刷新
+							datasource.pageArray = data.data.list;
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
+						} else { //加载更多
+							//合并数组
+							datasource.pageArray = datasource.pageArray.concat(data.data.list);
+							if (data.data.list.length == 0) {
+								mui.toast('已加载全部');
+							}
+						}
+						if (mui(".mui-table-view-cell").length < 10) {
+							mui(".mui-pull-loading")[0].innerHTML = "";
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			};
 		</script>
 	</body>
 

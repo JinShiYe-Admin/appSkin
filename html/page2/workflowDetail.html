@@ -225,7 +225,7 @@
 								var comData = {
 									applyId: noticeDetailData.detailModel.ApplyId,
 									index_code: curPage.access.split('#')[1],
-									op_code: ''
+									op_code: 'index'
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApplyUndo', {}, comData, 2,
 									function(data) {
@@ -264,7 +264,7 @@
 								applyId: noticeDetailData.detailModel.ApplyId, //申请ID
 								tag: noticeDetailData.tag, //标签
 								index_code: curPage.access.split('#')[1],
-								op_code: ''
+								op_code: 'index'
 							}
 							var url = '';
 							if (curPage.flag == 1) { //我发送的
@@ -311,7 +311,7 @@
 							approveContent: noticeDetailData.content, //回复内容
 							approveResult: flag, //审批结果,1 同意2 退回
 							index_code: curPage.access.split('#')[1],
-							op_code: ''
+							op_code: 'index'
 						}
 						//18.审批事务及文件申请
 						postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApprove', {}, tempData1, 2, function(data) {
@@ -337,14 +337,14 @@
 					comData0 = {
 						approveId: curPage.ApproveId, //审批ID
 						index_code: curPage.access.split('#')[1],
-						op_code: ''
+						op_code: 'index'
 					}
 					url = window.storageKeyName.INTERFACE_OA + 'approve/getAffairApproveById';
 				} else { //23.通过申请ID获取事务及文件申请
 					comData0 = {
 						applyId: curPage.ApplyId, //申请ID
 						index_code: curPage.access.split('#')[1],
-						op_code: ''
+						op_code: 'index'
 					}
 					url = window.storageKeyName.INTERFACE_OA + 'approve/getAffairApplyById';
 				}
