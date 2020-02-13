@@ -80,8 +80,7 @@
 					methods: {
 						clickFunction: function(model) {
 							var personal0 = store.get(window.storageKeyName.PERSONALINFO);
-							console.log('index:', model);
-							utils.mOpenWithData(model.href, {});
+							utils.mOpenWithData(model.href, model);
 						}
 					}
 			});

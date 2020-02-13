@@ -46,8 +46,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			mod.INTERFACE_OA = 'http://192.168.0.32:8080/oasubapi/sub/api/';//oa接口
-			
+			mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oasubapi/sub/api/';//oa接口
+			mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口
+			mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口
 			
 			
 			// mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/sup2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理

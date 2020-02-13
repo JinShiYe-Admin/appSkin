@@ -92,6 +92,13 @@
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
 						permission: 'schapp_Evaluation',
 						childList: []
+					}, {
+						name: "page7",
+						href: "../../html/schapp_examination/index.html",
+						tempID: 'kaowu',
+						cls: 'mui-icon iconfont icon-kejiaowenhua',
+						permission: 'schapp_Examination',
+						childList: []
 					}]
 				}
 			});
@@ -107,9 +114,10 @@
 						var tempM0 = indexPage.pageArray[a];
 						if (tempM0.permission == tempM1.url) {
 							tempM0.name = tempM1.name;
+							tempM0.access=tempM1.access;
 							tempM0.childList = tempM1.childList;
 							tempA.push(tempM0);
-						}
+						} 
 					}
 				}
 				if (tempA.length > 5) {
