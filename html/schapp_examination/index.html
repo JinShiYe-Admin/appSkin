@@ -300,6 +300,8 @@
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
+						let index_code=curPage.access.split('#')[1]
+						model.index_code=index_code;
 						utils.mOpenWithData("../../html/schapp_examination/details.html", model);
 					},
 					showKq: function() {
@@ -441,6 +443,7 @@
 						 //获取考务列表
 						 getPageDataArray();
 					} else {
+						events.closeWaiting();
 						mui.toast(data.msg);
 					} 
 				});
@@ -469,6 +472,7 @@
 						 //获取考务列表
 						 getPageDataArray();
 					} else {
+						events.closeWaiting();
 						mui.toast(data.msg);
 					} 
 				});
@@ -501,6 +505,7 @@
 						  //获取考务列表
 						  getPageDataArray();
 					} else {
+						events.closeWaiting();
 						mui.toast(data.msg);
 					} 
 				});
@@ -542,6 +547,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
+							events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});
