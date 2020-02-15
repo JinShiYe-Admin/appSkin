@@ -234,7 +234,7 @@
 											</div>
 											<div class="mui-table-cell mui-col-xs-2" style="text-align: left;">
 												<p class="mui-h6 ">试题难度：{{model.dif}}</h5>
-												<p class="mui-h6 ">特优占比：{{model.special_stu_radio}}</h5>
+												<p v-if="model.special_stu_radio!=null" class="mui-h6 ">特优占比：{{model.special_stu_radio}}</h5>
 												<p class="mui-h6 ">进步人数：{{model.up_num}}</h5>
 												<p class="mui-h6 ">退步人数：{{model.down_num}}</h5>
 											</div>
@@ -296,12 +296,14 @@
 					kqValue: '', //考情选择值
 					xnValue: '', //学年选择值
 					xqValue: '', //学期选择值
+					selectType:'qk',//查询类型 qk 全科考情 dk 单科考情 第一次进入页面默认为qk
 				},
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
 						let index_code=curPage.access.split('#')[1]
 						model.index_code=index_code;
+						model.selectType=datasource.selectType;
 						utils.mOpenWithData("../../html/schapp_examination/details.html", model);
 					},
 					showKq: function() {
@@ -312,6 +314,11 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
+							if(items[0].value==''){
+								datasource.selectType='qk'
+							}else{
+								datasource.selectType='dk'
+							}
 							datasource.kqValue = items[0]
 							//获取考务列表
 							events.showWaiting();

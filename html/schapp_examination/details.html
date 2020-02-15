@@ -137,7 +137,7 @@
 							</div>
 						</a>
 					</div>
-					<div class="mui-col-xs-6 tab-btn">
+					<div v-if="selectType=='qk'" class="mui-col-xs-6 tab-btn">
 						<a id="sxltab" class="mui-control-item" href="#sxl">
 							<div class="mui-row">
 								<img class="mui-col-xs-4 tab-img" src='../../img/examination/sxl.png' /><span class="mui-col-xs-8" >{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
@@ -199,7 +199,7 @@
 		<script src='../../js/libs/echarts.min.js'></script>
 		<script src="../../js/utils/mui.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
-		<!-- <script src="../../js/utils/vconsole.min.js"></script> -->
+		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/store.js"></script>
@@ -223,6 +223,7 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
+					selectType:'',////查询类型 qk 全科考情 dk 单科考情 第一次进入页面默认为qk
 					titleName: '',
 					tabsDetail: '', //tab栏数据
 					pjfDetail: '', //平均分接口返回的详情数据
@@ -294,6 +295,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				datasource.titleName = curPage.name;
+				datasource.selectType = curPage.selectType;
 				events.showWaiting();
 				getDetail(function() {
 					setTimeout(function() {
@@ -305,9 +307,11 @@
 					setTimeout(function() {
 						getZgfDetail()
 					}, 300) //最高分详情
-					setTimeout(function() {
-						getSxlDetail()
-					}, 400) //上线率详情
+					if(curPage.selectType=='qk'){
+						setTimeout(function() {
+							getSxlDetail()
+						}, 400) //上线率详情
+					}
 					setTimeout(function() {
 						getJtbDetail()
 					}, 500) //进退比详情
@@ -496,9 +500,12 @@
 
 			//关闭加载框
 			function closeWaiting() {
-				if (datasource.pjfDetail != '' && datasource.zfdDetail != '' && datasource.zgfDetail != '' && datasource.sxlDetail !=
-					'' && datasource.jtbDetail != '') {
-					events.closeWaiting();
+				if (datasource.pjfDetail != '' && datasource.zfdDetail != '' && datasource.zgfDetail != '' &&  datasource.jtbDetail != '') {
+					if(curPage.selectType=='qk' && datasource.sxlDetail !=''){
+						events.closeWaiting();	
+					}else{
+						events.closeWaiting();
+					}
 				}
 			}
 
