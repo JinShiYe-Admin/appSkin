@@ -109,7 +109,7 @@
 			
 			.biaoti {
 				color: #000000;
-				width: 80%;
+				width: 85%;
 				font-size: 1.0625rem;
 				white-space:normal;
 			}
@@ -150,7 +150,7 @@
 			}
 			.selectBtn{
 				border: 0rem;
-				border-radius: 0.3125rem;
+				border-radius: 0rem;
 				background-color: #FFFFFF;
 				height: 3rem;
 			}
@@ -211,7 +211,7 @@
 									<div class="mui-table mui-col-xs-11">
 										<div class="mui-row">
 											<div class="mui-table-cell mui-col-xs-12">
-												<span class="ant-avatar ant-avatar-lg ant-avatar-circle mui-col-xs-3" style="float: left;background-color: rgb(255, 191, 0);vertical-align: middle;">
+												<span class="ant-avatar ant-avatar-lg ant-avatar-circle mui-col-xs-2" style="float: left;background-color: rgb(255, 191, 0);vertical-align: middle;">
 													<span class="ant-avatar-string" style="transform: scale(1) translateX(-50%);">{{model.exam_type_name}}</span>
 												</span>
 												<div>
@@ -316,6 +316,8 @@
 							//获取考务列表
 							events.showWaiting();
 							pageIndex=1;
+							flagRef = 0;
+							datasource.pageArray=[];
 							getPageDataArray();
 						});
 					},
@@ -331,6 +333,8 @@
 							//获取考务列表
 							events.showWaiting();
 							pageIndex=1;
+							flagRef = 0;
+							datasource.pageArray=[];
 							getPageDataArray();
 						});
 					},
@@ -346,6 +350,8 @@
 							//获取考务列表
 							events.showWaiting();
 							pageIndex=1;
+							flagRef = 0;
+							datasource.pageArray=[];
 							getPageDataArray();
 						});
 					},
@@ -377,6 +383,7 @@
 							flagRef = 0;
 							//32.获取浏览的公告（周程/校历）列表
 							events.showWaiting();
+							datasource.pageArray=[];
 							getPageDataArray();
 							setTimeout(function() {
 								//结束下拉刷新
