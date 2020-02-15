@@ -33,13 +33,74 @@
 			}
 			
 			.mui-control-content {
-				height: 450px;
+				min-height:150px;
 			}
 			
 			.chart {
-				height: 350px;
+				min-height: 350px;
 				margin: 0px;
 				padding: 0px;
+			}
+			
+			.mui-segmented-control{
+				border: 0;
+			}
+			
+			.tab-btn{
+				margin: 0.3375rem 0;
+				padding: 0 0.5rem;
+				background-color: #FFFFFF;
+				height: 3rem;
+			}
+			
+			.mui-segmented-control .mui-control-item{
+				color: #000000;
+				font-size: 0.9375rem;
+				line-height: 3rem;
+				border-radius: 0.692rem;
+				box-shadow: 0rem 0rem 0.22rem 0rem rgba(0,0,0,0.5);
+			}
+			.mui-segmented-control .mui-control-item.mui-active {
+				height: 3rem;
+				font-size: 0.9375rem;
+				color: #000000;
+				border-radius: 0.692rem;
+				background-color: rgba(216, 236, 243, 1);
+			}
+			
+			.description{
+				margin: 0.3125rem 0 0 0;
+				min-height: 3rem;
+				border-radius:1.3375rem;
+				background-color:rgba(216, 236, 243, 1) ;
+			}
+			
+			.des-detail{
+				padding: 0.3125rem 0.9375rem;
+				font-size: 0.9375rem;
+				min-height: 3rem;
+				margin: auto;
+				width: 80%;
+				background-color: #FFFFFF;
+				border-bottom: 0.1875rem solid rgba(0, 153, 204, 1);
+			}
+			
+			.echarts-div{
+				box-shadow: 0rem 0rem 0.42rem 0rem rgba(0,0,0,0.5);
+				margin:0.5rem 0 0 0;
+				padding-top: 0.625rem;
+			}
+			
+			.zgf-ul{
+				width: 1.1625rem;
+				height: 1.1625rem;
+			}
+			
+			.tab-img{
+				margin-left: 0.1875rem;
+				width: 1.75rem;
+				height:1.75rem;
+				margin-top: 0.5625rem;
 			}
 		</style>
 	</head>
@@ -50,54 +111,87 @@
 			<h1 class="mui-title">详情</h1>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div style="text-align: center;margin: 0.625rem 0;">
+			<div style="text-align: center;margin: 1.225rem 0;">
 				<h4>{{titleName}}</h4>
 			</div>
-			<div style="padding: 10px 10px;">
+			<div style="padding: 0px 8px;"> 
 				<div id="segmentedControl" class="mui-segmented-control mui-row">
-					<div class="mui-col-xs-6">
-						<a id="pjftab" class="mui-control-item mui-active" href="#pjf">平均分:{{tabsDetail.avg_score}}</a>
+					<div class="mui-col-xs-6 tab-btn">  
+						<a id="pjftab" class="mui-control-item mui-active" href="#pjf">
+							<div class="mui-row">
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/pjf.png' /><span class="mui-col-xs-8" >平均分:{{tabsDetail.avg_score}}</span>
+							</div>
+						</a>
 					</div>
-					<div class="mui-col-xs-6">
-						<a id="zfdtab" class="mui-control-item" href="#zfd">主分段:{{tabsDetail.score_section}}</a>
+					<div class="mui-col-xs-6 tab-btn">
+						<a id="zfdtab" class="mui-control-item" href="#zfd">
+							<div class="mui-row">
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zfd.png' /><span class="mui-col-xs-8" >主分段:{{tabsDetail.score_section}}</span>
+							</div>
+						</a>
 					</div>
-					<div class="mui-col-xs-6">
-						<a id="zgftab" class="mui-control-item" href="#zgf">最高分:{{tabsDetail.max_score}}</a>
+					<div class="mui-col-xs-6 tab-btn">
+						<a id="zgftab" class="mui-control-item" href="#zgf">
+							<div class="mui-row">
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zgf.png' /><span class="mui-col-xs-8" >最高分:{{tabsDetail.max_score}}</span>
+							</div>
+						</a>
 					</div>
-					<div class="mui-col-xs-6">
-						<a id="sxltab" class="mui-control-item" href="#sxl">{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}</a>
+					<div class="mui-col-xs-6 tab-btn">
+						<a id="sxltab" class="mui-control-item" href="#sxl">
+							<div class="mui-row">
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/sxl.png' /><span class="mui-col-xs-8" >{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}</span>
+							</div>
+						</a>
 					</div>
-					<div class="mui-col-xs-6">
-						<a id="jtbtab" class="mui-control-item" href="#jtb">进退比:{{tabsDetail.ranking_step}}</a>
+					<div class="mui-col-xs-6 tab-btn">
+						<a id="jtbtab" class="mui-control-item" href="#jtb">
+							<div class="mui-row">
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/jtb.png' /><span class="mui-col-xs-8" >进退比:{{tabsDetail.ranking_step}}</span>
+							</div>
+						</a>
 					</div>
 				</div>
 			</div>
 			<div class="description">
-				<span class="des-detail">
+				<div class="des-detail">
 					{{description}}
-				</span>
+				</div>
 			</div>
-
-			<div>
+			<div class="echarts-div">
 				<div id="pjf" class="mui-control-content mui-active">
+					<h4 style="text-align: center">—— 各班级均分统计 ——</h4>
 					<div class="chart" id="pjfChart"></div>
 				</div>
 				<div id="zfd" class="mui-control-content">
-						<div class="chart" id="zfdChart"></div>
+					<h4 style="text-align: center">—— 各分段占比统计 ——</h4>
+					<div class="chart" id="zfdChart"></div>
 				</div>
 				<div id="zgf" class="mui-control-content">
+					<h4 style="text-align: center">—— 年级排名 ——</h4>
 					<ul class="mui-table-view">
-						<li v-for="model in echartsData.zgfList" class="mui-table-view-cell">
-							<div class="mui-table">
-								{{model.stu_name}} {{model.cls_name}} 总分：{{model.score}}
+						<li v-for="(model,index) in echartsData.zgfList" class="mui-table-view-cell">
+							<div class="mui-table mui-row">
+								<div class="mui-col-xs-3">{{model.stu_name}}</div>
+								<div class="mui-col-xs-3">{{model.cls_name}}</div>
+								<div class="mui-col-xs-5">总分：{{model.score}}</div>
+								<div class="mui-col-xs-1">
+									<img class="zgf-ul" v-if="index==0" src='../../img/examination/1.png' />
+									<img class="zgf-ul" v-else-if="index==1" src='../../img/examination/2.png' />
+									<img class="zgf-ul" v-else-if="index==2" src='../../img/examination/3.png' />
+									<img class="zgf-ul" v-else-if="index==3" src='../../img/examination/4.png' />
+									<img class="zgf-ul" v-else-if="index==4" src='../../img/examination/5.png' />
+								</div>
 							</div>
 						</li>
 					</ul>
 				</div>
 				<div id="sxl" class="mui-control-content">
+					<h4 style="text-align: center">—— 上线率统计 ——</h4>
 					<div class="chart" id="sxlChart"></div>
 				</div>
 				<div id="jtb" class="mui-control-content">
+					<h4 style="text-align: center">—— 各班级进退步学生统计 ——</h4>
 					<div class="chart" id="jtbChart"></div>
 				</div>
 			</div>
@@ -291,7 +385,7 @@
 						let nameList = [];
 						let valueList = [];
 						list.map(function(item) {
-							let name=item.name+'		'+item.radio+'%'+'		'+item.num;
+							let name=item.name+'\xa0\xa0'+item.radio+'%'+'\xa0\xa0'+item.num+'人';
 							nameList.push(name)
 							let obj={}
 							console.log(item)
@@ -349,7 +443,7 @@
 						let nameList = [];
 						let valueList = [];
 						list.map(function(item) {
-							let name=item.name+'				'+item.radio+'%'+'				'+item.num;
+							let name=item.name+'\xa0\xa0'+item.radio+'%'+'\xa0\xa0'+item.num+'人';
 							nameList.push(name)
 							let obj={}
 							obj.value=item.radio
@@ -427,6 +521,7 @@
 						data: ['平均分']
 					},
 					series: [{
+						name:'平均分',
 						data: datasource.echartsData.pjfValue,
 						type: 'bar'
 					}]
@@ -443,7 +538,7 @@
 					},
 					legend: {
 						orient: 'vertical',
-						right: '12%',
+						right: '2%',
 						icon: 'pin',
 						top: 'middle',
 						data: datasource.echartsData.zfdName
@@ -452,7 +547,7 @@
 						name: '主分段',
 						type: 'pie',
 						center: ['30%', '50%'],
-						radius: ['15%', '40%'],
+						radius: ['20%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
@@ -488,7 +583,7 @@
 					},
 					legend: {
 						orient: 'vertical',
-						right: '12%',
+						right: '2%',
 						icon: 'pin',
 						top: 'middle',
 						data: datasource.echartsData.sxlName
@@ -497,7 +592,7 @@
 						name: '上线率',
 						type: 'pie',
 						center: ['30%', '50%'],
-						radius: ['15%', '40%'],
+						radius: ['20%', '50%'],
 						avoidLabelOverlap: false,
 						label: {
 							normal: {
