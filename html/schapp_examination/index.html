@@ -109,7 +109,7 @@
 			
 			.biaoti {
 				color: #000000;
-				width: 85%;
+				width: 80%;
 				font-size: 1.0625rem;
 				white-space:normal;
 			}
@@ -233,7 +233,7 @@
 												<p class="mui-h6 mui-ellipsis">优秀率</p>
 											</div>
 											<div class="mui-table-cell mui-col-xs-2" style="text-align: left;">
-												<p class="mui-h6 ">试题难度：{{model.dif}}</h5>
+												<p v-if="selectType !='qk'" class="mui-h6 ">试题难度：{{model.dif}}</h5>
 												<p v-if="model.special_stu_radio!=null" class="mui-h6 ">特优占比：{{model.special_stu_radio}}</h5>
 												<p class="mui-h6 ">进步人数：{{model.up_num}}</h5>
 												<p class="mui-h6 ">退步人数：{{model.down_num}}</h5>
@@ -480,8 +480,10 @@
 								 obj.text=currentValue.year_name;
 								 yearList.push(obj)
 						 })
+						 let newList=yearList.sort(compare("value",0));
+						 console.log(JSON.stringify(newList));
 						 // console.log(JSON.stringify(yearList))
-						 datasource.xn=yearList
+						 datasource.xn=newList
 						 datasource.xnValue=yearList[0]
 						 //获取考务列表
 						 getPageDataArray();
@@ -567,6 +569,38 @@
 					});
 				}
 			};
+			
+			
+			//对学年进行按字段排序  
+			function compare(propertyName,order) { 
+			    return function (object1, object2) { 
+			        var value1 = object1[propertyName]; 
+			        var value2 = object2[propertyName]; 
+			        if(order==0){
+			            if (value2 < value1) { 
+			                return -1; 
+			            } 
+			            else if (value2 > value1) { 
+			                return 1; 
+			            } 
+			            else { 
+			                return 0; 
+			            } 
+			        }if(order==1){
+			            if (value2 > value1) { 
+			                return -1; 
+			            } 
+			            else if (value2 < value1) { 
+			                return 1; 
+			            } 
+			            else { 
+			                return 0; 
+			            } 
+			        }
+			        
+			    } 
+			} 
+
 		</script>
 	</body>
 
