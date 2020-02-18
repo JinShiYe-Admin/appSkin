@@ -278,11 +278,11 @@
 						if (obj5.max_up_cls_name == null) {
 							des = `本次考试没有进步的学生；${obj5.max_down_cls_name}班退步人数最多，合计${obj5.max_down_num}人`
 						}else if (obj5.max_down_cls_name == null) {
-							des = `${obj5.max_up_cls_name==null?0:obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；本次考试没有退步的学生`
+							des = `${obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；本次考试没有退步的学生`
 						}else if (obj5.max_up_cls_name == null && obj5.max_down_cls_name == null) {
 							des = `本次考试没有进步和退步的学生`
 						}else{
-							des = `${obj5.max_up_cls_name==null?0:obj5.max_up_cls_name班进步人数最多，合计${obj5.max_up_num}人；${obj5.max_down_cls_name}退步人数最多，合计${obj5.max_down_num}人`
+							des = `${obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；${obj5.max_down_cls_name}退步人数最多，合计${obj5.max_down_num}人`
 						}
 						datasource.description = des
 						setTimeout(function() {
