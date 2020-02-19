@@ -112,53 +112,53 @@
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div style="text-align: center;margin: 1.225rem 0;">
-				<h4>{{titleName}}</h4>
+				<h4 v-cloak>{{titleName}}</h4>
 			</div>
 			<div style="padding: 0px 8px;"> 
 				<div id="segmentedControl" class="mui-segmented-control mui-row">
-					<div class="mui-col-xs-6 tab-btn">  
+					<div v-cloak class="mui-col-xs-6 tab-btn">  
 						<a id="pjftab" class="mui-control-item mui-active" href="#pjf">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/pjf.png' /><span class="mui-col-xs-8" >平均分:{{tabsDetail.avg_score}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/pjf.png' /><span class="mui-col-xs-8" v-cloak>平均分:{{tabsDetail.avg_score}}</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="zfdtab" class="mui-control-item" href="#zfd">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zfd.png' /><span class="mui-col-xs-8" >主分段:{{tabsDetail.score_section}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zfd.png' /><span class="mui-col-xs-8" v-cloak>主分段:{{tabsDetail.score_section}}</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="zgftab" class="mui-control-item" href="#zgf">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zgf.png' /><span class="mui-col-xs-8" >最高分:{{tabsDetail.max_score}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zgf.png' /><span class="mui-col-xs-8" v-cloak>最高分:{{tabsDetail.max_score}}</span>
 							</div>
 						</a>
 					</div>
 					<div v-if="selectType=='qk'" class="mui-col-xs-6 tab-btn">
 						<a id="sxltab" class="mui-control-item" href="#sxl">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/sxl.png' /><span class="mui-col-xs-8" >{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/sxl.png' /><span class="mui-col-xs-8" v-cloak>{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="jtbtab" class="mui-control-item" href="#jtb">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/jtb.png' /><span class="mui-col-xs-8" >进退比:{{tabsDetail.ranking_step}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/examination/jtb.png' /><span class="mui-col-xs-8" v-cloak>进退比:{{tabsDetail.ranking_step}}</span>
 							</div>
 						</a>
 					</div>
 				</div>
 			</div>
-			<div class="description">
+			<div class="description" v-cloak>
 				<div class="des-detail">
 					{{description}}
 				</div>
 			</div>
-			<div class="echarts-div">
+			<div class="echarts-div" v-cloak>
 				<div id="pjf" class="mui-control-content mui-active">
 					<h4 style="text-align: center">—— 各班级均分统计 ——</h4>
 					<div class="chart" id="pjfChart"></div>
@@ -250,48 +250,56 @@
 					var id = this.getAttribute("id");
 					if (id == 'pjftab') {
 						var obj = datasource.pjfDetail
-						console.log(JSON.stringify(obj))
-						var des = `本次考试共有${obj.cls_count}个班，合计${obj.stu_count}人次参加考试，平均分${obj.avg_score}分`
-						datasource.description = des
+						if(obj!=''){
+							console.log(JSON.stringify(obj))
+							var des = `本次考试共有${obj.cls_count}个班，合计${obj.stu_count}人次参加考试，平均分${obj.avg_score}分`
+							datasource.description = des
+						}
 					} else if (id == 'zfdtab') {
 						var obj2 = datasource.zfdDetail
-						var des =
-							`${obj2.max_name}分段占比最大，达${obj2.max_radio}%，合计${obj2.max_num}人；${obj2.min_name}分段占比最低，为${obj2.min_radio}%，合计${obj2.min_num}人，需要重点关注`
-						datasource.description = des
-						setTimeout(function() {
-							initZfd()
-						}, 50)
+						if(obj2!=''){
+							var des =`${obj2.max_name}分段占比最大，达${obj2.max_radio}%，合计${obj2.max_num}人；${obj2.min_name}分段占比最低，为${obj2.min_radio}%，合计${obj2.min_num}人，需要重点关注`
+							datasource.description = des
+							setTimeout(function() {
+								initZfd()
+							}, 50)
+						}
 					} else if (id == 'zgftab') {
 						var obj3 = datasource.zgfDetail
-						var des = `年级最高分${obj3.max_score},最低分${obj3.min_score}，年级排名前10的学生有${obj3.stu_count}人在${obj3.cls_name}班`
-						datasource.description = des
+						if(obj3!=''){
+							var des = `年级最高分${obj3.max_score},最低分${obj3.min_score}，年级排名前10的学生有${obj3.stu_count}人在${obj3.cls_name}班`
+							datasource.description = des
+						}
 					} else if (id == 'sxltab') {
 						var obj4 = datasource.sxlDetail
-						var des =`本次考试${obj4.max_name}上线率最高，为${obj4.max_radio}%，合计${obj4.max_num}人，${obj4.min_name}最低，为${obj4.min_radio}%，合计${obj4.min_num}人`
-						datasource.description = des
-						setTimeout(function() {
-							initSxl()
-						}, 50)
+						if(obj4 !=''){
+							var des =`本次考试${obj4.max_name}上线率最高，为${obj4.max_radio}%，合计${obj4.max_num}人，${obj4.min_name}最低，为${obj4.min_radio}%，合计${obj4.min_num}人`
+							datasource.description = des
+							setTimeout(function() {
+								initSxl()
+							}, 50)
+						}
 					} else if (id == 'jtbtab') {
 						var obj5 = datasource.jtbDetail
 						console.log(JSON.stringify(obj5))
-						var des = ''
-						des = `${obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；${obj5.max_down_cls_name}退步人数最多，合计${obj5.max_down_num}人；`
-						if (obj5.max_up_cls_name == null) {
-							des = `本次考试没有进步的学生；${obj5.max_down_cls_name}班退步人数最多，合计${obj5.max_down_num}人；`
+						console.log(obj5 !='')
+						if(obj5 !=''){ 
+							var des = ''
+							des = `${obj5.max_up_cls_name==null?0:obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num==null?0:obj5.max_up_num}人；${obj5.max_down_cls_name==null?0:obj5.max_down_cls_name}退步人数最多，合计${obj5.max_down_num==null?0:obj5.max_down_num}人；`
+							if (obj5.max_up_cls_name == null && obj5.max_down_cls_name == null) {
+								des = `本次考试没有进步和退步的学生；`
+							}else if (obj5.max_up_cls_name!=null && obj5.max_down_cls_name == null) {
+								des = `${obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；本次考试没有退步的学生；`
+							}else if (obj5.max_up_cls_name == null && obj5.max_down_cls_name != null) {
+								des = `本次考试没有进步的学生；${obj5.max_down_cls_name}班退步人数最多，合计${obj5.max_down_num}人；`
+							}  
+							datasource.description = des
+							setTimeout(function() {
+								initJtb()
+							}, 50)
 						}
-						if (obj5.max_down_cls_name == null) {
-							des = `${obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；本次考试没有退步的学；`
-						}
-						if (obj5.max_up_cls_name == null && obj5.max_down_cls_name == null) {
-							des = `本次考试没有进步和退步的学生；`
-						}
-						datasource.description = des
-						setTimeout(function() {
-							initJtb()
-						}, 50)
 					}
-				})
+				}) 
 
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
@@ -362,7 +370,7 @@
 						datasource.echartsData.pjfValue = valueList;
 
 						//初始化默认显示的tab页  其他的在监听点击事件中初始化
-						let des = `本次考试共有${data.data.cls_count}个班，合计${data.data.stu_count}人次参加考试，平均分${data.data.avg_score}分`
+						let des = `本次考试共有${data.data.cls_count?data.data.cls_count:0}个班，合计${data.data.stu_count?data.data.stu_count:0}人次参加考试，平均分${data.data.avg_score?data.data.avg_score:0}分`
 						datasource.description = des
 						initPjf()
 

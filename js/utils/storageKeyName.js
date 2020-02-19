@@ -5,15 +5,15 @@ var storageKeyName = (function(mod) {
 	mod.key = 0; //0,开发;1,测试云；2外网
 	mod.pay = 0; //0,单个商家接口;1,多商家接口
 	var exLog = console.log;
-	console.log = function(hint, object) {
-		if(mod.key === 0) {
-			var argus = hint;
-			if(typeof(object)!=='undefined') {
-				argus = hint + JSON.stringify(object);
-			}
-			exLog.apply(this, [argus]);
-		}
-	}
+	// console.log = function(hint, object) {
+	// 	if(mod.key === 0) {
+	// 		var argus = hint;
+	// 		if(typeof(object)!=='undefined') {
+	// 			argus = hint + JSON.stringify(object);
+	// 		}
+	// 		exLog.apply(this, [argus]);
+	// 	}
+	// }
 	switch(mod.key) {
 		case 0: //开发
 			mod.SCHOOLID = 100005;//学校ID
@@ -90,7 +90,7 @@ var storageKeyName = (function(mod) {
 			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
 			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
 			//	---七牛空间和接口---开发---end---
-			mod.PLATFORMCODE = 'PT0001'; //平台代码
+			mod.PLATFORMCODE = 'PT0002'; //平台代码 联测PT0001  云测PT0002
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.MENULIST = 'menuList'; //获取菜单列表
 			mod.MOREMENU = 'moremenu'; //更多菜单列表

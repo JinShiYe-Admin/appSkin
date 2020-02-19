@@ -521,9 +521,8 @@
 						 })
 						 let newList=yearList.sort(compare("value",0));
 						 console.log(JSON.stringify(newList));
-						 // console.log(JSON.stringify(yearList))
-						 datasource.xn=newList
-						 datasource.xnValue=yearList[0]
+						 datasource.xn=[{value:'',text:'全部学年'}].concat(newList)
+						 datasource.xnValue={value:'',text:'全部学年'}
 						 //获取考务列表
 						 getPageDataArray();
 					} else {
@@ -545,7 +544,10 @@
 					if (data.code == 0) {
 						 let list=[].concat(data.data.list);
 						 let xqList=[]
-						 console.log(JSON.stringify(list))
+						 let obj={};
+						 obj.value='';
+						 obj.text='全部学期';
+						 xqList.push(obj)
 						 list.map(function(currentValue){
 							 if(currentValue.stat==1){
 								 let obj={};
@@ -556,7 +558,7 @@
 						 })
 						 // console.log(JSON.stringify(xqList))
 						 datasource.xq=xqList
-						  datasource.xqValue=xqList[0]
+						 datasource.xqValue={value:'',text:'全部学期'}
 						  //获取考务列表
 						  getPageDataArray();
 					} else {

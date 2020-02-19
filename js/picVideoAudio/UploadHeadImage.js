@@ -351,7 +351,7 @@ var UploadHeadImage = (function($, mod) {
 			if(data3.code == 0) {
 				successCallBack(imgeURL);
 			} else {
-				errorCallBack(data);
+				errorCallBack(data3);
 			}
 		});
 	}
