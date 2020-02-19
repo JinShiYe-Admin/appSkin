@@ -141,7 +141,7 @@
 			}
 			
 			.line{
-				background-color: #64a8f9;
+				background-color: #00CFBD;
 				margin-bottom: 0.3125rem;
 				height: 0.125rem;
 			}
@@ -396,6 +396,16 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
+				if(curPage&&JSON.stringify(curPage)=='{}'){
+					curPage={
+								"name":"考务系统",
+								"href":"../../html/schapp_examination/index.html",
+								"tempID":"kaowu",
+								"cls":"mui-icon iconfont icon-kejiaowenhua",
+								"permission":"schapp_Examination",
+								"access":"schapp#Examination:index"
+							}
+				}
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
 

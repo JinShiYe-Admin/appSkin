@@ -41,14 +41,25 @@ var storageKeyName = (function(mod) {
 			// mod.INTERFACE_HR_SKIN = 'http://192.168.0.32:8080/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
 			// mod.INTERFACE_OA = 'http://192.168.0.32:8081/oasubapi/sub/api/';//oa接口
 			
-			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
-			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
-			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
-			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			//联测
+			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
+			// mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
+			// mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
+			// mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			// mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oasubapi/sub/api/';//oa接口
+			// mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口
+			// mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口
+			
+			//云测 
+			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
+			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
+			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
 			mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oasubapi/sub/api/';//oa接口
-			mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口
-			mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口
+			mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/baseapi/api/Data/';//统一信息接口:考务用
+			mod.INTERFACE_EXAMINATION = 'http://nwifapp.jiaobaowang.net/stuzy/api/paper/';//考务系统接口
 			
 			
 			// mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/sup2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
