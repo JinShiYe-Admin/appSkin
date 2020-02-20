@@ -121,7 +121,7 @@
 			<a v-show="showAdd>0" @click="add()" class="mui-icon  mui-pull-right" style="font-size: 25px;">+</a>
 		</header>
 		<div class="mui-content">
-			<div id="slider" class="mui-slider mui-fullscreen">
+			<div id="slider" class="mui-slider mui-fullscreen" v-cloak>
 				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 					<div class="mui-scroll">
 						<a @tap="clickSlider(0)" class="mui-control-item mui-active" href="#item1mobile">
