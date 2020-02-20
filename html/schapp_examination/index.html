@@ -227,7 +227,7 @@
 						<button @tap="showXn()" class="mui-btn selectBtn mui-col-sm-4 mui-col-xs-4" type='button'>{{xnValue.text}}</button>
 						<button @tap="showXq()" class="mui-btn selectBtn mui-col-sm-4 mui-col-xs-4" type='button'>{{xqValue.text}}</button>
 					</div> -->
-					<div class="mui-segmented-control">
+					<div class="mui-segmented-control" v-cloak>
 						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showKq()"><span>{{kqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXn()"><span>{{xnValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXq()"><span>{{xqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
