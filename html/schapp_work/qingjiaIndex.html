@@ -507,8 +507,8 @@
 				comData = {
 					index_code: curPage.access.split('#')[1],
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_WORK + 'LeaveRecord/list', {}, comData, 2, function(data) {
-					console.log(JSON.stringify(data))
+				postDataEncry(window.storageKeyName.INTERFACE_WORK + 'LeaveRecord/getDict', {}, comData, 2, function(data) {
+					console.log('a啊啊啊啊啊啊啊啊啊啊'+JSON.stringify(data))
 					if (data.code == 0) {
 						let list = [].concat(data.data.qaArray);
 						// let qjList = []
@@ -520,7 +520,6 @@
 							datasource.qjList = list
 							datasource.qjlxValue = list[0]
 						}
-						
 						//获取考务列表
 						getPageDataArray();
 					} else {
@@ -545,7 +544,7 @@
 						index_code: curPage.access.split('#')[1],
 					}
 					// 1.1.列表页
-					postDataEncry(window.storageKeyName.INTERFACE_EXAMINATION + 'page', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_WORK + 'LeaveRecord/list', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
