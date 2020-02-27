@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
-	<!-- 考务模块  列表页
-
- -->
+	<!-- 考勤模块  课外考勤报表
+	列表页
+	-->
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -222,54 +222,49 @@
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div class="mui-scroll">
-					<!-- <div class="mui-row selectDiv">
-						<button @tap="showKq()" class="mui-btn selectBtn mui-col-sm-4 mui-col-xs-4" type='button'>{{kqValue.text}}</button>
-						<button @tap="showXn()" class="mui-btn selectBtn mui-col-sm-4 mui-col-xs-4" type='button'>{{xnValue.text}}</button>
-						<button @tap="showXq()" class="mui-btn selectBtn mui-col-sm-4 mui-col-xs-4" type='button'>{{xqValue.text}}</button>
-					</div> -->
 					<div class="mui-segmented-control" v-cloak>
-						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showKq()"><span>{{kqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXn()"><span>{{xnValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXq()"><span>{{xqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showNj()"><span>全部年级</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showDate()"><span>2020-02-26</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showKqlx()"><span>全部考勤类型</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 					<template v-if="pageArray.length>0">
 						<ul class="mui-table-view">
-							<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-								<a class="mui-navigate-right">
-									<div class="mui-table mui-col-xs-11">
-										<div class="mui-row">
-											<div class="mui-table-cell mui-col-xs-12">
-												<span class="ant-avatar ant-avatar-lg ant-avatar-circle mui-col-xs-2" style="float: left;background-color: rgb(255, 191, 0);vertical-align: middle;">
-													<span class="ant-avatar-string" style="transform: scale(1) translateX(-50%);">{{model.exam_type_name}}</span>
-												</span>
-												<div>
-													<div class="biaoti" style="float: left;margin-left: 0.5125rem;">{{model.name}}</div>
-												</div>
-											</div>
-										</div>
-										<div class="mui-row" style="text-align: center;">
-											<div class="mui-table-cell-1 mui-col-xs-3">
-												<h4 class="mui-ellipsis">{{model.stu_count}}</h4>
-												<p class="mui-h6 mui-ellipsis">参考人数</p>
-											</div>
-											<div class="mui-table-cell-1 mui-col-xs-3">
-												<h4 class="mui-ellipsis">{{model.avg_score}}</h4>
-												<p class="mui-h6 mui-ellipsis">总均分</p>
-											</div>
-											<div class="mui-table-cell-1 mui-col-xs-3">
-												<h4 class="mui-ellipsis">{{model.level_radio}}%</h4>
-												<p class="mui-h6 mui-ellipsis">优秀率</p>
-											</div>
-											<div class="mui-table-cell mui-col-xs-2" style="text-align: left;">
-												<p v-if="selectType !='qk'" class="mui-h6 ">试题难度：{{model.dif}}</h5>
-												<p v-if="model.special_stu_radio!=null" class="mui-h6 ">特优占比：{{model.special_stu_radio}}</h5>
-												<p class="mui-h6 ">进步人数：{{model.up_num}}</h5>
-												<p class="mui-h6 ">退步人数：{{model.down_num}}</h5>
+							<li v-for="(model,index) in pageArray" v-if="index==0" class="mui-table-view-cell" @tap="clickLi(model)">
+									<div class="mui-row">
+										<div class="mui-table-cell mui-col-xs-12">
+											<div>
+												<div class="biaoti">合计：168 人</div>
 											</div>
 										</div>
 									</div>
-								</a>
+									<div class="mui-row" style="text-align: left;">
+										<div class="mui-table-cell-1 mui-col-xs-4">
+											<p class="mui-h6 mui-ellipsis">升旗迟到：150 人</p>
+										</div>
+										<div class="mui-table-cell-1 mui-col-xs-4">
+											<p class="mui-h6 mui-ellipsis">课间操缺勤：12 人</p>
+										</div>
+									</div>
+							</li>
+						</ul>
+						<ul class="mui-table-view" style="margin-top: 0.375rem;">
+							<li v-for="(model,index) in pageArray" v-if="index>0" class="mui-table-view-cell" @tap="clickLi(model)">
+									<div class="mui-row">
+										<div class="mui-table-cell mui-col-xs-12">
+											<div>
+												<div class="biaoti" style="float: left;">一年级1902班(56人)</div>
+											</div>
+										</div>
+									</div>
+									<div class="mui-row" style="text-align: left;">
+										<div class="mui-table-cell-1 mui-col-xs-4">
+											<p class="mui-h6 mui-ellipsis">升旗迟到：150 人</p>
+										</div>
+										<div class="mui-table-cell-1 mui-col-xs-4">
+											<p class="mui-h6 mui-ellipsis">课间操缺勤：12 人</p>
+										</div>
+									</div>
 							</li>
 						</ul>
 					</template>
@@ -281,7 +276,7 @@
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
-		<script src="../../js/utils/vconsole.min.js"></script>
+		<!-- <script src="../../js/utils/vconsole.min.js"></script> -->
 		<script src="../../js/utils/mui.pullToRefresh.js"></script>
 		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
 		<script src="../../js/utils/vue.js"></script>
@@ -319,20 +314,13 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					kq: [], //考情数组
-					xn: [], //学年数组
-					xq: [], //学期数组
-					kqValue: '', //考情选择值
-					xnValue: '', //学年选择值
-					xqValue: '', //学期选择值
-					selectType:'qk',//查询类型 qk 全科考情 dk 单科考情 第一次进入页面默认为qk
 				},
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
-						let index_code=curPage.access.split('#')[1]
-						model.index_code=index_code;
-						model.selectType=datasource.selectType;
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						model.selectType = datasource.selectType;
 						utils.mOpenWithData("../../html/schapp_examination/details.html", model);
 					},
 					showKq: function() {
@@ -343,20 +331,18 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							if(items[0].value==''){
-								datasource.selectType='qk'
-							}else{
-								datasource.selectType='dk'
+							if (items[0].value == '') {
+								datasource.selectType = 'qk'
+							} else {
+								datasource.selectType = 'dk'
 							}
 							datasource.kqValue = items[0]
 							//获取考务列表
 							events.showWaiting();
-							pageIndex=1;
+							pageIndex = 1;
 							flagRef = 0;
-							datasource.pageArray=[];
+							datasource.pageArray = [];
 							getPageDataArray();
-							userPicker.dispose();
-							userPicker = null;
 						});
 					},
 					showXn: function() {
@@ -370,12 +356,10 @@
 							datasource.xnValue = items[0]
 							//获取考务列表
 							events.showWaiting();
-							pageIndex=1;
+							pageIndex = 1;
 							flagRef = 0;
-							datasource.pageArray=[];
+							datasource.pageArray = [];
 							getPageDataArray();
-							userPicker.dispose();
-							userPicker = null;
 						});
 					},
 					showXq: function() {
@@ -389,12 +373,10 @@
 							datasource.xqValue = items[0]
 							//获取考务列表
 							events.showWaiting();
-							pageIndex=1;
+							pageIndex = 1;
 							flagRef = 0;
-							datasource.pageArray=[];
+							datasource.pageArray = [];
 							getPageDataArray();
-							userPicker.dispose();
-							userPicker = null;
 						});
 					},
 				}
@@ -402,16 +384,6 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				if(curPage&&JSON.stringify(curPage)=='{}'){
-					curPage={
-								"name":"考务系统",
-								"href":"../../html/schapp_examination/index.html",
-								"tempID":"kaowu",
-								"cls":"mui-icon iconfont icon-kejiaowenhua",
-								"permission":"schapp_Examination",
-								"access":"schapp#Examination:index"
-							}
-				}
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
 
@@ -435,7 +407,7 @@
 							flagRef = 0;
 							//32.获取浏览的公告（周程/校历）列表
 							events.showWaiting();
-							datasource.pageArray=[];
+							datasource.pageArray = [];
 							getPageDataArray();
 							setTimeout(function() {
 								//结束下拉刷新
@@ -468,14 +440,15 @@
 					}
 				});
 
-				events.showWaiting();
+				// events.showWaiting();
 				//获取科目
-				getKmList();
+				// getKmList();
 				//获取学年
-				getXnList();
+				// getXnList();
 				//获取学期
-				getXqList();
-
+				// getXqList();
+				datasource.pageArray = [{
+				},{},{},]
 			});
 
 			//1.1: 系统科目信息
@@ -488,27 +461,31 @@
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'sub', {}, comData, 2, function(data) {
 					// console.log(JSON.stringify(data))
 					if (data.code == 0) {
-						 let list=[{"sub_code":"","sub_name":"全科考情","stat":1}].concat(data.data.list);
-						 let kmList=[]
-						 list.map(function(currentValue){
-								 let obj={};
-								 obj.value=currentValue.sub_code;
-								 obj.text=currentValue.sub_name;
-								 kmList.push(obj)
-						 })
-						 // console.log(JSON.stringify(kmList))
-						 datasource.kq=kmList
-						 datasource.kqValue=kmList[0]
-						 //获取考务列表
-						 getPageDataArray();
+						let list = [{
+							"sub_code": "",
+							"sub_name": "全科考情",
+							"stat": 1
+						}].concat(data.data.list);
+						let kmList = []
+						list.map(function(currentValue) {
+							let obj = {};
+							obj.value = currentValue.sub_code;
+							obj.text = currentValue.sub_name;
+							kmList.push(obj)
+						})
+						// console.log(JSON.stringify(kmList))
+						datasource.kq = kmList
+						datasource.kqValue = kmList[0]
+						//获取考务列表
+						getPageDataArray();
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
-					} 
+					}
 				});
 			}
 			//获取学年list
-			function getXnList(){
+			function getXnList() {
 				comData = {
 					page_number: pageIndex, //当前页数
 					page_size: '1000', //每页记录数
@@ -517,85 +494,94 @@
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'year', {}, comData, 2, function(data) {
 					// console.log(JSON.stringify(data))
 					if (data.code == 0) {
-						 let list=[].concat(data.data.list);
-						 let yearList=[]
-						 list.map(function(currentValue){
-								 let obj={};
-								 obj.value=currentValue.year_code;
-								 obj.text=currentValue.year_name;
-								 yearList.push(obj)
-						 })
-						 let newList=yearList.sort(compare("value",0));
-						 console.log(JSON.stringify(newList));
-						 datasource.xn=[{value:'',text:'全部学年'}].concat(newList)
-						 datasource.xnValue={value:'',text:'全部学年'}
-						 //获取考务列表
-						 getPageDataArray();
+						let list = [].concat(data.data.list);
+						let yearList = []
+						list.map(function(currentValue) {
+							let obj = {};
+							obj.value = currentValue.year_code;
+							obj.text = currentValue.year_name;
+							yearList.push(obj)
+						})
+						let newList = yearList.sort(compare("value", 0));
+						console.log(JSON.stringify(newList));
+						datasource.xn = [{
+							value: '',
+							text: '全部学年'
+						}].concat(newList)
+						datasource.xnValue = {
+							value: '',
+							text: '全部学年'
+						}
+						//获取考务列表
+						getPageDataArray();
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
-					} 
+					}
 				});
 			}
-			
+
 			//1.15: 系统学期信息
-			function getXqList(){
+			function getXqList() {
 				comData = {
 					page_number: pageIndex, //当前页数
 					page_size: '1000', //每页记录数
 					index_code: curPage.access.split('#')[1],
-				} 
+				}
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'SysTermP', {}, comData, 2, function(data) {
 					// console.log(JSON.stringify(data))
 					if (data.code == 0) {
-						 let list=[].concat(data.data.list);
-						 let xqList=[]
-						 let obj={};
-						 obj.value='';
-						 obj.text='全部学期';
-						 xqList.push(obj)
-						 list.map(function(currentValue){
-							 if(currentValue.stat==1){
-								 let obj={};
-								 obj.value=currentValue.term_code;
-								 obj.text=currentValue.term_name;
-								 xqList.push(obj)
-							 }
-						 })
-						 // console.log(JSON.stringify(xqList))
-						 datasource.xq=xqList
-						 datasource.xqValue={value:'',text:'全部学期'}
-						  //获取考务列表
-						  getPageDataArray();
+						let list = [].concat(data.data.list);
+						let xqList = []
+						let obj = {};
+						obj.value = '';
+						obj.text = '全部学期';
+						xqList.push(obj)
+						list.map(function(currentValue) {
+							if (currentValue.stat == 1) {
+								let obj = {};
+								obj.value = currentValue.term_code;
+								obj.text = currentValue.term_name;
+								xqList.push(obj)
+							}
+						})
+						// console.log(JSON.stringify(xqList))
+						datasource.xq = xqList
+						datasource.xqValue = {
+							value: '',
+							text: '全部学期'
+						}
+						//获取考务列表
+						getPageDataArray();
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
-					} 
+					}
 				});
 			}
-			
+
 			//获取考务列表 需要先等三个先拉选通过接口获取到对应的返回值并设置好默认值，才能调用此接口
 			function getPageDataArray() {
 				console.log(datasource.xnValue.length)
-				if(datasource.kqValue!='' && datasource.xnValue!='' && datasource.xqValue!=''){
+				if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据
 					comData = {
 						sub_code: datasource.kqValue.value, //科目代码
 						year_code: datasource.xnValue.value, //学年代码
-						term_code:datasource.xqValue.value, //学期代码
+						term_code: datasource.xqValue.value, //学期代码
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
 						index_code: curPage.access.split('#')[1],
-					} 
+					}
 					// 1.1.列表页
 					postDataEncry(window.storageKeyName.INTERFACE_EXAMINATION + 'page', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
-							pageIndex++;  
+							pageIndex++;
 							if (flagRef == 0) { //刷新
-								datasource.pageArray =data.data.list
+								datasource.pageArray = data.data.list
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
@@ -616,38 +602,6 @@
 					});
 				}
 			};
-			
-			
-			//对学年进行按字段排序  
-			function compare(propertyName,order) { 
-			    return function (object1, object2) { 
-			        var value1 = object1[propertyName]; 
-			        var value2 = object2[propertyName]; 
-			        if(order==0){
-			            if (value2 < value1) { 
-			                return -1; 
-			            } 
-			            else if (value2 > value1) { 
-			                return 1; 
-			            } 
-			            else { 
-			                return 0; 
-			            } 
-			        }if(order==1){
-			            if (value2 > value1) { 
-			                return -1; 
-			            } 
-			            else if (value2 < value1) { 
-			                return 1; 
-			            } 
-			            else { 
-			                return 0; 
-			            } 
-			        }
-			        
-			    } 
-			} 
-
 		</script>
 	</body>
 
