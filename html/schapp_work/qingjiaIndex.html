@@ -292,11 +292,11 @@
 					pageArray: [], //界面总数组
 					grdList:[{text:'全部年级',value:'-1'}],//年级数组
 					clsList:[{text:'全部班级',value:'-1'}],//班级数组
-					qjList:[{text:'全部考勤类型',value:'-1'}],// 请假类型数组
+					qjList:[{text:'全部考勤',value:'-1'}],// 请假类型数组 
 					grdValue:{text:'全部年级',value:'-1'},//年级选择值
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
-					dateValue:getCurrentDate(),//日期选择值
-					qjlxValue:{text:'全部考勤类型',value:'-1'},//请假类型选择值
+					dateValue:'',//日期选择值
+					qjlxValue:{text:'全部考勤',value:'-1'},//请假类型选择值 
 				},
 				methods: {
 					clickLi: function(model) {
@@ -314,7 +314,8 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.kqValue = items[0]
+							datasource.grdValue = items[0]
+							getClsList( items[0].value) 
 							//获取请假列表
 							events.showWaiting();
 							pageIndex = 1;
@@ -333,7 +334,7 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.xnValue = items[0]
+							datasource.clsValue = items[0]
 							//获取请假列表
 							events.showWaiting();
 							pageIndex = 1;
@@ -349,6 +350,7 @@
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
 							console.log(rs.text)
+							getPageDataArray();
 							datePicker.dispose();
 							datePicker = null;
 						});
@@ -361,7 +363,7 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.xnValue = items[0]
+							datasource.qjlxValue = items[0]
 							//获取请假列表
 							events.showWaiting();
 							pageIndex = 1;
@@ -436,12 +438,12 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
+				//获取数据范围授权：班级
+				getClsList() 
 				//获取请假类型常量
 				getQjlxList();
 				// 获取当前日期
 				getCurrentDate();
-				// 获取请假列表数据
-				// getPageDataArray();
 			});
 
 			// 获取数据范围授权：年级
@@ -466,7 +468,6 @@
 						if(grds && grds.length>0 ){
 							datasource.grdList=grdList;
 							let grd_id=grds[0].value;
-							getClsList(grd_id);
 						}
 					} else {
 						events.closeWaiting();
@@ -478,7 +479,7 @@
 			function getClsList(grd_id) {
 				const params = {
 					op_code:'index',
-					grd_code:grd_id,
+					grd_code:grd_id?grd_id:'-1',
 					get_cls:true,
 					all_cls:true,
 					index_code: curPage.access.split('#')[1],
@@ -508,20 +509,23 @@
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_WORK + 'LeaveRecord/getDict', {}, comData, 2, function(data) {
-					console.log('a啊啊啊啊啊啊啊啊啊啊'+JSON.stringify(data))
+					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let list = [].concat(data.data.qaArray);
-						// let qjList = []
-						// let obj = {};
-						// obj.value = '';
-						// obj.text = '全部学期';
-						// xqList.push(obj)
+						let qjList = []
+						let obj = {};
+						obj.value = '-1';
+						obj.text = '全部考勤';
+						qjList.push(obj)
+						list.map(function(curValue){
+							qjList.push(curValue)
+						})
 						if(list.length>0){
-							datasource.qjList = list
-							datasource.qjlxValue = list[0]
+							datasource.qjList = qjList
+							datasource.qjlxValue = qjList[0]
+							//获取请假列表数据
+							getPageDataArray();
 						}
-						//获取考务列表
-						getPageDataArray();
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -529,7 +533,7 @@
 				});
 			}
 
-			//获取请假列表数据 需要先等三个先拉选通过接口获取到对应的返回值并设置好默认值，才能调用此接口
+			//获取请假列表数据 
 			function getPageDataArray() {
 				// console.log(datasource.xnValue.length)
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
@@ -538,7 +542,7 @@
 						grd_code: datasource.grdValue.value,
 						cls_code: datasource.clsValue.value,
 						item_code: datasource.qjlxValue.value,
-						query_time: datasource.dateValue,
+						query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
 						index_code: curPage.access.split('#')[1],
@@ -580,8 +584,7 @@
 			    var month = myDate.getMonth() + 1;
 				var date = myDate.getDate();
 				var now = year + '-' + conver(month) + "-" + conver(date);
-				console.log(now)
-				return now;
+				datasource.dateValue=now;
 			}
 			function conver(s) {
 				return s < 10 ? '0' + s : s;
