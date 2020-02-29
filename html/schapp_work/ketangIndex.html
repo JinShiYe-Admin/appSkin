@@ -218,7 +218,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">{{titleName}}</h1>
-			<a v-if="showAdd" @click="revoke()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
+			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
@@ -287,6 +287,14 @@
 				data: {
 					titleName: '',
 					showAdd:false
+				},
+				methods:{
+					add:function(){
+						let model={};
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						utils.mOpenWithData("../../html/schapp_work/qingjiaDetail.html", model);
+					}
 				}
 			});
 			var datasource = new Vue({
@@ -303,11 +311,10 @@
 				},
 				methods: {
 					clickLi: function(model) {
-						console.log(JSON.stringify(model))
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						model.selectType = datasource.selectType;
-						utils.mOpenWithData("../../html/schapp_examination/details.html", model);
+						// console.log(JSON.stringify(model))
+						// let index_code = curPage.access.split('#')[1]
+						// model.index_code = index_code;
+						// utils.mOpenWithData("../../html/schapp_work/ketangDetail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
