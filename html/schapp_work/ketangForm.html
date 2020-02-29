@@ -230,49 +230,50 @@
 					<div class="line"></div>
 					<template v-if="pageArray.length>0">
 						<ul class="mui-table-view">
-							<li v-for="(model,index) in pageArray" v-if="index==0" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li v-for="(model,index) in pageArray" v-if="index==(pageArray.length-1)" class="mui-table-view-cell" @tap="clickLi(model)">
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-5">
 											<div>
-												<div class="biaoti">合计：168 人</div>
+												<div class="biaoti">{{model.row_name}}：{{model.people_num}} 人</div>
 											</div>
 										</div>
 										<div class="mui-table-cell mui-col-xs-7 mui-text-right">
-										    <span class="mui-h5">第一节（07:00 - 07:20）</span>
+										    <span class="mui-h5">{{model.section}}（{{model.time_range}}）</span>
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
-										<div class="mui-table-cell-1 mui-col-xs-4">
-											<p class="mui-h6 mui-ellipsis">实到：150 人</p>
+										<template v-for="item in model.kqxxList">
+											<div class="mui-table-cell-1 mui-col-xs-4">
+												<p class="mui-h6 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
+											</div>
+										</template>
+										<!-- <div class="mui-table-cell-1 mui-col-xs-4">
+											<p class="mui-h6 mui-ellipsis">实到：{{model.arrivals}} 人</p>
 										</div>
 										<div class="mui-table-cell-1 mui-col-xs-4">
-											<p class="mui-h6 mui-ellipsis">课堂缺勤：12 人</p>
+											<p class="mui-h6 mui-ellipsis">课堂缺勤：{{model.c_inClassAttendance_classLate}} 人</p>
 										</div>
 										<div class="mui-table-cell-1 mui-col-xs-4">
-											<p class="mui-h6 mui-ellipsis">课堂早退：12 人</p>
-										</div>
+											<p class="mui-h6 mui-ellipsis">课堂早退：{{model.c_inClassAttendance_classAbsence}} 人</p>
+										</div> -->
 									</div>
 							</li>
 						</ul>
 						<ul class="mui-table-view" style="margin-top: 0.375rem;">
-							<li v-for="(model,index) in pageArray" v-if="index>0" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li v-for="(model,index) in pageArray" v-if="index<(pageArray.length-1)" class="mui-table-view-cell" @tap="clickLi(model)">
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">
 											<div>
-												<div class="biaoti" style="float: left;">一年级1902班(56人)</div>
+												<div class="biaoti" style="float: left;">{{model.grd_name}}{{model.class_name}}({{model.people_num}}人)</div>
 											</div>
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
-										<div class="mui-table-cell-1 mui-col-xs-4">
-											<p class="mui-h6 mui-ellipsis">实到：150 人</p>
-										</div>
-										<div class="mui-table-cell-1 mui-col-xs-4">
-											<p class="mui-h6 mui-ellipsis">课堂缺勤：12 人</p>
-										</div>
-										<div class="mui-table-cell-1 mui-col-xs-4">
-											<p class="mui-h6 mui-ellipsis">课堂早退：12 人</p>
-										</div>
+										<template v-for="item in model.kqxxList">
+											<div class="mui-table-cell-1 mui-col-xs-4">
+												<p class="mui-h6 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
+											</div>
+										</template>
 									</div>
 							</li>
 						</ul>
@@ -324,11 +325,11 @@
 				data: {
 					pageArray: [], //界面总数组
 					grdList:[{text:'全部年级',value:'-1'}],//年级数组
-					jcList:[{text:'全部考勤',value:'-1'}],// 节次数组 
+					jcList:[],// 节次数组 
 					grdValue:{text:'全部年级',value:'-1'},//年级选择值
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
 					dateValue:'',//日期选择值
-					jcValue:{text:'全部考勤',value:'-1'},//节次选择值 
+					jcValue:{},//节次选择值 
 				},
 				methods: {
 					clickLi: function(model) {
@@ -361,7 +362,10 @@
 						var datePicker=new $M.DtPicker({value:datasource.dateValue,type:"date"});
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
-							console.log(rs.text)
+							events.showWaiting();
+							pageIndex = 1;
+							flagRef = 0;
+							datasource.pageArray = [];
 							getPageDataArray();
 							datePicker.dispose();
 							datePicker = null;
@@ -470,9 +474,10 @@
 						let grds = data.data.grd_list;
 						let grdList=[];
 						grds.map(function(currentValue) {
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部年级';
 							let obj = {};
 							obj.value = currentValue.value;
-							obj.text = currentValue.name;
+							obj.text = name;
 							grdList.push(obj)
 						})
 						datasource.grdList=grdList;
@@ -493,17 +498,17 @@
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let list = [].concat(data.data.classtimeArray);
-						let jcList = []
-						let obj = {};
-						obj.value = '-1';
-						obj.text = '全部节次';
-						jcList.push(obj)
-						list.map(function(curValue){
-							jcList.push(curValue)
-						})
+						// let jcList = []
+						// let obj = {};
+						// obj.value = '';
+						// obj.text = '全部节次';
+						// jcList.push(obj)
+						// list.map(function(curValue){
+						// 	jcList.push(curValue)
+						// })
 						if(list.length>0){
-							datasource.jcList = jcList
-							datasource.jcValue = jcList[0]
+							datasource.jcList = list
+							datasource.jcValue = list[0]
 							//获取考勤列表数据
 							getPageDataArray();
 						}
@@ -522,28 +527,32 @@
 					comData = {
 						grd_code: datasource.grdValue.value,
 						cls_code: datasource.clsValue.value,
-						item_code: datasource.jcValue.value,
+						classtime_schedule_id: datasource.jcValue.value,
 						query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
 						index_code: curPage.access.split('#')[1],
 					} 
 					// 1.1.列表页
-					postDataEncry(window.storageKeyName.INTERFACE_WORK + 'ExtraAttendance/list', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_WORK + 'AttendanceReport/statisticsClasstimeAttendance', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							if (flagRef == 0) { //刷新
-								datasource.pageArray = data.data.list
-								if (data.data.list.length == 0) {
+								addKqName(data.data.qaArray,data.data.staticArray,function(list){
+									datasource.pageArray=[].concat(list);
+								})
+								if (data.data.staticArray.length == 0) {
 									mui.toast('暂无数据');
 								}
 							} else { //加载更多
 								//合并数组
-								datasource.pageArray = datasource.pageArray.concat(data.data.list);
-								if (data.data.list.length == 0) {
+								addKqName(data.data.qaArray,data.data.staticArray,function(list){
+									datasource.pageArray = datasource.pageArray.concat(list);
+								})
+								if (data.data.staticArray.length == 0) {
 									mui.toast('已加载全部');
 								}
 							}
@@ -558,8 +567,43 @@
 				// }
 			};
 			
+			// 给list中的考勤类型赋值名字
+			function addKqName(qaList,list,callback){
+				let time_range=''
+				let section=''
+				list.map(function(currValue){
+					let list=[]
+					if(currValue.time_range!=''){
+						time_range=currValue.time_range
+					}
+					if(currValue.time_range!=''){
+						section=currValue.section
+					}
+					qaList.map(function(currValue2){
+						let kqValue=currValue2.value;
+						if(""+currValue[kqValue]){
+							let obj={}
+							obj.name=currValue2.text;
+							obj.value=currValue[kqValue];
+							list.push(obj)
+						}
+					})
+					currValue.kqxxList=list;
+				})
+				//给合计的item赋值个节次对应的时间
+				list.map(function(currValue){
+					let list=[]
+					if(currValue.time_range==''){
+						currValue.time_range=time_range
+						currValue.section=section
+					}
+				})
+				console.log("list: " + JSON.stringify(list));
+				callback(list)
+			}
+			
 			// 获取当前日期
-			function getCurrentDate(){
+			function getCurrentDate(){ 
 				var myDate=new Date()
 			    var year = myDate.getFullYear();
 			    var month = myDate.getMonth() + 1;

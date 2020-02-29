@@ -238,16 +238,20 @@
 											</div>
 										</div>
 										<div class="mui-table-cell mui-col-xs-7 mui-text-right">
-										    <span class="mui-h5">早操（07:00 - 07:20）</span>
+											<template v-for="item in model.kqxxList">
+												  <div class="mui-h5">{{item.name}}（{{item.attendance_begintime}} - {{item.attendance_endtime}}）</div>
+											</template>
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
-										<div class="mui-table-cell-1 mui-col-xs-9">
-											<p class="mui-h6 mui-ellipsis">已识别：44 人 ( 入：44 人， 出：0 人 )</p>
-										</div>
-										<div class="mui-table-cell-1 mui-col-xs-3">
-											<p class="mui-h6 mui-ellipsis">未识别：12 人</p>
-										</div>
+										<template v-for="item in model.kqxxList">
+											<div class="mui-table-cell-1 mui-col-xs-9">
+												<p class="mui-h6 mui-ellipsis">{{item.name}} 已识别：{{item.value[0]}} 人 ( 入：{{item.value[1]}} 人， 出：{{item.value[2]}} 人 )</p>
+											</div>
+											<div class="mui-table-cell-1 mui-col-xs-3">
+												<p class="mui-h6 mui-ellipsis">未识别：{{item.value[3]}} 人</p>
+											</div>
+										</template>
 									</div>
 							</li>
 						</ul>
@@ -261,12 +265,14 @@
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
-										<div class="mui-table-cell-1 mui-col-xs-9">
-											<p class="mui-h6 mui-ellipsis">已识别：44 人 ( 入：44 人， 出：0 人 )</p>
-										</div>
-										<div class="mui-table-cell-1 mui-col-xs-3">
-											<p class="mui-h6 mui-ellipsis">未识别：12 人</p>
-										</div>
+										<template v-for="item in model.kqxxList">
+											<div class="mui-table-cell-1 mui-col-xs-9">
+												<p class="mui-h6 mui-ellipsis">{{item.name}} 已识别：{{item.value[0]}} 人 ( 入：{{item.value[1]}} 人， 出：{{item.value[2]}} 人 )</p>
+											</div>
+											<div class="mui-table-cell-1 mui-col-xs-3">
+												<p class="mui-h6 mui-ellipsis">未识别：{{item.value[3]}} 人</p>
+											</div>
+										</template>
 									</div>
 							</li>
 						</ul>
@@ -322,7 +328,7 @@
 					grdValue:{text:'全部年级',value:'-1'},//年级选择值
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
 					dateValue:'',//日期选择值
-					kqlxValue:{text:'全部考勤',value:'-1'},//考勤类型选择值 
+					kqlxValue:{text:'全部考勤',value:''},//考勤类型选择值 
 				},
 				methods: {
 					clickLi: function(model) {
@@ -355,7 +361,10 @@
 						var datePicker=new $M.DtPicker({value:datasource.dateValue,type:"date"});
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
-							console.log(rs.text)
+							events.showWaiting();
+							pageIndex = 1;
+							flagRef = 0;
+							datasource.pageArray = [];
 							getPageDataArray();
 							datePicker.dispose();
 							datePicker = null;
@@ -464,9 +473,10 @@
 						let grds = data.data.grd_list;
 						let grdList=[];
 						grds.map(function(currentValue) {
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部年级';
 							let obj = {};
 							obj.value = currentValue.value;
-							obj.text = currentValue.name;
+							obj.text = name;
 							grdList.push(obj)
 						})
 						if(grds && grds.length>0 ){
@@ -489,19 +499,19 @@
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let list = [].concat(data.data.timeArray);
-						// let kqList = []
-						// let obj = {};
-						// obj.value = '-1';
-						// obj.text = '全部考勤';
-						// obj.attendance_begintime=''
-						// obj.attendance_endtime=''
-						// kqList.push(obj)
-						// list.map(function(curValue){
-						// 	kqList.push(curValue)
-						// })
+						let kqList = []
+						let obj = {};
+						obj.value = '';
+						obj.text = '全部考勤';
+						obj.attendance_begintime=''
+						obj.attendance_endtime=''
+						kqList.push(obj)
+						list.map(function(curValue){
+							kqList.push(curValue)
+						})
 						if(list.length>0){
-							datasource.kqList = list
-							datasource.kqlxValue = list[0]
+							datasource.kqList = kqList
+							datasource.kqlxValue = kqList[0]
 							//获取考勤列表数据
 							getPageDataArray();
 						}
@@ -517,19 +527,22 @@
 				// console.log(datasource.xnValue.length)
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据
-					let times=[];
-					let obj={};
-					obj.attendance_begintime=datasource.kqlxValue.attendance_begintime;
-					obj.attendance_endtime=datasource.kqlxValue.attendance_endtime;
-					obj.value=datasource.kqlxValue.value;
-					times.push(obj)
 					comData = {
 						grd_code: datasource.grdValue.value,
 						card_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
-						timersArray:times,
+						// timersArray:times,
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
 						index_code: curPage.access.split('#')[1],
+					}
+					if(datasource.kqlxValue.value){
+						let times=[];
+						let obj={};
+						obj.attendance_begintime=datasource.kqlxValue.attendance_begintime;
+						obj.attendance_endtime=datasource.kqlxValue.attendance_endtime;
+						obj.value=datasource.kqlxValue.value;
+						times.push(obj)
+						comData.timersArray=times
 					}
 					// 1.1.列表页
 					postDataEncry(window.storageKeyName.INTERFACE_WORK + 'AttendanceReport/statisticsInOutSch', {}, comData, 2, function(data) {
@@ -539,13 +552,17 @@
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							if (flagRef == 0) { //刷新
-								datasource.pageArray = data.data.list
+								addKqName(data.data.list,function(list){
+									datasource.pageArray=[].concat(list);
+								})
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
 							} else { //加载更多
 								//合并数组
-								datasource.pageArray = datasource.pageArray.concat(data.data.list);
+								addKqName(data.data.list,function(list){
+									datasource.pageArray= datasource.pageArray.concat(list);
+								})
 								if (data.data.list.length == 0) {
 									mui.toast('已加载全部');
 								}
@@ -560,6 +577,27 @@
 					});
 				// }
 			};
+			
+			// 给list中的考勤类型赋值名字
+			function addKqName(list,callback){
+				list.map(function(currValue){
+					let kqxxList=[];
+					datasource.kqList.map(function(currValue2){
+						let kqValue=currValue2.value
+						let kqName=currValue2.text
+						if(currValue[kqValue]){
+							let obj={};
+							obj.name=currValue2.text
+							obj.value=currValue[kqValue]
+							obj.attendance_begintime=currValue2.attendance_begintime
+							obj.attendance_endtime=currValue2.attendance_endtime
+							kqxxList.push(obj)
+						}
+					})
+					currValue.kqxxList=kqxxList;
+				})
+				callback(list)
+			}
 			
 			// 获取当前日期
 			function getCurrentDate(){

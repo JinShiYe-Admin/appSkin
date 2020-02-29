@@ -218,6 +218,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">{{titleName}}</h1>
+			<a v-if="showAdd" @click="revoke()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
@@ -235,9 +236,9 @@
 								<a class="mui-navigate-right">
 									<div class="mui-table">
 									    <div class="mui-table-cell mui-col-xs-10">
-									        <h4 class="mui-ellipsis">一年级1900班·陈少爽</h4>
-									        <h5 style="margin-top: 0.75rem">请假类型：病假（可出入校园）</h5>
-									        <p class="mui-h6 mui-ellipsis">说明：编辑编辑</p>
+									        <h4 class="mui-ellipsis">{{model.class_name}}·{{model.stu_name}}</h4>
+									        <h5 style="margin-top: 0.75rem">请假类型：{{model.item_txt}}</h5>
+									        <p class="mui-h6 mui-ellipsis" v-if="model.comment">说明：{{model.comment}}</p>
 									    </div>
 									</div>
 								</a>
@@ -283,7 +284,8 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: ''
+					titleName: '',
+					showAdd:false
 				}
 			});
 			var datasource = new Vue({
@@ -292,11 +294,11 @@
 					pageArray: [], //界面总数组
 					grdList:[{text:'全部年级',value:'-1'}],//年级数组
 					clsList:[{text:'全部班级',value:'-1'}],//班级数组
-					qjList:[{text:'全部考勤',value:'-1'}],// 请假类型数组 
+					qjList:[{text:'全部考勤',value:''}],// 请假类型数组 
 					grdValue:{text:'全部年级',value:'-1'},//年级选择值
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
 					dateValue:'',//日期选择值
-					qjlxValue:{text:'全部考勤',value:'-1'},//请假类型选择值 
+					qjlxValue:{text:'全部考勤',value:''},//请假类型选择值 
 				},
 				methods: {
 					clickLi: function(model) {
@@ -349,7 +351,10 @@
 						var datePicker=new $M.DtPicker({value:datasource.dateValue,type:"date"});
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
-							console.log(rs.text)
+							events.showWaiting();
+							pageIndex = 1;
+							flagRef = 0;
+							datasource.pageArray = [];
 							getPageDataArray();
 							datePicker.dispose();
 							datePicker = null;
@@ -436,6 +441,13 @@
 				});
 
 				events.showWaiting();
+				// 获取权限
+				getPermissionByPosition('add', curPage.access, function(data) {
+					console.log('getPermissionByPosition:' + JSON.stringify(data));
+					if (data.code == 0 && data.data.result == 1) {
+						tempVue.showAdd = true;
+					}
+				});
 				//获取数据范围授权：年级
 				getGrdList();
 				//获取数据范围授权：班级
@@ -460,9 +472,10 @@
 						let grds = data.data.grd_list;
 						let grdList=[];
 						grds.map(function(currentValue) {
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部年级';
 							let obj = {};
 							obj.value = currentValue.value;
-							obj.text = currentValue.name;
+							obj.text = name;
 							grdList.push(obj)
 						})
 						if(grds && grds.length>0 ){
@@ -491,8 +504,9 @@
 						let clsList=[];
 						clss.map(function(currentValue) {
 							let obj = {};
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部班级';
 							obj.value = currentValue.value;
-							obj.text = currentValue.name;
+							obj.text = name;
 							clsList.push(obj)
 						})
 						datasource.clsList=clsList;
@@ -514,7 +528,7 @@
 						let list = [].concat(data.data.qaArray);
 						let qjList = []
 						let obj = {};
-						obj.value = '-1';
+						obj.value = '';
 						obj.text = '全部考勤';
 						qjList.push(obj)
 						list.map(function(curValue){
@@ -541,7 +555,7 @@
 					comData = {
 						grd_code: datasource.grdValue.value,
 						cls_code: datasource.clsValue.value,
-						item_code: datasource.qjlxValue.value,
+						item_code: '',
 						query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
@@ -555,6 +569,7 @@
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							if (flagRef == 0) { //刷新
+							console.log(JSON.stringify(data.data.list));
 								datasource.pageArray = data.data.list
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
