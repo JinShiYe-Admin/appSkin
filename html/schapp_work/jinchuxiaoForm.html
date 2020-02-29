@@ -246,7 +246,7 @@
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
 											<div class="mui-table-cell-1 mui-col-xs-9">
-												<p class="mui-h6 mui-ellipsis">{{item.name}} 已识别：{{item.value[0]}} 人 ( 入：{{item.value[1]}} 人， 出：{{item.value[2]}} 人 )</p>
+												<p class="mui-h6 mui-ellipsis">{{item.name}} 已识别：{{item.value[0]}} 人 ( 入：{{item.value[2]}} 人， 出：{{item.value[1]}} 人 )</p>
 											</div>
 											<div class="mui-table-cell-1 mui-col-xs-3">
 												<p class="mui-h6 mui-ellipsis">未识别：{{item.value[3]}} 人</p>
@@ -499,19 +499,19 @@
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let list = [].concat(data.data.timeArray);
-						let kqList = []
-						let obj = {};
-						obj.value = '';
-						obj.text = '全部考勤';
-						obj.attendance_begintime=''
-						obj.attendance_endtime=''
-						kqList.push(obj)
-						list.map(function(curValue){
-							kqList.push(curValue)
-						})
+						// let kqList = []
+						// let obj = {};
+						// obj.value = '';
+						// obj.text = '全部考勤';
+						// obj.attendance_begintime=''
+						// obj.attendance_endtime=''
+						// kqList.push(obj)
+						// list.map(function(curValue){
+						// 	kqList.push(curValue)
+						// })
 						if(list.length>0){
-							datasource.kqList = kqList
-							datasource.kqlxValue = kqList[0]
+							datasource.kqList = list
+							datasource.kqlxValue = list[0]
 							//获取考勤列表数据
 							getPageDataArray();
 						}
