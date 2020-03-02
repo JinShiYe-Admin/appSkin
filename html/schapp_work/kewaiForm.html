@@ -211,25 +211,29 @@
 				color: #666;
 			}
 
+			.mui-dtpicker-header button:last-child {
+			    background-color: #00CFBD;
+				border: #00CFBD;
+			}
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">{{titleName}}</h1>
+			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div class="mui-scroll">
+			<div class="mui-scroll-wrapper" v-cloak style="margin-top: 44px;">
+				<div v-cloak class="mui-scroll">
 					<div class="mui-segmented-control" v-cloak>
 						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showDate()"><span>{{dateValue}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showKqlx()"><span>{{kqlxValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
-					<template v-if="pageArray.length>0">
-						<ul class="mui-table-view">
+					<template v-cloak v-if="pageArray.length>0">
+						<ul v-cloak class="mui-table-view">
 							<li v-for="(model,index) in pageArray" v-if="index==(pageArray.length-1)" class="mui-table-view-cell" @tap="clickLi(model)">
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">
@@ -247,7 +251,7 @@
 									</div>
 							</li>
 						</ul>
-						<ul class="mui-table-view" style="margin-top: 0.375rem;">
+						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
 							<li v-for="(model,index) in pageArray" v-if="index<(pageArray.length-1)" class="mui-table-view-cell" @tap="clickLi(model)">
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">

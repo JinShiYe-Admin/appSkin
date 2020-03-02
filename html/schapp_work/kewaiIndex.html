@@ -211,18 +211,22 @@
 				color: #666;
 			}
 
+			.mui-dtpicker-header button:last-child {
+			    background-color: #00CFBD;
+				border: #00CFBD;
+			}
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">{{titleName}}</h1>
+			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div class="mui-scroll">
+			<div class="mui-scroll-wrapper" v-cloak style="margin-top: 44px;">
+				<div v-cloak class="mui-scroll">
 					<div class="mui-segmented-control" v-cloak>
 						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
@@ -230,8 +234,8 @@
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showKqlx()"><span>{{kqlxValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
-					<template v-if="pageArray.length>0">
-						<ul class="mui-table-view">
+					<template v-cloak v-if="pageArray.length>0">
+						<ul v-cloak class="mui-table-view">
 							<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right">
 									<div class="mui-table">
@@ -292,7 +296,7 @@
 						let model={};
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/schapp_work/qingjiaDetail.html", model);
+						utils.mOpenWithData("../../html/schapp_work/kewaiAdd.html", model);
 					}
 				}
 			});
@@ -310,10 +314,10 @@
 				},
 				methods: {
 					clickLi: function(model) {
-						// console.log(JSON.stringify(model))
-						// let index_code = curPage.access.split('#')[1]
-						// model.index_code = index_code;
-						// utils.mOpenWithData("../../html/schapp_work/kewaiDetail.html", model);
+						console.log(JSON.stringify(model))
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						utils.mOpenWithData("../../html/schapp_work/kewaiDetail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -400,6 +404,11 @@
 					bounce: false,
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
+				});
+				
+				window.addEventListener('refreshList', function(data) {
+					events.showWaiting();
+					getPageDataArray();
 				});
 
 				//上拉下拉注册

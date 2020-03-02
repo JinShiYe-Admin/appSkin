@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-	<!-- 请假记录 详情页
+	<!-- 课外考勤详情页
 
  -->
 	<head>
@@ -285,37 +285,31 @@
 					<div class="" v-cloak style="margin-top: 0.625rem;">
 						<div class="mui-input-row">
 							<label class="aCss">年级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="请选择" v-model="formData.grd_name" readonly>
+							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.grd_name"
+							 readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss">班级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="请选择" v-model="formData.class_name" readonly>
+							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.class_name"
+							 readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >姓名</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="请选择" v-model="formData.stu_name" readonly>
+							<label class="aCss">姓名</label>
+							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.stu_name"
+							 readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >考勤项目</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="请选择" v-model="formData.item_txt" readonly>
+							<label class="aCss">考勤项目</label>
+							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.attendance_type_txt"
+							 readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >出入权限</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="请选择" v-model="formData.in_out_permission_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >开始时间</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.begintime" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >结束时间</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.endtime" readonly>
+							<label class="aCss">考勤日期</label>
+							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="请选择" v-model="formData.attendance_time" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
@@ -325,7 +319,8 @@
 						<div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss">说明</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="300"  rows="5" placeholder="暂无说明" v-model="formData.comment" readonly></textarea>
+							<textarea style="border: 1px solid rgba(0,0,0,.2);" maxlength="300" v-model="formData.comment" rows="5"
+							 placeholder="暂无说明" readonly></textarea>
 						</div>
 						<div class="line"></div>
 					</div>
@@ -371,18 +366,15 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					formData: {
-					}, //表单内容
+					formData: {}, //表单内容
 				},
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log(JSON.stringify(curPage));
-				tempVue.titleName = '请假记录详情';
-				
+				tempVue.titleName = '课外考勤详情';
 				datasource.formData=curPage;
-				
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -390,10 +382,7 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-
 			});
-			
-			 
 		</script>
 	</body>
 
