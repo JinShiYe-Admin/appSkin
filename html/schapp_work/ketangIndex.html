@@ -243,6 +243,7 @@
 									    <div class="mui-table-cell mui-col-xs-10">
 									        <h4 class="mui-ellipsis">{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</h4>
 									        <h5 style="margin-top: 0.75rem">星期{{model.day_week}}&ensp;{{model.class_node}}&ensp;{{model.sub_name}}</h5>
+											<h5>{{model.attendance_type_txt}}</h5>
 											<h5>记录人：{{model.create_user_name}}</h5>
 									        <p class="mui-h6 mui-ellipsis" v-if="model.comment">说明：{{model.comment}}</p>
 									    </div>
@@ -308,11 +309,11 @@
 					pageArray: [], //界面总数组
 					grdList:[{text:'全部年级',value:'-1'}],//年级数组
 					clsList:[{text:'全部班级',value:'-1'}],//班级数组
-					kmList:[{text:'全部科目',value:'-1'}],// 科目数组 
+					kmList:[{text:'全部科目',value:''}],// 科目数组 
 					grdValue:{text:'全部年级',value:'-1'},//年级选择值
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
 					dateValue:'',//日期选择值
-					kmValue:{text:'全部科目',value:'-1'},//科目选择值 
+					kmValue:{text:'全部科目',value:''},//科目选择值 
 				},
 				methods: {
 					clickLi: function(model) {

@@ -441,6 +441,7 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							datasource.formData.cls = items[0]
+							getStuList(datasource.formData.grd.value,items[0].value) 
 							userPicker.dispose();
 							userPicker = null;
 						});
@@ -685,9 +686,18 @@
 				var date = myDate.getDate();
 				var hours = myDate.getHours();
 				var minutes = myDate.getMinutes();
-				var now = year + '-' + conver(month) + "-" + conver(date)+ " " + hours + ":" + minutes
+				var now = year + '-' + conver(month) + "-" + conver(date)+ " " + conver(hours) + ":" + conver(minutes)
+				
+				var myDateEnd = new Date();
+				myDateEnd.setTime(myDateEnd.getTime()+24*60*60*1000);
+				var yearEnd  = myDateEnd.getFullYear();
+				var monthEnd  = myDateEnd.getMonth() + 1;
+				var dateEnd  = myDateEnd.getDate();
+				var hoursEnd  = myDateEnd.getHours();
+				var minutesEnd  = myDateEnd.getMinutes();
+				var nowEnd = yearEnd + '-' + conver(monthEnd) + "-" + conver(dateEnd)+ " " + conver(hoursEnd) + ":" + conver(minutesEnd)
 				datasource.formData.begintime=now;
-				datasource.formData.endtime=now;
+				datasource.formData.endtime=nowEnd;
 			}
 			function conver(s) {
 				return s < 10 ? '0' + s : s;
@@ -701,7 +711,7 @@
 				endTime = endTime.replace(/-/g, '');
 				endTime = endTime.replace(/ /g, '');
 				endTime = endTime.replace(/:/g, '');
-				if (parseFloat(beginTime) < parseFloat(endTime)) {
+				if (parseFloat(beginTime) <= parseFloat(endTime)) {
 					return 0;
 				}
 				return 1;

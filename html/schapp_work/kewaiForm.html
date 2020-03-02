@@ -245,7 +245,7 @@
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
 											<div class="mui-table-cell-1 mui-col-xs-4">
-												<p class="mui-h6 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
+												<p class="mui-h5 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
 											</div>
 										</template>
 									</div>
@@ -263,7 +263,7 @@
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
 											<div class="mui-table-cell-1 mui-col-xs-4">
-												<p class="mui-h6 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
+												<p class="mui-h5 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
 											</div>
 										</template>
 									</div>
@@ -325,11 +325,11 @@
 				},
 				methods: {
 					clickLi: function(model) {
-						console.log(JSON.stringify(model))
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						model.selectType = datasource.selectType;
-						utils.mOpenWithData("../../html/schapp_examination/details.html", model);
+						// console.log(JSON.stringify(model))
+						// let index_code = curPage.access.split('#')[1]
+						// model.index_code = index_code;
+						// model.selectType = datasource.selectType;
+						// utils.mOpenWithData("../../html/schapp_examination/details.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();

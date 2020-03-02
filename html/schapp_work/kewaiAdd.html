@@ -424,6 +424,7 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							datasource.formData.cls = items[0]
+							getStuList(datasource.formData.grd.value,items[0].value) 
 							userPicker.dispose();
 							userPicker = null;
 						});
