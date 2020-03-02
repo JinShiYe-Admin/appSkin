@@ -681,20 +681,6 @@
 				return s < 10 ? '0' + s : s;
 			}
  
-			 //判断当前选择时间是否小于是指定时间
-			 function compareTime(beginTime,endTime) {
-				beginTime = beginTime.replace(/-/g, '');
-				beginTime = beginTime.replace(/ /g, '');
-				beginTime = beginTime.replace(/:/g, '');
-				endTime = endTime.replace(/-/g, '');
-				endTime = endTime.replace(/ /g, '');
-				endTime = endTime.replace(/:/g, '');
-				if (parseFloat(beginTime) < parseFloat(endTime)) {
-					return 0;
-				}
-				return 1;
-			 }
-			 
 			 //关闭弹出框
 			 function close(){
 				 if(datasource.grdList.length>0 && datasource.clsList.length>0 && datasource.stuList.length>0 && datasource.kqlxList.length>0 ){

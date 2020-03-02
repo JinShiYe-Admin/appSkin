@@ -353,6 +353,10 @@
 					showBeginDate: function() {
 						var datePicker=new $M.DtPicker({value:datasource.begintime,type:"date"});
 						datePicker.show(function(rs) {
+							if (compareTime(rs.text,datasource.endtime) == 1) {
+								mui.toast("开始时间不能晚于结束时间", "cancel");
+								return;
+							}
 							datasource.begintime=rs.text
 							events.showWaiting();
 							pageIndex = 1;
@@ -367,7 +371,7 @@
 						var datePicker=new $M.DtPicker({value:datasource.endtime,type:"date"});
 						datePicker.show(function(rs) {
 							if (compareTime(datasource.begintime,rs.text) == 1) {
-								mui.toast("结束时间不能小于当前时间", "cancel");
+								mui.toast("结束时间不能早于当前时间", "cancel");
 								return;
 							}
 							datasource.endtime=rs.text
@@ -571,7 +575,7 @@
 				endTime = endTime.replace(/-/g, '');
 				endTime = endTime.replace(/ /g, '');
 				endTime = endTime.replace(/:/g, '');
-				if (parseFloat(beginTime) < parseFloat(endTime)) {
+				if (parseFloat(beginTime) <= parseFloat(endTime)) {
 					return 0;
 				}
 				return 1;
