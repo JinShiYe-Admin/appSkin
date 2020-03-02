@@ -427,7 +427,11 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							datasource.formData.grd = items[0]
-							getClsList( items[0].value) 
+							datasource.clsList=[]
+							datasource.stuList=[]
+							datasource.formData.cls={text:'',value:''}
+							datasource.formData.stu={text:'',value:''}
+							getClsList(items[0].value) 
 							userPicker.dispose();
 							userPicker = null;
 						});
@@ -441,6 +445,8 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							datasource.formData.cls = items[0]
+							datasource.stuList=[]
+							datasource.formData.stu={text:'',value:''}
 							getStuList(datasource.formData.grd.value,items[0].value) 
 							userPicker.dispose();
 							userPicker = null;
