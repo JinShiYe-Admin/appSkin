@@ -234,17 +234,17 @@
 					<div class="line"></div>
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
-							<li v-for="(model,index) in pageArray" v-if="index==(pageArray.length-1)" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li  class="mui-table-view-cell" >
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">
 											<div>
-												<div class="biaoti">{{model.row_name}}：{{model.people_num}} 人</div>
+												<div class="biaoti">{{listTotal.row_name}}：{{listTotal.people_num}} 人</div>
 											</div>
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
-										<template v-for="item in model.kqxxList">
-											<div class="mui-table-cell-1 mui-col-xs-4">
+										<template v-for="item in listTotal.kqxxList">
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
 												<p class="mui-h5 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
 											</div>
 										</template>
@@ -252,7 +252,7 @@
 							</li>
 						</ul>
 						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
-							<li v-for="(model,index) in pageArray" v-if="index<(pageArray.length-1)" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li v-for="(model,index) in pageArray" class="mui-table-view-cell" >
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">
 											<div>
@@ -262,7 +262,7 @@
 									</div>
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
-											<div class="mui-table-cell-1 mui-col-xs-4">
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
 												<p class="mui-h5 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
 											</div>
 										</template>
@@ -322,6 +322,7 @@
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
 					dateValue:'',//日期选择值
 					kqlxValue:{text:'全部考勤',value:''},//考勤选择值 
+					listTotal:{},//统计数据
 				},
 				methods: {
 					clickLi: function(model) {
@@ -536,6 +537,9 @@
 								addKqName(data.data.qaArray,data.data.staticArray,function(list){
 									datasource.pageArray=[].concat(list);
 								})
+								addKqName(data.data.qaArray,[data.data.total],function(list){
+									datasource.listTotal=list[0] ;
+								})
 								if (data.data.staticArray.length == 0) {
 									mui.toast('暂无数据');
 								}
@@ -543,6 +547,9 @@
 								//合并数组
 								addKqName(data.data.qaArray,data.data.staticArray,function(list){
 									datasource.pageArray = datasource.pageArray.concat(list);
+								})
+								addKqName(data.data.qaArray,[data.data.total],function(list){
+									datasource.listTotal=list[0] ;
 								})
 								if (data.data.staticArray.length == 0) {
 									mui.toast('已加载全部');
