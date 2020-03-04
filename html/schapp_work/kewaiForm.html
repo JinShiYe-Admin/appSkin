@@ -538,7 +538,9 @@
 									datasource.pageArray=[].concat(list);
 								})
 								addKqName(data.data.qaArray,[data.data.total],function(list){
-									datasource.listTotal=list[0] ;
+									if(list.length>0){
+										datasource.listTotal=list[0];
+									}
 								})
 								if (data.data.staticArray.length == 0) {
 									mui.toast('暂无数据');
@@ -549,7 +551,9 @@
 									datasource.pageArray = datasource.pageArray.concat(list);
 								})
 								addKqName(data.data.qaArray,[data.data.total],function(list){
-									datasource.listTotal=list[0] ;
+									if(list.length>0){
+										datasource.listTotal=list[0];
+									}
 								})
 								if (data.data.staticArray.length == 0) {
 									mui.toast('已加载全部');
