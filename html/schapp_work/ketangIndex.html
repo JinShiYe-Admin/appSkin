@@ -410,6 +410,9 @@
 				
 				window.addEventListener('refreshList', function(data) {
 					events.showWaiting();
+					pageIndex = 1;
+					flagRef = 0;
+					datasource.pageArray = [];
 					getPageDataArray();
 				});
 

@@ -381,9 +381,9 @@
 						}else if(datasource.formData.cls.value==''){
 							mui.toast('请选择班级')
 						}else if(datasource.formData.stu.value==''){
-							mui.toast('请选择学生')
+							mui.toast('请选择姓名')
 						}else if(datasource.formData.kqlx.value==''){
-							mui.toast('请选择考勤类型')
+							mui.toast('请选择考勤项目')
 						}else if(datasource.formData.crqx.value==''){
 							mui.toast('请选择出入权限')
 						}else if(datasource.formData.begintime==''){
@@ -677,10 +677,10 @@
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						 mui.toast(data.msg);
-						 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 						 setTimeout(function(){
+							  mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 							 mui.back()
-						 },1000)
+						 },1500)
 					} else {
 						mui.toast(data.msg);
 					}

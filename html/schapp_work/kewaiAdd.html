@@ -372,9 +372,9 @@
 						}else if(datasource.formData.cls.value==''){
 							mui.toast('请选择班级')
 						}else if(datasource.formData.stu.value==''){
-							mui.toast('请选择学生')
+							mui.toast('请选择姓名')
 						}else if(datasource.formData.kqlx.value==''){
-							mui.toast('请选择考勤类型')
+							mui.toast('请选择考勤项目')
 						}else if(datasource.formData.time==''){
 							mui.toast('请选择考勤日期')
 						}else{
@@ -480,7 +480,12 @@
 						});
 					},
 					showDate: function() {
-						var datePicker=new $M.DtPicker({value:datasource.formData.time,type:"date"});
+						let myDate=new Date()
+						var year = myDate.getFullYear();
+						var month = myDate.getMonth() + 1;
+						var date = myDate.getDate();
+						let dtObj={value:datasource.formData.time,endYear:2020,endMonth:3,endDay:4,type:"date"}
+						var datePicker=new $M.DtPicker(dtObj);
 						datePicker.show(function(rs) {
 							datasource.formData.time=rs.text
 							datePicker.dispose();
@@ -660,10 +665,10 @@
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						 mui.toast(data.msg);
-						 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 						 setTimeout(function(){
+							  mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 							 mui.back()
-						 },1000)
+						 },1500)
 					} else {
 						mui.toast(data.msg);
 					}
