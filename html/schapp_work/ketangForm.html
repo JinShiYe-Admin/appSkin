@@ -236,19 +236,19 @@
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak class="mui-table-view-cell">
 									<div class="mui-row">
-										<div class="mui-table-cell mui-col-xs-5">
+										<div class="mui-table-cell mui-col-xs-4">
 											<div>
-												<div class="biaoti">{{listTotal.row_name}}：{{listTotal.people_num}} 人</div>
+												<div class="biaoti">{{listTotal.row_name}}:{{listTotal.people_num}} 人</div>
 											</div>
 										</div>
-										<div class="mui-table-cell mui-col-xs-7 mui-text-right">
+										<div class="mui-table-cell mui-col-xs-8 mui-text-right">
 										    <span class="mui-h5">{{listTotal.section}}（{{listTotal.time_range}}）</span>
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in listTotal.kqxxList">
 											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
-												<p class="mui-h5 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
+												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 人</p>
 											</div>
 										</template>
 									</div>
@@ -266,7 +266,7 @@
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
 											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
-												<p class="mui-h5 mui-ellipsis">{{item.name}}：{{item.value}} 人</p>
+												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 人</p>
 											</div>
 										</template>
 									</div>

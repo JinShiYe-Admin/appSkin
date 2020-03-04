@@ -243,8 +243,9 @@
 									    <div class="mui-table-cell mui-col-xs-10">
 									        <div class="mui-ellipsis">{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
 									        <h5 style="margin-top: 0.75rem">星期{{model.day_week}}&ensp;{{model.class_node}}&ensp;{{model.sub_name}}</h5>
-											<h5>记录人：{{model.create_user_name}}</h5>
-									        <p class="mui-h6 mui-ellipsis" style="word-break: break-all;word-wrap:break-word;white-space:initial" v-if="model.comment">说明：{{model.comment}}</p>
+											<h5 style="margin-top: 0.55rem">考勤项目:{{model.item_txt}}</h5>
+											<h5 style="margin-top: 0.55rem">记录人:{{model.create_user_name}}</h5>
+									        <p class="mui-h6 mui-ellipsis" style="word-break: break-all;word-wrap:break-word;white-space:initial" v-if="model.comment">说明:{{model.comment}}</p>
 									    </div>
 									</div>
 								</a>

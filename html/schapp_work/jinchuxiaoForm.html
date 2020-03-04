@@ -237,12 +237,12 @@
 						<ul v-cloak class="mui-table-view">
 							<li class="mui-table-view-cell" >
 									<div class="mui-row">
-										<div class="mui-table-cell mui-col-xs-5">
+										<div class="mui-table-cell mui-col-xs-4">
 											<div>
-												<div class="biaoti">{{listTotal.row_name}}：{{listTotal.people_num}} 人</div>
+												<div class="biaoti">{{listTotal.row_name}}:{{listTotal.people_num}} 人</div>
 											</div>
 										</div>
-										<div class="mui-table-cell mui-col-xs-7 mui-text-right">
+										<div class="mui-table-cell mui-col-xs-8 mui-text-right">
 											<template v-for="item in listTotal.kqxxList">
 												  <div class="mui-h5">{{item.name}}（{{item.attendance_begintime}} - {{item.attendance_endtime}}）</div>
 											</template>
@@ -250,11 +250,11 @@
 									</div>
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in listTotal.kqxxList">
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-9">
-												<p class="mui-h5 mui-ellipsis">已识别：{{item.value[0]}} 人 ( 入：{{item.value[2]}} 人， 出：{{item.value[1]}} 人 )</p>
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-8">
+												<p class="mui-h5 mui-ellipsis">已识别:{{item.value[0]}} 人 ( 入:{{item.value[2]}} 人， 出:{{item.value[1]}} 人 )</p>
 											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">未识别：{{item.value[3]}} 人</p>
+											<div style="margin-top: 0.3125rem;text-align: right;" class="mui-table-cell-1 mui-col-xs-4">
+												<p class="mui-h5 mui-ellipsis" >未识别:{{item.value[3]}} 人</p>
 											</div>
 										</template>
 									</div>
@@ -271,11 +271,11 @@
 									</div>
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-9">
-												<p class="mui-h5 mui-ellipsis">已识别：{{item.value[0]}} 人 ( 入：{{item.value[1]}} 人， 出：{{item.value[2]}} 人 )</p>
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-8">
+												<p class="mui-h5 mui-ellipsis">已识别:{{item.value[0]}} 人 ( 入:{{item.value[1]}} 人， 出:{{item.value[2]}} 人 )</p>
 											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">未识别：{{item.value[3]}} 人</p>
+											<div style="margin-top: 0.3125rem;text-align: right;" class="mui-table-cell-1 mui-col-xs-4">
+												<p class="mui-h5 mui-ellipsis">未识别:{{item.value[3]}} 人</p>
 											</div>
 										</template>
 									</div>
