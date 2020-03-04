@@ -243,7 +243,7 @@
 									        <div class="mui-ellipsis">{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
 											 <h5 style="margin-top: 0.75rem">考勤项目：{{model.item_txt}}</h5>
 									        <h5 style="margin-top: 0.75rem">记录人：{{model.create_user_name}}</h5>
-									        <p class="mui-h6 mui-ellipsis" v-if="model.comment">说明：{{model.comment}}</p>
+									        <p class="mui-h6 mui-ellipsis" style="word-break: break-all;word-wrap:break-word;white-space:initial" v-if="model.comment">说明：{{model.comment}}</p>
 									    </div>
 									</div>
 								</a>
