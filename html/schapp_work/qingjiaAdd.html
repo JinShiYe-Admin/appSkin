@@ -560,14 +560,17 @@
 							obj.text = currentValue.name;
 							grdList.push(obj)
 						})
-						if(grds && grds.length>0 ){
+						if(grdList.length>0 ){
 							datasource.grdList=grdList;
 							let grd_id=grdList[0].value; 
 							datasource.formData.grd=grdList[0];
 							//获取数据范围授权：班级
-							getClsList(grd_id) 
+							getClsList(grd_id)
+							close()
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
 						}
-						close()
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -593,14 +596,17 @@
 							obj.text = currentValue.name;
 							clssList.push(obj)
 						})
-						if(clss && clss.length>0 ){
+						if(clssList.length>0 ){
 							datasource.clsList=clssList;
 							let cls_id=clssList[0].value;
 							datasource.formData.cls=clssList[0];
 							//获取数据范围授权：学生
 							getStuList(grd_id,cls_id) 
+							close()
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取班级');
 						}
-						close()
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -627,10 +633,13 @@
 							obj.text = currentValue.name;
 							stuList.push(obj)
 						})
-						if(stu && stu.length>0 ){
+						if(stuList.length>0 ){
 							datasource.stuList=stuList;
+							close()
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取学生');
 						}
-						close()
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -649,9 +658,18 @@
 					if (data.code == 0) {
 						let kqlxList = [].concat(data.data.qaArray);
 						let crqxList=[].concat(data.data.inOutPermissionArray)
-						datasource.kqlxList = kqlxList
-						datasource.crqxList = crqxList
-						close()
+						if(kqlxList.length>0){
+							datasource.kqlxList = kqlxList
+							close()
+						}
+						if(crqxList.length>0){
+							datasource.crqxList = crqxList
+							close()
+						}
+						if(kqlxList.length==0 && crqxList.length==0){
+							events.closeWaiting();
+							mui.toast('无法获取考勤项目');
+						}
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);

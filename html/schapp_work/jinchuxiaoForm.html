@@ -244,7 +244,7 @@
 										</div>
 										<div class="mui-table-cell mui-col-xs-8 mui-text-right">
 											<template v-for="item in listTotal.kqxxList">
-												  <div class="mui-h5">{{item.name}}（{{item.attendance_begintime}} - {{item.attendance_endtime}}）</div>
+												  <div class="mui-h5">{{item.name}}({{item.attendance_begintime}} - {{item.attendance_endtime}})</div>
 											</template>
 										</div>
 									</div>
@@ -329,11 +329,11 @@
 				data: {
 					pageArray: [], //界面总数组
 					grdList:[{text:'全部年级',value:'-1'}],//年级数组
-					kqList:[{text:'全部考勤',value:'-1'}],// 考勤类型数组 
+					kqList:[],// 考勤类型数组 
 					grdValue:{text:'全部年级',value:'-1'},//年级选择值
 					clsValue:{text:'全部班级',value:'-1'},//班级选择值
 					dateValue:'',//日期选择值
-					kqlxValue:{text:'全部考勤',value:''},//考勤类型选择值 
+					kqlxValue:{text:'',value:''},//考勤类型选择值 
 					listTotal:{},//统计数据
 				},
 				methods: {
@@ -459,8 +459,6 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取考勤类型类型常量
-				getKqlxList();
 				// 获取当前日期
 				getCurrentDate();
 			});
@@ -485,9 +483,14 @@
 							obj.text = name;
 							grdList.push(obj)
 						})
-						if(grds && grds.length>0 ){
+						if(grdList.length>0 ){
 							datasource.grdList=grdList;
-							let grd_id=grds[0].value;
+							datasource.grdValue=grdList[0];
+							//获取考勤类型类型常量
+							getKqlxList();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
 						}
 					} else {
 						events.closeWaiting();
@@ -520,6 +523,9 @@
 							datasource.kqlxValue = list[0]
 							//获取考勤列表数据
 							getPageDataArray();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取考勤项目');
 						}
 					} else {
 						events.closeWaiting();
@@ -531,6 +537,11 @@
 			//获取考勤列表数据 
 			function getPageDataArray() {
 				// console.log(datasource.xnValue.length)
+				if(datasource.kqList.length==0){
+					events.closeWaiting();
+					mui.toast('无法获取考勤项目')
+					return 0;
+				}
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据
 					comData = {
@@ -564,7 +575,7 @@
 								addKqName([data.data.total],function(list){
 									if(list.length>0){
 										datasource.listTotal=list[0];
-										console.log("datasource.listTotalAa啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊: " + JSON.stringify(list[0]));
+										console.log("datasource.listTotal: " + JSON.stringify(list[0]));
 									}
 								})
 								if (data.data.staticArray.length == 0) {

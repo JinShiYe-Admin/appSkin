@@ -307,13 +307,13 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					grdList:[{text:'全部年级',value:'-1'}],//年级数组
-					clsList:[{text:'全部班级',value:'-1'}],//班级数组
-					kmList:[{text:'全部科目',value:'-1'}],// 科目数组 
-					grdValue:{text:'全部年级',value:'-1'},//年级选择值
-					clsValue:{text:'全部班级',value:'-1'},//班级选择值
+					grdList:[],//年级数组
+					clsList:[],//班级数组
+					kmList:[],// 科目数组 
+					grdValue:{},//年级选择值
+					clsValue:{},//班级选择值
 					dateValue:'',//日期选择值
-					kmValue:{text:'全部科目',value:'-1'},//科目选择值 
+					kmValue:{},//科目选择值 
 				},
 				methods: {
 					clickLi: function(model) {
@@ -472,14 +472,8 @@
 				});
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取数据范围授权：班级
-				getClsList() 
-				//获取科目常量
-				getKmList();
 				// 获取当前日期
 				getCurrentDate();
-				// 获取课堂考勤列表
-				getPageDataArray();
 			});
 
 			// 获取数据范围授权：年级
@@ -502,10 +496,15 @@
 							obj.text = name;
 							grdList.push(obj)
 						})
-						if(grds && grds.length>0 ){
+						if(grdList.length>0 ){
 							datasource.grdList=grdList;
+							datasource.grdValue=grdList[0];
 							let grd_code=grds[0].value;
-							getClsList(grd_code);
+							//获取数据范围授权：班级
+							getClsList(grd_code) 
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
 						}
 					} else {
 						events.closeWaiting();
@@ -534,7 +533,16 @@
 							obj.text = name;
 							clsList.push(obj)
 						})
-						datasource.clsList=clsList;
+						
+						if(clsList.length>0 ){
+							datasource.clsList=clsList;
+							datasource.clsValue=clsList[0];
+							//获取科目常量
+							getKmList(datasource.grdValue.value,clsList[0].value);
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取班级');
+						}
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -564,7 +572,15 @@
 						 	obj.text = name;
 						 	subList.push(obj)
 						 })
-						 datasource.kmList=subList;
+						 if(subList.length>0){
+							datasource.kmList=subList;
+							datasource.kmValue=subList[0];
+							// 获取课堂考勤列表
+							getPageDataArray();
+						 }else{
+							 events.closeWaiting();
+							 mui.toast('无法获取科目');
+						 }
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);

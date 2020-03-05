@@ -305,13 +305,13 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					grdList:[{text:'全部年级',value:'-1'}],//年级数组
-					clsList:[{text:'全部班级',value:'-1'}],//班级数组
-					kqList:[{text:'全部考勤',value:''}],// 课外考勤类型数组 
-					grdValue:{text:'全部年级',value:'-1'},//年级选择值
-					clsValue:{text:'全部班级',value:'-1'},//班级选择值
+					grdList:[],//年级数组
+					clsList:[],//班级数组
+					kqList:[],// 课外考勤类型数组 
+					grdValue:{},//年级选择值
+					clsValue:{},//班级选择值
 					dateValue:'',//日期选择值
-					kqlxValue:{text:'全部考勤',value:''},//课外考勤类型选择值 
+					kqlxValue:{},//课外考勤类型选择值 
 				},
 				methods: {
 					clickLi: function(model) {
@@ -470,10 +470,6 @@
 				});
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取数据范围授权：班级
-				getClsList() 
-				//获取课外考勤常量
-				getKqlxList();
 				// 获取当前日期
 				getCurrentDate();
 			});
@@ -498,8 +494,16 @@
 							obj.text = name;
 							grdList.push(obj)
 						})
-						datasource.grdList=grdList;
-						let grd_id=grds[0].value;
+						if(grdList.length>0 ){
+							datasource.grdList=grdList;
+							datasource.grdValue=grdList[0];
+							let grd_code=grds[0].value;
+							//获取数据范围授权：班级
+							getClsList(grd_code) 
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
+						}
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -527,7 +531,15 @@
 							obj.text = name;
 							clsList.push(obj)
 						})
-						datasource.clsList=clsList;
+						if(clsList.length>0 ){
+							datasource.clsList=clsList;
+							datasource.clsValue=clsList[0];
+							//获取课外考勤类型常量
+							getKqlxList(datasource.grdValue.value,clsList[0].value);
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取班级');
+						}
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -552,10 +564,13 @@
 						list.map(function(curValue){
 							kqList.push(curValue)
 						})
-						if(list.length>0){
+						if(kqList.length>0){
 							datasource.kqList = kqList
 							datasource.kqlxValue = kqList[0]
 							getPageDataArray();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取考勤项目');
 						}
 					} else {
 						events.closeWaiting();
@@ -566,6 +581,11 @@
 
 			//获取课外考勤列表数据  
 			function getPageDataArray() {
+				if(datasource.kqList.length==0){
+					events.closeWaiting();
+					mui.toast('无法获取考勤项目')
+					return 0;
+				}
 				// console.log(datasource.xnValue.length)
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据
@@ -577,7 +597,7 @@
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
 						index_code: curPage.access.split('#')[1],
-					}
+					} 
 					// 1.1.列表页
 					postDataEncry(window.storageKeyName.INTERFACE_WORK + 'ExtraAttendance/list', {}, comData, 2, function(data) {
 						events.closeWaiting();

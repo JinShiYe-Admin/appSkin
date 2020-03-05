@@ -317,8 +317,8 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					grdList:[{text:'全部年级',value:'-1'}],//年级数组
-					grdValue:{text:'全部年级',value:'-1'},//年级选择值
+					grdList:[],//年级数组
+					grdValue:{},//年级选择值
 					begintime:'',//日期选择值
 					endtime:'',//日期选择值
 					listTotal:{},//统计数据
@@ -448,8 +448,6 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
-				// 获取当前日期
-				getCurrentDate();
 			});
 
 			// 获取数据范围授权：年级
@@ -471,8 +469,15 @@
 							obj.text = currentValue.name;
 							grdList.push(obj)
 						})
-						datasource.grdList=grdList;
-						let grd_id=grds[0].value;
+						if(grdList.length>0 ){
+							datasource.grdList=grdList;
+							datasource.grdValue=grdList[0];
+							// 获取当前日期
+							getCurrentDate();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
+						}
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);

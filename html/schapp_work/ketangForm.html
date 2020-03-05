@@ -242,7 +242,7 @@
 											</div>
 										</div>
 										<div class="mui-table-cell mui-col-xs-8 mui-text-right">
-										    <span class="mui-h5">{{listTotal.section}}（{{listTotal.time_range}}）</span>
+										    <span class="mui-h5">{{listTotal.section}}({{listTotal.time_range}})</span>
 										</div>
 									</div>
 									<div class="mui-row" style="text-align: left;">
@@ -450,8 +450,6 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取节次常量
-				getJcList();
 				// 获取当前日期
 				getCurrentDate();
 			});
@@ -476,8 +474,15 @@
 							obj.text = name;
 							grdList.push(obj)
 						})
-						datasource.grdList=grdList;
-						let grd_id=grds[0].value;
+						if(grdList.length>0 ){
+							datasource.grdList=grdList;
+							datasource.grdValue=grdList[0];
+							//获取节次常量
+							getJcList();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
+						}
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -507,6 +512,9 @@
 							datasource.jcValue = list[0]
 							//获取考勤列表数据
 							getPageDataArray();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取考勤节次');
 						}
 					} else {
 						events.closeWaiting();
@@ -517,6 +525,11 @@
 
 			//获取课堂考勤报表数据  
 			function getPageDataArray() {
+				if(datasource.jcList.length==0){
+					events.closeWaiting();
+					mui.toast('无法获取考勤节次')
+					return 0;
+				}
 				// console.log(datasource.xnValue.length)
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据

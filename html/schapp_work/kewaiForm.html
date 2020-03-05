@@ -316,12 +316,11 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					grdList:[{text:'全部年级',value:'-1'}],//年级数组
-					kqList:[{text:'全部考勤',value:''}],// 考勤数组 
-					grdValue:{text:'全部年级',value:'-1'},//年级选择值
-					clsValue:{text:'全部班级',value:'-1'},//班级选择值
+					grdList:[],//年级数组
+					kqList:[],// 考勤数组 
+					grdValue:{},//年级选择值
 					dateValue:'',//日期选择值
-					kqlxValue:{text:'全部考勤',value:''},//考勤选择值 
+					kqlxValue:{},//考勤选择值 
 					listTotal:{},//统计数据
 				},
 				methods: {
@@ -447,8 +446,6 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取考勤常量
-				getKqList();
 				// 获取当前日期
 				getCurrentDate();
 			});
@@ -473,8 +470,15 @@
 							obj.text = name;
 							grdList.push(obj)
 						})
-						datasource.grdList=grdList;
-						let grd_id=grds[0].value;
+						if(grdList.length>0 ){
+							datasource.grdList=grdList;
+							datasource.grdValue=grdList[0];
+							//获取考勤常量
+							getKqList();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取年级');
+						}
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -499,12 +503,16 @@
 						list.map(function(curValue){
 							kqList.push(curValue)
 						})
-						if(list.length>0){
+						if(kqList.length>0){
 							datasource.kqList = kqList
 							datasource.kqlxValue = kqList[0]
 							//获取考勤列表数据
 							getPageDataArray();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取考勤项目');
 						}
+						
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -514,12 +522,17 @@
 
 			//获取课外考勤报表数据  
 			function getPageDataArray() {
+				if(datasource.kqList.length==0){
+					events.closeWaiting();
+					mui.toast('无法获取考勤项目')
+					return 0;
+				}
 				// console.log(datasource.xnValue.length)
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据
 					comData = {
 						grd_code: datasource.grdValue.value,
-						cls_code: datasource.clsValue.value,
+						cls_code: '-1',
 						item_code: datasource.kqlxValue.value,
 						query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
 						page_number: pageIndex, //当前页数
