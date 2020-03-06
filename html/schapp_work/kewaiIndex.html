@@ -328,15 +328,19 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.grdValue = items[0]
-							//获取课外考勤列表
-							events.showWaiting();
-							pageIndex = 1;
-							flagRef = 0;
-							datasource.pageArray = [];
-							getClsList( items[0].value,false) 
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择年级')
+							}else{
+								datasource.grdValue = items[0]
+								//获取课外考勤列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getClsList( items[0].value,false) 
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showCls: function() {
@@ -347,15 +351,19 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.clsValue = items[0]
-							//获取课外考勤列表
-							events.showWaiting();
-							pageIndex = 1;
-							flagRef = 0;
-							datasource.pageArray = [];
-							getPageDataArray();
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择班级')
+							}else{
+								datasource.clsValue = items[0]
+								//获取课外考勤列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getPageDataArray();
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showDate: function() {
@@ -384,15 +392,19 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.kqlxValue = items[0]
-							//获取课外考勤列表
-							events.showWaiting();
-							pageIndex = 1;
-							flagRef = 0;
-							datasource.pageArray = [];
-							getPageDataArray();
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择考勤项目')
+							}else{
+								datasource.kqlxValue = items[0]
+								//获取课外考勤列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getPageDataArray();
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 				}
