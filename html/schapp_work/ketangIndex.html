@@ -331,13 +331,11 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							datasource.grdValue = items[0]
-							getClsList(items[0].value)
-							getKmList(items[0].value)
 							events.showWaiting();
 							pageIndex = 1;
 							flagRef = 0;
 							datasource.pageArray = [];
-							getPageDataArray();
+							getClsList(items[0].value)
 							userPicker.dispose();
 							userPicker = null;
 						});
@@ -351,19 +349,23 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							datasource.clsValue = items[0]
-							getKmList(datasource.grdValue.value,items[0].value)
 							//获取课堂考勤列表
 							events.showWaiting();
 							pageIndex = 1;
 							flagRef = 0;
 							datasource.pageArray = [];
-							getPageDataArray();
+							getKmList(datasource.grdValue.value,items[0].value)
 							userPicker.dispose();
 							userPicker = null;
 						});
 					},
 					showDate: function() {
-						var datePicker=new $M.DtPicker({value:datasource.dateValue,type:"date"});
+						let myDate=new Date()
+						var year = myDate.getFullYear();
+						var month = myDate.getMonth() + 1;
+						var date = myDate.getDate();
+						let dtObj={value:datasource.dateValue,endYear:year,endMonth:month,endDay:date,type:"date"}
+						var datePicker=new $M.DtPicker(dtObj);
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
 							events.showWaiting();
@@ -504,7 +506,7 @@
 							getClsList(grd_code) 
 						}else{
 							events.closeWaiting();
-							mui.toast('无法获取年级');
+							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
 						events.closeWaiting();
@@ -541,7 +543,7 @@
 							getKmList(datasource.grdValue.value,clsList[0].value);
 						}else{
 							events.closeWaiting();
-							mui.toast('无法获取班级');
+							mui.toast('无数据授权 无法获取班级');
 						}
 					}else{
 						events.closeWaiting();
@@ -579,7 +581,7 @@
 							getPageDataArray();
 						 }else{
 							 events.closeWaiting();
-							 mui.toast('无法获取科目');
+							 mui.toast('无数据授权 无法获取科目');
 						 }
 					} else {
 						events.closeWaiting();

@@ -351,7 +351,12 @@
 						});
 					},
 					showDate: function() {
-						var datePicker=new $M.DtPicker({value:datasource.dateValue,type:"date"});
+						let myDate=new Date()
+						var year = myDate.getFullYear();
+						var month = myDate.getMonth() + 1;
+						var date = myDate.getDate();
+						let dtObj={value:datasource.dateValue,endYear:year,endMonth:month,endDay:date,type:"date"}
+						var datePicker=new $M.DtPicker(dtObj);
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
 							events.showWaiting();
@@ -477,7 +482,7 @@
 							getKqList();
 						}else{
 							events.closeWaiting();
-							mui.toast('无法获取年级');
+							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
 						events.closeWaiting();

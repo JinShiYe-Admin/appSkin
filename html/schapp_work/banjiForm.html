@@ -246,7 +246,7 @@
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in listTotal.kqxxList">
 											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
-												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 人</p>
+												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 次</p>
 											</div>
 										</template>
 									</div>
@@ -264,7 +264,7 @@
 									<div class="mui-row" style="text-align: left;">
 										<template v-for="item in model.kqxxList">
 											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
-												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 人</p>
+												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 次</p>
 											</div>
 										</template>
 									</div>
@@ -368,7 +368,12 @@
 						});
 					},
 					showEndDate: function() {
-						var datePicker=new $M.DtPicker({value:datasource.endtime,type:"date"});
+						let myDate=new Date()
+						var year = myDate.getFullYear();
+						var month = myDate.getMonth() + 1;
+						var date = myDate.getDate();
+						let dtObj={value:datasource.endtime,endYear:year,endMonth:month,endDay:date,type:"date"}
+						var datePicker=new $M.DtPicker(dtObj);
 						datePicker.show(function(rs) {
 							if (compareTime(datasource.begintime,rs.text) == 1) {
 								mui.toast("结束时间不能早于当前时间", "cancel");
@@ -476,7 +481,7 @@
 							getCurrentDate();
 						}else{
 							events.closeWaiting();
-							mui.toast('无法获取年级');
+							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
 						events.closeWaiting();
