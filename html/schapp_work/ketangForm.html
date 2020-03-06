@@ -319,10 +319,10 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					grdList:[{text:'全部年级',value:'-1'}],//年级数组
+					grdList:[],//年级数组
 					jcList:[],// 节次数组 
-					grdValue:{text:'全部年级',value:'-1'},//年级选择值
-					clsValue:{text:'全部班级',value:'-1'},//班级选择值
+					grdValue:{},//年级选择值
+					clsValue:{},//班级选择值
 					dateValue:'',//日期选择值
 					jcValue:{},//节次选择值 
 					listTotal:{},//统计数据
@@ -540,7 +540,7 @@
 					//需要加密的数据
 					comData = {
 						grd_code: datasource.grdValue.value,
-						cls_code: datasource.clsValue.value,
+						cls_code: '-1',
 						classtime_schedule_id: datasource.jcValue.value,
 						query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
 						page_number: pageIndex, //当前页数
