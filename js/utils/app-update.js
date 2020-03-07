@@ -4,7 +4,7 @@
 var appUpdate = (function(mod) {
 	
 	mod.androidUpdateUrl=window.storageKeyName.ANDROIDUPDATEURL;
-	mod.iosUpdateUrl='http://itunes.apple.com/lookup?id=1281905607';
+	mod.iosUpdateUrl=window.storageKeyName.IOSUPDATEURL;
 	
 	mod.fileSize;
 	mod.updateFlag = 0; //1确认升级2取消升级
