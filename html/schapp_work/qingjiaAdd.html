@@ -426,14 +426,18 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.grd = items[0]
-							datasource.clsList=[]
-							datasource.stuList=[]
-							datasource.formData.cls={text:'',value:''}
-							datasource.formData.stu={text:'',value:''}
-							getClsList(items[0].value) 
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择年级')
+							}else{
+								datasource.formData.grd = items[0]
+								datasource.clsList=[]
+								datasource.stuList=[]
+								datasource.formData.cls={text:'',value:''}
+								datasource.formData.stu={text:'',value:''}
+								getClsList(items[0].value) 
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showCls: function() {
@@ -444,12 +448,16 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.cls = items[0]
-							datasource.stuList=[]
-							datasource.formData.stu={text:'',value:''}
-							getStuList(datasource.formData.grd.value,items[0].value) 
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择班级')
+							}else{
+								datasource.formData.cls = items[0]
+								datasource.stuList=[]
+								datasource.formData.stu={text:'',value:''}
+								getStuList(datasource.formData.grd.value,items[0].value) 
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showStu: function() {
@@ -460,9 +468,13 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.stu = items[0]
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择学生')
+							}else{
+								datasource.formData.stu = items[0]
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showKqlx: function() {
@@ -473,9 +485,13 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.kqlx = items[0]
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择考勤项目')
+							}else{
+								datasource.formData.kqlx = items[0]
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showCrqx: function() {
@@ -486,9 +502,13 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.crqx = items[0]
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择出入权限')
+							}else{
+								datasource.formData.crqx = items[0]
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showBeginDate: function() {
@@ -535,8 +555,6 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取请假类型,出入权限常量
-				getQjlxList();
 				// 获取当前日期
 				getCurrentDate();
 
@@ -566,7 +584,6 @@
 							datasource.formData.grd=grdList[0];
 							//获取数据范围授权：班级
 							getClsList(grd_id)
-							close()
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
@@ -602,7 +619,6 @@
 							datasource.formData.cls=clssList[0];
 							//获取数据范围授权：学生
 							getStuList(grd_id,cls_id) 
-							close()
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
@@ -635,7 +651,8 @@
 						})
 						if(stuList.length>0 ){
 							datasource.stuList=stuList;
-							close()
+							//获取请假类型,出入权限常量
+							getQjlxList();
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取学生');
@@ -658,17 +675,12 @@
 					if (data.code == 0) {
 						let kqlxList = [].concat(data.data.qaArray);
 						let crqxList=[].concat(data.data.inOutPermissionArray)
-						if(kqlxList.length>0){
-							datasource.kqlxList = kqlxList
-							close()
-						}
-						if(crqxList.length>0){
-							datasource.crqxList = crqxList
-							close()
-						}
+						events.closeWaiting();
 						if(kqlxList.length==0 && crqxList.length==0){
-							events.closeWaiting();
 							mui.toast('无法获取考勤项目');
+						}else{
+							datasource.kqlxList = kqlxList
+							datasource.crqxList = crqxList
 						}
 					} else {
 						events.closeWaiting();
@@ -745,12 +757,6 @@
 				return 1;
 			 }
 			 
-			 //关闭弹出框
-			 function close(){
-				 if(datasource.grdList.length>0 && datasource.clsList.length>0 && datasource.stuList.length>0 && datasource.kqlxList.length>0 && datasource.crqxList.length>0){
-					  events.closeWaiting();
-				 }
-			 }
 		</script>
 	</body>
 

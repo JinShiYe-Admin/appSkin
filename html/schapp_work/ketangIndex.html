@@ -296,10 +296,16 @@
 				},
 				methods:{
 					add:function(){
-						let model={};
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						utils.mOpenWithData("../../html/schapp_work/ketangAdd.html", model);
+						if(datasource.grdList.length==0){
+							mui.toast('无法获取年级数据，不能进行添加操作')
+						}else if(datasource.clsList.length==0){
+							mui.toast('无法获取班级数据，不能进行添加操作')
+						}else{
+							let model={};
+							let index_code = curPage.access.split('#')[1]
+							model.index_code = index_code;
+							utils.mOpenWithData("../../html/schapp_work/ketangAdd.html", model);
+						}
 					}
 				}
 			});
