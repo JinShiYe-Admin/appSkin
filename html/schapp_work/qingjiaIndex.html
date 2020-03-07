@@ -295,10 +295,16 @@
 				},
 				methods:{
 					add:function(){
-						let model={};
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						utils.mOpenWithData("../../html/schapp_work/qingjiaAdd.html", model);
+						if(datasource.grdList.length==0){
+							mui.toast('无法获取年级数据，不能进行添加操作')
+						}else if(datasource.clsList.length==0){
+							mui.toast('无法获取班级数据，不能进行添加操作')
+						}else{
+							let model={};
+							let index_code = curPage.access.split('#')[1]
+							model.index_code = index_code;
+							utils.mOpenWithData("../../html/schapp_work/qingjiaAdd.html", model);
+						}
 					}
 				}
 			});
@@ -329,15 +335,19 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.grdValue = items[0]
-							//获取请假列表
-							events.showWaiting();
-							pageIndex = 1;
-							flagRef = 0;
-							datasource.pageArray = [];
-							getClsList( items[0].value,false) 
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择年级')
+							}else{
+								datasource.grdValue = items[0]
+								//获取请假列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getClsList( items[0].value,false) 
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showCls: function() {
@@ -347,16 +357,20 @@
 							userPicker.pickers[0].setSelectedValue(datasource.clsValue.value);
 						}, 100);
 						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							datasource.clsValue = items[0]
-							//获取请假列表
-							events.showWaiting();
-							pageIndex = 1;
-							flagRef = 0;
-							datasource.pageArray = [];
-							getPageDataArray();
-							userPicker.dispose();
-							userPicker = null;
+							console.log(items[0] )
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择班级')
+							}else{
+								datasource.clsValue = items[0]
+								//获取请假列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getPageDataArray();
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showDate: function() {

@@ -428,14 +428,18 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.grd = items[0]
-							datasource.clsList=[]
-							datasource.stuList=[]
-							datasource.formData.cls={text:'',value:''}
-							datasource.formData.stu={text:'',value:''}
-							getClsList( items[0].value) 
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择年级')
+							}else{
+								datasource.formData.grd = items[0]
+								datasource.clsList=[]
+								datasource.stuList=[]
+								datasource.formData.cls={text:'',value:''}
+								datasource.formData.stu={text:'',value:''}
+								getClsList( items[0].value) 
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showCls: function() {
@@ -446,12 +450,16 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.cls = items[0]
-							datasource.stuList=[]
-							datasource.formData.stu={text:'',value:''}
-							getStuList(datasource.formData.grd.value,items[0].value) 
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择班级')
+							}else{
+								datasource.formData.cls = items[0]
+								datasource.stuList=[]
+								datasource.formData.stu={text:'',value:''}
+								getStuList(datasource.formData.grd.value,items[0].value) 
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showStu: function() {
@@ -482,9 +490,13 @@
 								}
 							})
 						})
-						console.log("stuList: " + JSON.stringify(stuList));
-						let model = stuList
-						utils.mOpenWithData("../../html/schapp_work/studentSelect.html", model);
+						if(stuList.length==0){
+							mui.toast('学生数据为空')
+						}else{
+							console.log("stuList: " + JSON.stringify(stuList));
+							let model = stuList
+							utils.mOpenWithData("../../html/schapp_work/studentSelect.html", model);
+						}
 					},
 					showKqlx: function() {
 						var userPicker = new $M.PopPicker();
@@ -494,9 +506,13 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.formData.kqlx = items[0]
-							userPicker.dispose();
-							userPicker = null;
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择考勤项目')
+							}else{
+								datasource.formData.kqlx = items[0]
+								userPicker.dispose();
+								userPicker = null;
+							}
 						});
 					},
 					showJc: function() {
@@ -507,9 +523,13 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择节次')
+							}else{
 							datasource.formData.jc = items[0]
 							userPicker.dispose();
 							userPicker = null;
+							}
 						});
 					},
 					showKm: function() {
@@ -520,9 +540,13 @@
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
+							if(JSON.stringify(items[0]) =='{}'){
+								mui.toast('未选择科目')
+							}else{
 							datasource.formData.sub = items[0]
 							userPicker.dispose();
 							userPicker = null;
+							}
 						});
 					},
 					showDate: function() {
@@ -575,8 +599,6 @@
 				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
-				//获取课外考勤常量
-				getKqlxList();
 				// 获取当前日期
 				getCurrentDate();
 
@@ -606,7 +628,6 @@
 							datasource.formData.grd=grdList[0];
 							//获取数据范围授权：班级
 							getClsList(grd_id) 
-							close()
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
@@ -644,7 +665,6 @@
 							getStuList(grd_id,cls_id) 
 							//获取数据范围授权：科目
 							getKmList(grd_id,cls_id);
-							close()
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
@@ -677,7 +697,8 @@
 						})
 						if(stuList.length>0 ){
 							datasource.stuList=stuList;
-							close()
+							//获取课外考勤常量
+							getKqlxList();
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取学生');
@@ -711,7 +732,6 @@
 						})
 						if(subList.length>0 ){
 							datasource.subList=subList;
-							close()
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取科目');
@@ -732,19 +752,14 @@
 				postDataEncry(window.storageKeyName.INTERFACE_WORK + 'StudentAttendance/getDict', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
+						events.closeWaiting();
 						let kqlxList = [].concat(data.data.qaArray);
 						let jcList = [].concat(data.data.timeArray);
-						if(kqlxList.length>0){
-							datasource.kqlxList = kqlxList
-							close()
-						}
-						if(jcList.length>0){
-							datasource.jcList = jcList
-							close()
-						}
 						if(kqlxList.length==0 && jcList.length==0){
-							events.closeWaiting();
 							mui.toast('无法获取考勤项目');
+						}else{
+							datasource.kqlxList = kqlxList
+							datasource.jcList = jcList
 						}
 					} else {
 						events.closeWaiting();
@@ -797,13 +812,6 @@
 			function conver(s) {
 				return s < 10 ? '0' + s : s;
 			}
- 
-			 //关闭弹出框
-			 function close(){
-				 if(datasource.grdList.length>0 && datasource.clsList.length>0 && datasource.stuList.length>0 && datasource.kqlxList.length>0 ){
-					  events.closeWaiting();
-				 }
-			 }
 		</script>
 	</body>
 
