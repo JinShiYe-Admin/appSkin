@@ -67,49 +67,49 @@
 							icon:'../../img/homeSchool/schoolPage8.png',
 							id:'1',
 							NoReadCnt:0,
-							access:'schapp#Work:leave:index'
+							url:'schapp_Work_leave'
 						},{
 							name:'课堂考勤',
 							icon:'../../img/homeSchool/schoolPage1.png',
 							id:'2',
 							NoReadCnt:0,
-							access:'schapp#Work:classroom:index'
+							url:'schapp_Work_classroom'
 						},{
 							name:'课外考勤',
 							icon:'../../img/homeSchool/schoolPage2.png',
 							id:'3',
 							NoReadCnt:0,
-							access:'schapp#Work:extracurricular:index'
+							url:'schapp_Work_extracurricular'
 						},{
 							name:'出入校报表',
 							icon:'../../img/homeSchool/schoolPage3.png',
 							id:'4',
 							NoReadCnt:0,
-							access:'schapp#Work:inoutschool_form:index'
+							url:'schapp_Work_inoutschool_form'
 						},{
 							name:'课堂报表',
 							icon:'../../img/homeSchool/schoolPage4.png',
 							id:'5',
 							NoReadCnt:0,
-							access:'schapp#Work:classroom_form:index'
+							url:'schapp_Work_classroom_form'
 						},{
 							name:'课外报表',
 							icon:'../../img/homeSchool/schoolPage5.png',
 							id:'6',
 							NoReadCnt:0,
-							access:'schapp#Work:extracurricular_form:index'
+							url:'schapp_Work_extracurricular_form'
 						},{
 							name:'班级报表',
 							icon:'../../img/homeSchool/schoolPage6.png',
 							id:'7',
 							NoReadCnt:0,
-							access:'schapp#Work:class_form:index'
+							url:'schapp_Work_class_form'
 						},{
 							name:'学生报表',
 							icon:'../../img/homeSchool/schoolPage7.png',
 							id:'8',
 							NoReadCnt:0,
-							access:'schapp#Work:students_form:index'
+							url:'schapp_Work_students_form'
 						},
 					]
 				},
@@ -169,7 +169,9 @@
 						var tempM0 = ws.preload.childList[i];
 						for (var a = 0; a < contentData.tempArray.length; a++) {
 							var tempM1 = contentData.tempArray[a];
-							if (tempM1.access == tempM0.access) {
+							if (tempM1.url == tempM0.url) {
+								tempM1.access = tempM0.access;
+								tempM1.redspot_url = tempM0.redspot_url;
 								tempM1.name = tempM0.name;
 								contentData.showArray.push(tempM1);
 							}

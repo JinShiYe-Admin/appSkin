@@ -126,49 +126,49 @@
 							icon:'../../img/homeSchool/schoolPage8.png',
 							id:'1',
 							NoReadCnt:0,
-							access:'schapp_OA_Notify'
+							url:'schapp_OA_Notify'
 						},{
 							name:'通知',
 							icon:'../../img/homeSchool/schoolPage1.png',
 							id:'2',
 							NoReadCnt:0,
-							access:'schapp_OA_Notice'
+							url:'schapp_OA_Notice'
 						},{
 							name:'事务',
 							icon:'../../img/homeSchool/schoolPage2.png',
 							id:'3',
 							NoReadCnt:0,
-							access:'schapp_OA_CooperateNotice'
+							url:'schapp_OA_CooperateNotice'
 						},{
 							name:'工作流',
 							icon:'../../img/homeSchool/schoolPage3.png',
 							id:'4',
 							NoReadCnt:0,
-							access:'schapp_OA_Approve'
+							url:'schapp_OA_Approve'
 						},{
 							name:'资料收集',
 							icon:'../../img/homeSchool/schoolPage4.png',
 							id:'5',
 							NoReadCnt:0,
-							access:'schapp_OA_DataCollection'
+							url:'schapp_OA_DataCollection'
 						},{
 							name:'校历',
 							icon:'../../img/homeSchool/schoolPage5.png',
 							id:'6',
 							NoReadCnt:0,
-							access:'schapp_OA_Xiaoli'
+							url:'schapp_OA_Xiaoli'
 						},{
 							name:'周程',
 							icon:'../../img/homeSchool/schoolPage6.png',
 							id:'7',
 							NoReadCnt:0,
-							access:'schapp_OA_Zhoucheng'
+							url:'schapp_OA_Zhoucheng'
 						},{
 							name:'工资条',
 							icon:'../../img/homeSchool/schoolPage7.png',
 							id:'8',
 							NoReadCnt:0,
-							access:'schapp_OA_Payment'
+							url:'schapp_OA_Payment'
 						},
 					]
 				},
@@ -210,7 +210,7 @@
 						var tempM0 = ws.preload.childList[i];
 						for (var a = 0; a < contentData.tempArray.length; a++) {
 							var tempM1 = contentData.tempArray[a];
-							if (tempM1.access == tempM0.url) {
+							if (tempM1.url == tempM0.url) {
 								tempM1.name = tempM0.name;
 								tempM1.access = tempM0.access;
 								tempM1.redspot_url = tempM0.redspot_url;
