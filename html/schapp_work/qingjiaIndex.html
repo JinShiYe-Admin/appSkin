@@ -225,9 +225,9 @@
 			<h1 class="mui-title" v-cloak>{{titleName}}</h1>
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div class="mui-scroll">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
+				<div v-cloak class="mui-scroll">
 					<div class="mui-segmented-control" v-cloak>
 						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
@@ -237,7 +237,7 @@
 					<div class="line"></div>
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
-							<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class=""> <!-- mui-navigate-right -->
 									<div class="mui-table">
 									    <div class="mui-table-cell mui-col-xs-10">

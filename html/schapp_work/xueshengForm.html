@@ -223,19 +223,19 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
 					<div class="mui-segmented-control" v-cloak>
-						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" style="text-align: right;margin: 0;" v-cloak href="javaScript:void(0)" @tap="showBeginDate()"><span>{{begintime}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" style="width: 2px;" v-cloak href="javaScript:void(0)"><span></span><span class="">~</span></a>
-						<a class="mui-control-item" style="text-align: left;" v-cloak href="javaScript:void(0)" @tap="showEndDate()"><span>{{endtime}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" style="text-align: right;margin: 0;" v-cloak href="javaScript:void(0)" @tap="showBeginDate()"><span>{{begintime}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" style="width: 2px;" v-cloak href="javaScript:void(0)"><span></span><span class="">~</span></a>
+						<a v-cloak class="mui-control-item" style="text-align: left;" v-cloak href="javaScript:void(0)" @tap="showEndDate()"><span>{{endtime}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
-							<li class="mui-table-view-cell" >
+							<li v-cloak class="mui-table-view-cell" >
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">
 											<div>
@@ -253,7 +253,7 @@
 							</li>
 						</ul>
 						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
-							<li v-for="(model,index) in pageArray" class="mui-table-view-cell" >
+							<li v-cloak v-for="(model,index) in pageArray" class="mui-table-view-cell" >
 									<div class="mui-row">
 										<div class="mui-table-cell mui-col-xs-12">
 											<div>

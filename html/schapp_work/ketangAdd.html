@@ -285,54 +285,54 @@
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 			<a @click="submit()" class="mui-pull-right" style="font-size: 0.875rem">确定</a>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
 					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showGrd()">年级</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showGrd()" placeholder="请选择" v-model="formData.grd.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showCls()">班级</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showCls()" placeholder="请选择" v-model="formData.cls.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showStu()">姓名</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showStu()" rows="1" placeholder="请选择" v-model="formData.stu.text" readonly>
 								<h6 style=" float: right; width: 68%;line-height: 1.25rem;margin-right: 2%" v-if="formData.stu.text">已选择:	{{formData.stu.text}}</h6>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showKqlx()">考勤项目</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showKqlx()" placeholder="请选择" v-model="formData.kqlx.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showDate()">考勤日期</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showDate()" placeholder="请选择" v-model="formData.time" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showJc()">节次</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showJc()" placeholder="请选择" v-model="formData.jc.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showKm()">科目</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showKm()" placeholder="请选择" v-model="formData.sub.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div class="mui-input-row">
+						<div v-cloak class="mui-input-row">
 							<label class="aCss">说明</label>
 							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
 						</div>

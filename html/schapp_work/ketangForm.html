@@ -223,13 +223,13 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div class="mui-scroll">
-					<div class="mui-segmented-control" v-cloak>
-						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showDate()"><span>{{dateValue}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showJc()"><span>{{jcValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
+				<div v-cloak class="mui-scroll">
+					<div v-cloak class="mui-segmented-control" v-cloak>
+						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showDate()"><span>{{dateValue}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showJc()"><span>{{jcValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 					<template v-cloak v-if="pageArray.length>0">

@@ -47,18 +47,29 @@
 		<header class="mui-bar mui-bar-nav" id="tempHead">
 			<h1 class="mui-title">{{headTitle}}</h1>
 		</header>
-		<div class="mui-content" id="contentData">
-			<div class="mui-card" v-for="(model,index) in gridList">
-				<div class="mui-card-header">{{model.name}}</div>
-				<div class="mui-card-content">
-					<div class="mui-card-content-inner">
-						<ul class="mui-table-view mui-grid-view mui-grid-9">
-							<li v-for="(childModel,childIndex) in model.childList" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-									<span class="mui-icon mui-icon-home"></span>
-									<div class="mui-media-body">{{childModel.name}}</div>
-								</a>
-							</li>
-						</ul>
+		<div v-cloak class="mui-content" id="contentData">
+			<div v-cloak class="mui-card" v-for="(model,index) in gridList">
+				<div v-cloak class="mui-card-header">{{model.name}}</div>
+				<div v-cloak class="mui-card-content">
+					<div v-cloak class="mui-card-content-inner">
+						<template v-if="model.childList.length>0"><!-- 如果有子菜单 -->
+							<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9">
+								<li v-cloak v-for="(childModel,childIndex) in model.childList" @tap="clickFunction(childModel)" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+										<span class="mui-icon mui-icon-home"></span>
+										<div class="mui-media-body">{{childModel.name}}</div>
+									</a>
+								</li>
+							</ul>
+						</template>
+						<template v-else-if="model.alonePage"><!-- 单菜单应用 -->
+							<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9">
+								<li v-cloak  @tap="clickFunction(model.alonePage)" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+										<span class="mui-icon mui-icon-home"></span>
+										<div class="mui-media-body">{{model.alonePage.name}}</div>
+									</a>
+								</li>
+							</ul>
+						</template>
 					</div>
 				</div>
 			</div>
@@ -99,7 +110,7 @@
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
-					headTitle: 'more'
+					headTitle: '更多'
 				}
 			});
 
@@ -110,7 +121,8 @@
 				},
 				methods: {
 					clickFunction: function(model) {
-						var personal0 = store.get(window.storageKeyName.PERSONALINFO);
+						console.log("model: " + JSON.stringify(model));
+						// var personal0 = store.get(window.storageKeyName.PERSONALINFO);
 						utils.mOpenWithData(model.href, model);
 					}
 				}
@@ -119,9 +131,6 @@
 			mui.plusReady(function() {
 				var ws = plus.webview.currentWebview();
 				console.log("当前Webview窗口：" + JSON.stringify(ws.preload));
-				tempHead.headTitle = ws.preload.name;
-
-				//
 				contentData.gridList = [].concat(store.get(window.storageKeyName.MOREMENU));
 				console.log('contentData.gridList:' + JSON.stringify(contentData.gridList));
 			});

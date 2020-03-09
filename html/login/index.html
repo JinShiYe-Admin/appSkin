@@ -58,42 +58,145 @@
 						href: "../../html/schapp_work/index.html",
 						tempID: 'defaultTab',
 						cls: 'mui-icon iconfont icon-jiaxiaohudong',
-						permission: 'schapp_Work',
-						childList: []
+						url: 'schapp_Work',
+						childList: [
+								{
+									name:'请假记录',
+									icon:'../../img/homeSchool/schoolPage8.png',
+									id:'1',
+									href: "../../html/schapp_work/qingjiaIndex.html",
+									url:'schapp_Work_leave'
+								},{
+									name:'课堂考勤',
+									icon:'../../img/homeSchool/schoolPage1.png',
+									id:'2',
+									href: "../../html/schapp_work/ketangIndex.html",
+									url:'schapp_Work_classroom'
+								},{
+									name:'课外考勤',
+									icon:'../../img/homeSchool/schoolPage2.png',
+									id:'3',
+									href: "../../html/schapp_work/kewaiIndex.html",
+									url:'schapp_Work_extracurricular'
+								},{
+									name:'出入校报表',
+									icon:'../../img/homeSchool/schoolPage3.png',
+									id:'4',
+									href: "../../html/schapp_work/jinchuxiaoForm.html",
+									url:'schapp_Work_inoutschool_form'
+								},{
+									name:'课堂报表',
+									icon:'../../img/homeSchool/schoolPage4.png',
+									id:'5',
+									href: "../../html/schapp_work/ketangForm.html",
+									url:'schapp_Work_classroom_form'
+								},{
+									name:'课外报表',
+									icon:'../../img/homeSchool/schoolPage5.png',
+									id:'6',
+									href: "../../html/schapp_work/kewaiForm.html",
+									url:'schapp_Work_extracurricular_form'
+								},{
+									name:'班级报表',
+									icon:'../../img/homeSchool/schoolPage6.png',
+									id:'7',
+									href: "../../html/schapp_work/banjiForm.html",
+									url:'schapp_Work_class_form'
+								},{
+									name:'学生报表',
+									icon:'../../img/homeSchool/schoolPage7.png',
+									id:'8',
+									href: "../../html/schapp_work/xueshengForm.html",
+									url:'schapp_Work_students_form'
+								},
+							]
 					}, {
 						name: "oa",
 						href: "../../html/page2/index.html",
 						tempID: 'kecheng',
 						cls: 'mui-icon iconfont icon-timu',
-						permission: 'schapp_OA',
-						childList: []
+						url: 'schapp_OA',
+						childList: [
+								{
+									name:'公告',
+									icon:'../../img/homeSchool/schoolPage8.png',
+									NoReadCnt:0,
+									href: "../../html/page2/gonggaoIndex.html",
+									type : 1,
+									url:'schapp_OA_Notify'
+								},{
+									name:'通知',
+									icon:'../../img/homeSchool/schoolPage1.png',
+									NoReadCnt:0,
+									href: "../../html/page2/noticeIndex.html",
+									url:'schapp_OA_Notice'
+								},{
+									name:'事务',
+									icon:'../../img/homeSchool/schoolPage2.png',
+									NoReadCnt:0,
+									href: "../../html/page2/shiwuIndex.html",
+									url:'schapp_OA_CooperateNotice'
+								},{
+									name:'工作流',
+									icon:'../../img/homeSchool/schoolPage3.png',
+									NoReadCnt:0,
+									href: "../../html/page2/workflowIndex.html",
+									url:'schapp_OA_Approve'
+								},{
+									name:'资料收集',
+									icon:'../../img/homeSchool/schoolPage4.png',
+									NoReadCnt:0,
+									href: "../../html/page2/collectionDataIndex.html",
+									url:'schapp_OA_DataCollection'
+								},{
+									name:'校历',
+									icon:'../../img/homeSchool/schoolPage5.png',
+									NoReadCnt:0,
+									type : 2,
+									href: "../../html/page2/gonggaoIndex.html",
+									url:'schapp_OA_Xiaoli'
+								},{
+									name:'周程',
+									icon:'../../img/homeSchool/schoolPage6.png',
+									NoReadCnt:0,
+									type : 3,
+									href: "../../html/page2/gonggaoIndex.html",
+									url:'schapp_OA_Zhoucheng'
+								},{
+									name:'工资条',
+									icon:'../../img/homeSchool/schoolPage7.png',
+									NoReadCnt:0,
+									href: "../../html/page2/gongziIndex.html",
+									url:'schapp_OA_Payment'
+								},
+							]
 					}, {
 						name: "page3",
 						href: "../../html/page3/index.html",
 						tempID: 'kejiao',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp_Behavior',
+						url: 'schapp_Behavior',
 						childList: []
 					}, {
 						name: "page4",
 						href: "../../html/page4/index.html",
 						tempID: 'kejiao1',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp_Comment',
+						url: 'schapp_Comment',
 						childList: []
 					}, {
 						name: "page5",
 						href: "../../html/page5/index.html",
 						tempID: 'kejiao2',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp_Resource',
+						url: 'schapp_Resource',
 						childList: []
 					}, {
 						name: "page6",
 						href: "../../html/page6/index.html",
 						tempID: 'kejiao3',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp_Evaluation',
+						url: 'schapp_Evaluation',
 						childList: []
 					}
 					, {
@@ -101,16 +204,39 @@
 						href: "../../html/schapp_examination/index.html",
 						tempID: 'kaowu',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp_Examination',
-						childList: []
+						url: 'schapp_Examination',
+						childList: [],
+						alonePage:{//单页面加此参数，在更多页面自动产生图标，不影响权限验证
+								name:'考务系统',
+								icon:'../../img/homeSchool/schoolPage7.png',
+								href: "../../html/schapp_examination/index.html",
+								url:'schapp_Examination'
+						}
 					},
 					{
 						name: "wupinguanli",
-						href: "../../html/schapp_examination/index.html",
+						href: "../../html/schapp_item/index.html",
 						tempID: 'wupinguanli',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'schapp_Item',
-						childList: []
+						url: 'schapp_Item',
+						childList: [
+							{
+								name:'物品入库',
+								icon:'../../img/homeSchool/schoolPage7.png',
+								href: "../../html/schapp_item/index.html",
+								url:'schapp_Item_warehouse'
+							},{
+								name:'物品出库',
+								icon:'../../img/homeSchool/schoolPage7.png',
+								href: "../../html/schapp_item/index.html",
+								url:'schapp_Item_outbound'
+							},{
+								name:'库存查询',
+								icon:'../../img/homeSchool/schoolPage7.png',
+								href: "../../html/schapp_item/index.html",
+								url:'schapp_Item_stock'
+							},
+						]
 					},
 					]
 				}
@@ -121,15 +247,35 @@
 				var tempMenu = store.get(window.storageKeyName.MENULIST);
 				console.log('tempMenu:' + JSON.stringify(tempMenu));
 				var tempA = [];
-				for (var i = 0; i < tempMenu.list[0].childList.length; i++) {
-					var tempM1 = tempMenu.list[0].childList[i];
+				for (var i = 0; i < tempMenu.list[0].childList.length; i++) {//一级菜单循环
+					var web_first_item = tempMenu.list[0].childList[i];
 					for (var a = 0; a < indexPage.pageArray.length; a++) {
-						var tempM0 = indexPage.pageArray[a];
-						if (tempM0.permission == tempM1.url) {
-							tempM0.name = tempM1.name;
-							tempM0.access=tempM1.access;
-							tempM0.childList = tempM1.childList;
-							tempA.push(tempM0);
+						var local_first_item = indexPage.pageArray[a];
+						if (local_first_item.url == web_first_item.url) {
+							
+							if(local_first_item.alonePage){//兼容单菜单应用
+								local_first_item.alonePage.access = web_first_item.access;
+								local_first_item.alonePage.redspot_url = web_first_item.redspot_url;
+								local_first_item.alonePage.name = web_first_item.name;
+							}
+							
+							local_first_item.name = web_first_item.name;
+							local_first_item.access=web_first_item.access;
+							let childList=[]
+							for (var b = 0; b < web_first_item.childList.length; b++) {//二级菜单循环
+								var web_second_item = web_first_item.childList[b];
+								for (var c = 0; c < local_first_item.childList.length; c++) {
+									var local_second_item = local_first_item.childList[c];
+									if (local_second_item.url == web_second_item.url) {
+										local_second_item.access = web_second_item.access;
+										local_second_item.redspot_url = web_second_item.redspot_url;
+										local_second_item.name = web_second_item.name;
+										childList.push(local_second_item)
+									}
+								}
+							}
+							local_first_item.childList=childList
+							tempA.push(local_first_item);
 						} 
 					}
 				}
@@ -142,7 +288,7 @@
 						href: "../../html/more/index.html",
 						tempID: 'kejiao4',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
-						permission: 'more',
+						url: 'more',
 					});
 				}
 				indexPage.showArray = [].concat(tempA);
