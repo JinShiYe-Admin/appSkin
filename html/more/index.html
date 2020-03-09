@@ -6,23 +6,18 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<style type="text/css">
-			[v-cloak] { 
+			[v-cloak] {
 				display: none;
 			}
-			
+
 			.circular-square {
 				border-radius: 50%;
 				width: 56px;
 				height: 56px;
 			}
-			
-			.divNameCss {
-				font-size: 16px;
-				color: #333333;
-			}
-			
+
 			.mui-badge {
 				font-size: 12px;
 				line-height: 1;
@@ -34,22 +29,58 @@
 				margin-top: -40px;
 				margin-right: -10px;
 			}
+			.mui-card-content-inner {
+			    padding: 0px;
+			}
+			.mui-grid-view.mui-grid-9 {
+				border-top: 0px solid #eee;
+				border-left: 0px solid #eee;
+			    background-color: white;
+			}
+			.mui-card .mui-table-view {
+			    border-radius: 0px;
+			}
 		</style>
 	</head>
 
-	<body>
+	<body style="background-color: #EBEBEB;">
 		<header class="mui-bar mui-bar-nav" id="tempHead">
 			<h1 class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div class="mui-content" id="contentData">
-			<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
-				<li v-for="(model,index) in gridList" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
-					<a href="#" @click="clickFunction(model)">
-						<img class="circular-square" src="../../img/homeSchool/schoolPage8.png" />
-						<div class="mui-media-body divNameCss" style="font-size: 14px;">{{model.name}}</div>
-					</a>
-				</li>
-			</ul>
+			<div class="mui-card" v-for="(model,index) in gridList">
+				<div class="mui-card-header">{{model.name}}</div>
+				<div class="mui-card-content">
+					<div class="mui-card-content-inner">
+						<ul class="mui-table-view mui-grid-view mui-grid-9">
+							<li v-for="(childModel,childIndex) in model.childList" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+									<span class="mui-icon mui-icon-home"></span>
+									<div class="mui-media-body">{{childModel.name}}</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="mui-card">
+				<div class="mui-card-header">时间的话开始的</div>
+				<div class="mui-card-content">
+					<div class="mui-card-content-inner">
+						<ul class="mui-table-view mui-grid-view mui-grid-9">
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+									<span class="mui-icon mui-icon-home"></span>
+									<div class="mui-media-body">四六级看得见大家好非公开</div>
+								</a>
+							</li>
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+									<span class="mui-icon mui-icon-home"></span>
+									<div class="mui-media-body">四六级看得见大家好非公开</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div> -->
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -71,28 +102,28 @@
 					headTitle: 'more'
 				}
 			});
-			
+
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
 					gridList: []
 				},
-					methods: {
-						clickFunction: function(model) {
-							var personal0 = store.get(window.storageKeyName.PERSONALINFO);
-							utils.mOpenWithData(model.href, model);
-						}
+				methods: {
+					clickFunction: function(model) {
+						var personal0 = store.get(window.storageKeyName.PERSONALINFO);
+						utils.mOpenWithData(model.href, model);
 					}
+				}
 			});
 
 			mui.plusReady(function() {
 				var ws = plus.webview.currentWebview();
 				console.log("当前Webview窗口：" + JSON.stringify(ws.preload));
 				tempHead.headTitle = ws.preload.name;
-				
+
 				//
 				contentData.gridList = [].concat(store.get(window.storageKeyName.MOREMENU));
-				console.log('contentData.gridList:'+JSON.stringify(contentData.gridList));
+				console.log('contentData.gridList:' + JSON.stringify(contentData.gridList));
 			});
 		</script>
 	</body>

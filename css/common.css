@@ -63,7 +63,7 @@ viewport-fit=cover
 	color: white;
 }
 
-.mui-icon-left-nav{
+.mui-icon-left-nav {
 	color: white;
 }
 
@@ -262,4 +262,11 @@ viewport-fit=cover
 
 .mui-checkbox input[type=checkbox]:checked:before {
 	color: #00CFBD;
+}
+
+.mui-media-bodys {
+	font-size: 12px;
+	color: #333333;
+	margin-left: 0px;
+	margin-right: 0px;
 }
