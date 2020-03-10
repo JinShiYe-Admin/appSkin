@@ -205,13 +205,7 @@
 						tempID: 'kaowu',
 						cls: 'mui-icon iconfont icon-kejiaowenhua',
 						url: 'schapp_Examination',
-						childList: [],
-						alonePage:{//单页面加此参数，在更多页面自动产生图标，不影响权限验证
-								name:'考务系统',
-								icon:'../../img/homeSchool/schoolPage7.png',
-								href: "../../html/schapp_examination/index.html",
-								url:'schapp_Examination'
-						}
+						childList: []
 					},
 					{
 						name: "wupinguanli",
@@ -252,13 +246,6 @@
 					for (var a = 0; a < indexPage.pageArray.length; a++) {
 						var local_first_item = indexPage.pageArray[a];
 						if (local_first_item.url == web_first_item.url) {
-							
-							if(local_first_item.alonePage){//兼容单菜单应用
-								local_first_item.alonePage.access = web_first_item.access;
-								local_first_item.alonePage.redspot_url = web_first_item.redspot_url;
-								local_first_item.alonePage.name = web_first_item.name;
-							}
-							
 							local_first_item.name = web_first_item.name;
 							local_first_item.access=web_first_item.access;
 							let childList=[]
