@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
-	<!-- 请假记录 详情页
-
- -->
+	<!-- 考勤模块  课堂考勤记录 
+	列表页
+	-->
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -17,11 +17,7 @@
 			}
 			html,
 			body {
-				background-color: #FFFFFF;
-			}
-			
-			.mui-content{
-				background-color: #FFFFFF;
+				background-color: #efeff4;
 			}
 			
 			.mui-bar~.mui-content .mui-fullscreen {
@@ -215,61 +211,36 @@
 				color: #666;
 			}
 			
-			.aCss {
-				font-size: 15px;
-				color: #333;
-				width: 5rem;
-			}
-			
-			.icon-right {
-				position: fixed;
-				float: right;
-				font-size: 14px;
-				margin-top: 11px;
-				right: 5%;
-			}
-			
-			.mui-input-row label~input,.mui-input-row label~select, .mui-input-row label~textarea ,
-			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
-				color: #999;
-				/* placeholder字体大小  */
-				font-size: 14px;
-			}
-			
-			.line {
-				right: 0;
-				bottom: 0;
-				left: 0;
-				height: 1px;
-				content: '';
-				-webkit-transform: scaleY(.5);
-				transform: scaleY(.5);
-				background-color: #e4e4e4;
-			}
-			
-			.mui-input-row:after {
-				height: 0px;
-			}
-			
-			.mui-input-row {
-				margin:0.3125rem 0;
+			.mui-dtpicker-header button:last-child {
+			    background-color: #00CFBD;
+				border: #00CFBD;
 			}
 			
 			.mui-input-row label {
-			    font-family: 'Helvetica Neue',Helvetica,sans-serif;
 			    line-height: 1.1;
-			    float: left;
-			    width: 30%;
-			    padding: 11px 15px;
+			    float: right;
+			    width: 15%;
+				margin:0.3125rem 1% 0.3125rem 1%;
+				background-color: #00CFBD;
+				color: #FFFFFF;
+				height: 40px;
+				border-radius: 0.5rem;
+			    padding: 8px 18px;
 			}
 			
-			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea {
-			    float: right;
-			    width: 68%;
-				margin-right: 2%;
+			.mui-input-row label~input {
+			    float: left;
+			    width: 82%;
+				margin:0.3125rem 0 0.3125rem 1%;
 			    margin-bottom: 0;
-			    padding-left: 0.625rem;
+				border-radius: 0.5rem;
+			    padding-left: 10px;
+				background-color: #F1F1F2;
 			    border: 0;
+			}
+			
+			::-webkit-input-placeholder { /* WebKit browsers */
+			  font-size: 14px;
 			}
 		</style>
 	</head>
@@ -279,56 +250,37 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0;background-color: #FFFFFF;">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div class="mui-input-row">
-							<label class="aCss">年级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">班级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >姓名</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >考勤项目</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >出入权限</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.in_out_permission_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >开始时间</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.begintime" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >结束时间</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.endtime" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >记录人</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_user_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">说明</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="300"  rows="5" placeholder="暂无说明" v-model="formData.comment" readonly></textarea>
-						</div>
-						<div class="line"></div>
+					<div class="mui-input-row">
+						<label @tap="selectItem"><span class="mui-icon mui-icon-search"></span></label>
+						<input v-model="inputText" oninput="inputChange(this)" type="text" placeholder="输入名称或编号进行搜索">
 					</div>
+					<template v-cloak v-if="dataList.length>0">
+						<ul v-cloak class="mui-table-view">
+							<li v-cloak v-for="model in dataList" class="mui-table-view-cell" @tap="clickLi(model)">
+								<a class="mui-navigate-right"> <!-- mui-navigate-right -->
+									<div class="mui-table">
+									    <div class="mui-table-cell mui-col-xs-10">
+									        <div class="mui-ellipsis">{{model.itemName}}(编号:{{model.itemCode}})</div>
+											<div class="mui-row" style="text-align: left;">
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+															<p class="mui-h5 mui-ellipsis">型号 暂无该字段:{{model.itemType}}</p>
+														</div>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+															<p class="mui-h5 mui-ellipsis">库存:{{model.invNum}}</p>
+														</div>
+											</div>
+									    </div>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</template> 
+					<template v-else>
+						<div></div>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -349,40 +301,65 @@
 		<script src="../../js/libs/RSA/BigInt.js"></script>
 		<script src="../../js/libs/RSA/RSA.js"></script>
 		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
-		<script src='../../js/libs/crypto-js/require.js'></script>
-		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
-		<script src='../../js/libs/jquery.js'></script>
-		<script src='../../js/libs/encryption/sortSign.js'></script>
+		<script src="../../js/libs/crypto-js/require.js"></script>
+		<script src="../../js/libs/encryption/signHmacSHA1.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/libs/encryption/sortSign.js"></script>
 		<script type="text/javascript">
 			var $M = mui.init();
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
-			var pageIndex = 1; //请求数据页面
-			var totalPageCount; //总页码
 			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: ''
+					titleName: '',
 				},
+				methods:{
+				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					formData: {
-					}, //表单内容
+					dataList: [], //手工出库数组
+					inputText:'',//输入的搜索内容
 				},
+				methods: {
+					clickLi: function(model) {
+						console.log(JSON.stringify(model))
+						var btnArray = ['否', '是'];
+						mui.confirm('确认选择 '+model.itemName+'(编号:'+model.itemCode+') 入库吗？', '提示', btnArray, function(e) {
+							if (e.index == 1) {
+								setTimeout(function(){
+									 mui.fire(plus.webview.currentWebview().opener(), 'itemAdd', model);
+									 mui.back()
+								},300)
+							}
+						})
+					},
+					selectItem:function(){
+						if(datasource.inputText==''){
+							mui.toast('请先输入搜索内容')
+						}else{
+							getPageDataArray(datasource.inputText)
+						}
+					},
+				}
 			});
+			
+			function inputChange(input){
+				if(input.value==''){
+					getPageDataArray('');
+				}
+			}
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log(JSON.stringify(curPage));
-				tempVue.titleName = '请假记录详情';
-				
-				datasource.formData=curPage;
-				
+				console.log('2222:' + JSON.stringify(curPage));
+				tempVue.titleName = '物品查询';
+
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -391,9 +368,33 @@
 					deceleration: deceleration
 				});
 
+				events.showWaiting();
+				// 获取数据
+				getPageDataArray('');
 			});
+
+
+			function getPageDataArray(inputText) {
+					comData = {
+						itemCodeName:inputText,
+						op_code:'index',
+						index_code: curPage.index_code,
+					} 
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'query/getInventory4App', {}, comData, 2, function(data) {
+						events.closeWaiting();
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
+							datasource.dataList = data.data.list
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
+						} else {
+							events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					});
+			};
 			
-			 
 		</script>
 	</body>
 

@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
-	<!-- 请假记录 详情页
-
- -->
+	<!-- 考勤模块  课堂考勤记录 
+	列表页
+	-->
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -17,11 +17,7 @@
 			}
 			html,
 			body {
-				background-color: #FFFFFF;
-			}
-			
-			.mui-content{
-				background-color: #FFFFFF;
+				background-color: #efeff4;
 			}
 			
 			.mui-bar~.mui-content .mui-fullscreen {
@@ -215,25 +211,9 @@
 				color: #666;
 			}
 			
-			.aCss {
-				font-size: 15px;
-				color: #333;
-				width: 5rem;
-			}
-			
-			.icon-right {
-				position: fixed;
-				float: right;
-				font-size: 14px;
-				margin-top: 11px;
-				right: 5%;
-			}
-			
-			.mui-input-row label~input,.mui-input-row label~select, .mui-input-row label~textarea ,
-			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
-				color: #999;
-				/* placeholder字体大小  */
-				font-size: 14px;
+			.mui-dtpicker-header button:last-child {
+			    background-color: #00CFBD;
+				border: #00CFBD;
 			}
 			
 			.line {
@@ -247,30 +227,29 @@
 				background-color: #e4e4e4;
 			}
 			
-			.mui-input-row:after {
-				height: 0px;
+			.double-line{
+				height: 10px;
+				background-color: #EAEAEA;
+			}
+			.green-line{
+				height: 2px;
+				margin: 0 2%;
+				background-color: #00CFBD;
 			}
 			
-			.mui-input-row {
-				margin:0.3125rem 0;
+			.aCss {
+				font-size: 15px;
+				color: #333;
+				width: 5rem;
 			}
 			
-			.mui-input-row label {
-			    font-family: 'Helvetica Neue',Helvetica,sans-serif;
-			    line-height: 1.1;
-			    float: left;
-			    width: 30%;
-			    padding: 11px 15px;
+			.mui-input-row label~input,.mui-input-row label~select, .mui-input-row label~textarea ,
+			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+				color: #999;
+				/* placeholder字体大小  */
+				font-size: 14px;
 			}
 			
-			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea {
-			    float: right;
-			    width: 68%;
-				margin-right: 2%;
-			    margin-bottom: 0;
-			    padding-left: 0.625rem;
-			    border: 0;
-			}
 		</style>
 	</head>
 
@@ -279,55 +258,66 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
-		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;background-color: #FFFFFF;">
 				<div v-cloak class="mui-scroll">
-					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div class="mui-input-row">
-							<label class="aCss">年级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
+					<div class="mui-input-row" style="margin-top: 0.425rem;">
+						<label class="aCss" >出库单号</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.outCode" readonly>
+					</div>
+					<div class="line"></div>
+					<div class="mui-input-row">
+						<label class="aCss" >出库人</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.outManName" readonly>
+					</div>
+					<div class="line"></div>
+					<div class="mui-input-row">
+						<label class="aCss" >领用人</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.receiveManName" readonly>
+					</div>
+					<div class="line"></div>
+					<div class="mui-input-row">
+						<label class="aCss" >放置地点</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.putArea" readonly>
+					</div>
+					<div class="line"></div>
+					<div class="mui-input-row">
+						<label class="aCss" >出库时间</label>
+						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;">{{ckdDetail.outTime}}</span>
+					</div>
+					<div class="double-line"></div>
+					<div class="mui-input-row">
+						<label class="aCss" >出库物品明细</label>
+					</div>
+					<div class="green-line"></div>
+					<div class="mui-table">
+						<div class="mui-table-cell mui-col-xs-12">
+							<div class="mui-row" style="text-align: left;margin: 0 0 0 1.25rem;">
+								<div style="margin-top: 0.325rem;" class="mui-table-cell-1 mui-col-xs-12">
+									<p class="mui-h5 mui-ellipsis">编号:{{ckdDetail.itemCode}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p class="mui-h5 mui-ellipsis">名称:{{ckdDetail.itemName}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p class="mui-h5 mui-ellipsis">型号:{{ckdDetail.itemModel}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p class="mui-h5 mui-ellipsis">数量:{{ckdDetail.outNum}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p class="mui-h5 mui-ellipsis">类型:{{ckdDetail.itemType}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p class="mui-h5 mui-ellipsis">属性:{{ckdDetail.itemProp}}</p>
+								</div>
+							</div>
 						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">班级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >姓名</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >考勤项目</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >出入权限</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.in_out_permission_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >开始时间</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.begintime" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >结束时间</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.endtime" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >记录人</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_user_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">说明</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="300"  rows="5" placeholder="暂无说明" v-model="formData.comment" readonly></textarea>
-						</div>
-						<div class="line"></div>
+					</div>
+					<div class="double-line"></div>
+					<div class="mui-input-row">
+						<label class="aCss" >备注</label>
+						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;">{{ckdDetail.note?ckdDetail.note:'暂无'}}</span>
 					</div>
 				</div>
 			</div>
@@ -349,10 +339,10 @@
 		<script src="../../js/libs/RSA/BigInt.js"></script>
 		<script src="../../js/libs/RSA/RSA.js"></script>
 		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
-		<script src='../../js/libs/crypto-js/require.js'></script>
-		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
-		<script src='../../js/libs/jquery.js'></script>
-		<script src='../../js/libs/encryption/sortSign.js'></script>
+		<script src="../../js/libs/crypto-js/require.js"></script>
+		<script src="../../js/libs/encryption/signHmacSHA1.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/libs/encryption/sortSign.js"></script>
 		<script type="text/javascript">
 			var $M = mui.init();
 			//获取个人信息
@@ -365,23 +355,20 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: ''
+					titleName: '',
 				},
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					formData: {
-					}, //表单内容
-				},
+					ckdDetail: [], //库单详情
+				}
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log(JSON.stringify(curPage));
-				tempVue.titleName = '请假记录详情';
-				
-				datasource.formData=curPage;
+				console.log('2222:' + JSON.stringify(curPage));
+				tempVue.titleName = '出库单详情';
 				
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -390,10 +377,31 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-
+				
+				events.showWaiting();
+				// 获取数据
+				getPageDataArray(curPage.handOutId)
 			});
+
+
+			function getPageDataArray(id) {
+					comData = {
+						handOutId:id,
+						op_code:'index',
+						index_code: curPage.index_code,
+					} 
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/getHandOutById', {}, comData, 2, function(data) {
+						events.closeWaiting();
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
+							datasource.ckdDetail=data.data
+						} else {
+							events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					});
+			};
 			
-			 
 		</script>
 	</body>
 
