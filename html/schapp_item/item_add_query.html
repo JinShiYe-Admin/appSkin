@@ -253,7 +253,7 @@
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0;background-color: #FFFFFF;">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-					<div class="mui-input-row">
+					<div v-cloak class="mui-input-row">
 						<label @tap="selectItem"><span class="mui-icon mui-icon-search"></span></label>
 						<input v-model="inputText" oninput="inputChange(this)" type="text" placeholder="输入名称或编号进行搜索">
 					</div>
@@ -311,7 +311,8 @@
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
-			var flagRef = 0; //是刷新0，还是加载更多1
+			var pageIndex = 1; //请求数据页面
+			var totalPageCount; //总页码
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
@@ -329,15 +330,23 @@
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
-						var btnArray = ['否', '是'];
-						mui.confirm('确认选择 '+model.itemName+'(编号:'+model.itemCode+') 入库吗？', '提示', btnArray, function(e) {
-							if (e.index == 1) {
-								setTimeout(function(){
-									 mui.fire(plus.webview.currentWebview().opener(), 'itemAdd', model);
-									 mui.back()
-								},300)
+						let code=model.itemCode;
+						let codeList=curPage.codeList
+						if(codeList.length>0){
+							let isRepeat=false;
+							codeList.map(function(item){
+								if(code==item){
+									isRepeat=true;
+								}
+							})
+							if(isRepeat){
+								mui.toast('物品编号重复，请重新选择物品')
+							}else{
+								 showToast(model)
 							}
-						})
+						}else{
+							showToast(model)
+						}
 					},
 					selectItem:function(){
 						if(datasource.inputText==''){
@@ -355,6 +364,17 @@
 				}
 			}
 
+			function showToast(model){
+				var btnArray = ['否', '是'];
+				mui.confirm('确认选择 '+model.itemName+'(编号:'+model.itemCode+') 入库吗？', '提示', btnArray, function(e) {
+					if (e.index == 1) {
+						setTimeout(function(){
+							 mui.fire(plus.webview.currentWebview().opener(), 'itemAdd', model);
+							 mui.back()
+						},300)
+					}
+				})
+			}
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
@@ -367,6 +387,31 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
+				
+				//上拉下拉注册
+				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
+					up: {
+						callback: function() {
+							var self = this;
+							//console.log("上拉加载更多");
+							if (pageIndex <= totalPageCount) {
+								events.showWaiting();
+								getPageDataArray();
+								setTimeout(function() {
+									//结束下拉刷新
+									self.endPullUpToRefresh();
+									if (mui(".mui-table-view-cell").length < 10) {
+										mui(".mui-pull-loading")[0].innerHTML = "";
+									}
+								}, 1000);
+							} else {
+								//结束下拉刷新
+								self.endPullUpToRefresh();
+								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+							}
+						}
+					}
+				});
 
 				events.showWaiting();
 				// 获取数据
@@ -377,16 +422,23 @@
 			function getPageDataArray(inputText) {
 					comData = {
 						itemCodeName:inputText,
+						page_number: pageIndex, //当前页数
+						page_size: 10, //每页记录数
 						op_code:'index',
 						index_code: curPage.index_code,
 					} 
-					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'query/getInventory4App', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'itemCode /getItemCodes4App', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
+						totalPageCount = data.data.total_page;
+						pageIndex++;
 						if (data.code == 0) {
-							datasource.dataList = data.data.list
+							datasource.dataList = datasource.dataList.concat(data.data.list);
 							if (data.data.list.length == 0) {
 								mui.toast('暂无数据');
+							}
+							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
 							events.closeWaiting();
