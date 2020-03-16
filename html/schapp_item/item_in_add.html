@@ -154,7 +154,7 @@
 				 				</div>
 				 		    </div>
 							<div class="mui-table-cell mui-col-xs-2" @tap="delItem(index)">
-								<span style="position: absolute; top: 35%;display: inline-block;right: 5px;color: darkred;" class="mui-icon mui-icon-minus-filled"></span>
+								<span style="position: absolute; top: 35%;display: inline-block;right: 5px;color: red;" class="mui-icon mui-icon-minus-filled"></span>
 							</div>
 				 		</div>
 				 	</a>
@@ -270,14 +270,14 @@
 					checkNum:function(index,isRed,inNum){
 						console.log(inNum)
 						
-						if(inNum==0 || inNum.indexOf('.')!=-1){
+						if(inNum==0 || (''+inNum).indexOf('.')!=-1){
 							mui.toast('无效值，请重新输入')
 							contentData.formData.list[index].inNum=''
 						}
 						
 						if(inNum==''){
 							mui.toast('无效值，请重新输入')
-							contentData.formData.list[index].inNum=1
+							contentData.formData.list[index].inNum=''
 						}
 						
 						if(isRed==0 && inNum<0){
