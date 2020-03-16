@@ -125,7 +125,7 @@
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">出库数量</label>
-				<input type="number" v-model="formData.outNum" :placeholder="formData.maxOkNumText">
+				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.isRed,formData.outNum)" :placeholder="formData.maxOkNumText">
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
@@ -218,8 +218,12 @@
 				methods: {
 					selectItem: function() {
 						let model = {}
+						let codeList=[]
+						let itemCode=contentData.formData.itemCode
+						codeList.push(itemCode)
 						model.index_code = curPage.index_code;
-						utils.mOpenWithData("../../html/schapp_item/item_add_query.html", model);
+						model.codeList = codeList;
+						utils.mOpenWithData("../../html/schapp_item/item_add_out_query.html", model);
 					},
 					clickHcd:function(){
 						let isRed=contentData.formData.isRed;
@@ -237,7 +241,29 @@
 					},
 					getMaxOkNum:function(){
 						return '最大可出库数量:'+this.formData.maxOkNum
-					}
+					},
+					checkNum:function(isRed,outNum){
+						if(outNum==0 || outNum.indexOf('.')!=-1){
+							mui.toast('无效值，请重新输入')
+							contentData.formData.outNum=''
+						}
+						
+						if(outNum==''){
+							mui.toast('无效值，请重新输入')
+							contentData.formData.outNum=1
+						}
+						
+						if(outNum>contentData.formData.maxOkNum){
+							mui.toast('超出最大库存数量')
+							contentData.formData.outNum=''
+						}
+						
+						if(isRed==0 && outNum<0){
+							mui.toast('当前为非红冲单，数量不可为负')
+							contentData.formData.outNum=''
+						}else{//红冲单可以为负数
+						}
+					},
 				},
 			});
 			var curPage = {};
@@ -251,8 +277,8 @@
 				window.addEventListener('itemAdd', function(data) {
 					console.log("data: " + JSON.stringify(data.detail));
 					contentData.formData.itemCode=data.detail.itemCode;
-					contentData.formData.itemType=data.detail.itemType;
-					contentData.formData.itemProp=data.detail.itemProp;
+					contentData.formData.itemType=data.detail.itemTypeCode;
+					contentData.formData.itemProp=data.detail.itemPropCode;
 					contentData.formData.itemName=data.detail.itemName;
 					contentData.formData.itemBrand=data.detail.itemBrand;
 					contentData.formData.itemModel=data.detail.itemModel;
@@ -274,7 +300,7 @@
 					itemName:data.itemName,
 					itemBrand:data.itemBrand,
 					itemModel:data.itemModel,
-					outNum:data.outNum,
+					outNum:data.outNum*1,
 					putArea:data.putArea,
 					isRed:data.isRed,
 					note:data.note,

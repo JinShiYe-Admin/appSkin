@@ -213,6 +213,9 @@
 								console.log("item: " + JSON.stringify(item));
 								if(item.inNum==''||item.inPrice==''){
 									error=true;
+								}else{
+									item.inNum=item.inNum*1
+									item.inPrice=item.inPrice*1
 								}
 							})
 							console.log("item: " + error);
@@ -249,7 +252,7 @@
 						})
 						model.index_code = curPage.index_code;
 						model.codeList = codeList;
-						utils.mOpenWithData("../../html/schapp_item/item_add_query.html", model);
+						utils.mOpenWithData("../../html/schapp_item/item_add_in_query.html", model);
 					},
 					delItem:function(index){
 						let list =[].concat(contentData.formData.list);
@@ -308,8 +311,8 @@
 					console.log("data: " + JSON.stringify(data.detail));
 					let obj={
 						itemCode:data.detail.itemCode,
-						itemType:data.detail.itemType,
-						itemProp:data.detail.itemProp,
+						itemType:data.detail.itemTypeCode,
+						itemProp:data.detail.itemPropCode,
 						itemName:data.detail.itemName,
 						itemBrand:data.detail.itemBrand,
 						itemModel:data.detail.itemModel,
