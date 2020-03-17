@@ -120,17 +120,17 @@
 			<div class="double-line"></div>
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">领用人</label>
-				<input type="text" v-model="formData.receiveManName" placeholder="请输入领用人" :readonly="canInput">
+				<input type="text" maxlength="20" v-model="formData.receiveManName" placeholder="请输入领用人" :readonly="canInput">
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">出库数量</label>
-				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.isRed,formData.outNum)" :placeholder="formData.maxOkNumText" :readonly="canInput">
+				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.isRed,formData.outNum)" onkeyup = "value=value.replace(/[^\d]/g,'')" :placeholder="formData.maxOkNumText" :disabled="canInput">
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">放置地点</label>
-				<input type="text" v-model="formData.putArea" placeholder="请输入放置地点" :readonly="canInput">
+				<input type="text" maxlength="50" v-model="formData.putArea" placeholder="请输入放置地点" :readonly="canInput">
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
@@ -174,23 +174,29 @@
 				el: "#tempHead",
 				data: {
 					showBack: 0,
-					headTitle: ''
+					headTitle: '',
+					canClick:true,//防止提交按钮多次点击
 				},
 				methods: {
 					submit:function(){
-						let formData=contentData.formData;
-						console.log(contentData.formData.isRed)
-						if(formData.itemCode=='' ||formData.itemType=='' ||formData.itemProp=='' 
-						||formData.itemName=='' ||formData.itemBrand=='' ||formData.itemModel=='' ){
-							mui.toast('请先选择出库物品')
-						}else if(formData.receiveManName==''){
-							mui.toast('请输入领用人')
-						}else if(formData.outNum>formData.maxOkNum){
-							mui.toast('超出最大可出库数量'+formData.maxOkNum)
-						}else if(formData.putArea==''){
-							mui.toast('请输入放置地点')
-						}else{
-							submitData(contentData.formData)
+						if(this.canClick){
+							let formData=contentData.formData;
+							console.log(contentData.formData.isRed)
+							if(formData.itemCode=='' ||formData.itemType=='' ||formData.itemProp=='' 
+							||formData.itemName=='' ||formData.itemBrand=='' ||formData.itemModel=='' ){
+								mui.toast('请先选择出库物品')
+							}else if(formData.receiveManName==''){
+								mui.toast('请输入领用人')
+							}else if(formData.outNum>formData.maxOkNum){
+								mui.toast('超出最大可出库数量'+formData.maxOkNum)
+							}else if(formData.putArea==''){
+								mui.toast('请输入放置地点')
+							}else if(formData.note==''){
+								mui.toast('请输入备注')
+							}else{
+								this.canClick=false
+								submitData(contentData.formData)
+							}
 						}
 					}
 				}
@@ -238,26 +244,24 @@
 						return '名称:'+(this.formData.itemName?this.formData.itemName:'暂无')
 					},
 					getModel:function(){
-						return '型号 暂无此字段:'+(this.formData.itemModel?this.formData.itemModel:'暂无')
+						return '型号:'+(this.formData.itemModel?this.formData.itemModel:'暂无')
 					},
 					getMaxOkNum:function(){
 						return '最大可出库数量:'+this.formData.maxOkNum
 					},
 					checkNum:function(isRed,outNum){
-						console.log(outNum)
-						if(outNum==0 || (''+outNum).indexOf('.')!=-1){
-							mui.toast('无效值，请重新输入')
-							contentData.formData.outNum=''
-						}
+						// if(outNum==0 || (''+outNum).indexOf('.')!=-1){
+						// 	mui.toast('无效值，请重新输入')
+						// 	contentData.formData.outNum=''
+						// }
 						
-						if(outNum==''){
-							mui.toast('无效值，请重新输入')
-							contentData.formData.outNum=''
-						}
-						
+						// if(outNum==''){
+						// 	mui.toast('无效值，请重新输入')
+						// 	this.formData.outNum=''
+						// }
 						if(outNum>contentData.formData.maxOkNum){
 							mui.toast('超出最大库存数量')
-							contentData.formData.outNum=''
+							contentData.formData.outNum=contentData.formData.maxOkNum
 						}
 						
 						if(isRed==0 && outNum<0){
@@ -314,12 +318,13 @@
 				postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/addHandOut ', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
-						 mui.toast(data.msg);
+						 mui.toast('保存成功');
 						 setTimeout(function(){
 							 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 							 mui.back()
 						 },1500)
 					} else {
+						this.canClick=true
 						mui.toast(data.msg);
 					}
 					events.closeWaiting();

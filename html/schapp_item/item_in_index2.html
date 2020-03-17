@@ -215,14 +215,25 @@
 			    background-color: #00CFBD;
 				border: #00CFBD;
 			}
+
+
+			.mui-card .mui-control-content {
+				padding: 10px;
+			}
 			
-			.hcd{
-				margin:0 0 0  3px;
-				background-color: red;
-				border-radius: 0.9375rem;
-				color: #FFFFFF;
-				padding: 0.3125rem;
-				font-size: 0.75rem;
+			.mui-control-content {
+				height: 650px;
+			}
+			
+			.line2 {
+				right: 0;
+				bottom: 0;
+				left: 0;
+				height: 1px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #e4e4e4;
 			}
 		</style>
 	</head>
@@ -234,28 +245,60 @@
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
+			<div style="padding: 10px 10px;z-index: 3;background-color: #FFFFFF;">
+				<div id="segmentedControl" class="mui-segmented-control" style="background-color: #FFFFFF;">
+					<a id="cgrk" class="mui-control-item mui-active" href="#item1">采购入库</a>
+					<a id="ghrk" class="mui-control-item" href="#item2">归还入库</a>
+					<a id="bsrk" class="mui-control-item" href="#item3">报损入库</a>
+				</div>
+			</div>
+			<div class="line2"></div>
+			<div v-cloak id="item1" class="mui-scroll-wrapper mui-control-content mui-active">
 				<div v-cloak class="mui-scroll">
-					<template v-cloak v-if="sgckList.length>0">
+					<template v-cloak v-if="cgrkList.length>0">
 						<ul v-cloak class="mui-table-view">
-							<li v-cloak v-for="model in sgckList" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li v-cloak v-for="model in cgrkList" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right"> <!-- mui-navigate-right -->
 									<div class="mui-table">
 									    <div class="mui-table-cell mui-col-xs-10">
-									        <div class="mui-ellipsis" style="height: 1.8125rem;">单号:{{model.outCode}}<span v-if="model.isRed==1" class="hcd">红冲单</span></div>
+									        <div class="mui-ellipsis">单号:{{model.inCode}}</div>
 											<div class="mui-row" style="text-align: left;">
-														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-															<p class="mui-h5 mui-ellipsis">名称:{{model.itemName}}</p>
+												<template v-if="model.items.length>2">
+														<div style="margin-top: 0.312 5rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">名称:{{model.items[0].itemName}}</p>
 														</div>
-														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-															<p class="mui-h5 mui-ellipsis">型号:{{model.itemModel}}</p>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">型号:{{model.items[0].itemModel}}</p>
 														</div>
-														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-															<p class="mui-h5 mui-ellipsis">领用人:{{model.receiveManName}}</p>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">数量:{{model.items[0].inNum}}</p>
 														</div>
-														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-															<p class="mui-h5 mui-ellipsis">数量:{{model.outNum}}</p>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">名称:{{model.items[1].itemName}}</p>
 														</div>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">型号:{{model.items[1].itemModel}}</p>
+														</div>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">数量:{{model.items[1].inNum}}</p>
+														</div>
+														<div style="margin-top: -2px;margin-left: 2px;" class="mui-table-cell-1 mui-col-xs-12">
+															<p class="mui-h5 mui-ellipsis">...</p>
+														</div>
+												</template>
+												<template v-else>
+													<template v-for="item in model.items">
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">名称:{{item.itemName}}</p>
+														</div>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">型号:{{item.itemModel}}</p>
+														</div>
+														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+															<p class="mui-h5 mui-ellipsis">数量:{{item.inNum}}</p>
+														</div>
+													</template>
+												</template>
 											</div>
 									    </div>
 									</div>
@@ -266,6 +309,34 @@
 					<template v-else>
 						<div></div>
 					</template>
+				</div>
+			</div>
+			<div v-cloak id="item2" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						第三个选项卡子项-1
+					</li>
+					<li class="mui-table-view-cell">
+						第三个选项卡子项-2
+					</li>
+					<li class="mui-table-view-cell">
+						第三个选项卡子项-3
+					</li>
+				</ul>
+			</div>
+			<div v-cloak class="mui-control-content mui-scroll-wrapper " id="item3">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							第三个选项卡子项-4
+						</li>
+						<li class="mui-table-view-cell">
+							第三个选项卡子项-5
+						</li>
+						<li class="mui-table-view-cell">
+							第三个选项卡子项-6
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -310,24 +381,26 @@
 							let model={};
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
-							model.title_name = '新建手工出库';
-							utils.mOpenWithData("../../html/schapp_item/item_out_add.html", model);
+							model.title_name = '新建采购入库';
+							utils.mOpenWithData("../../html/schapp_item/item_in_add.html", model);
 					}
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					sgckList: [], //手工出库数组
-					lyckList:[],//领用出库数组
-					rkType:1,//入库类型 1手工出库 2领用出库
+					cgrkList: [], //采购入库数组
+					ghrkList:[],//归还入库数组
+					bsruList:[],//报损入库数组
+					rkType:1,//入库类型 1采购入库 2归还入库 3报损入库
 				},
 				methods: {
 					clickLi: function(model) {
+						console.log(datasource.rkType)
 						console.log(JSON.stringify(model))
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/schapp_item/item_out_detail.html", model);
+						utils.mOpenWithData("../../html/schapp_item/item_in_detail.html", model);
 					},
 				}
 			});
@@ -349,9 +422,24 @@
 					events.showWaiting();
 					pageIndex = 1;
 					flagRef = 0;
-					datasource.sgckList = [];
+					datasource.cgrkList = [];
 					getPageDataArray();
 				});
+				
+				mui(".mui-segmented-control").on('tap', '.mui-control-item', function() {
+					//监听tab 点击事件 初始化图表显示
+					var id = this.getAttribute("id");
+					console.log(id)
+					if(id=='cgrk'){
+						datasource.rkType=1
+					}
+					if(id=='ghrk'){
+						datasource.rkType=2
+					}
+					if(id=='bsrk'){
+						datasource.rkType=3
+					}
+				}) 
 
 				//上拉下拉注册
 				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
@@ -364,7 +452,7 @@
 							pageIndex = 1;
 							flagRef = 0;
 							events.showWaiting();
-							datasource.sgckList = [];
+							datasource.cgrkList = [];
 							getPageDataArray();
 							setTimeout(function() {
 								//结束下拉刷新
@@ -411,10 +499,10 @@
 
 			function getPageDataArray() {
 					comData = {
-						outCode:'',
-						receiveManName:'',
-						outManCode:personal.user_code,
-						outManName:'',
+						inCode:'',
+						inManCode:personal.user_code,
+						inManName:'',
+						purchasingManName:'',
 						beginTime:'19700101',
 						endTime:'20501231',
 						page_number: pageIndex, //当前页数
@@ -422,20 +510,20 @@
 						op_code:'index',
 						index_code: curPage.access.split('#')[1],
 					} 
-					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/getHandOuts', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'purchasingIn/getPurchasingIns', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							if (flagRef == 0) { //刷新
-								datasource.sgckList = data.data.list
+								datasource.cgrkList = data.data.list
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
 							} else { //加载更多
 								//合并数组
-								datasource.sgckList = datasource.sgckList.concat(data.data.list);
+								datasource.cgrkList = datasource.cgrkList.concat(data.data.list);
 								if (data.data.list.length == 0) {
 									mui.toast('已加载全部');
 								}
@@ -450,6 +538,24 @@
 					});
 			};
 			
+			
+			(function($) {
+				$('#scroll').scroll({
+					indicators: true //是否显示滚动条
+				});
+				var segmentedControl = document.getElementById('segmentedControl');
+				$('.mui-input-group').on('change', 'input', function() {
+					if (this.checked) {
+						var styleEl = document.querySelector('input[name="style"]:checked');
+						var colorEl = document.querySelector('input[name="color"]:checked');
+						if (styleEl && colorEl) {
+							var style = styleEl.value;
+							var color = colorEl.value;
+							segmentedControl.className = 'mui-segmented-control' + (style ? (' mui-segmented-control-' + style) : '') + ' mui-segmented-control-' + color;
+						}
+					}
+				});
+			})(mui);
 		</script>
 	</body>
 

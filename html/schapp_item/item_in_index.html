@@ -216,6 +216,14 @@
 				border: #00CFBD;
 			}
 
+			.hcd{
+				margin:0 0 0  3px;
+				background-color: red;
+				border-radius: 0.9375rem;
+				color: #FFFFFF;
+				padding: 0.3125rem;
+				font-size: 0.75rem;
+			}
 		</style>
 	</head>
 
@@ -234,7 +242,7 @@
 								<a class="mui-navigate-right"> <!-- mui-navigate-right -->
 									<div class="mui-table">
 									    <div class="mui-table-cell mui-col-xs-10">
-									        <div class="mui-ellipsis">单号:{{model.inCode}}</div>
+									        <div class="mui-ellipsis" style="height: 1.8125rem;">单号:{{model.inCode}}<span v-if="model.isRed==1" class="hcd">红冲单</span></div>
 											<div class="mui-row" style="text-align: left;">
 												<template v-if="model.items.length>2">
 														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">

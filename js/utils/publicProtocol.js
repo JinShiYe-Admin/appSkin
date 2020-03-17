@@ -62,7 +62,7 @@ var getUnReadCut = function(access,url, callback) {
 	//获取权限
 	postDataEncry(url, {}, comData2, 0, function(
 		data2) {
-		console.log('权限permissionByPosition:' + JSON.stringify(data2));
+		console.log('获取未读数 '+url+'：' + JSON.stringify(data2));
 		callback(data2);
 	});
 }

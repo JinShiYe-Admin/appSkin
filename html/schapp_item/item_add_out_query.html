@@ -356,6 +356,7 @@
 						if(datasource.inputText==''){
 							mui.toast('请先输入搜索内容')
 						}else{
+							pageIndex=1;
 							getPageDataArray(datasource.inputText)
 						}
 					},
@@ -364,14 +365,16 @@
 			
 			function inputChange(input){
 				if(input.value==''){
+					pageIndex=1;
 					getPageDataArray('');
 				}
 			}
 
 			function showToast(model){
-				var btnArray = ['否', '是'];
+				var btnArray = ['是', '否'];
 				mui.confirm('确认选择 '+model.itemName+'(编号:'+model.itemCode+') 出库吗？', '提示', btnArray, function(e) {
-					if (e.index == 1) {
+					console.log(e.index)
+					if (e.index == 0) {
 						setTimeout(function(){
 							 mui.fire(plus.webview.currentWebview().opener(), 'itemAdd', model);
 							 mui.back()
@@ -400,7 +403,7 @@
 							//console.log("上拉加载更多");
 							if (pageIndex <= totalPageCount) {
 								events.showWaiting();
-								getPageDataArray();
+								getPageDataArray(datasource.inputText);
 								setTimeout(function() {
 									//结束下拉刷新
 									self.endPullUpToRefresh();
@@ -437,7 +440,7 @@
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
 							pageIndex++;
-							datasource.dataList = datasource.dataList.concat(data.data.list);
+							datasource.dataList = data.data.list;
 							if (data.data.list.length == 0) {
 								mui.toast('暂无数据');
 							}
