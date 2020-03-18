@@ -140,7 +140,7 @@
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
 										<!-- <p class="mui-h5 mui-ellipsis">数量:{{model.okNum}}</p> -->
 										<div v-cloak class="mui-input-row">
-											<input type="number" @blur="checkNum(index,formData.isRed,formData.list[index].inNum)" v-model="formData.list[index].inNum" onkeyup = "value=value.replace(/[^\d]/g,'')" placeholder="输入入库数量">
+											<input type="number" @blur="checkNum(index,formData.isRed,formData.list[index].inNum)" v-model="formData.list[index].inNum"  placeholder="输入入库数量">
 										</div>
 									</div>
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-1">
@@ -148,7 +148,7 @@
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
 										<!-- <p class="mui-h5 mui-ellipsis">单价:{{model.okNum}}</p> -->
 										<div v-cloak class="mui-input-row">
-											<input type="number" @blur="checkPrice(index,formData.list[index].inPrice)" v-model="formData.list[index].inPrice"   onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')"  placeholder="输入入库单价">
+											<input type="number" @blur="checkPrice(index,formData.list[index].inPrice)" v-model="formData.list[index].inPrice"   onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1').replace(/^0{1,}/g,'')"  placeholder="输入入库单价">
 										</div>
 									</div>
 				 				</div>
@@ -271,15 +271,15 @@
 						}
 					},
 					checkNum:function(index,isRed,inNum){
-						// if(inNum==0 || (''+inNum).indexOf('.')!=-1){
-						// 	mui.toast('无效值，请重新输入')
-						// 	contentData.formData.list[index].inNum=''
-						// }
-						
-						// if(inNum==''){
-						// 	mui.toast('无效值，请重新输入')
-						// 	contentData.formData.list[index].inNum=1
-						// }
+						if(inNum==0){
+							mui.toast('无效值，请重新输入')
+							contentData.formData.list[index].inNum=''
+						}
+						console.log(inNum)
+						if(inNum==''){
+							mui.toast('无效值，请重新输入')
+							contentData.formData.list[index].inNum=1
+						}
 						
 						if(inNum>10000 || inNum<-10000){
 							mui.toast('超出数量范围限制')
@@ -294,13 +294,9 @@
 					},
 					checkPrice:function(index,inPrice){
 						console.log(inPrice)
-						if(inPrice==0 || inPrice==''){
+						if(inPrice==0){
 							mui.toast('无效值，请重新输入')
 							contentData.formData.list[index].inPrice=''
-						}
-						if(inPrice==''){
-							mui.toast('无效值，请重新输入')
-							contentData.formData.list[index].inPrice=1
 						}
 						if(inPrice>1000000 || inPrice<0){
 							mui.toast('超出单价范围限制')
@@ -342,7 +338,7 @@
 					inManCode:personal.user_code,
 					inManName: personal.user_name,
 					isRed: data.isRed,
-					note: data.note,
+					note: data.note.replace(/\n/g,'<br>'),
 					list: data.list,
 					op_code:'add',
 					index_code: curPage.index_code,
@@ -357,7 +353,7 @@
 							 mui.back()
 						 },1500)
 					} else {
-						this.canClick=true
+						tempHead.canClick=true
 						mui.toast(data.msg);
 					}
 					events.closeWaiting();

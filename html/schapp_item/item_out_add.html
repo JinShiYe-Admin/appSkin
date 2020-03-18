@@ -125,7 +125,7 @@
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">出库数量</label>
-				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.isRed,formData.outNum)" onkeyup = "value=value.replace(/[^\d]/g,'')" :placeholder="formData.maxOkNumText" :disabled="canInput">
+				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.isRed,formData.outNum)"  :placeholder="formData.maxOkNumText" :disabled="canInput">
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
@@ -250,15 +250,16 @@
 						return '最大可出库数量:'+this.formData.maxOkNum
 					},
 					checkNum:function(isRed,outNum){
-						// if(outNum==0 || (''+outNum).indexOf('.')!=-1){
-						// 	mui.toast('无效值，请重新输入')
-						// 	contentData.formData.outNum=''
-						// }
+						console.log(outNum)
+						if(outNum==0){
+							mui.toast('无效值，请重新输入')
+							contentData.formData.outNum=''
+						}
 						
-						// if(outNum==''){
-						// 	mui.toast('无效值，请重新输入')
-						// 	this.formData.outNum=''
-						// }
+						if(outNum==''){
+							mui.toast('无效值，请重新输入')
+							this.formData.outNum=1
+						}
 						if(outNum>contentData.formData.maxOkNum){
 							mui.toast('超出最大库存数量')
 							contentData.formData.outNum=contentData.formData.maxOkNum
@@ -310,7 +311,8 @@
 					outNum:data.outNum*1,
 					putArea:data.putArea,
 					isRed:data.isRed,
-					note:data.note,
+					note:data.note.replace(/\n/g,'<br>'),
+					 // note:data.note,
 					op_code:'add',
 					index_code: curPage.index_code,
 				}
@@ -324,7 +326,7 @@
 							 mui.back()
 						 },1500)
 					} else {
-						this.canClick=true
+						tempHead.canClick=true
 						mui.toast(data.msg);
 					}
 					events.closeWaiting();

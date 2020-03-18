@@ -317,7 +317,7 @@
 					<div class="double-line"></div>
 					<div v-cloak class="mui-input-row">
 						<label class="aCss" >备注</label>
-						<span style="width: 62%;float: right;margin-right: 5px;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;">{{ckdDetail.note?ckdDetail.note:'暂无'}}</span>
+						<span style="width: 62%;float: right;margin-right: 5px;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;" v-html="ckdDetail.note"></span>
 					</div>
 					<div class="line"></div>
 				</div>
@@ -395,7 +395,15 @@
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
-							datasource.ckdDetail=data.data
+							let note=data.data.note;
+							if(note){
+								let newNote=note.replace(/\n/g,'<br>')
+								data.data.note=newNote
+								datasource.ckdDetail=data.data
+							}else{
+								data.data.note='暂无'
+								datasource.ckdDetail=data.data
+							}
 						} else {
 							events.closeWaiting();
 							mui.toast(data.msg);

@@ -382,6 +382,13 @@
 					}
 				})
 			}
+			
+			$(document).keydown(function (event) {
+				        if (event.keyCode == 13) {
+							datasource.$options.methods.selectItem()
+				        }
+			        });
+			
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));

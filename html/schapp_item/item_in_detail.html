@@ -283,7 +283,7 @@
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
 						<label class="aCss" >备注</label>
-						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;">{{rudDetail.note?rudDetail.note:'暂无'}}</span>
+						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;" v-html="rudDetail.note"></span>
 					</div>
 					<div class="double-line"></div>
 					<div v-cloak class="mui-input-row">
@@ -365,7 +365,15 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = '入库单详情';
-				datasource.rudDetail=curPage
+				let note=curPage.note;
+				if(note){
+					let newNote=note.replace(/\n/g,'<br>')
+					curPage.note=newNote
+					datasource.rudDetail=curPage
+				}else{
+					curPage.note='暂无'
+					datasource.rudDetail=curPage
+				}
 				
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
