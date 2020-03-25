@@ -55,17 +55,17 @@
 	<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/libs/encryption/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
-	<script src='../../js/libs/crypto-js/require.js'></script>
-	<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
-	<script src='../../js/libs/jquery.js'></script>
-	<script src='../../js/libs/encryption/sortSign.js'></script>
+	<script src="../../js/libs/crypto-js/require.js"></script>
+	<script src="../../js/libs/encryption/signHmacSHA1.js"></script>
+	<script src="../../js/libs/jquery.js"></script>
+	<script src="../../js/libs/encryption/sortSign.js"></script>
 	<!---->
 	
 	<script src="../../js/utils/publicProtocol.js"></script>
 	<script src="../../js/utils/store.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/events.js"></script>
-	<script src='../../js/utils/md5.js'></script>
+	<script src="../../js/utils/md5.js"></script>
 	<script type="text/javascript">
 		//		$(function() {
 		//			
@@ -75,15 +75,33 @@
 		});
 		var tempModel = {};
 		var loginFlag = 0; //0自动登录，1不自动登录
+		
 		mui.plusReady(function() {
 			tempModel = {
-				uuid: plus.device.uuid,
-				appid: plus.runtime.appid
+				uuid: '',
+				appid: ''
 			}
+			plus.device.getInfo({
+				success:function(info){
+					let id=''
+					if(info.uuid){
+						id=info.uuid.split(",")[0]
+					}
+					if(id){
+						tempModel.uuid=id
+						tempModel.appid=id
+					}
+					console.log('getDeviceInfo success: '+JSON.stringify(info));
+					console.log('tempModel: '+JSON.stringify(tempModel));
+				} 
+			});
+			
 			if(tempModel.uuid == '') {
 				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
-				tempModel.uuid = publicPar.uuid;
-				tempModel.appid = publicPar.appid;
+				if(publicPar){
+					tempModel.uuid = publicPar.uuid;
+					tempModel.appid = publicPar.appid;
+				}
 			}
 			console.log('plus.device.uuid:' + tempModel.uuid);
 			console.log('plus.runtime.appid:' + tempModel.appid);

@@ -29,43 +29,68 @@
 				margin-top: -40px;
 				margin-right: -10px;
 			}
+
 			.mui-card-content-inner {
-			    padding: 0px;
+				padding: 0px;
 			}
+
 			.mui-grid-view.mui-grid-9 {
 				border-top: 0px solid #eee;
 				border-left: 0px solid #eee;
-			    background-color: white;
+				background-color: white;
 			}
-			.mui-card .mui-table-view {
-			    border-radius: 0px;
+
+			.mui-card {
+				font-size: 14px;
+				position: relative;
+				overflow: hidden;
+				margin: 0px;
+				border-radius: 2px;
+				background-color: #fff;
+				background-clip: padding-box;
+				box-shadow: 0 0px 0px rgba(0, 0, 1, .3);
+			}
+
+			.mui-card-header:after {
+				height: 0px;
+			}
+
+			.mui-card-header {
+				color: black;
+				font-size: 14px;
+			}
+
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				font-size: 12px;
 			}
 		</style>
 	</head>
 
-	<body style="background-color: #EBEBEB;">
+	<body style="background-color: white;">
 		<header class="mui-bar mui-bar-nav" id="tempHead">
 			<h1 class="mui-title">{{headTitle}}</h1>
 		</header>
-		<div v-cloak class="mui-content" id="contentData">
+		<div v-cloak class="mui-content" id="contentData" style="background-color: white;">
 			<div v-cloak class="mui-card" v-for="(model,index) in gridList">
-				<div v-cloak class="mui-card-header">{{model.name}}</div>
+				<div v-cloak class="mui-card-header">{{model.name}} ▼ </div>
 				<div v-cloak class="mui-card-content">
 					<div v-cloak class="mui-card-content-inner">
 						<template v-if="model.childList.length>0"><!-- 如果有子菜单 -->
-							<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9">
-								<li v-cloak v-for="(childModel,childIndex) in model.childList" @tap="clickFunction(childModel)" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-										<span class="mui-icon mui-icon-home"></span>
-										<div class="mui-media-body">{{childModel.name}}</div>
+							<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+								<li v-for="(childModel,childIndex) in model.childList" @tap="clickFunction(childModel)" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
+									<a href="#">
+										<img class="circular-square" src='../../img/homeSchool/schoolPage7.png' />
+										<div class="mui-media-body divNameCss">{{childModel.name}}</div>
 									</a>
 								</li>
 							</ul>
 						</template>
 						<template v-if="model.childList.length==0"><!-- 如果没有子菜单 -->
-							<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9">
-								<li v-cloak @tap="clickFunction(model)" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
-										<span class="mui-icon mui-icon-home"></span>
-										<div class="mui-media-body">{{model.name}}</div>
+							<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+								<li v-cloak @tap="clickFunction(model)" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
+									<a href="#">
+										<img class="circular-square" src='../../img/homeSchool/schoolPage7.png' />
+										<div class="mui-media-body divNameCss">{{model.name}}</div>
 									</a>
 								</li>
 							</ul>
