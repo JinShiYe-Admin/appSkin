@@ -216,32 +216,40 @@
 				border: #00CFBD;
 			}
 			
-			.mui-input-row label {
-			    line-height: 1.1;
-			    float: right;
-			    width: 15%;
-				margin:0.3125rem 1% 0.3125rem 1%;
+			.line {
+				right: 0;
+				bottom: 0;
+				left: 0;
+				height: 1px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #e4e4e4;
+			}
+			
+			.double-line{
+				height: 10px;
+				background-color: #EAEAEA;
+			}
+			.green-line{
+				height: 2px;
+				margin: 0 2%;
 				background-color: #00CFBD;
-				color: #FFFFFF;
-				height: 40px;
-				border-radius: 0.5rem;
-			    padding: 8px 18px;
 			}
 			
-			.mui-input-row label~input {
-			    float: left;
-			    width: 82%;
-				margin:0.3125rem 0 0.3125rem 1%;
-			    margin-bottom: 0;
-				border-radius: 0.5rem;
-			    padding-left: 10px;
-				background-color: #F1F1F2;
-			    border: 0;
+			.aCss {
+				font-size: 15px;
+				color: #333;
+				width: 5rem;
 			}
 			
-			::-webkit-input-placeholder { /* WebKit browsers */
-			  font-size: 14px;
+			.mui-input-row label~input,.mui-input-row label~select, .mui-input-row label~textarea ,
+			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+				color: #999;
+				/* placeholder字体大小  */
+				font-size: 14px;
 			}
+			
 		</style>
 	</head>
 
@@ -250,37 +258,68 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
-		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0;">
-			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;background-color: #FFFFFF;">
 				<div v-cloak class="mui-scroll">
-					<div v-cloak class="mui-input-row" style="background-color: #FFFFFF;">
-						<label @tap="selectItem"><span class="mui-icon mui-icon-search"></span></label>
-						<input v-model="inputText" oninput="inputChange(this)" type="text" placeholder="输入名称或编号进行搜索">
+					<div v-cloak class="mui-input-row" style="margin-top: 0.425rem;">
+						<label class="aCss" >出库单号</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.outCode" readonly>
 					</div>
-					<template v-cloak v-if="dataList.length>0">
-						<ul v-cloak class="mui-table-view">
-							<li v-cloak v-for="model in dataList" class="mui-table-view-cell" @tap="clickLi(model)">
-								<a class="mui-navigate-right"> <!-- mui-navigate-right -->
-									<div class="mui-table">
-									    <div class="mui-table-cell mui-col-xs-10">
-									        <div class="mui-ellipsis">{{model.itemName}}(编号:{{model.itemCode}})</div>
-											<div class="mui-row" style="text-align: left;">
-														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-															<p class="mui-h5 mui-ellipsis">型号:{{model.itemType}}</p>
-														</div>
-														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-															<p class="mui-h5 mui-ellipsis">库存:{{model.okNum}}</p>
-														</div>
-											</div>
-									    </div>
-									</div>
-								</a>
-							</li>
-						</ul>
-					</template> 
-					<template v-else>
-						<div></div>
-					</template>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >出库人</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.outManName" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >领用人</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.receiveManName" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >放置地点</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.putArea" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >出库时间</label>
+						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;">{{ckdDetail.outTime}}</span>
+					</div>
+					<div class="double-line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >出库物品明细</label>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-table">
+						<div class="mui-table-cell mui-col-xs-12">
+							<div class="mui-row" style="text-align: left;margin: 0 0 0 1.25rem;">
+								<div style="margin-top: 0.325rem;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">编号 : {{ckdDetail.itemCode}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">名称 : {{ckdDetail.itemName}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">型号 : {{ckdDetail.itemModel}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">数量 : {{ckdDetail.outNum}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">类型 : {{ckdDetail.itemType}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">属性 : {{ckdDetail.itemProp}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="double-line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >备注</label>
+						<span style="width: 62%;float: right;margin-right: 5px;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;" v-html="ckdDetail.note"></span>
+					</div>
+					<div class="line"></div>
 				</div>
 			</div>
 		</div>
@@ -313,87 +352,25 @@
 			var curPage = {};
 			var pageIndex = 1; //请求数据页面
 			var totalPageCount; //总页码
+			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
 					titleName: '',
 				},
-				methods:{
-				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					dataList: [], //手工出库数组
-					inputText:'',//输入的搜索内容
-				},
-				methods: {
-					clickLi: function(model) {
-						console.log(JSON.stringify(model))
-						let code=model.itemCode;
-						let codeList=curPage.codeList
-						if(model.okNum>0){
-							if(codeList.length>0){
-								let isRepeat=false;
-								codeList.map(function(item){
-									if(code==item){
-										isRepeat=true;
-									}
-								})
-								if(isRepeat){
-									mui.toast('物品编号重复，请重新选择物品')
-								}else{
-									 showToast(model)
-								}
-							}else{
-								showToast(model)
-							}
-						}else{
-							mui.toast('该物品库存为0，无法出库')
-						}
-					},
-					selectItem:function(){
-						if(datasource.inputText==''){
-							mui.toast('请先输入搜索内容')
-						}else{
-							pageIndex=1;
-							getPageDataArray(datasource.inputText)
-						}
-					},
+					ckdDetail: [], //库单详情
 				}
 			});
-			
-			function inputChange(input){
-				if(input.value==''){
-					pageIndex=1;
-					getPageDataArray('');
-				}
-			}
 
-			function showToast(model){
-				var btnArray = ['是', '否'];
-				mui.confirm('确认选择 '+model.itemName+'(编号:'+model.itemCode+') 出库吗？', '提示', btnArray, function(e) {
-					console.log(e.index)
-					if (e.index == 0) {
-						setTimeout(function(){
-							 mui.fire(plus.webview.currentWebview().opener(), 'itemAdd', model);
-							 mui.back()
-						},300)
-					}
-				})
-			}
-			
-			$(document).keydown(function (event) {
-				        if (event.keyCode == 13) {
-							datasource.$options.methods.selectItem()
-				        }
-			        });
-			
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				tempVue.titleName = '物品查询';
-
+				tempVue.titleName = '出库单详情';
+				
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -402,58 +379,30 @@
 					deceleration: deceleration
 				});
 				
-				//上拉下拉注册
-				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
-					up: {
-						callback: function() {
-							var self = this;
-							//console.log("上拉加载更多");
-							if (pageIndex <= totalPageCount) {
-								events.showWaiting();
-								getPageDataArray(datasource.inputText);
-								setTimeout(function() {
-									//结束下拉刷新
-									self.endPullUpToRefresh();
-									if (mui(".mui-table-view-cell").length < 10) {
-										mui(".mui-pull-loading")[0].innerHTML = "";
-									}
-								}, 1000);
-							} else {
-								//结束下拉刷新
-								self.endPullUpToRefresh();
-								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-							}
-						}
-					}
-				});
-
 				events.showWaiting();
 				// 获取数据
-				getPageDataArray('');
+				getPageDataArray(curPage.handOutId)
 			});
 
 
-			function getPageDataArray(inputText) {
+			function getPageDataArray(id) {
 					comData = {
-						itemCodeName:inputText,
-						page_number: pageIndex, //当前页数
-						page_size: 10, //每页记录数
+						handOutId:id,
 						op_code:'index',
 						index_code: curPage.index_code,
 					} 
-					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'query/getItemCodes4App', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/getHandOutById', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
-							totalPageCount = data.data.total_page;
-							pageIndex++;
-							// datasource.dataList = data.data.list;
-							datasource.dataList = datasource.dataList.concat(data.data.list);
-							if (data.data.list.length == 0) {
-								mui.toast('暂无数据');
-							}
-							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-								mui(".mui-pull-loading")[0].innerHTML = "";
+							let note=data.data.note;
+							if(note){
+								let newNote=note.replace(/\n/g,'<br>')
+								data.data.note=newNote
+								datasource.ckdDetail=data.data
+							}else{
+								data.data.note='暂无'
+								datasource.ckdDetail=data.data
 							}
 						} else {
 							events.closeWaiting();

@@ -448,7 +448,8 @@
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							console.log(pageIndex)
-							datasource.dataList = data.data.list;
+							// datasource.dataList = data.data.list;
+							datasource.dataList = datasource.dataList.concat(data.data.list);
 							if (data.data.list.length == 0) {
 								mui.toast('暂无数据');
 							}

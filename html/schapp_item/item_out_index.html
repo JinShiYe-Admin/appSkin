@@ -224,6 +224,44 @@
 				padding: 0.3125rem;
 				font-size: 0.75rem;
 			}
+			
+			.green{
+				margin:0 0 0  3px;
+				background-color: #00CFBD;
+				border-radius: 0.9375rem;
+				color: #FFFFFF;
+				padding: 0.3125rem;
+				font-size: 0.75rem;
+			}
+			
+			.mui-dtpicker-header button:last-child {
+			    background-color: #00CFBD;
+				border: #00CFBD;
+			}
+			
+			
+			.mui-card .mui-control-content {
+				padding: 10px;
+			}
+			
+			.mui-control-content {
+				min-height: 666px;
+			}
+			
+			.line2 {
+				right: 0;
+				bottom: 0;
+				left: 0;
+				height: 1px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #e4e4e4;
+			}
+			
+			.tab-line{
+				border-bottom: 2px solid #00CFBD !important;
+			}
 		</style>
 	</head>
 
@@ -234,7 +272,14 @@
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
+			<div style="padding: 10px 0px 0;z-index: 3;background-color: #FFFFFF;">
+				<div id="segmentedControl" class="mui-segmented-control" style="background-color: #FFFFFF;">
+					<a id="cgck" class="mui-control-item mui-active tab-line" href="#item1">手工出库</a>
+					<a id="lyck" class="mui-control-item" href="#item2">领用出库</a>
+				</div>
+			</div>
+			<div class="line2"></div>
+			<div v-cloak id="item1" class="mui-scroll-wrapper mui-control-content mui-active" style="margin-top: 1px;">
 				<div v-cloak class="mui-scroll">
 					<template v-cloak v-if="sgckList.length>0">
 						<ul v-cloak class="mui-table-view">
@@ -268,6 +313,40 @@
 					</template>
 				</div>
 			</div>
+			<div v-cloak id="item2" class="mui-scroll-wrapper mui-control-content" style="margin-top: 1px;">
+				<div v-cloak class="mui-scroll">
+					 <template v-cloak v-if="lyckList.length>0">
+					 	<ul v-cloak class="mui-table-view">
+					 		<li v-cloak v-for="model in lyckList" class="mui-table-view-cell" @tap="clickLi(model)">
+					 			<a class="mui-navigate-right"> <!-- mui-navigate-right -->
+					 				<div class="mui-table">
+					 				    <div class="mui-table-cell mui-col-xs-10">
+					 				        <div class="mui-ellipsis" style="height: 1.8125rem;">单号:{{model.outCode?model.outCode:'暂无'}}<span v-if="model.isOut==1" class="green">已出库</span><span v-if="model.isOut==2" class="hcd">未出库</span></div>
+					 						<div class="mui-row" style="text-align: left;">
+												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+													<p class="mui-h5 mui-ellipsis">名称:{{model.itemName}}</p>
+												</div>
+												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+													<p class="mui-h5 mui-ellipsis">型号:{{model.itemModel}}</p>
+												</div>
+												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+													<p class="mui-h5 mui-ellipsis">领用人:{{model.receiveManName}}</p>
+												</div>
+												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+													<p class="mui-h5 mui-ellipsis">数量:{{model.outNum}}</p>
+												</div>
+					 						</div>
+					 				    </div>
+					 				</div>
+					 			</a>
+					 		</li>
+					 	</ul>
+					 </template> 
+					 <template v-else>
+					 	<div></div>
+					 </template>
+				</div>
+			</div>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
@@ -298,6 +377,10 @@
 			var curPage = {};
 			var pageIndex = 1; //请求数据页面
 			var totalPageCount; //总页码
+			
+			var lyck_pageIndex = 1; //领用出库请求数据页面
+			var lyck_totalPageCount; //领用出库总页码
+			
 			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
@@ -310,8 +393,13 @@
 							let model={};
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
-							model.title_name = '新建手工出库';
-							utils.mOpenWithData("../../html/schapp_item/item_out_add.html", model);
+							if(datasource.ckType==1){
+								model.title_name = '新建手工出库';
+								utils.mOpenWithData("../../html/schapp_item/item_out_add.html", model);
+							}else if(datasource.ckType==2){
+								model.title_name = '新建领用出库';
+								// utils.mOpenWithData("../../html/schapp_item/item_in_add.html", model);
+							}
 					}
 				}
 			});
@@ -320,14 +408,18 @@
 				data: {
 					sgckList: [], //手工出库数组
 					lyckList:[],//领用出库数组
-					rkType:1,//入库类型 1手工出库 2领用出库
+					ckType:1,//入库类型 1手工出库 2领用出库
+					canGetData:true,//是否允许获取数据，第一次点击其他tab栏允许，再次点击不允许
 				},
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/schapp_item/item_out_detail.html", model);
+						if(datasource.ckType==1){
+							utils.mOpenWithData("../../html/schapp_item/item_out_detail.html", model);
+						}else if(datasource.ckType==2){
+						}
 					},
 				}
 			});
@@ -351,7 +443,27 @@
 					flagRef = 0;
 					datasource.sgckList = [];
 					getPageDataArray();
+					//TODO ???????????????????????
 				});
+				
+				mui(".mui-segmented-control").on('tap', '.mui-control-item', function() {
+					var id = this.getAttribute("id");
+					$('#cgck').removeClass("tab-line")
+					$('#lyck').removeClass("tab-line")
+					$('#'+id).addClass("tab-line")
+					if(id=='cgck'){
+						datasource.rkType=1
+						tempVue.showAdd = true
+					}else if(id=='lyck'){
+						datasource.rkType=2
+						tempVue.showAdd = false
+						if(datasource.canGetData){
+							datasource.canGetData=false
+							events.showWaiting();
+							getLyckPageDataArray();
+						}
+					}
+				}) 
 
 				//上拉下拉注册
 				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
@@ -361,11 +473,19 @@
 							// document.getElementById('list-container').innerHTML = "";
 							var self = this;
 							//console.log("下拉刷新");
-							pageIndex = 1;
 							flagRef = 0;
 							events.showWaiting();
-							datasource.sgckList = [];
-							getPageDataArray();
+							if(datasource.rkType==1){
+								pageIndex = 1;
+								totalPageCount = 1;
+								datasource.sgckList = [];
+								getPageDataArray();	
+							}else if(datasource.rkType==2){
+								lyck_pageIndex = 1;
+								lyck_totalPageCount = 1;
+								datasource.lyckList = [];
+								getLyckPageDataArray();
+							}
 							setTimeout(function() {
 								//结束下拉刷新
 								self.endPullDownToRefresh();
@@ -379,7 +499,11 @@
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
 								events.showWaiting();
-								getPageDataArray();
+								if(datasource.rkType==1){
+									getPageDataArray();	
+								}else if(datasource.rkType==2){
+									getLyckPageDataArray();
+								}
 								setTimeout(function() {
 									//结束下拉刷新
 									self.endPullUpToRefresh();
@@ -450,6 +574,48 @@
 					});
 			};
 			
+			function getLyckPageDataArray() {
+					comData = {
+						outCode:'',
+						receiveApplyCode:'',
+						receiveManName:'',
+						outManCode:personal.user_code,
+						outManName:'',
+						isOut:0,
+						beginTime:'19700101',
+						endTime:'20501231',
+						page_number: lyck_pageIndex, //当前页数
+						page_size: 10, //每页记录数
+						op_code:'index',
+						index_code: curPage.access.split('#')[1],
+					} 
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'receiveOut/getReceiveOuts', {}, comData, 2, function(data) {
+						events.closeWaiting();
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
+							totalPageCount = data.data.total_page;
+							lyck_pageIndex++;
+							if (flagRef == 0) { //刷新
+								datasource.lyckList = data.data.list
+								if (data.data.list.length == 0) {
+									mui.toast('暂无数据');
+								}
+							} else { //加载更多
+								//合并数组
+								datasource.lyckList = datasource.lyckList.concat(data.data.list);
+								if (data.data.list.length == 0) {
+									mui.toast('已加载全部');
+								}
+							}
+							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+								mui(".mui-pull-loading")[0].innerHTML = "";
+							}
+						} else {
+							events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					});
+			};
 		</script>
 	</body>
 

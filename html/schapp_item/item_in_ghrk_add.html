@@ -25,6 +25,10 @@
 				width: 5rem;
 			}
 			
+			.aCss.pro {
+				width: 8rem;
+			}
+			
 			.icon-right {
 				position: fixed;
 				float: right;
@@ -114,24 +118,19 @@
 					<label class="aCss">物品信息</label>
 					<input type="text"  v-model="getName()"  readonly>
 					<input type="text" v-model="getModel()" readonly>
-					<input type="text" v-model="getMaxOkNum()" readonly>
 				</div>
 			</template>
 			<div class="double-line"></div>
 			<div v-cloak class="mui-input-row">
-				<label class="aCss">领用人</label>
-				<input type="text" maxlength="20" v-model="formData.receiveManName" placeholder="请输入领用人" :readonly="canInput">
+				<label class="aCss">归还人</label>
+				<input type="text" maxlength="20" v-model="formData.returnManName" placeholder="请输入归还人" :readonly="canInput">
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
-				<label class="aCss">出库数量</label>
-				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.outNum)"  :placeholder="formData.maxOkNumText" :disabled="canInput">
+				<label class="aCss">入库数量</label>
+				<input type="number" v-model="formData.inNum" @blur="checkNum(formData.inNum)"  placeholder="请输入入库数量" :disabled="canInput">
 			</div>
 			<div class="line"></div>
-			<div v-cloak class="mui-input-row">
-				<label class="aCss">放置地点</label>
-				<input type="text" maxlength="50" v-model="formData.putArea" placeholder="请输入放置地点" :readonly="canInput">
-			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">备注</label>
@@ -139,9 +138,16 @@
 			</div>
 			<div class="double-line"></div>
 			<div v-cloak class="mui-input-row">
-				<label class="aCss">设为红冲单</label>
+				<label class="aCss pro">设为红冲单</label>
 				<div class="mui-switch mui-switch-mini">
-					<div class="mui-switch-handle"></div>
+					<div type="isRed" class="mui-switch-handle"></div>
+				</div>
+			</div>
+			<div class="line"></div>
+			<div v-cloak class="mui-input-row">
+				<label class="aCss pro">设为报损归还</label>
+				<div class="mui-switch mui-switch-mini">
+					<div type="inType"  class="mui-switch-handle"></div>
 				</div>
 			</div>
 			<div class="line"></div>
@@ -185,12 +191,8 @@
 							if(formData.itemCode=='' ||formData.itemType=='' ||formData.itemProp=='' 
 							||formData.itemName=='' ||formData.itemBrand=='' ||formData.itemModel=='' ){
 								mui.toast('请先选择出库物品')
-							}else if(formData.receiveManName==''){
-								mui.toast('请输入领用人')
-							}else if(formData.outNum>formData.maxOkNum){
-								mui.toast('超出最大可出库数量'+formData.maxOkNum)
-							}else if(formData.putArea==''){
-								mui.toast('请输入放置地点')
+							}else if(formData.returnManName==''){
+								mui.toast('请输入归还人姓名')
 							}else if(formData.note==''){
 								mui.toast('请输入备注')
 							}else{
@@ -207,19 +209,17 @@
 				data: {
 					canInput:true,
 					formData:{
-						receiveManName:'',
+						returnManName:'',
 						itemCode:'',
 						itemType:'',
 						itemProp:'',
 						itemName:'',
 						itemBrand:'',
 						itemModel:'',
-						outNum:'',
-						putArea:'',
+						inNum:'',
 						isRed:0,
+						inType:0,
 						note:'',
-						maxOkNumText:'请输入出库数量',
-						maxOkNum:0,
 					},
 				},
 				methods: {
@@ -238,29 +238,30 @@
 					getModel:function(){
 						return '型号:'+(this.formData.itemModel?this.formData.itemModel:'暂无')
 					},
-					getMaxOkNum:function(){
-						return '最大可出库数量:'+this.formData.maxOkNum
-					},
-					checkNum:function(outNum){
-						let isRed=contentData.formData.isRed;
-						if(outNum==0){
+					checkNum:function(inNum){
+						let isRed=contentData.formData.isRed
+						console.log(inNum)
+						if(inNum==0){
 							mui.toast('无效值，请重新输入')
-							contentData.formData.outNum=1
+							contentData.formData.inNum=1
 						}
 						
-						if(outNum==''){
+						if(inNum==''){
 							mui.toast('无效值，请重新输入')
-							this.formData.outNum=1
+							this.formData.inNum=1
 						}
-						if(outNum>contentData.formData.maxOkNum){
-							mui.toast('超出最大库存数量')
-							contentData.formData.outNum=contentData.formData.maxOkNum
+						if(inNum>10000){
+							mui.toast('超出数量范围限制')
+							contentData.formData.inNum=10000
 						}
 						
-						if(isRed==0 && outNum<0){
+						if(isRed==0 && inNum<0){
 							mui.toast('当前为非红冲单，数量不可为负')
-							contentData.formData.outNum=1
-						}else{//红冲单可以为负数
+							contentData.formData.inNum=1
+						}else{}//红冲单可以为负数
+						if(inNum<-10000){
+							mui.toast('超出数量范围限制')
+							contentData.formData.inNum=-10000
 						}
 					},
 				},
@@ -281,8 +282,6 @@
 					contentData.formData.itemName=data.detail.itemName;
 					contentData.formData.itemBrand=data.detail.itemBrand;
 					contentData.formData.itemModel=data.detail.itemModel;
-					contentData.formData.maxOkNumText='最大可出库数量:'+data.detail.okNum;
-					contentData.formData.maxOkNum=data.detail.okNum;
 					contentData.canInput=false
 				});
 			});
@@ -291,30 +290,30 @@
 			function submitData(data) {
 				events.showWaiting();
 				comData = {
-					receiveManName:data.receiveManName,
-					outManCode:personal.user_code,
-					outManName:personal.user_name,
+					returnManName:data.returnManName,
+					inManCode:personal.user_code,
+					inManName:personal.user_name,
 					itemCode:data.itemCode,
 					itemType:data.itemType,
 					itemProp:data.itemProp,
 					itemName:data.itemName,
 					itemBrand:data.itemBrand,
 					itemModel:data.itemModel,
-					outNum:data.outNum*1,
-					putArea:data.putArea,
+					inNum:data.inNum*1,
 					isRed:data.isRed,
+					inType:data.inType,
 					note:data.note.replace(/\n/g,'<br>'),
 					 // note:data.note,
 					op_code:'add',
 					index_code: curPage.index_code,
 				}
 				console.log("comData: " + JSON.stringify(comData));
-				postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/addHandOut ', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'returnIn/addReturnIn  ', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						 mui.toast('保存成功');
 						 setTimeout(function(){
-							 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+							 mui.fire(plus.webview.currentWebview().opener(), 'refreshListGhrk', {});
 							 mui.back()
 						 },1500)
 					} else {
@@ -327,17 +326,26 @@
 			
 			mui('.mui-content .mui-switch').each(function() { //循环所有toggle
 				this.addEventListener('toggle', function(event) {
-					console.log(event.detail.isActive)
-					let isActive=event.detail.isActive;
-					if(isActive){
-						contentData.formData.isRed=1
-					}else{
-						contentData.formData.isRed=0
-						if(contentData.formData.outNum<0){
-							mui.toast('当前为非红冲单，数量不可为负')
-							contentData.formData.outNum=1
+					let obj=$(this).html();
+					if(obj.indexOf('isRed')!=-1){
+						if(event.detail.isActive){
+							contentData.formData.isRed=1
+						}else{
+							contentData.formData.isRed=0
+							if(contentData.formData.inNum<0){
+								mui.toast('当前为非红冲单，数量不可为负')
+								contentData.formData.inNum=1
+							}
 						}
 					}
+					if(obj.indexOf('inType')!=-1){
+						if(event.detail.isActive){
+							contentData.formData.inType=1
+						}else{
+							contentData.formData.inType=0
+						}
+					}
+					
 				});
 			});
 		</script>

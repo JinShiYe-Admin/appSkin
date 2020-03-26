@@ -117,7 +117,7 @@
 			<div v-cloak class="mui-input-row">
 				<label class="aCss">设为红冲单</label>
 				<div class="mui-switch mui-switch-mini">
-					<div @tap="clickHcd" class="mui-switch-handle"></div>
+					<div class="mui-switch-handle"></div>
 				</div>
 			</div>
 			<div class="line"></div>
@@ -140,7 +140,7 @@
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
 										<!-- <p class="mui-h5 mui-ellipsis">数量:{{model.okNum}}</p> -->
 										<div v-cloak class="mui-input-row">
-											<input type="number" @blur="checkNum(index,formData.isRed,formData.list[index].inNum)" v-model="formData.list[index].inNum"  placeholder="输入入库数量">
+											<input type="number" @blur="checkNum(index,formData.list[index].inNum)" v-model="formData.list[index].inNum"  placeholder="输入入库数量">
 										</div>
 									</div>
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-1">
@@ -262,18 +262,12 @@
 						list.splice(index,1)
 						contentData.formData.list=list;
 					},
-					clickHcd:function(){
-						let isRed=contentData.formData.isRed;
-						if(isRed==1){
-							contentData.formData.isRed=0
-						}else{
-							contentData.formData.isRed=1
-						}
-					},
-					checkNum:function(index,isRed,inNum){
+					checkNum:function(index,inNum){
+						let isRed=contentData.formData.isRed
+						console.log(isRed)
 						if(inNum==0){
 							mui.toast('无效值，请重新输入')
-							contentData.formData.list[index].inNum=''
+							contentData.formData.list[index].inNum=1
 						}
 						console.log(inNum)
 						if(inNum==''){
@@ -281,15 +275,19 @@
 							contentData.formData.list[index].inNum=1
 						}
 						
-						if(inNum>10000 || inNum<-10000){
+						if(inNum>10000){
 							mui.toast('超出数量范围限制')
-							contentData.formData.list[index].inNum=''
+							contentData.formData.list[index].inNum=10000
 						}
 						
 						if(isRed==0 && inNum<0){
 							mui.toast('当前为非红冲单，数量不可为负')
-							contentData.formData.list[index].inNum=''
-						}else{//红冲单可以为负数
+							contentData.formData.list[index].inNum=1
+						}else{}//红冲单可以为负数
+						
+						if(inNum<-10000){
+							mui.toast('超出数量范围限制')
+							contentData.formData.list[index].inNum=-10000
 						}
 					},
 					checkPrice:function(index,inPrice){
@@ -359,6 +357,30 @@
 					events.closeWaiting();
 				});
 			}
+			
+			mui('.mui-content .mui-switch').each(function() { //循环所有toggle
+				this.addEventListener('toggle', function(event) {
+					console.log(event.detail.isActive)
+					let isActive=event.detail.isActive;
+					if(isActive){
+						contentData.formData.isRed=1
+					}else{
+						contentData.formData.isRed=0
+						let toast=false
+						contentData.formData.list.map(function(item,index){
+							console.log(JSON.stringify(item))
+							console.log(index)
+							if(item.inNum<0){
+								toast=true
+								contentData.formData.list[index].inNum=1
+							}
+						})
+						if(toast){
+							mui.toast('当前为非红冲单，数量不可为负')
+						}
+					}
+				});
+			});
 		</script>
 	</body>
 
