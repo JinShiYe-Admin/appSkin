@@ -263,58 +263,73 @@
 				<div v-cloak class="mui-scroll">
 					<div v-cloak class="mui-input-row" style="margin-top: 0.425rem;">
 						<label class="aCss" >入库单号</label>
-						<input type="text" placeholder="暂无数据" v-model="rudDetail.inCode" readonly>
+						<input type="text" placeholder="暂无数据" v-model="rkdDetail.inCode" readonly>
 					</div>
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
 						<label class="aCss" >入库人</label>
-						<input type="text" placeholder="暂无数据" v-model="rudDetail.inManName" readonly>
+						<input type="text" placeholder="暂无数据" v-model="rkdDetail.inManName" readonly>
 					</div>
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
-						<label class="aCss" >采购人</label>
-						<input type="text" placeholder="暂无数据" v-model="rudDetail.purchasingManName" readonly>
-					</div>
-					<div class="line"></div>
-					<div v-cloak  class="mui-input-row">
-						<label class="aCss" >供应商</label>
-						<input type="text" placeholder="暂无数据" v-model="rudDetail.supplierName" readonly>
+						<label class="aCss" >归还人</label>
+						<input type="text" placeholder="暂无数据" v-model="rkdDetail.returnManName" readonly>
 					</div>
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
-						<label class="aCss" >备注</label>
-						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;" v-html="rudDetail.note"></span>
+						<label class="aCss" >入库类型</label>
+						<template v-if="rkdDetail.inType==1">
+							<input type="text" placeholder="暂无数据" value="正常归还" readonly>
+						</template>
+						<template v-else>
+							<input type="text" placeholder="暂无数据" value="报损归还" readonly>
+						</template>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >入库数量</label>
+						<input type="text" placeholder="暂无数据" v-model="rkdDetail.inNum" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >入库时间</label>
+						<input type="text" placeholder="暂无数据" v-model="rkdDetail.inTime" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >出库物品明细</label>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-table">
+						<div class="mui-table-cell mui-col-xs-12">
+							<div class="mui-row" style="text-align: left;margin: 0 0 0 1.25rem;">
+								<div style="margin-top: 0.325rem;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">编号 : {{rkdDetail.itemCode}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">名称 : {{rkdDetail.itemName}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">型号 : {{rkdDetail.itemModel}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">品牌 : {{rkdDetail.itemBrand}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">类型 : {{rkdDetail.itemType}}</p>
+								</div>
+								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
+									<p v-cloak class="mui-h5 mui-ellipsis">属性 : {{rkdDetail.itemProp}}</p>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="double-line"></div>
 					<div v-cloak class="mui-input-row">
-						<label class="aCss" >入库物品明细</label>
+						<label class="aCss" >备注</label>
+						<span style="width: 62%;float: right;margin-right: 5px;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;" v-html="rkdDetail.note"></span>
 					</div>
-					<!-- <div class="green-line"></div> -->
-					<ul v-cloak class="mui-table-view">
-						<li v-cloak v-for="model in rudDetail.items" class="mui-table-view-cell">
-							<a class=""> <!-- mui-navigate-right -->
-								<div class="mui-table">
-								    <div class="mui-table-cell mui-col-xs-12">
-								        <div class="mui-ellipsis">{{model.itemName}} ({{model.itemCode}})</div>
-										<div class="mui-row" style="text-align: left;">
-												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-													<p class="mui-h5 mui-ellipsis">型号:{{model.itemModel}}</p>
-												</div>
-												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-													<p class="mui-h5 mui-ellipsis">品牌:{{model.itemBrand}}</p>
-												</div>
-												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-													<p class="mui-h5 mui-ellipsis">数量:{{model.inNum}}</p>
-												</div>
-												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-													<p class="mui-h5 mui-ellipsis">单价:{{model.inPrice}}</p>
-												</div>
-										</div>
-								    </div>
-								</div>
-							</a>
-						</li>
-					</ul>
+					<div class="line"></div>
 				</div>
 			</div>
 		</div>
@@ -357,23 +372,14 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					rudDetail: [], //入库单详情
+					rkdDetail: [], //库单详情
 				}
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				tempVue.titleName = '入库单详情';
-				let note=curPage.note;
-				if(note){
-					let newNote=note.replace(/\n/g,'<br>')
-					curPage.note=newNote
-					datasource.rudDetail=curPage
-				}else{
-					curPage.note='暂无'
-					datasource.rudDetail=curPage
-				}
+				tempVue.titleName = '归还入库详情';
 				
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -383,23 +389,42 @@
 					deceleration: deceleration
 				});
 				
+				let note=curPage.note;
+				if(note){
+					let newNote=note.replace(/\n/g,'<br>')
+					curPage.note=newNote
+					datasource.rkdDetail=curPage
+				}else{
+					curPage.note='暂无'
+					datasource.rkdDetail=curPage
+				}
+				
+				
 				// events.showWaiting();
-				// 获取数据
-				// getPageDataArray(curPage.purchasingInId)
+				// // 获取数据
+				// getPageDataArray(curPage.returnInId)
 			});
 
 
-			//获取课堂考勤列表数据  
 			// function getPageDataArray(id) {
 			// 		comData = {
-			// 			purchasingInId:id,
+			// 			returnInId:id,
 			// 			op_code:'index',
 			// 			index_code: curPage.index_code,
 			// 		} 
-			// 		postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'purchasingIn/getPurchasingInById', {}, comData, 2, function(data) {
+			// 		postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'returnIn/getReturnInById', {}, comData, 2, function(data) {
 			// 			events.closeWaiting();
 			// 			console.log(JSON.stringify(data))
 			// 			if (data.code == 0) {
+			// 				let note=data.data.note;
+			// 				if(note){
+			// 					let newNote=note.replace(/\n/g,'<br>')
+			// 					data.data.note=newNote
+			// 					datasource.rkdDetail=data.data
+			// 				}else{
+			// 					data.data.note='暂无'
+			// 					datasource.rkdDetail=data.data
+			// 				}
 			// 			} else {
 			// 				events.closeWaiting();
 			// 				mui.toast(data.msg);

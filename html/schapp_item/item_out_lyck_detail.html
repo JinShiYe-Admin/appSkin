@@ -266,9 +266,9 @@
 						<input type="text" placeholder="暂无数据" v-model="ckdDetail.outCode" readonly>
 					</div>
 					<div class="line"></div>
-					<div v-cloak class="mui-input-row">
-						<label class="aCss" >出库人</label>
-						<input type="text" placeholder="暂无数据" v-model="ckdDetail.outManName" readonly>
+					<div v-cloak class="mui-input-row" style="margin-top: 0.425rem;">
+						<label class="aCss" >领用单号</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.receiveApplyCode" readonly>
 					</div>
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
@@ -282,10 +282,15 @@
 					</div>
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
-						<label class="aCss" >出库时间</label>
-						<span style="width: 65%;float: right;word-wrap: break-word;font-size: 14px;padding: 8px 0;color: #999;">{{ckdDetail.outTime}}</span>
+						<label class="aCss" >申请数量</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.applyNum" readonly>
 					</div>
-					<div class="double-line"></div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >申请时间</label>
+						<input type="text" placeholder="暂无数据" v-model="ckdDetail.applyTime" readonly>
+					</div>
+					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
 						<label class="aCss" >出库物品明细</label>
 					</div>
@@ -303,7 +308,7 @@
 									<p v-cloak class="mui-h5 mui-ellipsis">型号 : {{ckdDetail.itemModel}}</p>
 								</div>
 								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
-									<p v-cloak class="mui-h5 mui-ellipsis">数量 : {{ckdDetail.outNum}}</p>
+									<p v-cloak class="mui-h5 mui-ellipsis">品牌 : {{ckdDetail.itemBrand}}</p>
 								</div>
 								<div style="margin-top: -2px;" class="mui-table-cell-1 mui-col-xs-12">
 									<p v-cloak class="mui-h5 mui-ellipsis">类型 : {{ckdDetail.itemType}}</p>
@@ -369,7 +374,7 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				tempVue.titleName = '出库单详情';
+				tempVue.titleName = '领用出库详情';
 				
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -379,37 +384,47 @@
 					deceleration: deceleration
 				});
 				
-				events.showWaiting();
+				let note=curPage.note;
+				if(note){
+					let newNote=note.replace(/\n/g,'<br>')
+					curPage.note=newNote
+					datasource.ckdDetail=curPage
+				}else{
+					curPage.note='暂无'
+					datasource.ckdDetail=curPage
+				}
+				
+				// events.showWaiting();
 				// 获取数据
-				getPageDataArray(curPage.handOutId)
+				// getPageDataArray(curPage.receiveAplyId)
 			});
 
 
-			function getPageDataArray(id) {
-					comData = {
-						handOutId:id,
-						op_code:'index',
-						index_code: curPage.index_code,
-					} 
-					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/getHandOutById', {}, comData, 2, function(data) {
-						events.closeWaiting();
-						console.log(JSON.stringify(data))
-						if (data.code == 0) {
-							let note=data.data.note;
-							if(note){
-								let newNote=note.replace(/\n/g,'<br>')
-								data.data.note=newNote
-								datasource.ckdDetail=data.data
-							}else{
-								data.data.note='暂无'
-								datasource.ckdDetail=data.data
-							}
-						} else {
-							events.closeWaiting();
-							mui.toast(data.msg);
-						}
-					});
-			};
+			// function getPageDataArray(id) {
+			// 		comData = {
+			// 			receiveApplyId:id,
+			// 			op_code:'index',
+			// 			index_code: curPage.index_code,
+			// 		} 
+			// 		postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'receiveApply/getReceiveApplyById', {}, comData, 2, function(data) {
+			// 			events.closeWaiting();
+			// 			console.log(JSON.stringify(data))
+			// 			if (data.code == 0) {
+			// 				let note=data.data.note;
+			// 				if(note){
+			// 					let newNote=note.replace(/\n/g,'<br>')
+			// 					data.data.note=newNote
+			// 					datasource.ckdDetail=data.data
+			// 				}else{
+			// 					data.data.note='暂无'
+			// 					datasource.ckdDetail=data.data
+			// 				}
+			// 			} else {
+			// 				events.closeWaiting();
+			// 				mui.toast(data.msg);
+			// 			}
+			// 		});
+			// };
 			
 		</script>
 	</body>
