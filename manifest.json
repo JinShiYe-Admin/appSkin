@@ -14,7 +14,7 @@
     "icons" : {
         "72" : "icon.png"
     },
-    "launch_path" : "html/login/loginIndex.html",
+    "launch_path" : "html/login/welcome.html",
     /*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
     "developer" : {
         "name" : "",
@@ -48,12 +48,13 @@
     },
     "fullscreen" : false,
     "plus" : {
-        "statusbar" : {
-            "immersed" : false
-        },
         // "statusbar" : {
-        //     "immersed" : "supportedDevice"
+        //     "immersed" : false
         // },
+        "statusbar" : {
+            "immersed" : "supportedDevice",
+            "style" : "dark"
+        },
         "splashscreen" : {
             "autoclose" : true,
             /*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
@@ -199,14 +200,14 @@
                     "iphone" : {
                         "default" : "",
                         /*iPhone3启动图片选，分辨率：320x480*/
-                        "retina35" : "C:/Users/JSY_666/Desktop/启动图/IOS/640x960.png",
+                        "retina35" : "G:/back/APP/教宝校园/启动图/IOS/640x960.png",
                         /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-                        "retina40" : "C:/Users/JSY_666/Desktop/启动图/IOS/640x1336.png",
-                        "portrait-896h@3x" : "C:/Users/JSY_666/Desktop/启动图/IOS/1242x2688.png",
-                        "portrait-896h@2x" : "C:/Users/JSY_666/Desktop/启动图/IOS/828x1792.png",
-                        "iphonex" : "C:/Users/JSY_666/Desktop/启动图/IOS/1125x2436.png",
-                        "retina55" : "C:/Users/JSY_666/Desktop/启动图/IOS/1242x2208.png",
-                        "retina47" : "C:/Users/JSY_666/Desktop/启动图/IOS/750x1334.png"
+                        "retina40" : "G:/back/APP/教宝校园/启动图/IOS/640x1336.png",
+                        "portrait-896h@3x" : "G:/back/APP/教宝校园/启动图/IOS/1242x2688.png",
+                        "portrait-896h@2x" : "G:/back/APP/教宝校园/启动图/IOS/828x1792.png",
+                        "iphonex" : "G:/back/APP/教宝校园/启动图/IOS/1125x2436.png",
+                        "retina55" : "G:/back/APP/教宝校园/启动图/IOS/1242x2208.png",
+                        "retina47" : "G:/back/APP/教宝校园/启动图/IOS/750x1334.png"
                     },
                     "ipad" : {
                         "portrait" : "",
@@ -231,11 +232,11 @@
                     /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "",
                     /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "C:/Users/JSY_666/Desktop/启动图/安卓/480x762.png",
+                    "hdpi" : "G:/back/APP/教宝校园/启动图/安卓/480x762.png",
                     /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "C:/Users/JSY_666/Desktop/启动图/安卓/720x1242.png",
+                    "xhdpi" : "G:/back/APP/教宝校园/启动图/安卓/720x1242.png",
                     /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "C:/Users/JSY_666/Desktop/启动图/安卓/1080x1882.png"
+                    "xxhdpi" : "G:/back/APP/教宝校园/启动图/安卓/1080x1882.png"
                 }
             },
             "plugins" : {

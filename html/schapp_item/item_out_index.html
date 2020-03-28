@@ -476,12 +476,12 @@
 							//console.log("下拉刷新");
 							flagRef = 0;
 							events.showWaiting();
-							if(datasource.rkType==1){
+							if(datasource.ckType==1){
 								pageIndex = 1;
 								totalPageCount = 1;
 								datasource.sgckList = [];
 								getPageDataArray();	
-							}else if(datasource.rkType==2){
+							}else if(datasource.ckType==2){
 								lyck_pageIndex = 1;
 								lyck_totalPageCount = 1;
 								datasource.lyckList = [];
@@ -500,9 +500,9 @@
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
 								events.showWaiting();
-								if(datasource.rkType==1){
+								if(datasource.ckType==1){
 									getPageDataArray();	
-								}else if(datasource.rkType==2){
+								}else if(datasource.ckType==2){
 									getLyckPageDataArray();
 								}
 								setTimeout(function() {

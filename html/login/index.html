@@ -45,7 +45,10 @@
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			var subpage_style = {
 				top: '0px',
-				bottom: '51px'
+				bottom: '51px',
+				statusbar:{
+					background: "#00CFBD"
+				}
 			};
 
 			window.addEventListener('home_refresh', function(data) {
@@ -294,7 +297,7 @@
 					mui.toast('暂无可用菜单');
 					setTimeout(function() {
 						store.remove(window.storageKeyName.PERSONALINFO);
-						plus.webview.open('../../html/login/loginIndex.html');
+						plus.webview.open('../../html/login/loginIndex.html','../../html/login/loginIndex.html',{statusbar:{background: "#00CFBD"}});
 						var curr = plus.webview.currentWebview();
 						var wvs = plus.webview.all();
 						for (var i = 0, len = wvs.length; i < len; i++) {

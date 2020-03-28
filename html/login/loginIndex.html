@@ -380,7 +380,7 @@
 				}
 				utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
 			} else {
-				plus.webview.open('../../html/login/index.html');
+				plus.webview.open('../../html/login/index.html','../../html/login/login.html',{statusbar:{background: "#00CFBD"}});
 				var wvs = plus.webview.all();
 				for(var i = 0, len = wvs.length; i < len; i++) {
 //					if(wvs[i].getURL().indexOf('homeSchoolIndex.html') != -1 ||
