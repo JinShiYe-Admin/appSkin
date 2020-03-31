@@ -109,8 +109,8 @@
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background-color: #FFFFFF;" id="contentData">
 			<div v-cloak class="mui-input-row">
-				<label class="aCss">出库物品</label>
-				<input type="text" @tap="selectItem" v-model="formData.itemCode" placeholder="请选择出库物品" readonly>
+				<label class="aCss">入库物品</label>
+				<input type="text" @tap="selectItem" v-model="formData.itemCode" placeholder="请选择入库物品" readonly>
 			</div>
 			<template v-if="formData.itemCode">
 				<div class="line"></div>
@@ -190,7 +190,7 @@
 							console.log(contentData.formData.isRed)
 							if(formData.itemCode=='' ||formData.itemType=='' ||formData.itemProp=='' 
 							||formData.itemName=='' ||formData.itemBrand=='' ||formData.itemModel=='' ){
-								mui.toast('请先选择出库物品')
+								mui.toast('请先选择入库物品')
 							}else if(formData.returnManName==''){
 								mui.toast('请输入归还人姓名')
 							}else if(formData.note==''){
@@ -218,7 +218,7 @@
 						itemModel:'',
 						inNum:'',
 						isRed:0,
-						inType:0,
+						inType:1,
 						note:'',
 					},
 				},
@@ -230,7 +230,7 @@
 						codeList.push(itemCode)
 						model.index_code = curPage.index_code;
 						model.codeList = codeList;
-						utils.mOpenWithData("../../html/schapp_item/item_add_out_query.html", model);
+						utils.mOpenWithData("../../html/schapp_item/item_add_in_query.html", model);
 					},
 					getName:function(){
 						return '名称:'+(this.formData.itemName?this.formData.itemName:'暂无')
@@ -340,9 +340,9 @@
 					}
 					if(obj.indexOf('inType')!=-1){
 						if(event.detail.isActive){
-							contentData.formData.inType=1
+							contentData.formData.inType=2
 						}else{
-							contentData.formData.inType=0
+							contentData.formData.inType=1
 						}
 					}
 					

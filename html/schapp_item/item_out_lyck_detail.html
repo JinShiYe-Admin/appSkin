@@ -257,6 +257,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
+			<a v-if="showBtn" @click="fahuo()" class="mui-pull-right" style="font-size: 15px;margin-top: 0px;">发货</a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;background-color: #FFFFFF;">
@@ -362,7 +363,17 @@
 				el: "#tempVue",
 				data: {
 					titleName: '',
+					showBtn:false,
+					canClick:true,
 				},
+				methods:{
+					fahuo:function(){
+						if(this.canClick){
+							this.canClick=false
+							addReceiveOut();
+						}
+					}
+				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
@@ -375,7 +386,11 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = '领用出库详情';
-				
+				if(curPage.isOut==2){
+					tempVue.showBtn=true
+				}else{
+					tempVue.showBtn=false
+				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -425,6 +440,34 @@
 			// 			}
 			// 		});
 			// };
+			
+			function addReceiveOut() {
+				events.showWaiting();
+					comData = {
+						receiveOutId:curPage.receiveOutId,
+						outManCode:personal.user_code,
+						outManName:personal.user_name,
+						outNum:curPage.outNum,
+						note:'',
+						op_code:'index',
+						index_code: curPage.index_code,
+					} 
+					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'receiveOut/addReceiveOut', {}, comData, 2, function(data) {
+						events.closeWaiting();
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
+							 mui.toast('发货成功');
+							 setTimeout(function(){
+								 mui.fire(plus.webview.currentWebview().opener(), 'refreshListLyck', {});
+								 mui.back()
+							 },1500)
+						} else {
+							tempVue.canClick=true
+							mui.toast(data.msg);
+						}
+						events.closeWaiting();
+					});
+			};
 			
 		</script>
 	</body>

@@ -257,6 +257,15 @@
 				padding: 0.3125rem;
 				font-size: 0.75rem;
 			}
+			
+			.green{
+				margin:0 0 0  3px;
+				background-color: #00CFBD;
+				border-radius: 0.9375rem;
+				color: #FFFFFF;
+				padding: 0.3125rem;
+				font-size: 0.75rem;
+			}
 		</style>
 	</head>
 
@@ -282,7 +291,7 @@
 								<a class="mui-navigate-right"> <!-- mui-navigate-right -->
 									<div class="mui-table">
 									    <div class="mui-table-cell mui-col-xs-10">
-									        <div class="mui-ellipsis">单号:{{model.inCode}}</div>
+									        <div class="mui-ellipsis" style="height: 1.8125rem;">单号:{{model.inCode}}<span v-if="model.isRed==1" class="hcd">红冲单</span></div>
 											<div class="mui-row" style="text-align: left;">
 												<template v-if="model.items.length>2">
 														<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
@@ -340,7 +349,7 @@
 					 			<a class="mui-navigate-right"> <!-- mui-navigate-right -->
 					 				<div class="mui-table">
 					 				    <div class="mui-table-cell mui-col-xs-10">
-					 				        <div class="mui-ellipsis"  style="height: 1.8125rem;">单号:{{model.inCode}}<span v-if="model.isRed==1" class="hcd">红冲单</span><span v-if="model.inType==1" class="orange">报损</span></div>
+					 				        <div class="mui-ellipsis"  style="height: 1.8125rem;">单号:{{model.inCode}}<span v-if="model.isRed==1" class="hcd">红冲单</span><span v-if="model.inType==2" class="orange">报损</span></div>
 					 						<div class="mui-row" style="text-align: left;">
 												<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
 													<p class="mui-h5 mui-ellipsis">名称:{{model.itemName}}</p>
@@ -462,6 +471,7 @@
 					flagRef = 0;
 					datasource.cgrkList = [];
 					getPageDataArray();
+					mui('#item1').scroll().scrollTo(0,0,500);
 				});
 				
 				window.addEventListener('refreshListGhrk', function(data) {
@@ -470,6 +480,7 @@
 					ghrk_totalPageCount = 1;  
 					datasource.ghrkList = [];
 					getGhrkPageDataArray();
+					mui('#item2').scroll().scrollTo(0,0,500);
 				});
 				
 				mui(".mui-segmented-control").on('tap', '.mui-control-item', function() {

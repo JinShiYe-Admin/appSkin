@@ -217,7 +217,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">{{titleName}}</h1>
+			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
@@ -233,7 +233,7 @@
 						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXq()"><span>{{xqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
-					<template v-if="pageArray.length>0">
+					<template v-cloak v-if="pageArray.length>0">
 						<ul class="mui-table-view">
 							<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right">

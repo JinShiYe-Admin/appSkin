@@ -34,14 +34,14 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempHead">
-			<a @click="clickLeftImg" class="mui-icon mui-pull-left">
-				<img :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
+			<a v-cloak @click="clickLeftImg" class="mui-icon mui-pull-left">
+				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
 			</a>
-			<h1 class="mui-title">{{headTitle}}</h1>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;" id="contentData">
 			<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
-				<li v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;">
+				<li v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
 					<a href="#" @click="clickFunction(model)">
 						<img class="circular-square" :src=model.icon />
 						<!-- <span class="mui-badge mui-btn-red">{{model.NoReadCnt}}</span> -->

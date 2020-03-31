@@ -445,6 +445,16 @@
 					flagRef = 0;
 					datasource.sgckList = [];
 					getPageDataArray();
+					mui('#item1').scroll().scrollTo(0,0,500);
+				});
+				
+				window.addEventListener('refreshListLyck', function(data) {
+					events.showWaiting();
+					flagRef = 0;
+					lyck_pageIndex = 1;
+					datasource.lyckList = [];
+					getLyckPageDataArray();
+					mui('#item2').scroll().scrollTo(0,0,500);
 				});
 				
 				mui(".mui-segmented-control").on('tap', '.mui-control-item', function() {
