@@ -270,3 +270,7 @@ viewport-fit=cover
 	margin-left: 0px;
 	margin-right: 0px;
 }
+
+.divNameCss{
+	font-size: 13px !important;
+}
