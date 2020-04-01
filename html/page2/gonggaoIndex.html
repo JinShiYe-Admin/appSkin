@@ -194,7 +194,7 @@
 						} else if (curPage.type == 3) {
 							if (model.CalendarAddr) {
 								var urlStr = encodeURI(model.CalendarAddr)
-								plus.runtime.openURL(urlStr);
+								plus.runtime.openWeb(urlStr);
 							} else{
 								events.showWaiting();
 								var tempData = {
@@ -207,7 +207,7 @@
 									if(data.code == 0) {
 										model.CalendarAddr = data.data.CalendarAddr;
 										var urlStr = encodeURI(data.data.CalendarAddr);
-										plus.runtime.openURL(urlStr);
+										plus.runtime.openWeb(urlStr);
 									} else {
 										mui.toast(data.msg);
 									}

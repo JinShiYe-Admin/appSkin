@@ -44,7 +44,8 @@
         },
         "Speech" : {
             "description" : "管理语音识别插件"
-        }
+        },
+        "UIWebview" : {}
     },
     "fullscreen" : false,
     "plus" : {
@@ -754,5 +755,6 @@
                 "js/libs/crypto-js/ripemd160.js"
             ]
         }
-    }
+    },
+    "screenOrientation" : [ "portrait-primary", "portrait-secondary" ]
 }
