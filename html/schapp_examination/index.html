@@ -475,38 +475,68 @@
 				getXnList();
 				//获取学期
 				getXqList();
-
 			});
-
+			
 			//1.1: 系统科目信息
 			function getKmList() {
 				comData = {
-					page_number: pageIndex, //当前页数
-					page_size: '1000', //每页记录数
-					index_code: curPage.access.split('#')[1],
+					op_code:'index',
+					grd_code: "0",
+					cls_code: "0",
+					get_sub:true,
+					all_sub:false,
+					index_code:  curPage.access.split('#')[1],
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'sub', {}, comData, 2, function(data) {
-					// console.log(JSON.stringify(data))
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
 					if (data.code == 0) {
-						 let list=[{"sub_code":"","sub_name":"全科考情","stat":1}].concat(data.data.list);
-						 let kmList=[]
-						 list.map(function(currentValue){
-								 let obj={};
-								 obj.value=currentValue.sub_code;
-								 obj.text=currentValue.sub_name;
-								 kmList.push(obj)
-						 })
-						 // console.log(JSON.stringify(kmList))
-						 datasource.kq=kmList
-						 datasource.kqValue=kmList[0]
-						 //获取考务列表
-						 getPageDataArray();
+						let list=[{"value":"","name":"全科考情","stat":1}].concat(data.data.sub_list);
+						let kmList=[]
+						list.map(function(currentValue){
+							 let obj={};
+							 obj.value=currentValue.value;
+							 obj.text=currentValue.name;
+							 kmList.push(obj)
+						})
+						datasource.kq=kmList
+						datasource.kqValue=kmList[0]
+						//获取考务列表
+						getPageDataArray();
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
-					} 
+					}
 				});
 			}
+
+			
+			// function getKmList() {
+			// 	comData = {
+			// 		page_number: pageIndex, //当前页数
+			// 		page_size: '1000', //每页记录数
+			// 		index_code: curPage.access.split('#')[1],
+			// 	}
+			// 	postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'sub', {}, comData, 2, function(data) {
+			// 		// console.log(JSON.stringify(data))
+			// 		if (data.code == 0) {
+			// 			 let list=[{"sub_code":"","sub_name":"全科考情","stat":1}].concat(data.data.list);
+			// 			 let kmList=[]
+			// 			 list.map(function(currentValue){
+			// 					 let obj={};
+			// 					 obj.value=currentValue.sub_code;
+			// 					 obj.text=currentValue.sub_name;
+			// 					 kmList.push(obj)
+			// 			 })
+			// 			 // console.log(JSON.stringify(kmList))
+			// 			 datasource.kq=kmList
+			// 			 datasource.kqValue=kmList[0]
+			// 			 //获取考务列表
+			// 			 getPageDataArray();
+			// 		} else {
+			// 			events.closeWaiting();
+			// 			mui.toast(data.msg);
+			// 		} 
+			// 	});
+			// }
 			//获取学年list
 			function getXnList(){
 				comData = {

@@ -222,7 +222,7 @@
 			}
 			
 			.mui-control-content {
-				min-height: 666px;
+				height: 0px;
 			}
 			
 			.line2 {
@@ -276,7 +276,7 @@
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0;">
-			<div style="padding: 10px 0px 0;z-index: 3;background-color: #FFFFFF;">
+			<div class="tab-list" style="padding: 10px 0px 0;z-index: 3;background-color: #FFFFFF;">
 				<div id="segmentedControl" class="mui-segmented-control" style="background-color: #FFFFFF;">
 					<a id="cgrk" class="mui-control-item mui-active tab-line" href="#item1">采购入库</a>
 					<a id="ghrk" class="mui-control-item" href="#item2">归还入库</a>
@@ -453,6 +453,17 @@
 			});
 
 			mui.plusReady(function() {
+				setTimeout(function(){
+					//获取手机高度
+					var height = document.documentElement.clientHeight || document.body.clientHeight;
+					var tab =  $(".tab-list").height();
+					//获取标题栏高度
+					var nav = $(".mui-bar-nav").height();
+					//获取导航栏高度
+					var content = $(".mui-content").height();
+					$("#item1").height(height-nav-tab-20);
+					$("#item2").height(height-nav-tab-20);
+				},500)
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
@@ -471,7 +482,7 @@
 					flagRef = 0;
 					datasource.cgrkList = [];
 					getPageDataArray();
-					mui('#item1').scroll().scrollTo(0,0,500);
+					// mui('#item1').scroll().scrollTo(0,0,500);
 				});
 				
 				window.addEventListener('refreshListGhrk', function(data) {
@@ -480,7 +491,7 @@
 					ghrk_totalPageCount = 1;  
 					datasource.ghrkList = [];
 					getGhrkPageDataArray();
-					mui('#item2').scroll().scrollTo(0,0,500);
+					// mui('#item2').scroll().scrollTo(0,0,500);
 				});
 				
 				mui(".mui-segmented-control").on('tap', '.mui-control-item', function() {
@@ -653,9 +664,6 @@
 			};
 			
 			(function($) {
-				$('#scroll').scroll({
-					indicators: true //是否显示滚动条
-				});
 				var segmentedControl = document.getElementById('segmentedControl');
 				$('.mui-input-group').on('change', 'input', function() {
 					if (this.checked) {

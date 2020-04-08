@@ -130,9 +130,9 @@ var utils = (function(mod) {
 					background: "#00CFBD"
 				}
 			},
-			show:{
-				aniShow:'fade-in'
-			}
+			// show:{
+			// 	aniShow:'fade-in'
+			// }
 		});
 	}
 

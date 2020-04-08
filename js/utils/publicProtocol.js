@@ -303,9 +303,9 @@ var jQAjaxPost = function(url, data, callback) {
 			events.closeWaiting();
 			mui.toast('网络连接失败,请重新尝试一下');
 			callback({
-				RspCode: 404,
+				code: 404,
 				RspData: null,
-				RspTxt: "网络连接失败,请重新尝试一下"
+				msg: "网络连接失败,请重新尝试一下"
 			});
 		}
 	});
