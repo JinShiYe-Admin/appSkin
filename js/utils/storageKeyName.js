@@ -17,30 +17,6 @@ var storageKeyName = (function(mod) {
 	switch(mod.key) {
 		case 0: //开发
 			mod.SCHOOLID = 100005;//学校ID
-			// mod.INTERFACE_SUP = 'http://develop.jiaobaowang.net/sup/'; //系统接口
-			// mod.INTERFACE_PERSON = 'http://develop.jiaobaowang.net/hr/'; //系统接口
-			// mod.INTERFACE_SUP = 'http://139.129.252.49:8080/sup2/'; //系统接口
-			// mod.INTERFACE_PERSON = 'http://139.129.252.49:8080/hr/'; //系统接口
-			// mod.INTERFACE_OA = 'http://jbyj.jiaobaowang.net/SchoolOARestService/';//oa接口
-			
-			
-			
-			
-			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/sup/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/sup/api/hr/'; //单点登录,供人事系统使用
-			// mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/sup/api/sub/'; //单点登录,供各子系统用
-			// mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhr/api/sub/'; //人事接口,供子系统用
-			// mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhr/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			// mod.INTERFACE_OA = 'http://192.168.0.32:8080/oasubapi/sub/api/';//oa接口
-			
-			
-			// mod.INTERFACE_SSO_SKIN = 'http://192.168.0.32:8080/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			// mod.INTERFACE_SSO_HR = 'http://192.168.0.32:8080/suptohr/api/hr/'; //单点登录,供人事系统使用
-			// mod.INTERFACE_SSO_SUB = 'http://192.168.0.32:8080/suptosub/api/sub/'; //单点登录,供各子系统用
-			// mod.INTERFACE_HR_SUB = 'http://192.168.0.32:8080/hrtosub/api/sub/'; //人事接口,供子系统用
-			// mod.INTERFACE_HR_SKIN = 'http://192.168.0.32:8080/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			// mod.INTERFACE_OA = 'http://192.168.0.32:8081/oasubapi/sub/api/';//oa接口
-			
 			//联测
 			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
@@ -70,22 +46,13 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SSO_SKIN = 'http://www.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_HR = 'http://www.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://www.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
-			mod.INTERFACE_HR_SUB = 'http://www.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
-			mod.INTERFACE_HR_SKIN = 'http://www.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
-			mod.INTERFACE_OA = 'http://www.108800.com/oasubapi/sub/api/';//oa接口(孔)
-			mod.INTERFACE_ITEM = 'http://www.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
-			mod.INTERFACE_BASESUB = 'http://www.108800.com/baseapi/api/Data/';//统一信息接口:考务用(顾)
-			mod.INTERFACE_EXAMINATION = 'http://www.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
-			mod.INTERFACE_WORK = 'http://www.108800.com/stukqsubapi/attendance/';//考勤系统接口(阮)
-			
-			
-			// mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/sup2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			// mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/sup2/api/hr/'; //单点登录,供人事系统使用
-			// mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/sup2/api/sub/'; //单点登录,供各子系统用
-			// mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hr/api/sub/'; //人事接口,供子系统用
-			// mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hr/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			// mod.INTERFACE_OA = 'http://jbyj.jiaobaowang.net/SchoolOARestService/';//oa接口
-			
+			mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
+			mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
+			mod.INTERFACE_OA = 'http://apps.108800.com/oasubapi/sub/api/';//oa接口(孔)
+			mod.INTERFACE_ITEM = 'http://apps.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
+			mod.INTERFACE_BASESUB = 'http://apps.108800.com/baseapi/api/Data/';//统一信息接口:考务用(顾)
+			mod.INTERFACE_EXAMINATION = 'http://apps.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
+			mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//考勤系统接口(阮)
 			
 			
 			
@@ -108,53 +75,10 @@ var storageKeyName = (function(mod) {
 			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
 			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
 			//	---七牛空间和接口---开发---end---
-			mod.PLATFORMCODE = 'PT0002'; //平台代码 联测PT0001  云测PT0002 正式PT0001
+			mod.PLATFORMCODE = 'PT0001'; //平台代码 联测PT0001  云测PT0002 正式PT0001
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.MENULIST = 'menuList'; //获取菜单列表
 			mod.MOREMENU = 'moremenu'; //更多菜单列表
-			break;
-		case 1: //云测试
-			mod.SCHOOLID = 0;//学校ID
-			mod.INTERFACEKONG = 'https://jbyj.jiaobaowang.net:8443/SchoolCommunicationService/';//孔工接口
-			mod.TEACHERIMG = 'https://zhxy.jiaobaowang.net:8515/schadminwebadmin/upuserimg.ashx?userid='; //老师上传头像
-			mod.ANDROIDUPDATEURL='http://zhxy.jiaobaowang.net:8015/appupdate/xxt/versionCode.xml';//安卓升级地址
-			if(mod.pay==0) {//单商家
-				mod.WXPAYSERVER='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/AppServer.aspx';//微信支付地址
-				mod.SEARCHPAYSESULT='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/PcQRCode.aspx';//获取支付结果的地址
-			}else if(mod.pay==1){//多商家
-				mod.WXPAYSERVER='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/AppServer.aspx';//微信支付地址
-				mod.SEARCHPAYSESULT='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/PcQRCode.aspx';//获取支付结果的地址
-			}
-			//---开发---end---
-			//---七牛空间和接口---开发---start---
-			mod.QNPB = 'https://qn-educds.jiaobaowang.net/'; //公开空间域名
-			mod.QNGETUPLOADTOKEN = 'https://jbyc.jiaobaowang.net:8504/Api/QiNiu/GetUpLoadToKen';
-			mod.QNGETUPTOKENHEADIMGE = 'https://jbyc.jiaobaowang.net:8504/Api/QiNiu/GetUpLoadToKen'; //获取上传个人头像，群头像，资料头像到七牛的token的url
-			mod.QNGETUPTOKENFILE = 'https://jbyc.jiaobaowang.net:8504/Api/QiNiu/GetUpLoadToKen'; //获取上传文件（云存储）到七牛的token的url
-			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
-			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
-			//	---七牛空间和接口---开发---end---
-			break;
-		case 2: //正式
-			mod.SCHOOLID = 0;//学校ID
-			mod.INTERFACEKONG = 'https://zyja.zhuxue101.net/SchoolCommunicationService/';//孔工接口
-			mod.TEACHERIMG = 'https://boss.zhuxue101.net/upuserimg.ashx?userid='; //老师上传头像
-			mod.ANDROIDUPDATEURL='http://boss.zhuxue101.net:8002/xiaoxuntong/versionCode.xml';//安卓升级地址
-			if(mod.pay==0) {//单商家
-				mod.WXPAYSERVER='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/AppServer.aspx';//微信支付地址
-				mod.SEARCHPAYSESULT='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/PcQRCode.aspx';//获取支付结果的地址
-			}else if(mod.pay==1){//多商家
-				mod.WXPAYSERVER='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/AppServer.aspx';//微信支付地址
-				mod.SEARCHPAYSESULT='http://jsypay.jiaobaowang.net/jsypaym/wxpay/sys/PcQRCode.aspx';//获取支付结果的地址
-			}
-			//---七牛空间和接口---开发---start---
-			mod.QNPB = 'https://qn-educds.jiaobaowang.net/'; //公开空间域名
-			mod.QNGETUPLOADTOKEN = 'https://jbyc.jiaobaowang.net:8504/Api/QiNiu/GetUpLoadToKen';
-			mod.QNGETUPTOKENHEADIMGE = 'https://jbyc.jiaobaowang.net:8504/Api/QiNiu/GetUpLoadToKen'; //获取上传个人头像，群头像，资料头像到七牛的token的url
-			mod.QNGETUPTOKENFILE = 'https://jbyc.jiaobaowang.net:8504/Api/QiNiu/GetUpLoadToKen'; //获取上传文件（云存储）到七牛的token的url
-			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
-			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
-			//	---七牛空间和接口---开发---end---
 			break;
 		default:
 			break;
