@@ -359,7 +359,7 @@
 						datePicker.show(function(rs) {
 							if (compareTime(rs.text,datasource.endtime) == 1) {
 								mui.toast("开始时间不能晚于结束时间", "cancel");
-								return;
+								return 0;
 							}
 							datasource.begintime=rs.text
 							events.showWaiting();
@@ -381,7 +381,7 @@
 						datePicker.show(function(rs) {
 							if (compareTime(datasource.begintime,rs.text) == 1) {
 								mui.toast("结束时间不能早于当前时间", "cancel");
-								return;
+								return 0;
 							}
 							datasource.endtime=rs.text
 							events.showWaiting();
