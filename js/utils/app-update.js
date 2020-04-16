@@ -9,7 +9,7 @@ var appUpdate = (function(mod) {
 	mod.fileSize;
 	mod.updateFlag = 0; //1确认升级2取消升级
 	mod.installFlag = 0; //1确认安装 2取消安装
-	mod.updateApp = function(school_id) {
+	mod.updateApp = function() {
 		plus.webview.currentWebview().canJump = false;
 		//版本升级模块
 		//47.获取APP版本号
@@ -30,7 +30,7 @@ var appUpdate = (function(mod) {
 			return;
 		}else{
 			//android 更新逻辑
-			getXml(school_id);
+			getXml();
 		}
 		
 		
@@ -57,7 +57,7 @@ var appUpdate = (function(mod) {
 	}
 	
 	//获取android 更新信息
-	function getXml(school_id){
+	function getXml(){
 		$.ajax({
 		    url:mod.androidUpdateUrl,
 		    type: 'GET',
@@ -68,22 +68,13 @@ var appUpdate = (function(mod) {
 		        console.log('APP更新：连接超时,加载XML文档出错'); 
 		    },
 	        success: function(xml){ 
-	            $(xml).find("school").each(function(i){
-	            	var school_id_text=$(this).children("school_id").text();
-	          		if(school_id==school_id_text){
-			          	var update_info=$(this).children("update_info");
-				        var info={
-				        	version:update_info.children("new_version").text()
-				          	,delta:update_info.children("delta").text()
-				          	,download_url:update_info.children("download_url").text()
-				          	,update_log:update_info.children("update_log").text()
-				        }
-			            mod.getAppVersion(info);
-	                }else{
-                    	//console.log('学校ID与本APP登录不符合，不更新')
-	                }
-	            });
-	        }
+				var update_info=$(xml).find("update_info");
+				var info={
+					version:update_info.children("new_version").text()
+					,download_url:update_info.children("download_url").text()
+				}
+				mod.getAppVersion(info);
+	        } 
 	    });
 	}
 	
