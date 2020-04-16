@@ -113,27 +113,27 @@
 				<div v-cloak class="mui-input-row">
 					<label class="aCss">物品信息</label>
 					<input type="text"  v-model="getName()"  readonly>
-					<input type="text" v-model="getModel()" readonly>
-					<input type="text" v-model="getMaxOkNum()" readonly>
+					<input type="text" v-model="getModel()"  readonly>
+					<input type="text" v-model="getMaxOkNum()"  readonly>
 				</div>
 			</template>
 			<div class="double-line"></div>
-			<div v-cloak class="mui-input-row">
+			<div v-cloak class="mui-input-row" @tap="shouToast">
 				<label class="aCss">领用人</label>
-				<input type="text" maxlength="20" v-model="formData.receiveManName" placeholder="请输入领用人" :readonly="canInput">
+				<input type="text" maxlength="20" v-model="formData.receiveManName"  placeholder="请输入领用人" :readonly="canInput">
 			</div>
 			<div class="line"></div>
-			<div v-cloak class="mui-input-row">
+			<div v-cloak class="mui-input-row" @tap="shouToast">
 				<label class="aCss">出库数量</label>
-				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.outNum)"  :placeholder="formData.maxOkNumText" :disabled="canInput">
+				<input type="number" v-model="formData.outNum" @blur="checkNum(formData.outNum)"  :placeholder="formData.maxOkNumText" :readonly="canInput">
 			</div>
 			<div class="line"></div>
-			<div v-cloak class="mui-input-row">
+			<div v-cloak class="mui-input-row" @tap="shouToast">
 				<label class="aCss">放置地点</label>
-				<input type="text" maxlength="50" v-model="formData.putArea" placeholder="请输入放置地点" :readonly="canInput">
+				<input type="text" maxlength="50" v-model="formData.putArea" placeholder="请输入放置地点"  :readonly="canInput">
 			</div>
 			<div class="line"></div>
-			<div v-cloak class="mui-input-row">
+			<div v-cloak class="mui-input-row" @tap="shouToast">
 				<label class="aCss">备注</label>
 				<textarea maxlength="100"  v-model="formData.note" rows="5" placeholder="请输入内容" :readonly="canInput"></textarea>
 			</div>
@@ -263,6 +263,11 @@
 						}else{//红冲单可以为负数
 						}
 					},
+					shouToast:function(){
+						if(this.canInput){
+							mui.toast('请先选择出库物品！')
+						}
+					}
 				},
 			});
 			var curPage = {};
