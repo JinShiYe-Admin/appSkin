@@ -37,7 +37,7 @@
 			<div class="mui-row" style="background: #fff;padding: 20px 0;">
 				<center>
 					<img class="mui-media-object head-img" id="head-img" src="../../img/login/headImg.png">
-					<p id="version" class='mui-ellipsis'>账号:hellomui</p>
+					<p id="version" class='mui-ellipsis'>教宝校园</p>
 				</center>
 			</div>
 			<div class="mui-row" style="margin-top: 15px;">
@@ -66,7 +66,7 @@
 			mui.plusReady(function() {
 				plus.runtime.getProperty(plus.runtime.appid, function(inf) {
 					console.log('应用版本号:' + plus.runtime.version + ',资源升级版本号:' + inf.version)
-					$('#version').html('OA系统' + inf.version)
+					$('#version').html('教宝校园' + inf.version)
 				});
 			});
 

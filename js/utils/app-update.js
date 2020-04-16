@@ -143,7 +143,7 @@ var appUpdate = (function(mod) {
 			if(appVersionMinMax.max < newestVersionMinMax.max) { //整包更新
 				if(mod.updateFlag == 0) {
 					//询问是否更新
-					    setDialog('校讯通有新版本，是否下载？', "您已取消下载", function() {
+					    setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
 						mod.updateFlag = 1;
 						console.log("下载APK路径：" + versionInfo.download_url)
 						resolveFile(versionInfo.download_url, 1);

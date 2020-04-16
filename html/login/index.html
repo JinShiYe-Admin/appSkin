@@ -26,15 +26,16 @@
 
 	<body>
 		<nav v-cloak class="mui-bar mui-bar-tab" id="indexPage">
-			<template v-for="(model,index) in showArray">
-				<a :id=model.tempID :class='index==0?"mui-tab-item mui-active":"mui-tab-item"' :href=model.href>
-					<span :class=model.cls></span>
-					<span class="mui-tab-label">{{model.name}}</span>
+			<template v-cloak v-for="(model,index) in showArray">
+				<a v-cloak :id=model.tempID :class='index==0?"mui-tab-item mui-active":"mui-tab-item"' :href=model.href>
+					<span v-cloak :class=model.cls></span>
+					<span v-cloak class="mui-tab-label">{{model.name}}</span>
 				</a>
 			</template>
 		</nav>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/app-update.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/store.js"></script>
@@ -290,6 +291,9 @@
 
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
+				
+				console.log("personal: " + JSON.stringify(personal));
+				appUpdate.updateApp(personal.unit_code);
 				var tempMenu = store.get(window.storageKeyName.MENULIST);
 				console.log('tempMenu:' + JSON.stringify(tempMenu));
 				var tempA = [];
