@@ -124,8 +124,8 @@
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background-color: #FFFFFF;" id="contentData">
 			<div v-cloak class="mui-input-row">
-				<label class="aCss" style="float: left;">工作地点</label>
-				<textarea maxlength="200" readonly="readonly" v-model="formData.workAddress" rows="2" placeholder="请点击右上角按钮定位"></textarea>
+				<label class="aCss" style="float: left;">考勤地点</label>
+				<textarea maxlength="200" readonly="readonly" v-model="workAddress" rows="2" placeholder="请点击右上角按钮定位"></textarea>
 			</div>
 			<div class="line"></div>
 			<div v-cloak class="mui-input-row">
@@ -140,7 +140,7 @@
 				您的浏览器不支持 video 标签。
 			</video>
 		</div>
-		<div id="audioPopover" class="mui-popover">
+		<!-- <div id="audioPopover" class="mui-popover">
 			<div id="audio_show" class="audio-show-popover">
 				<span id="audio_icon" class="mui-icon mui-icon-mic audio-icon"></span>
 				<canvas id="audio_canvas" class="audio-canvas"></canvas>
@@ -157,8 +157,14 @@
 				</div>
 				<audio id="audio_audio" autoplay="autoplay" preload="auto"></audio>
 			</div>
-		</div>
+		</div> -->
 		<!--  -->
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/events.js"></script>
+
 		<script src="../../js/picVideoAudio/MultiMedia.js"></script>
 		<script src="../../js/cloud/AndroidFileSystem.js"></script>
 		<script src="../../js/qiniu/qiniu.js"></script>
@@ -205,24 +211,25 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					formData: {
-						workAddress: '',
-					},
+					workAddress: '',
+					attend_x: '',
+					attend_y: '',
 				},
 				methods: {
-					submitData: function() {
+					clickSubmitBtn: function() {
 						if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
 							mui.toast("网络连接失败,请重新尝试一下", "cancel");
 							sendFlag = 0;
 							return;
 						}
-						if (message.title.trim().length == 0 || message.content.trim().length == 0) {
-							mui.toast("请填写具体内容后再发布", "cancel");
+						if (contentData.workAddress.length == 0) {
+							mui.toast("请先点击右上角按钮进行定位", "cancel");
 							sendFlag = 0;
 							return;
 						}
 						var wd = events.showWaiting();
 						if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+							// 9.新增考勤
 							submitDataLast(wd, '3', '', '', 0, '');
 						} else {
 							uploadFile(wd); //上传文件
@@ -242,34 +249,20 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('curPage:' + JSON.stringify(curPage));
-				contentData.formData.todayDate = getNowFormatDate();
+				contentData.todayDate = getNowFormatDate();
 				tempHead.headTitle = curPage.title_name;
 				tempHead.showBack = 1;
 				init(); //初始化控件
 
 				// 刚进入界面，自动定位
 				getGeocode();
-
-				// window.addEventListener('itemAdd', function(data) {
-				// 	console.log("data: " + JSON.stringify(data.detail));
-				// 	let obj = {
-				// 		itemCode: data.detail.itemCode,
-				// 		itemType: data.detail.itemTypeCode,
-				// 		itemProp: data.detail.itemPropCode,
-				// 		itemName: data.detail.itemName,
-				// 		itemBrand: data.detail.itemBrand,
-				// 		itemModel: data.detail.itemModel,
-				// 		inNum: '',
-				// 		inPrice: '',
-				// 	}
-				// 	contentData.formData.list.push(obj)
-				// });
 			});
 			//多媒体控件
 			multiMedia = MultiMedia.multiMedia({
 				MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
 				Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
 				Picture: true, //是否显示图片图标
+				PictureTuku:false,//是否显示图库图标，默认显示
 				Audio: false, //是否显示音频图标
 				Video: false, //是否显示视频图标
 				TotalPicture: 1, //图片的个数
@@ -293,78 +286,71 @@
 				 * 播放视频
 				 * @param {Object} data
 				 */
-				multiMedia.videoPlayCallBack = function(data) {
-					//console.log("videoPlayCallBack")
-					ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', data.path, data.localthumb);
-				}
+				// multiMedia.videoPlayCallBack = function(data) {
+				// 	//console.log("videoPlayCallBack")
+				// 	ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', data.path, data.localthumb);
+				// }
 
 				/**
 				 * 播放音频
 				 * @param {Object} data
 				 */
-				multiMedia.audioPlayCallBack = function(data) {
-					//console.log('audioPlayCallBack ' + JSON.stringify(data));
-					ShowAudioUtil.initAudio(data, 1);
-				}
+				// multiMedia.audioPlayCallBack = function(data) {
+				// 	//console.log('audioPlayCallBack ' + JSON.stringify(data));
+				// 	ShowAudioUtil.initAudio(data, 1);
+				// }
 
 				//初始化视频播放器
-				ShowVideoUtil.initVideo(document.getElementById("video"));
-				//初始化音频播放器
-				audio_option = {
-					x: localStorage.getItem('resolutionWidth') * 1.4, //圆心的x轴坐标值
-					y: (plus.screen.resolutionHeight / 3 * 2), //圆心的y轴坐标值
-					r: plus.screen.resolutionHeight * 0.25 * 1.5 //圆的半径
-				};
-				ShowAudioUtil.initAudioPopover({
-					show: document.getElementById("audio_show"),
-					icon: document.getElementById("audio_icon"),
-					canvas: document.getElementById("audio_canvas"),
-					play: document.getElementById("audio_play"),
-					pause: document.getElementById("audio_pause"),
-					time: document.getElementById("audio_time"),
-					audio: document.getElementById("audio_audio")
-				});
+				// ShowVideoUtil.initVideo(document.getElementById("video"));
+				// //初始化音频播放器
+				// audio_option = {
+				// 	x: localStorage.getItem('resolutionWidth') * 1.4, //圆心的x轴坐标值
+				// 	y: (plus.screen.resolutionHeight / 3 * 2), //圆心的y轴坐标值
+				// 	r: plus.screen.resolutionHeight * 0.25 * 1.5 //圆的半径
+				// };
+				// ShowAudioUtil.initAudioPopover({
+				// 	show: document.getElementById("audio_show"),
+				// 	icon: document.getElementById("audio_icon"),
+				// 	canvas: document.getElementById("audio_canvas"),
+				// 	play: document.getElementById("audio_play"),
+				// 	pause: document.getElementById("audio_pause"),
+				// 	time: document.getElementById("audio_time"),
+				// 	audio: document.getElementById("audio_audio")
+				// });
 				//获取配置信息
 				hideOption = events.initHideKeyBoard();
 			}
+			// 9.新增考勤
 			var submitDataLast = function(wd, encType, encAddr, encImg, encLen, encName) {
-				//				console.log('encType:' + encType);
-				//				console.log('encAddr:' + encAddr);
-				//				console.log('encImg:' + encImg);
-				//				console.log('encLen:' + encLen);
-				// events.showWaiting();
-				// var tempData = {
-				// 	schoolId: personal.unit_code, //学校ID
-				// 	noticeTitle: message.title, //标题
-				// 	noticeContent: message.content, //内容
-				// 	noticeEncName: encName, //附件名称
-				// 	noticeEncAddr: encAddr, //附件地址
-				// 	smsSync:0,//是否短信同步
-				// 	sendManId: personal.user_code, //发布人ID
-				// 	sendManCode: personal.login_name, //发布人账号
-				// 	sendManName: personal.user_name, //发布人姓名
-				// 	sendManPic: personal.hrImg_url, //发布人头像
-				// 	receiveManIds: ids, //接收人人ID
-				// 	receiveManCodes: codes, //接收人账号
-				// 	receiveManPics: pics, //接收人头像
-				// 	receiveManNames: names, //接收人姓名
-				// 	index_code:curPage.access.split('#')[1],
-				// 	op_code:'add'
-				// }
-				// postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/addNotice', {}, tempData, 2,function(data) {
-				// 	console.log('addNoticePro:' + JSON.stringify(data));
-				// 	events.closeWaiting();
-				// 	if (data.code == 0) {
-				// 		mui.toast("发布成功")
-				// 		setTimeout(function() {
-				// 			mui.back();
-				// 		}, 1000);
-				// 		mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
-				// 	} else {
-				// 		mui.toast(data.msg)
-				// 		sendFlag = 0;
-				// 	}
-				// });
+				// console.log('encType:' + encType);
+				// console.log('encAddr:' + encAddr);
+				// console.log('encImg:' + encImg);
+				// console.log('encLen:' + encLen);
+				events.showWaiting();
+				var comData = {
+					user_code: personal.user_code, //用户Code
+					user_name: personal.user_name, //用户名称
+					attend_addr: contentData.workAddress, //考勤地点
+					attend_addr_x: contentData.attend_x.toString(), //签到地点X坐标
+					attend_addr_y: contentData.attend_y.toString(), //签到地点Y坐标
+					attend_pic: encAddr, //签到拍照
+					index_code: curPage.index_code,
+					op_code: 'add'
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attend/addAttend', {}, comData, 2, function(data) {
+					console.log('addAttend:' + JSON.stringify(data));
+					events.closeWaiting();
+					if (data.code == 0) {
+						mui.toast("发布成功")
+						setTimeout(function() {
+							mui.back();
+						}, 1000);
+						mui.fire(plus.webview.currentWebview().opener(), 'refreshMyAttendanceList', {});
+					} else {
+						mui.toast(data.msg)
+						sendFlag = 0;
+					}
+				});
 			}
 
 			function getGeocode() {
@@ -401,7 +387,9 @@
 				str += "移动速度：" + sped;
 				console.log(JSON.stringify(position));
 				console.log('position.addresses:' + position.addresses);
-				contentData.formData.workAddress = position.addresses;
+				contentData.workAddress = position.addresses;
+				contentData.attend_x = longt;
+				contentData.attend_y = lat;
 			}
 
 			function getNowFormatDate() {
@@ -655,6 +643,7 @@
 									var encAddrStr = encAddr.join('|');
 									var encImgrStr = encImg.join('|');
 									var encNameStr = encNameList.join('|');
+									// 9.新增考勤
 									submitDataLast(wd, type, encAddrStr, encImgrStr, encLen, encNameStr);
 								} else {
 									taskCreate(wd);

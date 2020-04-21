@@ -143,7 +143,7 @@
 				<textarea maxlength="200" v-model="formData.workContent" rows="5" placeholder="请输入日程内容"></textarea>
 			</div>
 			<div class="line"></div>
-			<div style="text-align: center;"><button type="button" class="mui-btn submitBtn">确定</button></div>
+			<div @click="submitData()" style="text-align: center;"><button type="button" class="mui-btn submitBtn">确定</button></div>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
@@ -204,7 +204,7 @@
 								mui.toast('请输入日程内容')
 							} else {
 								this.canClick = false;
-								submitDataLast(contentData.formData);
+								submitDataLast();
 							}
 						}
 					},
@@ -258,44 +258,28 @@
 				
 				// 刚进入界面，自动定位
 				getGeocode();
-
-				window.addEventListener('itemAdd', function(data) {
-					console.log("data: " + JSON.stringify(data.detail));
-					let obj = {
-						itemCode: data.detail.itemCode,
-						itemType: data.detail.itemTypeCode,
-						itemProp: data.detail.itemPropCode,
-						itemName: data.detail.itemName,
-						itemBrand: data.detail.itemBrand,
-						itemModel: data.detail.itemModel,
-						inNum: '',
-						inPrice: '',
-					}
-					contentData.formData.list.push(obj)
-				});
 			});
-
 			// 提交表单数据
-			function submitDataLast(data) {
+			function submitDataLast() {
 				events.showWaiting();
 				comData = {
-					todayDate: data.todayDate,
-					supplierName: data.supplierName,
-					inManCode: personal.user_code,
-					inManName: personal.user_name,
-					isRed: data.isRed,
-					note: data.note.replace(/\n/g, '<br>'),
-					list: data.list,
-					op_code: 'add',
-					index_code: curPage.index_code,
+					user_code: personal.user_code,//用户Code
+					user_name: personal.user_name,//用户名称
+					note_note: contentData.formData.workContent,//日程内容
+					note_addr: contentData.formData.workAddress,//日程地点
+					note_date: contentData.formData.todayDate,//日程日期
+					begin_time: contentData.formData.begintime,//开始时间
+					end_time: contentData.formData.endtime,//结束时间
+					op_code: 'add',//
+					index_code: curPage.index_code,//
 				}
 				console.log("comData: " + JSON.stringify(comData));
-				postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'purchasingIn/addPurchasingIn ', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_PROGRAMME + 'note/addNote', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						mui.toast('保存成功');
 						setTimeout(function() {
-							mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+							mui.fire(plus.webview.currentWebview().opener(), 'refreshMyProgrammeList', {});
 							mui.back()
 						}, 1500)
 					} else {
@@ -303,6 +287,7 @@
 						mui.toast(data.msg);
 					}
 					events.closeWaiting();
+					tempHead.canClick = true
 				});
 			}
 

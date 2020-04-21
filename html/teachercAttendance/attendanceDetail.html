@@ -222,6 +222,7 @@
 			.cellValue{
 				font-size: 15px;
 				color: gray;
+				word-break: break-all;
 			}
 			.tableTitle{
 				color: #00CFBD;
@@ -248,88 +249,71 @@
 							<div class="mui-table">
 								<div class="mui-table-cell">
 									<div>
-										<div class="cellKey">类型：<span class="cellValue">上午上班</span></div>
-										<div class="cellKey">部门：<span class="cellValue">开发部</span></div>
-										<div class="cellKey">日期：<span class="cellValue">2020-04-02</span></div>
+										<div class="cellKey">类型：<span class="cellValue">{{curPage.attend_item_name}}</span></div>
+										<div class="cellKey">部门：<span class="cellValue">{{curPage.dpt_name}}</span></div>
+										<div class="cellKey">日期：<span class="cellValue">{{curPage.dateValue}}</span></div>
 									</div>
 								</div>
 							</div>
 						</li>
 						</ul>
 					</div>
-					<div class="line"></div>
-					<!-- <template v-cloak v-if="pageArray.length>0">
+					<div v-if="pageArray.okList&&pageArray.okList.length>0">
+						<div class="line"></div>
 						<ul v-cloak class="mui-table-view">
-							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-								<a class="">
-									<div class="mui-table">
-									    <div class="mui-table-cell mui-col-xs-10">
-									        <div class="mui-ellipsis">{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
-									        <h5 style="margin-top: 0.75rem">请假类型:{{model.item_txt}}</h5>
-											<h5  style="margin-top: 0.55rem">{{model.begintime}} ~ {{model.endtime}}</h5>
-									        <p class="mui-h6 mui-ellipsis" style="word-break: break-all;word-wrap:break-word;white-space:initial" v-if="model.comment">说明:{{model.comment}}</p>
-									    </div>
-									</div>
-								</a>
+							<p class="tableTitle">正常</p>
+							<li v-for="model in pageArray.okList" class="mui-table-view-cell">
+								<div class="mui-table">
+									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
+									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+								</div>
 							</li>
 						</ul>
-					</template>
-					<template v-else>
-						<div></div>
-					</template> -->
-					<ul v-cloak class="mui-table-view">
-						<p class="tableTitle">正常打卡</p>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="cellKey">姓名：<span class="cellValue">张三</span></div>
-								<div class="cellKey">考勤时间：<span class="cellValue">2020-04-02 08：30</span></div>
-								<div class="cellKey">考勤地点：<span class="cellValue">济南是天桥区大明湖</span></div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="cellKey">姓名：<span class="cellValue">张三</span></div>
-								<div class="cellKey">考勤时间：<span class="cellValue">2020-04-02 08：30</span></div>
-								<div class="cellKey">考勤地点：<span class="cellValue">济南是天桥区大明湖</span></div>
-							</div>
-						</li>
-					</ul>
-					<div class="line"></div>
-					<ul v-cloak class="mui-table-view">
-						<p class="tableTitle">迟到</p>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="cellKey">姓名：<span class="cellValue">张三</span></div>
-								<div class="cellKey">考勤时间：<span class="cellValue">2020-04-02 08：30</span></div>
-								<div class="cellKey">考勤地点：<span class="cellValue">济南是天桥区大明湖</span></div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="cellKey">姓名：<span class="cellValue">张三</span></div>
-								<div class="cellKey">考勤时间：<span class="cellValue">2020-04-02 08：30</span></div>
-								<div class="cellKey">考勤地点：<span class="cellValue">济南是天桥区大明湖</span></div>
-							</div>
-						</li>
-					</ul>
-					<div class="line"></div>
-					<ul v-cloak class="mui-table-view">
-						<p class="tableTitle">早退</p>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="cellKey">姓名：<span class="cellValue">张三</span></div>
-								<div class="cellKey">考勤时间：<span class="cellValue">2020-04-02 08：30</span></div>
-								<div class="cellKey">考勤地点：<span class="cellValue">济南是天桥区大明湖</span></div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="cellKey">姓名：<span class="cellValue">张三</span></div>
-								<div class="cellKey">考勤时间：<span class="cellValue">2020-04-02 08：30</span></div>
-								<div class="cellKey">考勤地点：<span class="cellValue">济南是天桥区大明湖</span></div>
-							</div>
-						</li>
-					</ul>
+					</div>
+					<div v-if="pageArray.lateList&&pageArray.lateList.length>0">
+						<div class="line"></div>
+						<ul v-cloak class="mui-table-view">
+							<p class="tableTitle">迟到</p>
+							<li v-for="model in pageArray.lateList" class="mui-table-view-cell">
+								<div class="mui-table">
+									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
+									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div v-if="pageArray.earlyList&&pageArray.earlyList.length>0">
+						<div class="line"></div>
+						<ul v-cloak class="mui-table-view">
+							<p class="tableTitle">早退</p>
+							<li v-for="model in pageArray.earlyList" class="mui-table-view-cell">
+								<div class="mui-table">
+									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
+									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div v-if="pageArray.outList&&pageArray.outList.length>0">
+						<div class="line"></div>
+						<ul v-cloak class="mui-table-view">
+							<p class="tableTitle">非规定地址打卡</p>
+							<li v-for="model in pageArray.outList" class="mui-table-view-cell">
+								<div class="mui-table">
+									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
+									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -359,7 +343,6 @@
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
-			var curPage = {};
 			var pageIndex = 1; //请求数据页面
 			var totalPageCount; //总页码
 			var flagRef = 0; //是刷新0，还是加载更多1
@@ -373,13 +356,20 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
+					curPage:{},
+				},
+				methods: {
+					clickAttendPic:function(tempUrl){
+						console.log('tempUrl:' + tempUrl);
+						var urlStr = encodeURI(tempUrl)
+						plus.runtime.openURL(urlStr);
+					}
 				}
 			});
 
 			mui.plusReady(function() {
-				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('2222:' + JSON.stringify(curPage));
-				// tempVue.titleName = curPage.name;
+				datasource.curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(datasource.curPage));
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -388,50 +378,50 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
+				getPageDataArray();
 			});
 
-			//获取请假列表数据 
+			//14.获取某部门某日考勤明细列表 
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				// events.showWaiting();
-					//需要加密的数据
-					// comData = {
-					// 	grd_code: datasource.grdValue.value,
-					// 	cls_code: datasource.clsValue.value,
-					// 	item_code: datasource.qjlxValue.value,
-					// 	query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
-					// 	page_number: pageIndex, //当前页数
-					// 	page_size: 10, //每页记录数
-					// 	index_code: curPage.access.split('#')[1],
-					// }
-					// 1.1.列表页
-					// postDataEncry(window.storageKeyName.INTERFACE_WORK + 'LeaveRecord/list', {}, comData, 2, function(data) {
-						// events.closeWaiting();
-						// console.log(JSON.stringify(data))
-						// if (data.code == 0) {
-						// 	totalPageCount = data.data.total_page;
-						// 	pageIndex++;
-						// 	if (flagRef == 0) { //刷新
-						// 	console.log(JSON.stringify(data.data.list));
-						// 		datasource.pageArray = data.data.list
-						// 		if (data.data.list.length == 0) {
-						// 			mui.toast('暂无数据');
-						// 		}
-						// 	} else { //加载更多
-						// 		//合并数组
-						// 		datasource.pageArray = datasource.pageArray.concat(data.data.list);
-						// 		if (data.data.list.length == 0) {
-						// 			mui.toast('已加载全部');
-						// 		}
-						// 	}
-						// 	if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-						// 		mui(".mui-pull-loading")[0].innerHTML = "";
-						// 	}
-						// } else {
-						// 	events.closeWaiting();
-						// 	mui.toast(data.msg);
-						// }
-					// });
+				events.showWaiting();
+					//
+					comData = {
+						dpt_code: datasource.curPage.dpt_code,//部门Code
+						attend_item: datasource.curPage.attend_item,//
+						begin_time: datasource.curPage.dateValue.replace(/-/g,''),//查询开始时间
+						end_time: datasource.curPage.dateValue.replace(/-/g,''),//查询结束时间
+						index_code: datasource.curPage.index_code,
+						op_code: 'index',
+					}
+					// 14.获取某部门某日考勤明细列表
+					postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attendDptQry/getDptDayAttendItem', {}, comData, 2, function(data) {
+						events.closeWaiting();
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
+							totalPageCount = data.data.total_page;
+							pageIndex++;
+							if (flagRef == 0) { //刷新
+							console.log(JSON.stringify(data.data));
+								datasource.pageArray = data.data
+								if (data.data.length == 0) {
+									mui.toast('暂无数据');
+								}
+							} else { //加载更多
+								//合并数组
+								datasource.pageArray = datasource.pageArray.concat(data.data);
+								if (data.data.length == 0) {
+									mui.toast('已加载全部');
+								}
+							}
+							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+								mui(".mui-pull-loading")[0].innerHTML = "";
+							}
+						} else {
+							events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					});
 			};
 		</script>
 	</body>

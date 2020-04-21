@@ -30,6 +30,7 @@ var MultiMedia = (function($, mod) {
 			Key: 'key', //用户的user_code
 			MultiMediaId: '', //存放多媒体对象控件的ID
 			Picture: false, //是否显示图片图标
+			PictureTuku: true, //是否显示图片图标
 			Audio: false, //是否显示音频图标
 			Video: false, //是否显示视频图标
 			TotalPicture: 0, //图片的个数
@@ -64,7 +65,9 @@ var MultiMedia = (function($, mod) {
 		if (this.options.Picture) {
 			str_pic_0 = html_picture_header;
 			str_pic_1 = html_picture_footer;
-			str_tuku_0 = html_tuku_header;
+			if (this.options.PictureTuku) {
+				str_tuku_0 = html_tuku_header;
+			}
 		}
 		if (this.options.Audio) {
 			str_aud_0 = html_audio_header;
@@ -125,9 +128,11 @@ var MultiMedia = (function($, mod) {
 				self.initImageEvent(0);
 			});
 			//图库
-			document.getElementById('MultiMedia_Tuku_Header').addEventListener('tap', function() {
-				self.initImageEvent(1);
-			});
+			if (this.options.PictureTuku) {
+				document.getElementById('MultiMedia_Tuku_Header').addEventListener('tap', function() {
+					self.initImageEvent(1);
+				});
+			}
 
 			//显示图片区域，删除按钮的监听
 			mui('#MultiMedia_Picture_Footer').on('tap', '.multimedia-picture-delete', function() {

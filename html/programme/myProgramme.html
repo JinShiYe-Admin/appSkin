@@ -137,103 +137,13 @@
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;" v-cloak>
 				<div class="mui-scroll" v-cloak>
 					<ul class="mui-table-view" v-cloak>
-						<!-- <li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
-									<div>
-										<div class="biaoti">{{model.AnnouncementTitle}}</div>
-									</div>
-									<div>
-										<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
-									</div>
-								</div>
-							</div>
-						</li> -->
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
+						<li v-for="model in pageArray" class="mui-table-view-cell">
 							<div class="mui-table">
 								<div class="mui-table-cell">
 									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是内容我是内我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是内容我是内容内容</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell" @tap="clickLi(model)">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">2020-04-01</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">内容：<span class="cellValue">我是内容我容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容</span></div>
+										<div class="cellKey">时间：<span class="cellValue">{{model.note_date}} {{model.begin_time}}~{{model.end_time}}</span></div>
+										<div class="cellKey">地点：<span class="cellValue">{{model.note_addr}}</span></div>
+										<div class="cellKey">内容：<span class="cellValue">{{model.note_note}}</span></div>
 									</div>
 								</div>
 							</div>
@@ -272,31 +182,23 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName:'',
-					showAdd:true
+					titleName: '',
+					showAdd: true
 				},
-				methods:{
-					add:function(){
-							let model={};
-							let index_code = curPage.access.split('#')[1]
-							model.index_code = index_code;
-							model.title_name = '新增日程';
-							utils.mOpenWithData("../../html/programme/add_programme.html", model);
+				methods: {
+					add: function() {
+						let model = {};
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						model.title_name = '新增日程';
+						utils.mOpenWithData("../../html/programme/add_programme.html", model);
 					}
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					pageArray:[]//界面总数组
-				},
-				methods: {
-					clickLi:function(model){
-						// 1 公告2 周程3 校历
-						console.log('clickLi.model:'+JSON.stringify(model));
-						model.access = curPage.access;
-						utils.mOpenWithData("../../html/page2/gonggaoDetail.html", model);
-					}
+					pageArray: [] //界面总数组
 				}
 			});
 			mui.init();
@@ -312,9 +214,9 @@
 						tempVue.showAdd = true;
 					}
 				});
-				// events.showWaiting();
-				//32.获取浏览的公告（周程/校历）列表
-				// getPageDataArray();
+				events.showWaiting();
+				//4.获取某人日程列表
+				getPageDataArray();
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -334,7 +236,7 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
-							//32.获取浏览的公告（周程/校历）列表
+							//4.获取某人日程列表
 							getPageDataArray();
 							setTimeout(function() {
 								//结束下拉刷新
@@ -348,7 +250,7 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								//32.获取浏览的公告（周程/校历）列表
+								//4.获取某人日程列表
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -366,35 +268,33 @@
 					}
 				});
 			});
+			// 监听添加日程，添加成功后，刷新界面
+			window.addEventListener('refreshMyProgrammeList', function(data) {
+				pageIndex = 1;
+				flagRef = 0;
+				//4.获取某人日程列表
+				getPageDataArray();
+			});
 
-			//32.获取浏览的公告（周程/校历）列表
+			//4.获取某人日程列表
 			function getPageDataArray() {
 				//需要加密的数据
 				comData = {
-					schoolId: personal.unit_code, //学校ID
-					title: '', //标题
-					type: curPage.type, //公告类型,0 全部1 公告2 周程3 校历
-					sendMan: '', //发布人姓名
-					beginTime: '20170101', //查询开始时间
-					endTime: '30180127', //查询结束时间
+					user_code: personal.user_code, //用户Code
+					note_addr: '', //日程地点
+					begin_time: '20170101', //查询开始时间
+					end_time: '30180127', //查询结束时间
 					page_number: pageIndex, //当前页数
 					page_size: '10', //每页记录数
 					index_code: curPage.access.split('#')[1],
 					op_code: 'index'
 				}
-				//32.获取浏览的公告（周程/校历）列表
-				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getReceiveAnnouncement', {}, comData, 2, function(
-					data) {
-						events.closeWaiting();
+				//4.获取某人日程列表
+				postDataEncry(window.storageKeyName.INTERFACE_PROGRAMME + 'note/getNotes', {}, comData, 2, function(data) {
+					events.closeWaiting();
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;
-						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM = data.data.list[i];
-							if (tempM.SendManPic == ''||tempM.SendManPic == null) {
-								tempM.SendManPic = setImg(tempM.SendManPic);
-							}
-						}
 						pageIndex++;
 						if (flagRef == 0) { //刷新
 							datasource.pageArray = data.data.list;

@@ -222,6 +222,7 @@
 			.cellValue{
 				font-size: 15px;
 				color: gray;
+				word-break: break-all;
 			}
 			
 			.mui-segmented-control .mui-control-item{
@@ -245,89 +246,16 @@
 							 class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
-					<!-- <template v-cloak v-if="pageArray.length>0">
-						<ul v-cloak class="mui-table-view">
-							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-								<a class="">
-									<div class="mui-table">
-									    <div class="mui-table-cell mui-col-xs-10">
-									        <div class="mui-ellipsis">{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
-									        <h5 style="margin-top: 0.75rem">请假类型:{{model.item_txt}}</h5>
-											<h5  style="margin-top: 0.55rem">{{model.begintime}} ~ {{model.endtime}}</h5>
-									        <p class="mui-h6 mui-ellipsis" style="word-break: break-all;word-wrap:break-word;white-space:initial" v-if="model.comment">说明:{{model.comment}}</p>
-									    </div>
-									</div>
-								</a>
-							</li>
-						</ul>
-					</template>
-					<template v-else>
-						<div></div>
-					</template> -->
 					<ul v-cloak class="mui-table-view">
-						<li class="mui-table-view-cell">
+						<li v-cloak v-for="model in pageArray" class="mui-table-view-cell">
 							<div class="mui-table">
 								<div class="mui-table-cell">
 									<div>
-										<div class="cellKey">时间：<span class="cellValue">8：30</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">状态：<span class="cellValue">正常</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">8：30</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">状态：<span class="cellValue">正常</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">8：30</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">状态：<span class="cellValue">迟到</span></div>
-										<div class="cellKey">附件：<span class="cellValue" style="color: #00CFBD;">www.baidu123.png</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">8：30</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">状态：<span class="cellValue">大立科技的</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">8：30</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">状态：<span class="cellValue">正常</span></div>
-									</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-table">
-								<div class="mui-table-cell">
-									<div>
-										<div class="cellKey">时间：<span class="cellValue">8：30</span></div>
-										<div class="cellKey">地点：<span class="cellValue">金视野总部</span></div>
-										<div class="cellKey">状态：<span class="cellValue">正常</span></div>
+										<div class="cellKey">时间：<span class="cellValue">{{model.attend_time}}</span></div>
+										<div class="cellKey">地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+										<div class="cellKey">类型：<span class="cellValue">{{model.attend_itemName}}</span></div>
+										<div class="cellKey">结果：<span class="cellValue">{{model.attend_resultName}}</span></div>
+										<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
 									</div>
 								</div>
 							</div>
@@ -403,6 +331,11 @@
 							datePicker = null;
 						});
 					},
+					clickAttendPic:function(tempUrl){
+						console.log('tempUrl:' + tempUrl);
+						var urlStr = encodeURI(tempUrl)
+						plus.runtime.openURL(urlStr);
+					}
 				}
 			});
 
@@ -410,7 +343,13 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
-				tempVue.showAdd = true;
+				// 获取权限
+				getPermissionByPosition('add', curPage.access, function(data) {
+					console.log('getPermissionByPosition:' + JSON.stringify(data));
+					if (data.code == 0 && data.data.result == 1) {
+						tempVue.showAdd = true;
+					}
+				});
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -418,60 +357,117 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-
-				window.addEventListener('refreshList', function(data) {
-					events.showWaiting();
-					pageIndex = 1;
-					flagRef = 0;
-					datasource.pageArray = [];
-					getPageDataArray();
-				});
 				// 获取当前日期
 				getCurrentDate();
+				//上拉下拉注册
+				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
+					down: {
+						callback: function() {
+							//清除节点
+							// document.getElementById('list-container').innerHTML = "";
+							var self = this;
+							//console.log("下拉刷新");
+							pageIndex = 1;
+							flagRef = 0;
+							//10.获取某人考勤列表
+							getPageDataArray();
+							setTimeout(function() {
+								//结束下拉刷新
+								self.endPullDownToRefresh();
+							}, 1000);
+						}
+					},
+					up: {
+						callback: function() {
+							var self = this;
+							//console.log("上拉加载更多");
+							flagRef = 1;
+							if (pageIndex <= totalPageCount) {
+								//10.获取某人考勤列表
+								getPageDataArray();
+								setTimeout(function() {
+									//结束下拉刷新
+									self.endPullUpToRefresh();
+									if (mui(".mui-table-view-cell").length < 10) {
+										mui(".mui-pull-loading")[0].innerHTML = "";
+									}
+								}, 1000);
+							} else {
+								//结束下拉刷新
+								self.endPullUpToRefresh();
+								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+							}
+						}
+					}
+				});
+			});
+			
+			// 监听添加日程，添加成功后，刷新界面
+			window.addEventListener('refreshMyAttendanceList', function(data) {
+				pageIndex = 1;
+				flagRef = 0;
+				//10.获取某人考勤列表
+				getPageDataArray();
 			});
 
-			//获取请假列表数据 
+			//10.获取某人考勤列表
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				// events.showWaiting();
-				//需要加密的数据
-				// comData = {
-				// 	grd_code: datasource.grdValue.value,
-				// 	cls_code: datasource.clsValue.value,
-				// 	item_code: datasource.qjlxValue.value,
-				// 	query_time: datasource.dateValue?datasource.dateValue:getCurrentDate(),
-				// 	page_number: pageIndex, //当前页数
-				// 	page_size: 10, //每页记录数
-				// 	index_code: curPage.access.split('#')[1],
-				// }
+				events.showWaiting();
+				// 需要加密的数据
+				comData = {
+					user_code: personal.user_code,//用户Code
+					attend_item: 0,//考勤项目,0 为全部
+					attend_result: 0,//考勤结果,0 为全部1 正常,2 迟到,3 早退,4 缺勤,5 非规定地址打卡
+					begin_time: datasource.dateValue.replace(/-/g,''),//查询开始时间
+					end_time: datasource.dateValue.replace(/-/g,''), //查询结束时间
+					page_number: pageIndex, //当前页数
+					page_size: 10, //每页记录数
+					index_code: curPage.access.split('#')[1],
+					op_code: 'index'
+				}
 				// 1.1.列表页
-				// postDataEncry(window.storageKeyName.INTERFACE_WORK + 'LeaveRecord/list', {}, comData, 2, function(data) {
-				// events.closeWaiting();
-				// console.log(JSON.stringify(data))
-				// if (data.code == 0) {
-				// 	totalPageCount = data.data.total_page;
-				// 	pageIndex++;
-				// 	if (flagRef == 0) { //刷新
-				// 	console.log(JSON.stringify(data.data.list));
-				// 		datasource.pageArray = data.data.list
-				// 		if (data.data.list.length == 0) {
-				// 			mui.toast('暂无数据');
-				// 		}
-				// 	} else { //加载更多
-				// 		//合并数组
-				// 		datasource.pageArray = datasource.pageArray.concat(data.data.list);
-				// 		if (data.data.list.length == 0) {
-				// 			mui.toast('已加载全部');
-				// 		}
-				// 	}
-				// 	if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-				// 		mui(".mui-pull-loading")[0].innerHTML = "";
-				// 	}
-				// } else {
-				// 	events.closeWaiting();
-				// 	mui.toast(data.msg);
-				// }
-				// });
+				postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attend/getAttends', {}, comData, 2, function(data) {
+				events.closeWaiting();
+				console.log(JSON.stringify(data))
+				if (data.code == 0) {
+					for (var i = 0; i < data.data.list.length; i++) {
+						var tempM = data.data.list[i];
+						if (tempM.attend_result == 1) {
+							tempM.attend_resultName = '正常';
+						} else if (tempM.attend_result == 2) {
+							tempM.attend_resultName = '迟到';
+						}else if (tempM.attend_result == 3) {
+							tempM.attend_resultName = '早退';
+						}else if (tempM.attend_result == 4) {
+							tempM.attend_resultName = '缺勤';
+						}else if (tempM.attend_result == 5) {
+							tempM.attend_resultName = '非规定地址打卡';
+						}
+					}
+					totalPageCount = data.data.total_page;
+					pageIndex++;
+					if (flagRef == 0) { //刷新
+					console.log(JSON.stringify(data.data.list));
+						datasource.pageArray = data.data.list
+						if (data.data.list.length == 0) {
+							mui.toast('暂无数据');
+						}
+					} else { //加载更多
+						//合并数组
+						datasource.pageArray = datasource.pageArray.concat(data.data.list);
+						if (data.data.list.length == 0) {
+							mui.toast('已加载全部');
+						}
+					}
+					if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+						mui(".mui-pull-loading")[0].innerHTML = "";
+					}
+				} else {
+					events.closeWaiting();
+					mui.toast(data.msg);
+				}
+				});
 			};
 
 			// 获取当前日期
@@ -482,6 +478,8 @@
 				var date = myDate.getDate();
 				var now = year + '-' + conver(month) + "-" + conver(date);
 				datasource.dateValue = now;
+				//10.获取某人考勤列表
+				getPageDataArray();
 			}
 
 			function conver(s) {
