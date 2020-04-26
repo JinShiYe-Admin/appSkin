@@ -67,7 +67,7 @@
 				<p class="contentCSS" style="font-size: 14px;color: #666;" v-html="pageModel.AnnouncementContent"></p>
 				<template v-for="(extraFile,index) in pageModel.AnnouncementEncName" v-show="pageModel.AnnouncementEncName.length==0">
 					<p class="encName" v-show="extraFile">附件:
-						<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(pageModel.AnnouncementEncAddr[index])">{{extraFile}}</a>
+						<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(pageModel.AnnouncementEncAddr[index])">图片{{index+1}}.png</a>
 					</p>
 				</template>
 			</template>

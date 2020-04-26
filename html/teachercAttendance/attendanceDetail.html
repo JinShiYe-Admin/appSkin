@@ -265,9 +265,9 @@
 							<li v-for="model in pageArray.okList" class="mui-table-view-cell">
 								<div class="mui-table">
 									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
-									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
-									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
-									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+									<div class="cellKey">时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">打卡地点图片.png</span></div>
 								</div>
 							</li>
 						</ul>
@@ -279,9 +279,9 @@
 							<li v-for="model in pageArray.lateList" class="mui-table-view-cell">
 								<div class="mui-table">
 									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
-									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
-									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
-									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+									<div class="cellKey">时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">打卡地点图片.png</span></div>
 								</div>
 							</li>
 						</ul>
@@ -293,9 +293,9 @@
 							<li v-for="model in pageArray.earlyList" class="mui-table-view-cell">
 								<div class="mui-table">
 									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
-									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
-									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
-									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+									<div class="cellKey">时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">打卡地点图片.png</span></div>
 								</div>
 							</li>
 						</ul>
@@ -307,9 +307,9 @@
 							<li v-for="model in pageArray.outList" class="mui-table-view-cell">
 								<div class="mui-table">
 									<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
-									<div class="cellKey">考勤时间：<span class="cellValue">{{model.attend_time}}</span></div>
-									<div class="cellKey">考勤地点：<span class="cellValue">{{model.attend_addr}}</span></div>
-									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+									<div class="cellKey">时间：<span class="cellValue">{{model.attend_time}}</span></div>
+									<div class="cellKey">地点：<span class="cellValue">{{model.attend_addr}}</span></div>
+									<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">打卡地点图片.png</span></div>
 								</div>
 							</li>
 						</ul>

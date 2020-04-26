@@ -216,7 +216,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a v-cloak v-if="showBack==1"  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
@@ -312,7 +312,8 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: ''
+					titleName: '',
+					showBack:0,
 				}
 			});
 			var datasource = new Vue({
@@ -402,18 +403,22 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				if(curPage&&JSON.stringify(curPage)=='{}'){
-					curPage={
-								"name":"考务系统",
-								"href":"../../html/schapp_examination/index.html",
-								"tempID":"kaowu",
-								"cls":"mui-icon iconfont icon-kejiaowenhua",
-								"permission":"schapp_Examination",
-								"access":"schapp#Examination:index"
-							}
-				}
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
+				if(curPage&&JSON.stringify(curPage)=='{}'){
+					var ws = plus.webview.currentWebview();
+					console.log("当前Webview：" + JSON.stringify(ws.preload));
+					if (ws.preload) {
+						curPage = ws.preload;
+						tempVue.titleName = ws.preload.name;
+					}
+					if (ws.preload.childList.length>0) {
+						tempVue.showBack = 1;
+					}
+				}else{
+					tempVue.showBack = 1;
+				}
+				
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;

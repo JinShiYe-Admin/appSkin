@@ -255,7 +255,9 @@
 										<div class="cellKey">地点：<span class="cellValue">{{model.attend_addr}}</span></div>
 										<div class="cellKey">类型：<span class="cellValue">{{model.attend_itemName}}</span></div>
 										<div class="cellKey">结果：<span class="cellValue">{{model.attend_resultName}}</span></div>
-										<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div>
+										<!-- <div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)" style="color: #00CFBD;">{{model.attend_pic.split('/')[model.attend_pic.split('/').length-1]}}</span></div> -->
+										<div v-if="model.attend_pic.length>0" class="cellKey">附件：<span class="cellValue" @tap="clickAttendPic(model.attend_pic)"
+											 style="color: #00CFBD;">打卡地点图片.png</span></div>
 									</div>
 								</div>
 							</div>
@@ -331,7 +333,7 @@
 							datePicker = null;
 						});
 					},
-					clickAttendPic:function(tempUrl){
+					clickAttendPic: function(tempUrl) {
 						console.log('tempUrl:' + tempUrl);
 						var urlStr = encodeURI(tempUrl)
 						plus.runtime.openURL(urlStr);
@@ -401,7 +403,7 @@
 					}
 				});
 			});
-			
+
 			// 监听添加日程，添加成功后，刷新界面
 			window.addEventListener('refreshMyAttendanceList', function(data) {
 				pageIndex = 1;
@@ -416,11 +418,11 @@
 				events.showWaiting();
 				// 需要加密的数据
 				comData = {
-					user_code: personal.user_code,//用户Code
-					attend_item: 0,//考勤项目,0 为全部
-					attend_result: 0,//考勤结果,0 为全部1 正常,2 迟到,3 早退,4 缺勤,5 非规定地址打卡
-					begin_time: datasource.dateValue.replace(/-/g,''),//查询开始时间
-					end_time: datasource.dateValue.replace(/-/g,''), //查询结束时间
+					user_code: personal.user_code, //用户Code
+					attend_item: 0, //考勤项目,0 为全部
+					attend_result: 0, //考勤结果,0 为全部1 正常,2 迟到,3 早退,4 缺勤,5 非规定地址打卡
+					begin_time: datasource.dateValue.replace(/-/g, ''), //查询开始时间
+					end_time: datasource.dateValue.replace(/-/g, ''), //查询结束时间
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
@@ -428,45 +430,46 @@
 				}
 				// 1.1.列表页
 				postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attend/getAttends', {}, comData, 2, function(data) {
-				events.closeWaiting();
-				console.log(JSON.stringify(data))
-				if (data.code == 0) {
-					for (var i = 0; i < data.data.list.length; i++) {
-						var tempM = data.data.list[i];
-						if (tempM.attend_result == 1) {
-							tempM.attend_resultName = '正常';
-						} else if (tempM.attend_result == 2) {
-							tempM.attend_resultName = '迟到';
-						}else if (tempM.attend_result == 3) {
-							tempM.attend_resultName = '早退';
-						}else if (tempM.attend_result == 4) {
-							tempM.attend_resultName = '缺勤';
-						}else if (tempM.attend_result == 5) {
-							tempM.attend_resultName = '非规定地址打卡';
+					console.log(JSON.stringify(data))
+					if (data.code == 0) {
+						for (var i = 0; i < data.data.list.length; i++) {
+							var tempM = data.data.list[i];
+							if (tempM.attend_result == 1) {
+								tempM.attend_resultName = '正常';
+							} else if (tempM.attend_result == 2) {
+								tempM.attend_resultName = '迟到';
+							} else if (tempM.attend_result == 3) {
+								tempM.attend_resultName = '早退';
+							} else if (tempM.attend_result == 4) {
+								tempM.attend_resultName = '缺勤';
+							} else if (tempM.attend_result == 5) {
+								tempM.attend_resultName = '非规定地址打卡';
+							}
 						}
-					}
-					totalPageCount = data.data.total_page;
-					pageIndex++;
-					if (flagRef == 0) { //刷新
-					console.log(JSON.stringify(data.data.list));
-						datasource.pageArray = data.data.list
-						if (data.data.list.length == 0) {
-							mui.toast('暂无数据');
+						totalPageCount = data.data.total_page;
+						pageIndex++;
+						if (flagRef == 0) { //刷新
+							console.log(JSON.stringify(data.data.list));
+							datasource.pageArray = data.data.list
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
+						} else { //加载更多
+							//合并数组
+							datasource.pageArray = datasource.pageArray.concat(data.data.list);
+							if (data.data.list.length == 0) {
+								mui.toast('已加载全部');
+							}
 						}
-					} else { //加载更多
-						//合并数组
-						datasource.pageArray = datasource.pageArray.concat(data.data.list);
-						if (data.data.list.length == 0) {
-							mui.toast('已加载全部');
+						if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
+					} else {
+						mui.toast(data.msg);
 					}
-					if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-						mui(".mui-pull-loading")[0].innerHTML = "";
-					}
-				} else {
-					events.closeWaiting();
-					mui.toast(data.msg);
-				}
+					setTimeout(function() {
+						events.closeWaiting();
+					}, 500);
 				});
 			};
 

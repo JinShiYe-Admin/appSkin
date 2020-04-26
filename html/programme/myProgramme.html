@@ -123,6 +123,7 @@
 			.cellValue{
 				font-size: 15px;
 				color: gray;
+				word-break: break-all;
 			}
 		</style>
 	</head>
@@ -183,7 +184,7 @@
 				el: "#tempVue",
 				data: {
 					titleName: '',
-					showAdd: true
+					showAdd: false
 				},
 				methods: {
 					add: function() {
@@ -291,7 +292,6 @@
 				}
 				//4.获取某人日程列表
 				postDataEncry(window.storageKeyName.INTERFACE_PROGRAMME + 'note/getNotes', {}, comData, 2, function(data) {
-					events.closeWaiting();
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;
@@ -314,6 +314,9 @@
 					} else {
 						mui.toast(data.msg);
 					}
+					setTimeout(function() {
+						events.closeWaiting();
+					}, 500);
 				});
 			};
 		</script>

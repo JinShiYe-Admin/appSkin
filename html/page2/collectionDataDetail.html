@@ -176,7 +176,7 @@
 			<p class="contentCSS" style="font-size: 14px;color: #666;">{{detailModel.InfoCollectContent}}</p>
 			<template v-for="(extraFile,index) in detailModel.InfoCollectEncName">
 				<p class="encName" v-show="extraFile">附件:
-					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.InfoCollectEncAddr[index])">{{extraFile}}</a>
+					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.InfoCollectEncAddr[index])">图片{{index+1}}.png</a>
 				</p>
 			</template>
 			<template v-if="pageFlag == 0||detailModel.InfoCollectStatus !=4">
@@ -195,7 +195,7 @@
 					<p class="contentCSS" style="font-size: 14px;color: #666;">提交备注：{{detailModel.InfoUploadContent}}</p>
 					<template v-for="(extraFile,index) in detailModel.UploadEncName">
 						<p class="encName" v-show="extraFile">附件:
-							<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.UploadEncAddr[index])">{{extraFile}}</a>
+							<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.UploadEncAddr[index])">图片{{index+1}}.png</a>
 						</p>
 					</template>
 				</div>
@@ -233,7 +233,7 @@
 								</div>
 								<template v-for="(extraFile,indexEnc) in replyModel.UploadEncName">
 									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
-										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.UploadEncAddr[indexEnc])">{{extraFile}}</a>
+										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.UploadEncAddr[indexEnc])">图片{{index+1}}.png</a>
 									</p>
 								</template>
 								<button v-if="detailModel.InfoCollectStatus !=4" @click="openCloseUpload(replyModel)" type="button" :class="replyModel.InfoUploadCloseStatus==1?closeBtn:openBtn"

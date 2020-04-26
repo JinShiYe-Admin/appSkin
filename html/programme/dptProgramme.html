@@ -222,6 +222,7 @@
 			.cellValue{
 				font-size: 15px;
 				color: gray;
+				word-break: break-all;
 			}
 
 		</style>
@@ -246,7 +247,8 @@
 							<div class="mui-table">
 								<div class="mui-table-cell">
 									<div>
-										<div class="cellKey">部门：<span class="cellValue">{{model.dpt_name}} {{model.user_name}}</span><span class="cellValue" style="float: right;">{{model.begin_time}} ~ {{model.end_time}}</span></div>
+										<div class="cellKey">部门：<span class="cellValue">{{model.dpt_name}}</span><span class="cellValue" style="float: right;">{{model.begin_time}} ~ {{model.end_time}}</span></div>
+										<div class="cellKey">姓名：<span class="cellValue">{{model.user_name}}</span></div>
 										<div class="cellKey">地点：<span class="cellValue">{{model.note_addr}}</span></div>
 										<div class="cellKey">内容：<span class="cellValue">{{model.note_note}}</span></div>
 									</div>
@@ -458,6 +460,9 @@
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取部门');
+							setTimeout(function() {
+								mui.back()
+							}, 1000);
 						}
 					} else {
 						events.closeWaiting();
@@ -475,12 +480,11 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUser', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
-					events.closeWaiting();
 					if (data.code == 0) {
 						let users = data.data.list;
 						if(users.length>0 ){
 							var tempArr = [{
-								user_name:'全部学生',
+								user_name:'全部老师',
 								user_code:'0',
 								dpt_code:dptModel.dpt_code,
 							}];
@@ -509,6 +513,7 @@
 					}else{
 						mui.toast(data.msg);
 					}
+					events.closeWaiting();
 				});
 			}
 			//5.获取部门日程列表
@@ -527,7 +532,6 @@
 					}
 					// 5.获取部门日程列表
 					postDataEncry(window.storageKeyName.INTERFACE_PROGRAMME + 'note/getDptNotes', {}, comData, 2, function(data) {
-						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -559,9 +563,11 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							events.closeWaiting();
 							mui.toast(data.msg);
 						}
+						setTimeout(function() {
+							events.closeWaiting();
+						}, 500);
 					});
 			};
 			

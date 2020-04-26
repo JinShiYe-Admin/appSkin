@@ -156,7 +156,7 @@
 			<p class="contentCSS" style="font-size: 14px;color: #666;">{{detailModel.NoticeContent}}</p>
 			<template v-for="(extraFile,index) in detailModel.NoticeEncName" v-show="detailModel.NoticeEncName.length==0">
 				<p class="encName" v-show="extraFile">附件:
-					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">{{extraFile}}</a>
+					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">图片{{index+1}}.png</a>
 				</p>
 			</template>
 			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3">
@@ -193,7 +193,7 @@
 								</div>
 								<template v-for="(extraFile,indexEnc) in replyModel.EncName" v-show="replyModel.EncName.length==0">
 									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
-										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">{{extraFile}}</a>
+										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">图片{{indexEnc+1}}.png</a>
 									</p>
 								</template>
 							</a>

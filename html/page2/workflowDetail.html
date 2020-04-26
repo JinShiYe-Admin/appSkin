@@ -145,7 +145,7 @@
 			<p class="contentCSS" style="font-size: 14px;color: #666;">{{detailModel.ApplyContent}}</p>
 			<template v-for="(extraFile,index) in detailModel.ApplyEncName" v-show="detailModel.ApplyEncName.length==0">
 				<p class="encName" v-show="extraFile">附件:
-					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.ApplyEncAddr[index])">{{extraFile}}</a>
+					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.ApplyEncAddr[index])">图片{{index+1}}.png</a>
 				</p>
 			</template>
 			<template v-if="detailModel.ApproveStatus == 2">

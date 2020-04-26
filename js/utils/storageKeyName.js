@@ -18,18 +18,18 @@ var storageKeyName = (function(mod) {
 		case 0: //开发
 			mod.SCHOOLID = 100005;//学校ID
 			//山东开发
-			mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
-			mod.INTERFACE_SSO_SUB = 'http://develop309.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
-			mod.INTERFACE_HR_SUB = 'http://develop309.jiaobaowang.net/hrtosub/api/sub/'; //人事接口,供子系统用
-			mod.INTERFACE_HR_SKIN = 'http://develop309.jiaobaowang.net/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			mod.INTERFACE_OA = 'http://develop309.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
-			mod.INTERFACE_ITEM = 'http://develop309.jiaobaowang.net/imsubapi/sub/api/';//物品管理接口(孔)
-			mod.INTERFACE_BASESUB = 'http://develop309.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务用(顾)
-			mod.INTERFACE_EXAMINATION = 'http://develop309.jiaobaowang.net/stuzy/api/paper/';//考务系统接口(蒙)
-			mod.INTERFACE_WORK = 'http://develop309.jiaobaowang.net/stukqsubapi/attendance/';//考勤系统接口(阮)
-			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
-			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
+			// mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			// mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
+			// mod.INTERFACE_SSO_SUB = 'http://develop309.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
+			// mod.INTERFACE_HR_SUB = 'http://develop309.jiaobaowang.net/hrtosub/api/sub/'; //人事接口,供子系统用
+			// mod.INTERFACE_HR_SKIN = 'http://develop309.jiaobaowang.net/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			// mod.INTERFACE_OA = 'http://develop309.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
+			// mod.INTERFACE_ITEM = 'http://develop309.jiaobaowang.net/imsubapi/sub/api/';//物品管理接口(孔)
+			// mod.INTERFACE_BASESUB = 'http://develop309.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务用(顾)
+			// mod.INTERFACE_EXAMINATION = 'http://develop309.jiaobaowang.net/stuzy/api/paper/';//考务系统接口(蒙)
+			// mod.INTERFACE_WORK = 'http://develop309.jiaobaowang.net/stukqsubapi/attendance/';//考勤系统接口(阮)
+			// mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
+			// mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
 			//联测
 			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
@@ -41,6 +41,8 @@ var storageKeyName = (function(mod) {
 			// mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务用(顾)
 			// mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口(蒙)
 			// mod.INTERFACE_WORK = 'http://139.129.252.49:8180/stukqsubapi/attendance/';//考勤系统接口(阮)
+			// mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
+			// mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
 			
 			//云测 
 			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
@@ -53,19 +55,23 @@ var storageKeyName = (function(mod) {
 			// mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/baseapi/api/Data/';//统一信息接口:考务用(顾)
 			// mod.INTERFACE_EXAMINATION = 'http://nwifapp.jiaobaowang.net/stuzy/api/paper/';//考务系统接口(蒙)
 			// mod.INTERFACE_WORK = 'http://nwifapp.jiaobaowang.net/stukqsubapi/attendance/';//考勤系统接口(阮)
+			// mod.INTERFACE_PROGRAMME = 'http://nwifapp.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
+			// mod.INTERFACE_ATTENDAND = 'http://nwifapp.jiaobaowang.net/tecgpskqsubapi/sub/api/';//考勤（孔)
 			
 			
 			//正式
-			// mod.INTERFACE_SSO_SKIN = 'http://www.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
-			// mod.INTERFACE_SSO_HR = 'http://www.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
-			// mod.INTERFACE_SSO_SUB = 'http://www.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
-			// mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
-			// mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
-			// mod.INTERFACE_OA = 'http://apps.108800.com/oasubapi/sub/api/';//oa接口(孔)
-			// mod.INTERFACE_ITEM = 'http://apps.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
-			// mod.INTERFACE_BASESUB = 'http://apps.108800.com/baseapi/api/Data/';//统一信息接口:考务用(顾)
-			// mod.INTERFACE_EXAMINATION = 'http://apps.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
-			// mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//考勤系统接口(阮)
+			mod.INTERFACE_SSO_SKIN = 'http://www.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_HR = 'http://www.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_SUB = 'http://www.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
+			mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
+			mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
+			mod.INTERFACE_OA = 'http://apps.108800.com/oasubapi/sub/api/';//oa接口(孔)
+			mod.INTERFACE_ITEM = 'http://apps.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
+			mod.INTERFACE_BASESUB = 'http://apps.108800.com/baseapi/api/Data/';//统一信息接口:考务用(顾)
+			mod.INTERFACE_EXAMINATION = 'http://apps.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
+			mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//考勤系统接口(阮)
+			mod.INTERFACE_PROGRAMME = 'http://apps.108800.com/tecrcsubapi/sub/api/';//日程（孔)
+			mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//考勤（孔)
 			
 			
 			
