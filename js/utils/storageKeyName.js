@@ -30,19 +30,22 @@ var storageKeyName = (function(mod) {
 			// mod.INTERFACE_WORK = 'http://develop309.jiaobaowang.net/stukqsubapi/attendance/';//考勤系统接口(阮)
 			// mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
 			// mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
+			// mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生行为（阮) ****需要通知广西改后台，用的同一套行为接口，只是后台指向人事和单点不一样
+			
 			//联测
-			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			// mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
-			// mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
-			// mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
-			// mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			// mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
-			// mod.INTERFACE_ITEM = 'http://nwifapp.jiaobaowang.net/testimsubapi/sub/api/';//物品管理接口(孔)  http://115.28.11.115:8080/imsubapi/sub/api/
-			// mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务用(顾)
-			// mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口(蒙)
-			// mod.INTERFACE_WORK = 'http://139.129.252.49:8180/stukqsubapi/attendance/';//考勤系统接口(阮)
-			// mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
-			// mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
+			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
+			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
+			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
+			mod.INTERFACE_ITEM = 'http://nwifapp.jiaobaowang.net/testimsubapi/sub/api/';//物品管理接口(孔)  http://115.28.11.115:8080/imsubapi/sub/api/
+			mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务用(顾)
+			mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口(蒙)
+			mod.INTERFACE_WORK = 'http://139.129.252.49:8180/stukqsubapi/attendance/';//考勤系统接口(阮)
+			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
+			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
+			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生行为（阮) ****需要通知广西改后台，用的同一套行为接口，只是后台指向人事和单点不一样
 			
 			//云测 
 			// mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
@@ -57,25 +60,26 @@ var storageKeyName = (function(mod) {
 			// mod.INTERFACE_WORK = 'http://nwifapp.jiaobaowang.net/stukqsubapi/attendance/';//考勤系统接口(阮)
 			// mod.INTERFACE_PROGRAMME = 'http://nwifapp.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
 			// mod.INTERFACE_ATTENDAND = 'http://nwifapp.jiaobaowang.net/tecgpskqsubapi/sub/api/';//考勤（孔)
+			// mod.INTERFACE_STUXWSUB = '???';//学生行为（阮) 
 			
 			
 			//正式
-			mod.INTERFACE_SSO_SKIN = 'http://www.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
-			mod.INTERFACE_SSO_HR = 'http://www.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
-			mod.INTERFACE_SSO_SUB = 'http://www.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
-			mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
-			mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
-			mod.INTERFACE_OA = 'http://apps.108800.com/oasubapi/sub/api/';//oa接口(孔)
-			mod.INTERFACE_ITEM = 'http://apps.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
-			mod.INTERFACE_BASESUB = 'http://apps.108800.com/baseapi/api/Data/';//统一信息接口:考务用(顾)
-			mod.INTERFACE_EXAMINATION = 'http://apps.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
-			mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//考勤系统接口(阮)
-			mod.INTERFACE_PROGRAMME = 'http://apps.108800.com/tecrcsubapi/sub/api/';//日程（孔)
-			mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//考勤（孔)
+			// mod.INTERFACE_SSO_SKIN = 'http://www.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
+			// mod.INTERFACE_SSO_HR = 'http://www.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			// mod.INTERFACE_SSO_SUB = 'http://www.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
+			// mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
+			// mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
+			// mod.INTERFACE_OA = 'http://apps.108800.com/oasubapi/sub/api/';//oa接口(孔)
+			// mod.INTERFACE_ITEM = 'http://apps.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
+			// mod.INTERFACE_BASESUB = 'http://apps.108800.com/baseapi/api/Data/';//统一信息接口:考务用(顾)
+			// mod.INTERFACE_EXAMINATION = 'http://apps.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
+			// mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//考勤系统接口(阮)
+			// mod.INTERFACE_PROGRAMME = 'http://apps.108800.com/tecrcsubapi/sub/api/';//日程（孔)
+			// mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//考勤（孔)
+			// mod.INTERFACE_STUXWSUB = '???';//学生行为（阮) 
 			
 			
-			
-			mod.ANDROIDUPDATEURL='http://192.168.1.243:8080/app/versionCode.xml';//安卓升级地址
+			mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 			mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1281905607';//IOS升级地址
 			
 			mod.TEACHERIMG = 'http://jsypay.jiaobaowang.net/jsyadmin/upuserimg.ashx?userid='; //老师上传头像

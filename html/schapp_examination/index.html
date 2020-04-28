@@ -405,18 +405,18 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
-				if(curPage&&JSON.stringify(curPage)=='{}'){
+				if(curPage&&JSON.stringify(curPage)=='{}'){//前四个页面时，不显示返回按钮
 					var ws = plus.webview.currentWebview();
 					console.log("当前Webview：" + JSON.stringify(ws.preload));
 					if (ws.preload) {
 						curPage = ws.preload;
 						tempVue.titleName = ws.preload.name;
 					}
-					if (ws.preload.childList.length>0) {
-						tempVue.showBack = 1;
-					}
+					// if (ws.preload.childList.length>0) {
+					// 	tempVue.showBack = 1;
+					// }
 				}else{
-					tempVue.showBack = 1;
+					tempVue.showBack = 1;//更多页面打开时，显示返回按钮
 				}
 				
 
