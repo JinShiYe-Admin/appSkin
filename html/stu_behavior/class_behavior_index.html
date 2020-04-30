@@ -234,6 +234,7 @@
 				display: -webkit-box !important;;
 				-webkit-box-orient:vertical !important;;
 				-webkit-line-clamp: 2 !important;
+				height:27px;
 			}
 
 		</style>
@@ -332,11 +333,18 @@
 							mui.toast('无法获取年级数据，不能进行添加操作')
 						} else if (datasource.clsList.length == 0) {
 							mui.toast('无法获取班级数据，不能进行添加操作')
+						} else if (datasource.xwList.length == 0) {
+							mui.toast('无法获取行为细项数据，不能进行添加操作')
+						} else if (datasource.kmList.length == 0) {
+							mui.toast('无法获取科目数据，不能进行添加操作')
+						} else if (datasource.jcList.length == 0) {
+							mui.toast('无法获取节次数据，不能进行添加操作')
 						} else {
 							let model = {};
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
-							utils.mOpenWithData("../../html/schapp_work/ketangAdd.html", model);
+							model.title=curPage.name
+							utils.mOpenWithData("../../html/stu_behavior/class_behavior_add.html", model);
 						}
 					}
 				}
@@ -359,8 +367,6 @@
 				},
 				methods: {
 					clickLi: function(model) {
-						console.log(JSON.stringify(model))
-						console.log(this.canDelete)
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
 						model.canDelete = this.canDelete;
@@ -622,7 +628,7 @@
 				});
 			}
 
-			//获取课堂考勤类型常量
+			//获取科目常量
 			function getKmList(grd_code, cls_code) {
 				comData = {
 					op_code: 'index',
@@ -647,7 +653,7 @@
 						if (subList.length > 0) {
 							datasource.kmList = subList;
 							datasource.kmValue = subList[0];
-							// 获取行为细项数组
+							// 获取常量数组
 							getXwList();
 						} else {
 							events.closeWaiting();
@@ -660,7 +666,7 @@
 				});
 			}
 
-			// 获取行为细项数组
+			// 获取行为细项，节次数组
 			function getXwList() {
 				comData = {
 					op_code: 'index',
@@ -669,18 +675,18 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
-							let xwList = [{
-								value: '',
-								text: '全部行为'
-							}].concat(data.data.qbArray);
 							let jcList = data.data.timeArray;
 							if (jcList.length > 0) {
 								datasource.jcList=jcList
 							}
-							if (xwList.length > 0) {
+							if (data.data.qbArray.length > 0) {
+								let xwList = [{
+									value: '',
+									text: '全部行为'
+								}].concat(data.data.qbArray);
 								datasource.xwList = xwList;
 								datasource.xwValue = xwList[0];
-								// 获取课堂考勤列表
+								// 获取列表
 								getPageDataArray();
 							} else {
 								events.closeWaiting();
@@ -693,7 +699,7 @@
 					});
 			}
 
-			//获取课堂考勤列表数据  
+			//获取列表数据  
 			function getPageDataArray() {
 				//需要加密的数据
 				comData = {

@@ -5,7 +5,7 @@
     "name" : "教宝校园",
     /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.0.0",
+        "name" : "2.0.0",
         /*应用版本名称*/
         "code" : "83"
     },
@@ -42,7 +42,8 @@
         "Speech" : {
             "description" : "管理语音识别插件"
         },
-        "UIWebview" : {}
+        "UIWebview" : {},
+        "Maps" : {}
     },
     "fullscreen" : false,
     "plus" : {
@@ -198,14 +199,14 @@
                     "iphone" : {
                         "default" : "",
                         /*iPhone3启动图片选，分辨率：320x480*/
-                        "retina35" : "G:/back/APP/教宝校园/启动图/IOS/640x960.png",
+                        "retina35" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/640x960.png",
                         /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-                        "retina40" : "G:/back/APP/教宝校园/启动图/IOS/640x1336.png",
-                        "portrait-896h@3x" : "G:/back/APP/教宝校园/启动图/IOS/1242x2688.png",
-                        "portrait-896h@2x" : "G:/back/APP/教宝校园/启动图/IOS/828x1792.png",
-                        "iphonex" : "G:/back/APP/教宝校园/启动图/IOS/1125x2436.png",
-                        "retina55" : "G:/back/APP/教宝校园/启动图/IOS/1242x2208.png",
-                        "retina47" : "G:/back/APP/教宝校园/启动图/IOS/750x1334.png"
+                        "retina40" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/640x1336.png",
+                        "portrait-896h@3x" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/1242x2688.png",
+                        "portrait-896h@2x" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/828x1792.png",
+                        "iphonex" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/1125x2436.png",
+                        "retina55" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/1242x2208.png",
+                        "retina47" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/750x1334.png"
                     },
                     "ipad" : {
                         "portrait" : "",
@@ -230,11 +231,11 @@
                     /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "",
                     /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "G:/back/APP/教宝校园/启动图/安卓/480x762.png",
+                    "hdpi" : "G:/back/APP/教宝校园/系统图标/启动图/安卓/480x762.png",
                     /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "G:/back/APP/教宝校园/启动图/安卓/720x1242.png",
+                    "xhdpi" : "G:/back/APP/教宝校园/系统图标/启动图/安卓/720x1242.png",
                     /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "G:/back/APP/教宝校园/启动图/安卓/1080x1882.png"
+                    "xxhdpi" : "G:/back/APP/教宝校园/系统图标/启动图/安卓/1080x1882.png"
                 }
             },
             "plugins" : {

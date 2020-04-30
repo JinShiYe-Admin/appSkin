@@ -259,13 +259,13 @@
 			    font-family: 'Helvetica Neue',Helvetica,sans-serif;
 			    line-height: 1.1;
 			    float: left;
-			    width: 30%;
+			    width: 28%;
 			    padding: 11px 15px;
 			}
 			
 			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea {
 			    float: right;
-			    width: 68%;
+			    width: 70%;
 				margin-right: 2%;
 			    margin-bottom: 0;
 			    padding-left: 0.625rem;
@@ -278,6 +278,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
+			<a v-if="showDelete" @click="_delete()" class="mui-pull-right" style="font-size: 0.9375rem;margin-top: 0px;">删除</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
@@ -299,13 +300,13 @@
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >考勤项目</label>
+							<label class="aCss" >行为细项</label>
 							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss">考勤日期</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.attendance_time" readonly>
+							<label class="aCss">发生日期</label>
+							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
@@ -324,11 +325,17 @@
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss">说明</label>
+							<label class="aCss">行为说明</label>
 							<textarea style="border: 1px solid rgba(0,0,0,.2);" maxlength="300" v-model="formData.comment" rows="5"
 							 placeholder="暂无说明" readonly></textarea>
 						</div>
 						<div class="line"></div>
+						<div class="mui-input-row" v-if="formData.asset_ids&&formData.asset_ids.length>0">
+							<label class="aCss">附件</label>
+							<div style="width: 72%;float: right;">
+								<img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;" v-for="model in formData.asset_ids" :src="model.url"/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -366,22 +373,57 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: ''
+					titleName: '',
+					showDelete:false,
 				},
+				methods:{
+					_delete:function(){
+						var btnArray = ['是', '否'];
+						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
+							console.log(e.index)
+							if (e.index == 0) {
+								comData = {
+									id: curPage.id,
+									index_code: curPage.index_code,
+								}
+								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/delete', {}, comData, 2, function(data) {
+									console.log(JSON.stringify(data))
+									if (data.code == 0) {
+										mui.toast('删除成功');
+										 setTimeout(function(){
+										 	 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+										 	 mui.back()
+										 },300)
+									} else {
+										events.closeWaiting();
+										mui.toast(data.msg);
+									}
+								});
+							}
+						})
+					}
+				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					formData: {
-					}, //表单内容
+					formData: {}, //表单内容
 				},
+				methods:{
+					clickImg:function(url){
+						plus.runtime.openURL(url);
+					}
+				}
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log(JSON.stringify(curPage));
-				tempVue.titleName = ' 课堂考勤详情';
+				tempVue.titleName = curPage.behavior_type_txt+'详情';
 				datasource.formData=curPage;
+				if(curPage.canDelete){
+					tempVue.showDelete=true
+				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({

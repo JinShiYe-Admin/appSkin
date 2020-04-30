@@ -234,6 +234,7 @@
 				display: -webkit-box !important;;
 				-webkit-box-orient:vertical !important;;
 				-webkit-line-clamp: 2 !important;
+				height:27px;
 			}
 
 		</style>
@@ -328,11 +329,14 @@
 							mui.toast('无法获取年级数据，不能进行添加操作')
 						} else if (datasource.clsList.length == 0) {
 							mui.toast('无法获取班级数据，不能进行添加操作')
+						} else if (datasource.xwList.length == 0) {
+							mui.toast('无法获取行为细项数据，不能进行添加操作')
 						} else {
 							let model = {};
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
-							utils.mOpenWithData("../../html/schapp_work/ketangAdd.html", model);
+							model.title=curPage.name
+							utils.mOpenWithData("../../html/stu_behavior/extra_behavior_add.html", model);
 						}
 					}
 				}
@@ -354,11 +358,10 @@
 				},
 				methods: {
 					clickLi: function(model) {
-						console.log(JSON.stringify(model))
-						// let index_code = curPage.access.split('#')[1]
-						// model.index_code = index_code;
-						// model.canDelete = datasource.canDelete;
-						// utils.mOpenWithData("../../html/schapp_work/ketangDetail.html", model);
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						model.canDelete = this.canDelete;
+						utils.mOpenWithData("../../html/stu_behavior/extra_behavior_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -602,12 +605,11 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/ExtraBehavior/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
-							let xwList = [{
-								value: '',
-								text: '全部行为'
-							}].concat(data.data.qbArray);
-							
-							if (xwList.length > 0) {
+							if (data.data.qbArray.length > 0) {
+								let xwList = [{
+									value: '',
+									text: '全部行为'
+								}].concat(data.data.qbArray);
 								datasource.xwList = xwList;
 								datasource.xwValue = xwList[0];
 								// 获取课外考勤列表

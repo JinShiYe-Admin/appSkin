@@ -224,6 +224,22 @@
 				padding:0.125rem
 			}
 			
+			.talk-wt{
+				border: 1px solid #DD5B5B;
+				color: #DD5B5B;
+				font-size: 12px;
+				margin-left: 0.2875rem;
+				padding:0.125rem
+			}
+			
+			.talk-yt{
+				border: 1px solid #74AF8C;
+				color: #74AF8C;
+				font-size: 12px;
+				margin-left: 0.2875rem;
+				padding:0.125rem
+			}
+			
 			.mui-table-view-cell>a:not(.mui-btn){
 				    white-space: inherit;
 			}
@@ -234,6 +250,7 @@
 				display: -webkit-box !important;;
 				-webkit-box-orient:vertical !important;;
 				-webkit-line-clamp: 2 !important;
+				height:1.6875rem;
 			}
 
 		</style>
@@ -266,15 +283,49 @@
 									<!-- mui-navigate-right -->
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
-											<div class="mui-ellipsis"><span class="action">{{model.item_txt}}</span>{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
-											<h5 style="margin-top: 0.75rem">{{model.class_node}}&ensp;/&ensp;{{model.sub_name}}</h5>
-											<p class="tow-line" v-if="model.comment">行为说明:{{model.comment}}</p>
-											<div class="mui-table-cell mui-col-xs-5">
-												<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">记录人:{{model.create_user_name}}</h5>
+											<div class="mui-ellipsis">
+												<span v-if="lxValue.value=='behavior'" class="action">{{model.item_txt}}</span><!-- 行为谈话 -->
+												{{model.grd_name}}{{model.class_name}}·{{model.stu_name}} 
+												<template v-if="lxValue.value=='behavior'"><!-- 行为谈话 -->
+													<span :class="model.status=='unTalk'?'talk-wt':model.status=='talk'?'talk-yt':model.status=='read'?'talk-yt':''">{{model.status_txt}}</span>
+												</template>
 											</div>
-											<div class="mui-table-cell mui-col-xs-7">
-												<h5 class="mui-ellipsis mui-text-right" style="margin-top: 0.55rem;">{{model.behavior_time}}</h5>
-											</div>
+											<template v-if="lxValue.value=='active'">  <!-- 主动谈话 -->
+												<p class="tow-line" style="margin-top: 0.75rem;" v-if="model.chat_detail">谈话记录:{{model.chat_detail}}</p>
+												<div class="mui-table-cell mui-col-xs-5">
+													<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">记录人:{{model.create_user_name}}</h5>
+												</div>
+												<div class="mui-table-cell mui-col-xs-7">
+													<h5 class="mui-ellipsis mui-text-right" style="margin-top: 0.55rem;">{{model.chat_time}}</h5>
+												</div>
+											</template>
+											<template v-if="lxValue.value=='behavior'">  <!-- 行为谈话 -->
+												<template v-if="model.status=='unTalk'"><!-- 未谈 -->
+													<div class="mui-table-cell mui-col-xs-12">
+														<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">行为发生日期:{{model.behavior_time}}</h5>
+													</div>
+												</template>
+												<template v-if="model.status=='talk'"> <!-- 已谈 -->
+													<div class="mui-table-cell mui-col-xs-12">
+														<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">行为发生日期:{{model.behavior_time}}</h5>
+													</div>
+													<div class="mui-col-xs-12">
+														<h5 class="tow-line" style="margin-top: 0.4125rem;" v-if="model.chat_detail">谈话记录:{{model.chat_detail}}</h5>
+													</div>
+													
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">记录人:{{model.create_user_name}}</h5>
+													</div>
+													<div class="mui-table-cell mui-col-xs-7">
+														<h5 class="mui-ellipsis mui-text-right" style="margin-top: 0.55rem;">{{model.chat_time}}</h5>
+													</div>
+												</template>
+												<template v-if="model.status=='read'"> <!-- 已阅 -->
+														<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">行为发生日期:{{model.behavior_time}}</h5>
+														<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">记录人:{{model.create_user_name}}</h5>
+												</template>
+												
+											</template>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
 											<h5 class="mui-text-right" style="margin-top: 0.55rem;"></h5>
@@ -336,7 +387,8 @@
 							let model = {};
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
-							utils.mOpenWithData("../../html/schapp_work/ketangAdd.html", model);
+							model.title ='新建主动谈话';
+							utils.mOpenWithData("../../html/stu_behavior/stu_talk_add.html", model);//新建主动谈话
 						}
 					}
 				}
@@ -361,10 +413,23 @@
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
-						// let index_code = curPage.access.split('#')[1]
-						// model.index_code = index_code;
-						// model.canDelete = datasource.canDelete;
-						// utils.mOpenWithData("../../html/schapp_work/ketangDetail.html", model);
+						console.log(this.lxValue.value)
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						model.canDelete = this.canDelete;
+						if(this.lxValue.value=='active'){
+							model.title ='主动谈话详情';
+							utils.mOpenWithData("../../html/stu_behavior/stu_talk_detail.html", model);//主动谈话详情
+						}else if(this.lxValue.value=='behavior'){
+							if(model.status=='unTalk' || model.status=='read'){//未谈话,已阅，跳转到新增页
+								model.title ='新建行为谈话';
+								utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_add.html", model);//新增行为谈话
+							}else{
+								model.title ='行为谈话详情';
+								utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_detail.html", model);//行为谈话详情
+							}
+						}
+						
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -413,20 +478,21 @@
 					},
 					showLx: function() {
 						var userPicker = new $M.PopPicker({layer: 2});
-						console.log("datasource.lxList: " + JSON.stringify(datasource.lxList));
 						userPicker.setData(datasource.lxList);
 						setTimeout(function() {
-							console.log("datasource.lxValue.value: " + JSON.stringify(datasource.lxValue.value));
-							console.log("datasource.lxChildValue.value: " + JSON.stringify(datasource.lxChildValue.value));
 							userPicker.pickers[0].setSelectedValue(datasource.lxValue.value);
 							setTimeout(function() {
 								userPicker.pickers[1].setSelectedValue(datasource.lxChildValue.value);
 							},100)
 						}, 100);
 						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							console.log(JSON.stringify(items[1]))
 							datasource.lxValue=items[0]
+							if(items[0].value=='behavior'){//行为谈话类型，隐藏新增按钮
+								tempVue.showAdd=false
+							}
+							if(items[0].value=='active'){//主动谈话类型，显示新增按钮
+								tempVue.showAdd=true
+							}
 							datasource.lxChildValue=items[1]
 								//获取课堂考勤列表
 								events.showWaiting();
@@ -634,24 +700,27 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
-							let lxList = [{
-								value: '',
-								text: '全部谈话'
-							}].concat(data.data.qbArray);
-							let ztList = [{
-								value: '',
-								text: '全部状态'
-							}].concat(data.data.statusArray);
-							if (lxList&& lxList.length == 0) {
+							if (data.data.qbArray&& data.data.qbArray.length == 0) {
 								events.closeWaiting();
-								mui.toast('无法获取谈话类型');
-							} else if(ztList&& ztList.length == 0){
+								mui.toast('无法获取行为细项');
+							}  else if(data.data.statusArray&& data.data.statusArray.length == 0){
 								events.closeWaiting();
 								mui.toast('无法获取谈话状态');
+							} else if(data.data.typeArray&& data.data.typeArray.length == 0){
+								events.closeWaiting();
+								mui.toast('无法获取谈话类型');
 							}else{
+								let lxList = [{
+									value: '',
+									text: '全部谈话'
+								}].concat(data.data.qbArray);
+								let ztList = [{
+									value: '',
+									text: '全部状态'
+								}].concat(data.data.statusArray);
 								let obj=[
-									{value: 0,text: '主动谈话',children:[{value: "",text: "全部谈话"}]},
-									{value: 1,text: '行为谈话',children:lxList}
+									{value: 'active',text: '主动谈话',children:[{value: "",text: "全部谈话"}]},
+									{value: 'behavior',text: '行为谈话',children:lxList}
 								]
 								datasource.lxList = obj;
 								datasource.lxValue = obj[0];
@@ -659,7 +728,6 @@
 								
 								datasource.ztList = ztList;
 								datasource.ztValue = ztList[0];
-								// 获取课堂考勤列表
 								getPageDataArray();
 							}
 						} else {
@@ -676,7 +744,8 @@
 					grd_code: datasource.grdValue.value,
 					cls_code: datasource.clsValue.value,
 					status: datasource.ztValue.value,
-					item_code: datasource.lxValue.value,
+					type:datasource.lxValue.value,
+					item_code: datasource.lxChildValue.value,
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
