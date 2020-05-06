@@ -14,6 +14,7 @@
 		<style>
 			[v-cloak] {
 				visibility: hidden;
+				display:none !important;
 			}
 			html,
 			body {
@@ -224,6 +225,11 @@
 				color: gray;
 				word-break: break-all;
 			}
+			
+			.select{
+				position: fixed;
+				z-index: 20;
+			}
 
 		</style>
 	</head>
@@ -236,7 +242,7 @@
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
+				<div class="select">
 					<div class="mui-segmented-control" v-cloak>
 						<!-- <a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showUser()"><span>{{userValue.user_name}}</span><span class="mui-icon mui-icon-arrowdown"></span></a> -->
 						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showDpt()"><span>{{dptValue.dpt_name}}</span><span
@@ -245,6 +251,8 @@
 							 class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
+				</div>
+				<div v-cloak class="mui-scroll" style="margin-top: 40px;padding-bottom: 40px;">
 					<ul v-cloak class="mui-table-view">
 						<li v-cloak v-for="model in pageArray" class="mui-table-view-cell">
 							<div class="mui-table">

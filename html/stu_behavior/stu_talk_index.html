@@ -14,6 +14,7 @@
 		<style>
 			[v-cloak] {
 				visibility: hidden;
+				display: none !important; 
 			}
 			html,
 			body {
@@ -142,7 +143,7 @@
 			
 			.line{
 				background-color: #00CFBD;
-				margin-bottom: 0.3125rem;
+				margin-bottom: 0rem;
 				height: 0.125rem;
 			}
 			.selectDiv{
@@ -186,6 +187,11 @@
 			    height: 40px;
 			    line-height: 40px;
 			    border-radius: 50%;
+			}
+			
+			.select{
+				position: fixed;
+				z-index: 2;
 			}
 			
 			.mui-segmented-control {
@@ -264,7 +270,7 @@
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
+				<div class="select">
 					<div v-cloak class="mui-segmented-control" v-cloak>
 						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span
 							 class="mui-icon mui-icon-arrowdown"></span></a>
@@ -276,6 +282,8 @@
 							 class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
+				</div>
+				<div v-cloak class="mui-scroll" style="margin-top: 40px;padding-bottom: 40px;">
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
@@ -470,7 +478,7 @@
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
-								getKmList(datasource.grdValue.value, items[0].value)
+								getPageDataArray();
 								userPicker.dispose();
 								userPicker = null;
 							}

@@ -1,194 +1,96 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<!-- 考务模块  列表页
 
- -->
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title>新消息</title>
+		<meta name="anthor" content="an" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
-		<link href="../../css/common.css" rel="stylesheet" />
-		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
-		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/common.css" />
 		<link rel="stylesheet" href="../../fonts/iconfont1.css" />
 		<link rel="stylesheet" href="../../css/utils/MultiMedia.css" />
 		<link rel="stylesheet" href="../../css/utils/preview.css" />
 		<link rel="stylesheet" href="../../css/utils/audiopopover.css" />
-		<style>
-			[v-cloak] {
-				visibility: hidden;
-				display:none !important;
-			}
-			html,
-			body {
-				background-color: #FFFFFF;
-			}
-			
-			.mui-content{
-				background-color: #FFFFFF;
-			}
-			
-			.time {
-				font-size: 14px;
-				float: right;
-				color: gray;
-			}
-			
-			
-			.mui-table h4,.mui-table h5,.mui-table .mui-h5,.mui-table .mui-h6,.mui-table p{
-			    margin-top: 0;
-			}
-			.mui-table h4{
-			    line-height: 21px;
-			    font-weight: 500;
-			}
-					
-			.mui-table .oa-icon{
-			    position: absolute;
-			    right:0;
-			    bottom: 0;
-			}
-			.mui-table .oa-icon-star-filled{
-			    color:#f14e41;
-			}
-			
-			.mui-table-cell-1{
-				margin-top: 1.25rem;
-			}
-			
-			.selectDiv{
-				background-color: #eaeaea;
-			}
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<style rel="stylesheet">
 			.selectBtn{
-				border: 0rem;
-				border-radius: 0rem;
-				background-color: #FFFFFF;
-				height: 3rem;
+				width: 83% !important;
+				margin-top: 5px;
+				margin-left: 5px;
 			}
-			
-			.aCss {
-				font-size: 15px;
-				color: #333;
-				width: 5rem;
-			}
-			
-			.icon-right {
-				position: fixed;
-				float: right;
-				font-size: 14px;
-				margin-top: 11px;
-				right: 5%;
-			}
-			
-			.mui-input-row label~input,.mui-input-row label~select, .mui-input-row label~textarea ,
-			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
-				color: #999;
-				/* placeholder字体大小  */
-				font-size: 14px;
-			}
-			
-			.line {
-				right: 0;
-				bottom: 0;
-				left: 0;
-				height: 1px;
-				content: '';
-				-webkit-transform: scaleY(.5);
-				transform: scaleY(.5);
-				background-color: #e4e4e4;
-			}
-			
-			.mui-input-row:after {
-				height: 0px;
-			}
-			
-			.mui-input-row {
-				margin:0.3125rem 0;
-			}
-			
-			.mui-input-row label {
-			    font-family: 'Helvetica Neue',Helvetica,sans-serif;
-			    line-height: 1.1;
-			    float: left;
-			    width: 30%;
-			    padding: 11px 15px;
-			}
-			
-			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea {
-			    float: right;
-			    width: 68%;
-				margin-right: 2%;
-			    margin-bottom: 0;
-			    padding-left: 0.625rem;
-			    border: 0;
-			}
-			
-			.mui-dtpicker-header button:last-child {
-			    background-color: #00CFBD;
-				border: #00CFBD;
+			.titleTemp{
+				color: black;
+				margin-left: 10px;
+				margin-top: 10px;
 			}
 		</style>
 	</head>
 
-	<body>
+	<body style="background-color: white;">
 		<header class="mui-bar mui-bar-nav" id="tempVue">
-			<a @click="back()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 v-cloak class="mui-title">{{titleName}}</h1>
-			<a @click="submit()" class="mui-pull-right" style="font-size: 0.875rem">确定</a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新建资料收集</h1>
+			<a @click="clickSubmitBtn" class="mui-pull-right" style="font-size: 14px;">确定</a>
 		</header>
-		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
-			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
-					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div v-cloak class="mui-input-row">
-							<label class="aCss">行为详情</label>
-							<div style="width: 68%;float: right;margin-right: 2%;">
-								<div class="mui-ellipsis">
-									<p style="margin-top: 0.55rem;">{{curPage.grd_name}}&ensp;{{curPage.class_name}}&ensp;{{curPage.stu_name}}</p>
-								</div>
-								<div class="mui-ellipsis mui-col-xs-12">
-									<p style="margin-top: 0.55rem;">行为细项：{{curPage.item_txt}}</p>
-								</div>
-								<div class="mui-ellipsis">
-									<p style="margin-top: 0.55rem;">发生时间：{{curPage.behavior_time}}</p>
-								</div>
-							</div>
-						</div>
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showDate()">谈话日期</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" @tap="showDate()" placeholder="请选择" v-model="formData.time" readonly>
-							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
-						</div>
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss">谈话记录</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
-						</div>
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss">附件</label>
-							<div style="width: 74%;float: right;margin-top:-2.5rem;">
-								<div id="MultiMedia">
-								</div>
-							</div>
-						</div>
+		<div id="message" class="mui-content" style="background-color: white;">
+			<template v-show="dataFlag>0">
+				<div class="" style="margin-top: 0px;">
+					<div class="mui-input-row">
+						<span class="titleTemp">标题</span>
+						<input type="text" v-model="title" class="selectBtn"maxlength="50" placeholder="请输入标题" value="">
 					</div>
-					<div id="videoPopover" class="mui-popover">
-						<video id="video" style="position: absolute;z-index: 999;" controls="controls" webkit-playsinline playsinline>
-							您的浏览器不支持 video 标签。
-						</video>
+					<div class="mui-input-row">
+						<span style="float: left;" class="titleTemp">内容</span>
+						<textarea style="width: 83%;margin-left: 8px;" maxlength="300" v-model="content" id="textarea" rows="5" placeholder="请输入内容"></textarea>
 					</div>
 				</div>
+				<div id="MultiMedia">
+				</div>
+				<form class="mui-input-group">
+					<div @click="selectEndTime()" class="mui-input-row" style="height: 50px;">
+						<span style="float: left;margin-top: 15px;" class="titleTemp">收集结束时间</span>
+						<span style="float: right;margin-right: 30px;margin-top: 15px;">{{endTime}}</span>
+					</div>
+					<div @click="selectPeopleFun()" class="mui-input-row" style="height: 50px;">
+						<span style="float: left;margin-top: 15px;" class="titleTemp">接收人</span>
+						<span style="float: right;margin-right: 30px;margin-top: 15px;" class="mui-navigate-right">点击选择接收人</span>
+					</div>
+				</form>
+				<div style="margin: 10px;color: gray;word-break:break-all;word-wrap:break-word;">
+					{{'已选('+selectPeople.length+'人）:'}} {{showSelectPeople}}
+				</div>
+			</template>
+		</div>
+		<div id="videoPopover" class="mui-popover">
+			<video id="video" style="position: absolute;z-index: 999;" controls="controls" webkit-playsinline playsinline>
+				您的浏览器不支持 video 标签。
+			</video>
+		</div>
+		<div id="audioPopover" class="mui-popover">
+			<div id="audio_show" class="audio-show-popover">
+				<span id="audio_icon" class="mui-icon mui-icon-mic audio-icon"></span>
+				<canvas id="audio_canvas" class="audio-canvas"></canvas>
+				<span id="audio_close" class="mui-icon iconfont icon-guanbi"></span>
+				<div id="audio_time" class="audio-time">00:00</div>
+				<div id="audio_control" class="audio-control">
+					<div id="audio_play" class="audio-control-background audio-control-play">
+						<div></div>
+					</div>
+					<div id="audio_pause" class="audio-control-background audio-control-pause">
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+				<audio id="audio_audio" autoplay="autoplay" preload="auto"></audio>
 			</div>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
-		<script src="../../js/utils/vue.js"></script>
-		<script src="../../js/utils/storageKeyName.js"></script>
-		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/events.js"></script>
-		
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<!--  -->
 		<script src="../../js/picVideoAudio/MultiMedia.js"></script>
 		<script src="../../js/cloud/AndroidFileSystem.js"></script>
 		<script src="../../js/qiniu/qiniu.js"></script>
@@ -207,8 +109,6 @@
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src='../../js/picVideoAudio/compressVideo.js'></script>
 		<script src="../../js/qiniu/cloudutil.js"></script>
-		<script src="../../js/utils/mui.picker.min.js"></script>
-		<script src="../../js/utils/mui.poppicker.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -218,142 +118,285 @@
 		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
 		<script src='../../js/libs/jquery.js'></script>
 		<script src='../../js/libs/encryption/sortSign.js'></script>
+		<script src='../../js/muiPicker/mui.picker.min.js'></script>
 		<script type="text/javascript">
-			var $M = mui.init();
-			//获取个人信息
-			var personal = store.get(window.storageKeyName.PERSONALINFO);
-			console.log('personal:' + JSON.stringify(personal));
-			var curPage = {};
-			
+			var tempVue = new Vue({
+				el: "#tempVue",
+				data: {
+					
+				},
+				methods: {
+					clickSubmitBtn: function() {
+						if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+							mui.toast("网络连接失败,请重新尝试一下", "cancel");
+							sendFlag = 0;
+							return;
+						}
+						if (sendFlag == 0) {
+							sendFlag = 1;
+							if (message.title.trim().length == 0 || message.content.trim().length == 0) {
+								mui.toast("请填写具体内容后再发布", "cancel");
+								sendFlag = 0;
+								return;
+							}
+							if (message.title.length > 50) {
+								mui.toast("标题不能超过50字", "cancel");
+								sendFlag = 0;
+								return;
+							}
+							if (message.content.length > 300) {
+								mui.toast("内容不能超过300字", "cancel");
+								sendFlag = 0;
+								return;
+							}
+							if (message.endTime == '请选择') {
+								mui.toast("请选择收集结束时间", "cancel");
+								sendFlag = 0;
+								return;
+							}
+							if (contrastTime(message.endTime) == 1) {
+								mui.toast("结束时间不能小于当前时间", "cancel");
+								sendFlag = 0;
+								return;
+							}
+							if (message.selectPeople.length == 0) {
+								mui.toast("请选择接收人");
+								sendFlag = 0;
+								return;
+							}
+					
+							//判断输入是否符合要求
+							if (checkInput(message.title)) {
+								if (checkInput(message.content)) {
+									if (message.selectPeople.length == 0) {
+										mui.toast("请选择接收人");
+										sendFlag = 0;
+										return;
+									}
+									sendFlag = 1;
+									var wd = events.showWaiting();
+									if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+										addNotice(wd, '3', '', '', 0, '');
+									} else {
+										uploadFile(wd); //上传文件
+									}
+								}
+							}
+						}
+					}
+				}
+			});
+			var message = new Vue({
+				el: '#message',
+				data: {
+					dataFlag: 0, //是否加载完
+					showSelectPeople: '',
+					title: '',
+					content: '',
+					endTime:'请选择',
+					selectPeople: []
+				},
+				methods: {
+					selectPeopleFun: function() {
+						var data = {
+							flag: 1, //1 事务
+							needOrder:0,
+							access:curPage.access,
+							selectPeople: message.selectPeople
+						}
+						utils.mOpenWithData("../../html/oa/selectPeople.html", data);
+					},
+					selectEndTime:function(){
+						console.log('selectEndTime');
+						dtpicker.show(function(e) {
+							message.endTime = e.text;
+						})
+					}
+				}
+			})
 			var pathList = []; //记录需要删掉的图片和缩略图
 			var encNameList = []; //附件名称
 			var QNUptoken; //token数据
 			var uploadNum = 0; //记录上传的次数
 			var hideOption; //隐藏键盘的数据
 			var multiMedia; //多媒体控件
-			
-			var tempVue = new Vue({
-				el: "#tempVue",
-				data: {
-					titleName: ''
-				},
-				methods:{
-					submit:function(){//表单提交
-						 if(datasource.formData.time==''){
-							mui.toast('请选择发生日期')
-						}else if(datasource.formData.comment==''){
-							mui.toast('请填写谈话记录')
-						}else{
-							var wd = events.showWaiting();
-							if (multiMedia.data.PictureArray.length == 0) { //没有传附件
-								submitData(wd,datasource.formData)
-							} else {
-								uploadFile(wd); //上传文件
-							}
-						}
-					},
-					back:function(){
-						mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-						mui.back();
-					}
-				}
-			});
-			var datasource = new Vue({
-				el: "#datasource",
-				data: {
-					curPage:{},
-					formData: {
-						id:'',//已阅操作后，返回的id，需要在保存的时候使用此id
-						time:'',//发生日期择值
-						comment:'',//说明
-					}, //表单内容
-				},
-				methods: {
-					showDate: function() {
-						let myDate=new Date()
-						var year = myDate.getFullYear();
-						var month = myDate.getMonth() + 1;
-						var date = myDate.getDate();
-						let dtObj={value:datasource.formData.time,endYear:year,endMonth:month,endDay:date,type:"date"}
-						var datePicker=new $M.DtPicker(dtObj);
-						datePicker.show(function(rs) {
-							datasource.formData.time=rs.text
-							datePicker.dispose();
-							datePicker = null;
-						});
-					},
-				}
-			});
-			
-			
-
+			var sendFlag = 0; //0是未按确定按钮，1按确定按钮，防止多次触发
+			var curPage = {};
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				tempVue.titleName = curPage.title;
-				console.log("curPage: " + JSON.stringify(curPage));
-				datasource.curPage=curPage
-				//阻尼系数、初始化刷新加载更多
-				var deceleration = mui.os.ios ? 0.003 : 0.0009;
-				mui('.mui-scroll-wrapper').scroll({
-					bounce: false,
-					indicators: true, //是否显示滚动条
-					deceleration: deceleration
-				});
-
-
-				window.addEventListener('refreshStudent', function(data) {
-					datasource.formData.stu={}
-					console.log("data: " + JSON.stringify(data.detail));
-					let checkedStudents=data.detail;
-					let names=[]
-					let ids=[]
-					checkedStudents.map(function(currentValue){
-						names.push(currentValue.name)
-						ids.push(currentValue.value)
-					})
-					let obj={}
-					obj.text=names.join(",")
-					obj.value=ids.join(",")
-					console.log("obj: " + JSON.stringify(obj));
-					datasource.formData.stu=obj
-				});
-				
-				//发送已阅请求
-				if(curPage.status=='unTalk'){
-					sendRead();
-				}
-				// 获取当前日期
-				getCurrentDate();
+				console.log('2222:' + JSON.stringify(curPage));
 				init(); //初始化控件
+				message.dataFlag = 1;
 			});
 			
+			var dtpicker = new mui.DtPicker({
+			    type: "datetime",//设置日历初始视图模式
+			});
+
 			//多媒体控件
 			multiMedia = MultiMedia.multiMedia({
 				MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
 				Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
 				Picture: true, //是否显示图片图标
-				PictureTuku:true,//是否显示图库图标，默认显示
 				Audio: false, //是否显示音频图标
 				Video: false, //是否显示视频图标
 				TotalPicture: 9, //图片的个数
 				TotalAudio: 1, //音频的个数
 				TotalVideo: 1, //视频的个数
 			});
-			
+
 			/*
 			 * 初始化控件
 			 */
 			function init() {
 				events.blurBack();
-			
+
 				//图片查看控件
 				mui.previewImage();
 				multiMedia.initEvent();
-			 
+
+				//设置底部卡片上边距-15px→10px;
+				//				document.getElementById("bootom-card").style.marginTop = "10px";
+				/**
+				 * 播放视频
+				 * @param {Object} data
+				 */
+				multiMedia.videoPlayCallBack = function(data) {
+					//console.log("videoPlayCallBack")
+					ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', data.path, data.localthumb);
+				}
+
+				/**
+				 * 播放音频
+				 * @param {Object} data
+				 */
+				multiMedia.audioPlayCallBack = function(data) {
+					//console.log('audioPlayCallBack ' + JSON.stringify(data));
+					ShowAudioUtil.initAudio(data, 1);
+				}
+
+				//初始化视频播放器
+				ShowVideoUtil.initVideo(document.getElementById("video"));
+				//初始化音频播放器
+				audio_option = {
+					x: localStorage.getItem('resolutionWidth') * 1.4, //圆心的x轴坐标值
+					y: (plus.screen.resolutionHeight / 3 * 2), //圆心的y轴坐标值
+					r: plus.screen.resolutionHeight * 0.25 * 1.5 //圆的半径
+				};
+				ShowAudioUtil.initAudioPopover({
+					show: document.getElementById("audio_show"),
+					icon: document.getElementById("audio_icon"),
+					canvas: document.getElementById("audio_canvas"),
+					play: document.getElementById("audio_play"),
+					pause: document.getElementById("audio_pause"),
+					time: document.getElementById("audio_time"),
+					audio: document.getElementById("audio_audio")
+				});
 				//获取配置信息
 				hideOption = events.initHideKeyBoard();
 			}
-			
+
+			var addNotice = function(wd, encType, encAddr, encImg, encLen, encName) {
+				//				console.log('encType:' + encType);
+				//				console.log('encAddr:' + encAddr);
+				//				console.log('encImg:' + encImg);
+				//				console.log('encLen:' + encLen);
+
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				var ids = [];//接收人ID
+				var codes = [];//接收人账号
+				var names = [];//接收人姓名
+				var pics = [];//接收人头像
+				for (var i = 0; i < message.selectPeople.length; i++) {
+					var model = message.selectPeople[i];
+					ids.push(model.user_code)
+					codes.push('');
+					names.push(model.user_name);
+					if (model.user_img == ''||model.user_img == null) {
+						pics.push('');
+					} else {
+						var tempUrl = model.user_img;
+						tempUrl = tempUrl.replace(/\\/g, '/');
+						pics.push(tempUrl);
+					}
+				}
+				if (ids.length == 0) {
+					mui.toast("请选择接收人");
+					sendFlag = 0;
+					return;
+				}
+				var tempTime = message.endTime.replace(/-/g,'');
+				tempTime = tempTime.replace(/ /g,'');
+				tempTime = tempTime.replace(/:/g,'');
+				console.log('tempTime:'+tempTime);
+				events.showWaiting();
+				var tempData = {
+					schoolId: personal.unit_code, //学校ID
+					title: message.title, //标题
+					content: message.content, //内容
+					encName: encName, //附件名称
+					encAddr: encAddr, //附件地址
+					smsSync:0,//是否短信同步
+					collectEndTime:tempTime,//收集结束时间
+					sendManId: personal.user_code, //发布人ID
+					sendManCode: personal.login_name, //发布人账号
+					sendManName: personal.user_name, //发布人姓名
+					sendManPic: personal.hrImg_url, //发布人头像
+					receiveManIds: ids, //接收人人ID
+					receiveManCodes: codes, //接收人账号
+					receiveManPics: pics, //接收人头像
+					receiveManNames: names, //接收人姓名
+					index_code:curPage.access.split('#')[1],
+					op_code:'add'
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/addInfoCollect', {}, tempData, 2,function(data) {
+					console.log('addInfoCollect:' + JSON.stringify(data));
+					events.closeWaiting();
+					if (data.code == 0) {
+						mui.toast("发布成功")
+						setTimeout(function() {
+							mui.back();
+						}, 1000);
+						mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
+					} else {
+						mui.toast(data.msg)
+						sendFlag = 0;
+					}
+				});
+			}
+			window.addEventListener('selectPeople', function(data) {
+				console.log("data" + JSON.stringify(data.detail))
+				message.selectPeople = data.detail.peopleArray;
+				var tempPeople = [];
+				for (var i = 0; i < message.selectPeople.length; i++) {
+					var tempModel = message.selectPeople[i];
+					tempPeople.push(tempModel.user_name);
+				}
+				message.showSelectPeople = tempPeople.join(',');
+			});
+			//判断是否输入了值
+			var checkInput = function(text) {
+				if (text.trim().length == 0) {
+					mui.toast('请输入标题或内容');
+					sendFlag = 0;
+					return false;
+				}
+				if (isNull(text)) {
+					mui.toast('请输入标题或内容');
+					sendFlag = 0;
+					return false;
+				}
+				return true;
+			}
+
+			//判断输入字符串是否为空或者全部都是空格
+			function isNull(str) {
+				if (str == "") return true;
+				var regu = "^[ ]+$";
+				var re = new RegExp(regu);
+				return re.test(str);
+			}
+
 			/**
 			 * 上传文件
 			 */
@@ -365,7 +408,7 @@
 					mainSpace: window.storageKeyName.QNPUBSPACE, //文件存放在私有空间或公有空间
 					uploadSpace: window.storageKeyName.XXTNOTICE, //上传的空间
 				}
-			
+
 				if (multiMedia.data.PictureArray.length != 0) { //图片
 					for (var i = 0; i < multiMedia.data.PictureArray.length; i++) {
 						getUpTokenData.fileArray.push(multiMedia.data.PictureArray[i].path);
@@ -390,7 +433,7 @@
 						//						console.log('上传配置 ' + JSON.stringify(data.configure));
 						//						console.log('上传凭证 ' + JSON.stringify(data.data));
 						QNUptoken = data.data; //token数据
-			
+
 						if (multiMedia.data.PictureArray.length != 0) { //图片
 							//记录图片和缩略图地址
 							for (var j = 0; j < multiMedia.data.PictureArray.length; j++) {
@@ -450,7 +493,7 @@
 					}
 				});
 			}
-			
+
 			/**
 			 * 删除上传失败的文件
 			 */
@@ -477,7 +520,7 @@
 					}
 				);
 			}
-			
+
 			/**
 			 * 创建上传任务并且逐个任务执行
 			 */
@@ -524,7 +567,7 @@
 							//上传任务完成的监听
 							//														console.log('上传任务完成' + status + '|' + JSON.stringify(upload));
 							if (status == 200) {
-			
+
 								//console.log('上传成功');
 								QNUptoken.Data[i].task = true;
 								//QNUptoken.Data[i].persistentId = JSON.parse(upload.responseText).persistentId;
@@ -536,7 +579,7 @@
 									pathList.push(multiMedia.data.PictureArray[num].domain);
 									var path = multiMedia.data.PictureArray[num].path.split("/");
 									var name = path[path.length - 1];
-									// name = name + '(' + cloudutil.transformSize(upload.totalSize) + ')';
+									name = name + '(' + cloudutil.transformSize(upload.totalSize) + ')';
 									encNameList.push(name);
 								} else if (multiMedia.data.VideoArray.length !== 0) { //视频
 									pathList.push(multiMedia.data.VideoArray[num].domain);
@@ -545,7 +588,7 @@
 									pathList.push(multiMedia.data.AudioArray[num].domain);
 									pathList.push(multiMedia.data.AudioArray[num].thumb);
 								}
-			
+
 								if (uploadNum == 0) {
 									//console.log('所有上传都成功');
 									var encAddr = []; //附件地址
@@ -556,7 +599,7 @@
 										for (var j = 0; j < multiMedia.data.PictureArray.length; j++) {
 											encAddr.push(multiMedia.data.PictureArray[j].domain);
 											//											console.log('multiMedia.data.PictureArray:'+ JSON.stringify(multiMedia.data.PictureArray[j]));
-			
+
 										}
 										type = '1';
 									} else if (multiMedia.data.VideoArray.length !== 0) { //视频
@@ -577,9 +620,7 @@
 									var encAddrStr = encAddr.join('|');
 									var encImgrStr = encImg.join('|');
 									var encNameStr = encNameList.join('|');
-									encAddr=[];encImg=[];encNameList=[]
-									// submitDataLast(wd, type, encAddrStr, encImgrStr, encLen, encNameStr);
-									submitData(wd,datasource.formData,type,encAddrStr,encImgrStr,encLen,encNameStr)
+									addNotice(wd, type, encAddrStr, encImgrStr, encLen, encNameStr);
 								} else {
 									taskCreate(wd);
 								}
@@ -621,91 +662,12 @@
 							//上传任务创建成功的回调
 							task.start();
 						});
-			
+
 						//停止本次循环
 						break;
 					}
 				}
 			}
-			
-			//发送已阅请求
-			function sendRead(){
-				 events.showWaiting();
-				comData = {
-					grd_code: curPage.grd_code,
-					cls_code: curPage.cls_code,
-					student_behavior_id: curPage.student_behavior_id,
-					index_code: curPage.index_code,
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/read', {}, comData, 2, function(data) {
-					if (data.code == 0) {
-						   events.closeWaiting();
-						   let id=data.data.id
-						   datasource.formData.id=id
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					}
-				});
-			}
-			
-			 
-			// 提交表单数据
-			function submitData(wd,data,type,encAddrStr,encImgrStr,encLen,encNameStr) {
-				let asset_ids=[]
-				if(encNameStr){
-					let names=encNameStr.split('|')
-					let addrs=encAddrStr.split('|')
-					names.map(function(item,index){
-						let obj={}
-						obj.id=''
-						obj.url=addrs[index]
-						obj.ext=item.split(".")[1]
-						obj.name='附件'+(index+1)
-						asset_ids.push(obj)
-					})
-				}
-				comData = {
-					grd_code:curPage.grd_code,
-					cls_code: curPage.cls_code,
-					student_behavior_id: curPage.student_behavior_id,
-					id:data.id,
-					chat_detail: data.comment?data.comment:'',
-					chat_time: data.time,
-					asset_ids:asset_ids,
-					index_code: curPage.index_code,
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/save', {}, comData, 2, function(data) {
-					if (data.code == 0) {
-						 mui.toast(data.msg);
-						 wd.close();
-						 setTimeout(function(){
-							 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-							 mui.back()
-						 },1500)
-					} else {
-						wd.close();
-						mui.toast(data.msg);
-					}
-				});
-			}
-			
-			// 获取当前日期
-			function getCurrentDate(){
-				var myDate=new Date()
-			    var year = myDate.getFullYear();
-			    var month = myDate.getMonth() + 1;
-				var date = myDate.getDate();
-				var hours = myDate.getHours();
-				var minutes = myDate.getMinutes();
-				var now = year + '-' + conver(month) + "-" + conver(date)
-				// + " " + hours + ":" + minutes
-				datasource.formData.time=now;
-			}
-			function conver(s) {
-				return s < 10 ? '0' + s : s;
-			}
-			
 		</script>
 	</body>
 

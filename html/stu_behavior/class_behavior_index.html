@@ -13,7 +13,7 @@
 		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
 		<style>
 			[v-cloak] {
-				visibility: hidden;
+				display: none !important;
 			}
 			html,
 			body {
@@ -142,7 +142,7 @@
 			
 			.line{
 				background-color: #00CFBD;
-				margin-bottom: 0.3125rem;
+				margin-bottom: 0rem;
 				height: 0.125rem;
 			}
 			.selectDiv{
@@ -236,6 +236,11 @@
 				-webkit-line-clamp: 2 !important;
 				height:27px;
 			}
+			
+			.select{
+				position: fixed;
+				z-index: 20;
+			}
 
 		</style>
 	</head>
@@ -248,7 +253,7 @@
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
+				<div class="select">
 					<div v-cloak class="mui-segmented-control" v-cloak>
 						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span
 							 class="mui-icon mui-icon-arrowdown"></span></a>
@@ -260,6 +265,8 @@
 							 class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
+				</div>
+				<div v-cloak class="mui-scroll" style="margin-top: 40px;padding-bottom: 40px;">
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">

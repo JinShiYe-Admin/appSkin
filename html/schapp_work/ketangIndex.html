@@ -14,6 +14,7 @@
 		<style>
 			[v-cloak] {
 				visibility: hidden;
+				display:none !important;
 			}
 			html,
 			body {
@@ -215,6 +216,11 @@
 			    background-color: #00CFBD;
 				border: #00CFBD;
 			}
+			
+			.select{
+				position: fixed;
+				z-index: 20;
+			}
 
 		</style>
 	</head>
@@ -227,7 +233,7 @@
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
+				<div class="select">
 					<div v-cloak class="mui-segmented-control" v-cloak>
 						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
@@ -235,6 +241,8 @@
 						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showKm()"><span>{{kmValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
+				</div>
+				<div v-cloak class="mui-scroll" style="margin-top: 40px;padding-bottom: 40px;">
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
