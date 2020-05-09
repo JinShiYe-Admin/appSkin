@@ -292,6 +292,9 @@
 				tempVue.titleName = curPage.title;
 				console.log("curPage: " + JSON.stringify(curPage));
 				datasource.curPage=curPage
+				if(curPage.id!='null'||curPage.id!=null){
+					datasource.formData.id=curPage.id
+				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -335,7 +338,7 @@
 				PictureTuku:true,//是否显示图库图标，默认显示
 				Audio: false, //是否显示音频图标
 				Video: false, //是否显示视频图标
-				TotalPicture: 9, //图片的个数
+				TotalPicture: 5, //图片的个数
 				TotalAudio: 1, //音频的个数
 				TotalVideo: 1, //视频的个数
 			});

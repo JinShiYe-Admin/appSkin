@@ -17,6 +17,22 @@ var storageKeyName = (function(mod) {
 	switch(mod.key) {
 		case 0: //开发
 			mod.SCHOOLID = 100005;//学校ID
+			
+			//广西开发
+			// mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			// mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/suptohr/api/hr/'; //单点登录,供人事系统使用
+			// mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/suptosub/api/sub/'; //单点登录,供各子系统用
+			// mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hrtosub/api/sub/'; //人事接口,供子系统用
+			// mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
+			// // mod.INTERFACE_OA = 'http://develop309.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
+			// // mod.INTERFACE_ITEM = 'http://develop309.jiaobaowang.net/imsubapi/sub/api/';//物品管理接口(孔)
+			// // mod.INTERFACE_BASESUB = 'http://develop309.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务用(顾)
+			// // mod.INTERFACE_EXAMINATION = 'http://develop309.jiaobaowang.net/stuzy/api/paper/';//考务系统接口(蒙)
+			// // mod.INTERFACE_WORK = 'http://develop309.jiaobaowang.net/stukqsubapi/attendance/';//考勤系统接口(阮)
+			// // mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
+			// // mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//考勤（孔)
+			// mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8080/stuxwsubapi/';//学生行为（阮) 
+			
 			//山东开发
 			// mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			// mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
@@ -99,7 +115,7 @@ var storageKeyName = (function(mod) {
 			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
 			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
 			//	---七牛空间和接口---开发---end---
-			mod.PLATFORMCODE = 'PT0001'; //平台代码 联测PT0001  云测PT0002 正式PT0001
+			mod.PLATFORMCODE = 'PT0036'; //平台代码 联测PT0001  云测PT0002 正式PT0001  广西开发 PT0036  山东开发PT0001
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.MENULIST = 'menuList'; //获取菜单列表
 			mod.MOREMENU = 'moremenu'; //更多菜单列表

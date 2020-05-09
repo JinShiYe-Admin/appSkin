@@ -238,6 +238,7 @@
 			}
 			
 			.line {
+				/* margin: 0 15px; */
 				right: 0;
 				bottom: 0;
 				left: 0;
@@ -287,39 +288,42 @@
 					<div class="" v-cloak style="margin-top: 0.625rem;">
 						<div class="mui-input-row">
 							<label class="aCss">年级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss">班级</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss" >姓名</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss">谈话日期</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
 						</div>
 						<!-- <div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss" >记录人</label>
-							<input style="border: 1px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_user_name" readonly>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_user_name" readonly>
 						</div> -->
 						<div class="line"></div>
 						<div class="mui-input-row">
 							<label class="aCss">谈话记录</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);" maxlength="300" v-model="formData.chat_detail" rows="5"
+							<textarea style="border: 0px solid rgba(0,0,0,.2);word-break: break-all;" maxlength="300" v-model="formData.chat_detail" rows="8"
 							 placeholder="暂无记录" readonly></textarea>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row" v-if="formData.asset_ids&&formData.asset_ids.length>0">
 							<label class="aCss">附件</label>
-							<div style="width: 72%;float: right;">
-								<img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;" v-for="model in formData.asset_ids" :src="model.url"/>
+							<div style="width: 70%;float: right;padding:0px;font-size: 14px;">
+								<!-- <img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;border: solid 1px #EAEAEA;border-radius: 3px;" v-for="model in formData.asset_ids" :src="model.url"/> -->
+								<div v-for="model in formData.asset_ids" style="margin-top:8px;">
+									<a @tap="clickImg(model.url)"  href="javascript:void(0)">{{model.name}}</a>
+								</div>
 							</div>
 						</div>
 					</div>

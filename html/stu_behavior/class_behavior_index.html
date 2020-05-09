@@ -230,11 +230,14 @@
 			
 			.tow-line{
 				overflow: hidden !important;
-				text-overflow: ellipsis !important;;
-				display: -webkit-box !important;;
-				-webkit-box-orient:vertical !important;;
+				text-overflow: ellipsis !important;
+				display: -webkit-box !important;
+				-webkit-box-orient:vertical !important;
 				-webkit-line-clamp: 2 !important;
-				height:27px;
+				min-height:22px !important;
+				max-height:45px !important;
+				margin-top: 0.55rem !important;
+				word-break: break-all !important;
 			}
 			
 			.select{
@@ -277,15 +280,17 @@
 											<div class="mui-ellipsis"><span class="action">{{model.item_txt}}</span>{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
 											<h5 style="margin-top: 0.75rem">{{model.class_node}}&ensp;/&ensp;{{model.sub_name}}</h5>
 											<p class="tow-line" v-if="model.comment">行为说明:{{model.comment}}</p>
-											<div class="mui-table-cell mui-col-xs-5">
-												<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">记录人:{{model.create_user_name}}</h5>
-											</div>
-											<div class="mui-table-cell mui-col-xs-7">
-												<h5 class="mui-ellipsis mui-text-right" style="margin-top: 0.55rem;">{{model.behavior_time}}</h5>
+											<div style="margin-top: 0.55rem;">
+												<div class="mui-table-cell mui-col-xs-5">
+													<h5 class="mui-ellipsis" >记录人:{{model.create_user_name}}</h5>
+												</div>
+												<div class="mui-table-cell mui-col-xs-7">
+													<h5 class="mui-ellipsis mui-text-right">{{model.behavior_time}}</h5>
+												</div>
 											</div>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
-											<h5 class="mui-text-right" style="margin-top: 0.55rem;"></h5>
+											<h5 class="mui-text-right"></h5>
 										</div>
 									</div>
 								</a>
@@ -376,7 +381,14 @@
 					clickLi: function(model) {
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						model.canDelete = this.canDelete;
+						//如果自己写的，有没有权限都能删除，如果别人写的，需要验证add权限
+						//学生管理这边有点特殊，它又一个规则：创建人默认有编辑和删除权限，就是即使创建人根据按钮权限接口没有编辑和删除权限，但如果它是创建人，那就默认有编辑和删除权限，所以后端返回的这两个字段已经把创建人和按钮权限这两种情况考虑在里面了
+						if(model.del==1){
+							model.canDelete = true
+						}else{
+							model.canDelete = false;
+						}
+						// model.canDelete = this.canDelete;
 						console.log(JSON.stringify(model))
 						utils.mOpenWithData("../../html/stu_behavior/class_behavior_detail.html", model);
 					},
@@ -542,7 +554,7 @@
 
 				events.showWaiting();
 				// 获取权限
-				getPermissionByPosition('add,delete', curPage.access, function(data) {
+				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
 					if (data.code == 0) {
 						let result =data.data.result.split(",")
@@ -550,15 +562,12 @@
 							tempVue.showAdd = true;
 							datasource.add=true
 						}
-						console.log(result[1])
-						if(result[1]==1){
-							datasource.canDelete=true
-						}
-						
 					}
 				});
 				//获取数据范围授权：年级
 				getGrdList();
+				// 获取常量数组
+				getXwList();
 			});
 
 			// 获取数据范围授权：年级
@@ -660,8 +669,8 @@
 						if (subList.length > 0) {
 							datasource.kmList = subList;
 							datasource.kmValue = subList[0];
-							// 获取常量数组
-							getXwList();
+							// 获取列表
+							getPageDataArray();
 						} else {
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取科目');
@@ -693,8 +702,6 @@
 								}].concat(data.data.qbArray);
 								datasource.xwList = xwList;
 								datasource.xwValue = xwList[0];
-								// 获取列表
-								getPageDataArray();
 							} else {
 								events.closeWaiting();
 								mui.toast('无法获取行为细项');
@@ -708,12 +715,13 @@
 
 			//获取列表数据  
 			function getPageDataArray() {
+				let xwValue=datasource.xwValue.value
 				//需要加密的数据
 				comData = {
 					grd_code: datasource.grdValue.value,
 					cls_code: datasource.clsValue.value,
 					sub_code: datasource.kmValue.value,
-					item_code: datasource.xwValue.value,
+					item_code: xwValue?xwValue:'',
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
