@@ -1,4 +1,9 @@
 <!doctype html>
+<!-- 
+ 未谈话：add控制已阅按钮和谈话按钮
+ 已阅：edit 控制谈话按钮，del控制清除按钮
+ 已谈话：edit控制编辑按钮，del控制清除按钮
+ -->
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -427,16 +432,20 @@
 						}else{
 							model.canDelete = false;
 						}
+						
 						if(model.status==null){
 							model.title ='主动谈话详情';
 							utils.mOpenWithData("../../html/stu_behavior/stu_talk_detail.html", model);//主动谈话详情
-						}else if(model.status=='unTalk' || model.status=='read'){//未谈话,已阅，跳转到新增页
-							if(datasource.add){
+						}else if(model.status=='unTalk'){//未谈话，跳转到新增页
+							if(model.add==1){
 								model.title ='新建行为谈话';
 								utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_add.html", model);//新增行为谈话
 							}else{
-								mui.toast('暂无操作权限')
+								mui.toast('无操作权限！')
 							}
+						}else if(model.status=='read'){//已阅，跳转到新增页
+							model.title ='新建行为谈话';
+							utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_add.html", model);//新增行为谈话
 						}else if(model.status=='talk'){
 							model.title ='行为谈话详情';
 							utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_detail.html", model);//行为谈话详情

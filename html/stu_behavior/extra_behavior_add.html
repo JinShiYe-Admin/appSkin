@@ -245,7 +245,7 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: ''
+					titleName: '新建课外行为'
 				},
 				methods:{
 					submit:function(){//表单提交
@@ -388,7 +388,7 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				tempVue.titleName = '添加'+curPage.title;
+				// tempVue.titleName = '添加'+curPage.title;
 
 
 				//阻尼系数、初始化刷新加载更多

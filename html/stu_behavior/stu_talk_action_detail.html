@@ -292,10 +292,14 @@
 									<p style="margin-top: 0.55rem;">{{formData.grd_name}}&ensp;{{formData.class_name}}&ensp;{{formData.stu_name}}</p>
 								</div>
 								<div class="mui-ellipsis mui-col-xs-12">
-									<p style="margin-top: 0.55rem;">行为细项：{{formData.item_txt}}</p>
+									<p style="margin-top: 0.55rem;">{{formData.behavior_time}}&ensp;&ensp;{{formData.item_txt}}</p><!-- 行为细项 -->
 								</div>
-								<div class="mui-ellipsis">
-									<p style="margin-top: 0.55rem;">发生时间：{{formData.behavior_time}}</p>
+								<!-- <div class="mui-ellipsis">
+									<p style="margin-top: 0.55rem;">{{formData.behavior_time}}</p>
+								</div> --><!-- 发生时间 -->
+								<p style="margin-top: 0.55rem;word-break: break-word;">{{formData.comment}}</p>
+								<div v-for="model in formData.behavior_asset_ids" style="margin-top:8px;font-size: 14px;">
+									<a @tap="clickImg(model.url)"  href="javascript:void(0)">{{model.name}}</a>
 								</div>
 							</div>
 						</div>
@@ -362,7 +366,7 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '',
+					titleName: '行为谈话详情',
 					showDelete:false,
 				},
 				methods:{
@@ -371,12 +375,14 @@
 						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
 							console.log(e.index)
 							if (e.index == 0) {
+								events.showWaiting();
 								comData = {
 									id: curPage.id,
 									index_code: curPage.index_code,
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/delete', {}, comData, 2, function(data) {
 									console.log(JSON.stringify(data))
+									events.closeWaiting();
 									if (data.code == 0) {
 										mui.toast('删除成功');
 										 setTimeout(function(){
@@ -384,7 +390,6 @@
 										 	 mui.back()
 										 },300)
 									} else {
-										events.closeWaiting();
 										mui.toast(data.msg);
 									}
 								});
@@ -408,7 +413,7 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log(JSON.stringify(curPage));
-				tempVue.titleName = curPage.title;
+				// tempVue.titleName = curPage.title;
 				datasource.formData=curPage;
 				if(curPage.canDelete){
 					tempVue.showDelete=true

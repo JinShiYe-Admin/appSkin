@@ -115,7 +115,7 @@ var storageKeyName = (function(mod) {
 			mod.QNGETDOWNTOKENFILE = 'http://114.215.222.186:8004/Api/QiNiu/GetAccess'; //获取下载文件（云存储）的token的url，url+七牛文件url
 			mod.QNGETTOKENDELETE = 'http://114.215.222.186:8004/Api/QiNiu/Delete'; //获取批量（或者一个）删除七牛文件的token的url
 			//	---七牛空间和接口---开发---end---
-			mod.PLATFORMCODE = 'PT0036'; //平台代码 联测PT0001  云测PT0002 正式PT0001  广西开发 PT0036  山东开发PT0001
+			mod.PLATFORMCODE = 'PT0001'; //平台代码 联测PT0001  云测PT0002 正式PT0001  广西开发 PT0036  山东开发PT0001
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.MENULIST = 'menuList'; //获取菜单列表
 			mod.MOREMENU = 'moremenu'; //更多菜单列表

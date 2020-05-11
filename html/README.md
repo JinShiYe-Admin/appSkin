@@ -8,3 +8,4 @@
 |schapp_work|学生考勤|
 |stu_behavior|学生行为|
 |teachercAttendance|教师考勤|
+|stu_comment|学生评语|
