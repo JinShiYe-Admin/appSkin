@@ -406,7 +406,6 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					add:false,
 					pageArray: [], //界面总数组
 					grdList: [], //年级数组
 					clsList: [], //班级数组
@@ -620,7 +619,6 @@
 						let result =data.data.result.split(",")
 						if(result[0]==1){
 							tempVue.showAdd = true;
-							datasource.add=true
 						}
 					}
 				});

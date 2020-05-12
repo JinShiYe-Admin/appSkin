@@ -301,44 +301,24 @@
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >行为细项</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
+							<label class="aCss" >年份</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.year" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss">发生日期</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
+							<label class="aCss">学期</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.term_name" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >节次</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.class_node" readonly>
+							<label class="aCss" >评价类型</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.remark_type_txt" readonly>
 						</div>
 						<div class="line"></div>
 						<div class="mui-input-row">
-							<label class="aCss" >科目</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.sub_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >记录人</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_user_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">行为说明</label>
-							<textarea style="border: 0px solid rgba(0,0,0,.2);word-break: break-all;" maxlength="300" v-model="formData.comment" rows="8"
+							<label class="aCss">评语</label>
+							<textarea style="border: 0px solid rgba(0,0,0,.2);word-break: break-all;" maxlength="300" v-model="formData.remark" rows="8"
 							 placeholder="暂无说明" readonly></textarea>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row" v-if="formData.asset_ids&&formData.asset_ids.length>0">
-							<label class="aCss">附件</label>
-							<div style="width: 70%;float: right;padding:0px;font-size: 14px;">
-								<!-- <img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;border: solid 1px #EAEAEA;border-radius: 3px;" v-for="model in formData.asset_ids" :src="model.url"/> -->
-								<div v-for="model in formData.asset_ids" style="margin-top:8px;">
-									<a @tap="clickImg(model.url)"  href="javascript:void(0)">{{model.name}}</a>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -377,7 +357,7 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '课堂行为详情',
+					titleName: '学生评语详情',
 					showDelete:false,
 				},
 				methods:{
@@ -391,8 +371,7 @@
 									id: curPage.id,
 									index_code: curPage.index_code,
 								}
-								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/delete', {}, comData, 2, function(data) {
-									console.log(JSON.stringify(data))
+								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'comment/Comment/delete', {}, comData, 2, function(data) {
 									events.closeWaiting();
 									if (data.code == 0) {
 										mui.toast('删除成功');
@@ -414,11 +393,6 @@
 				data: {
 					formData: {}, //表单内容
 				},
-				methods:{
-					clickImg:function(url){
-						plus.runtime.openURL(url);
-					}
-				}
 			});
 
 			mui.plusReady(function() {
@@ -426,7 +400,7 @@
 				console.log(JSON.stringify(curPage));
 				// tempVue.titleName = curPage.behavior_type_txt+'详情';
 				datasource.formData=curPage;
-				if(curPage.canDelete){
+				if(curPage.del==1){
 					tempVue.showDelete=true
 				}
 				//阻尼系数、初始化刷新加载更多

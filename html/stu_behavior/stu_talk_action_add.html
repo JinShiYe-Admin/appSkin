@@ -166,9 +166,9 @@
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
+						<div v-cloak class="mui-input-row" >
 							<label class="aCss">谈话记录</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);" :disabled="curPage.edit==0"  maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
+							<textarea style="border: 1px solid rgba(0,0,0,.2);" @tap="tsttt()" :readonly="curPage.edit==0"  maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
 						</div>
 						<div class="line" v-if="curPage.edit==1"></div>
 						<div v-cloak class="mui-input-row" v-show="curPage.edit==1">
@@ -289,6 +289,11 @@
 					},
 					clickImg:function(url){
 						plus.runtime.openURL(url);
+					},
+					tsttt:function(){
+						if(this.curPage.edit==0){
+							mui.toast('无操作权限！')
+						}
 					}
 				}
 			});
@@ -333,28 +338,37 @@
 				if(curPage.status=='unTalk'){
 					sendRead();
 				}
+				
+				if(curPage.status=='read'){
+					setTimeout(function(){
+						init(); //初始化控件 
+					},100)
+				}
 				// 获取当前日期
 				getCurrentDate();
-				init(); //初始化控件
+				
 			});
 			
-			//多媒体控件
-			multiMedia = MultiMedia.multiMedia({
-				MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
-				Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
-				Picture: true, //是否显示图片图标
-				PictureTuku:true,//是否显示图库图标，默认显示
-				Audio: false, //是否显示音频图标
-				Video: false, //是否显示视频图标
-				TotalPicture: 5, //图片的个数
-				TotalAudio: 1, //音频的个数
-				TotalVideo: 1, //视频的个数
-			});
+			
 			
 			/*
 			 * 初始化控件
 			 */
 			function init() {
+				
+				//多媒体控件
+				multiMedia = MultiMedia.multiMedia({
+					MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
+					Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
+					Picture: true, //是否显示图片图标
+					PictureTuku:true,//是否显示图库图标，默认显示
+					Audio: false, //是否显示音频图标
+					Video: false, //是否显示视频图标
+					TotalPicture: 5, //图片的个数
+					TotalAudio: 1, //音频的个数
+					TotalVideo: 1, //视频的个数
+				});
+				
 				events.blurBack();
 			
 				//图片查看控件
@@ -652,7 +666,16 @@
 					if (data.code == 0) {
 						   events.closeWaiting();
 						   let id=data.data.id
+						   datasource.curPage.edit=data.data.edit
+						   if(data.data.edit==1){
+							  setTimeout(function(){
+								   init(); //初始化控件 
+							  },100)
+						   }
 						   datasource.formData.id=id
+						   // setTimeout(function(){
+								 // mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+						   // },100)
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -686,7 +709,7 @@
 					asset_ids:asset_ids,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/save', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/editSave', {}, comData, 2, function(data) {
 					if (data.code == 0) {
 						 mui.toast(data.msg);
 						 wd.close();
