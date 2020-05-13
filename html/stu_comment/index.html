@@ -576,7 +576,6 @@
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
-					console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL:'+JSON.stringify(data))
 					if (data.code == 0) { 
 						let grds = data.data.grd_list;
 						let grdList = [];

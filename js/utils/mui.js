@@ -2795,10 +2795,13 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	};
 	window.addEventListener('tap', function(e) {
 		var action = $.targets.action;
-		if (action && action.classList.contains('mui-action-back')) {
-			$.back();
-			$.targets.action = false;
-		}
+		setTimeout(function(){
+			if (action && action.classList.contains('mui-action-back')) {
+				$.back();
+				$.targets.action = false;
+			}
+		},300)
+		
 	});
 	window.addEventListener('swiperight', function(e) {
 		var detail = e.detail;

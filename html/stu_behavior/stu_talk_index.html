@@ -437,6 +437,8 @@
 							utils.mOpenWithData("../../html/stu_behavior/stu_talk_detail.html", model);//主动谈话详情
 						}else if(model.status=='unTalk'){//未谈话，跳转到新增页
 							if(model.add==1){
+								model.status='read'
+								model.status_txt='已阅'
 								model.title ='新建行为谈话';
 								utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_add.html", model);//新增行为谈话
 							}else{
@@ -544,7 +546,7 @@
 			});
 			
 
-			mui.plusReady(function() {
+			mui.plusReady(function() {  
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
@@ -610,7 +612,6 @@
 						}
 					}
 				});
-
 				events.showWaiting();
 				// 获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {

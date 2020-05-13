@@ -133,7 +133,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
-			<a @click="back()" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 			<a @click="submit()" class="mui-pull-right" style="font-size: 0.875rem" v-if="curPage.edit==1">确定</a>
 		</header>
@@ -142,7 +142,7 @@
 				<div v-cloak class="mui-scroll">
 					<div class="" v-cloak style="margin-top: 0.625rem;">
 						<div v-cloak class="mui-input-row">
-							<label class="aCss">行为详情</label>
+							<label v-cloak class="aCss">行为详情</label>
 							<div style="width: 68%;float: right;margin-right: 2%;">
 								<div class="mui-ellipsis">
 									<p style="margin-top: 0.55rem;">{{curPage.grd_name}}&ensp;{{curPage.class_name}}&ensp;{{curPage.stu_name}}</p>
@@ -257,10 +257,6 @@
 							}
 						}
 					},
-					back:function(){
-						mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-						mui.back();
-					}
 				}
 			});
 			var datasource = new Vue({
@@ -336,7 +332,7 @@
 				});
 				
 				if(curPage.status=='unTalk'){
-					sendRead();
+					sendRead();//已阅操作是根据item的add==1判断的，在列表页已经判断过
 				}
 				
 				if(curPage.status=='read'){
