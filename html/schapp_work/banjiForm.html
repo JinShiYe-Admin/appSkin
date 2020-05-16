@@ -535,6 +535,7 @@
 								if (data.data.staticArray.length == 0) {
 									mui.toast('暂无数据');
 								}
+								mui(".mui-scroll-wrapper").scroll().refresh();
 							} else { //加载更多
 								//合并数组
 								addKqName(data.data.qaArray,data.data.staticArray,function(list){

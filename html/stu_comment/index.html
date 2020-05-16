@@ -689,7 +689,7 @@
 					comData = {
 						grd_code: datasource.grdValue.value,
 						cls_code: datasource.clsValue.value,
-						stu_code:'-1',
+						// stu_code:'-1',//APP 商讨后不需要传此字段
 						year:datasource.yearValue.value,
 						term_name:datasource.termValue.value,
 						remark_type: '',
@@ -710,6 +710,7 @@
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
+								mui(".mui-scroll-wrapper").scroll().refresh();
 							} else { //加载更多
 								//合并数组
 								datasource.pageArray = datasource.pageArray.concat(data.data.list);
@@ -725,6 +726,10 @@
 							mui.toast(data.msg);
 						}
 					});
+				}else{
+					setTimeout(function(){
+						events.closeWaiting();
+					},3000)
 				}
 			};
 			
