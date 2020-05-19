@@ -669,9 +669,13 @@
 							  },100)
 						   }
 						   datasource.formData.id=id
-						   // setTimeout(function(){
-								 // mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-						   // },100)
+						   let model={}
+							model.id=data.data.id
+							model.edit=data.data.edit
+						    model.bid= curPage.student_behavior_id
+						   setTimeout(function(){
+								 mui.fire(plus.webview.currentWebview().opener(), 'refreshId', model);  
+						   },100)
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -698,8 +702,8 @@
 				comData = {
 					grd_code:curPage.grd_code,
 					cls_code: curPage.cls_code,
-					student_behavior_id: curPage.student_behavior_id,
-					id:data.id,
+					student_behavior_id: ''+curPage.student_behavior_id,
+					id:''+data.id,
 					chat_detail: data.comment?data.comment:'',
 					chat_time: data.time,
 					asset_ids:asset_ids,

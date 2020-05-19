@@ -438,11 +438,11 @@
 						}else if(model.status=='unTalk'){//未谈话，跳转到新增页
 							if(model.add==1){
 								utils.mOpenWithData("../../html/stu_behavior/stu_talk_action_add.html", model);//新增行为谈话
-								setTimeout(function(){
-									model.status='read'
-									model.status_txt='已阅'
-									model.title ='新建行为谈话';
-								},500)
+								// setTimeout(function(){
+								// 	model.status='read'
+								// 	model.status_txt='已阅'
+								// 	model.title ='新建行为谈话';
+								// },500)
 							}else{
 								mui.toast('无操作权限！')
 							}
@@ -568,6 +568,24 @@
 					datasource.pageArray = [];
 					getPageDataArray();
 				});
+
+				window.addEventListener('refreshId', function(data) {
+					console.log(JSON.stringify(data.detail))
+					let id=data.detail.id;
+					let bid=data.detail.bid;
+					let edit=data.detail.edit;
+					let pageArray=datasource.pageArray
+					pageArray.map(function(item){
+						let student_behavior_id=item.student_behavior_id
+						if(bid==student_behavior_id){
+							item.id=id
+							item.edit=edit
+							item.status='read'
+							item.status_txt='已阅'
+						}
+					})
+				});
+
 
 
 				//上拉下拉注册
