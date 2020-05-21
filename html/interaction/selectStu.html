@@ -139,13 +139,13 @@
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;" v-cloak>
 				<div class="mui-scroll" v-cloak>
 					<div v-for="model in pageArray">
-						<p class="grdName">{{model.grd_name}}</p>
-						<ul class="mui-table-view" v-cloak>
-							<li v-for="modelCls in model.clsArray" class="mui-table-view-cell" @tap="clickLi(modelCls)">
+						<p class="grdName">{{model.grd_name}}{{model.cls_name}}</p>
+						<ul v-if="model.stuArray.length>0" class="mui-table-view" v-cloak>
+							<li v-for="modelCls in model.stuArray" class="mui-table-view-cell" @tap="clickLi(modelCls)">
 								<div class="mui-table">
 									<div class="mui-table-cell">
 										<div class="mui-input-row mui-checkbox mui-left">
-										  <label>{{modelCls.cls_name}}</label>
+										  <label>{{modelCls.stu_name}}</label>
 										  <div v-if="modelCls.selectFlag == 0">
 										  	<input name="checkbox1" value="Item 1" type="checkbox">
 										  </div>
@@ -153,6 +153,15 @@
 										  	<input name="checkbox1" value="Item 1" type="checkbox" checked>
 										  </div>
 										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<ul v-else-if="model.stuArray.length==0" class="mui-table-view" v-cloak>
+							<li class="mui-table-view-cell">
+								<div class="mui-table">
+									<div class="mui-table-cell">
+										<label style="margin-left: 20px;">暂无学生</label>
 									</div>
 								</div>
 							</li>
@@ -202,14 +211,30 @@
 				el: "#datasource",
 				data: {
 					pageArray: [{
+						cls_name:'1901班',
 						grd_name:'一年级',
-						grd_code:'21',
-						clsArray:[]
-						
+						cls_code:'12',
+						stuArray:[]
 					},{
+						cls_name:'1902班',
+						grd_name:'一年级',
+						cls_code:'13',
+						stuArray:[]
+					},{
+						cls_name:'1903班',
+						grd_name:'一年级',
+						cls_code:'14',
+						stuArray:[]
+					},{
+						cls_name:'1701班',
 						grd_name:'三年级',
-						grd_code:'23',
-						clsArray:[]
+						cls_code:'17',
+						stuArray:[]
+					},{
+						cls_name:'1702班',
+						grd_name:'三年级',
+						cls_code:'18',
+						stuArray:[]
 					}] //界面总数组
 				},
 				methods: {
@@ -230,7 +255,7 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
 				events.showWaiting();
-				//1.6.学校班级
+				//1.8.学校班级学生
 				getPageDataArray();
 
 				//阻尼系数、初始化刷新加载更多
@@ -242,18 +267,17 @@
 				});
 			});
 
-			//1.6.学校班级
+			//1.8.学校班级学生
 			function getPageDataArray() {
 				//需要加密的数据
 				comData = {
-					// unit_code: personal.unit_code, //学校代码,必传
-					grd_codes:'21,23',//年级代码,多个code用英文逗号隔开,全部留空
-					is_finish: '0', //0未毕业,1已毕业,-1全部
+					grd_codes:'',//年级代码,多个code用英文逗号隔开,全部留空
+					cls_codes:'12,13,14,17,18',//需要查询的班级，多个代码用英文逗号隔开,查全校或全年级留空
 					index_code: curPage.access.split('#')[1],
 					op_code: 'index'
 				}
-				//1.6.学校班级
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'cls', {}, comData, 2, function(
+				//1.8.学校班级学生
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'stu', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
@@ -261,9 +285,9 @@
 							var tempM = data.data.list[i];
 							tempM.selectFlag = 0;
 							for (var a = 0; a < datasource.pageArray.length; a++) {
-								var tempGrd = datasource.pageArray[a];
-								if (tempGrd.grd_code == tempM.grd_code) {
-									tempGrd.clsArray.push(tempM);
+								var tempCls = datasource.pageArray[a];
+								if (tempCls.cls_code == tempM.cls_code) {
+									tempCls.stuArray.push(tempM);
 								}
 							}
 						}
