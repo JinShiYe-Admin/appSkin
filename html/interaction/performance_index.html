@@ -13,6 +13,7 @@
 		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
 		<style>
 			[v-cloak] {
+				visibility: hidden;
 				display: none !important;
 			}
 			html,
@@ -140,6 +141,11 @@
 				margin-top: 1.25rem;
 			}
 			
+			.select{
+				position: fixed;
+				z-index: 2;
+			}
+			
 			.line{
 				background-color: #00CFBD;
 				margin-bottom: 0rem;
@@ -239,11 +245,6 @@
 				margin-top: 0.55rem !important;
 				word-break: break-all !important;
 			}
-			
-			.select{
-				position: fixed;
-				z-index: 20;
-			}
 
 		</style>
 	</head>
@@ -258,7 +259,12 @@
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div class="select">
 					<div v-cloak class="mui-segmented-control" v-cloak>
-						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span
+							 class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span
+							 class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXw()"><span>{{xwValue.text}}</span><span
+							 class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 				</div>
@@ -266,19 +272,17 @@
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-								<a class="mui-navigate-right">
+								<a class="mui-navigate-right"><!-- mui-navigate-right -->
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
-											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
+											<div class="mui-ellipsis"><span class="action">{{model.item_txt}}</span>{{model.grd_name}}{{model.class_name}}·{{model.stu_name}}</div>
+											<p class="tow-line" v-if="model.comment">行为说明:{{model.comment}}</p>
 											<div style="margin-top: 0.55rem;">
 												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >年级:{{model.send_user_tname}}</h5>
-												</div>
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
+													<h5 class="mui-ellipsis" >记录人:{{model.create_user_name}}</h5>
 												</div>
 												<div class="mui-table-cell mui-col-xs-7">
-													<h5 class="mui-ellipsis mui-text-right">{{model.send_time}}</h5>
+													<h5 class="mui-ellipsis mui-text-right">{{model.behavior_time}}</h5>
 												</div>
 												
 											</div>
@@ -335,11 +339,19 @@
 				},
 				methods: {
 					add: function() {
+						if (datasource.grdList.length == 0) {
+							mui.toast('无法获取年级数据，不能进行添加操作')
+						} else if (datasource.clsList.length == 0) {
+							mui.toast('无法获取班级数据，不能进行添加操作')
+						} else if (datasource.xwList.length == 0) {
+							mui.toast('无法获取行为细项数据，不能进行添加操作')
+						} else {
 							let model = {};
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/stu_behavior/class_behavior_add.html", model);
+							utils.mOpenWithData("../../html/stu_behavior/extra_behavior_add.html", model);
+						}
 					}
 				}
 			});
@@ -349,14 +361,27 @@
 					canDelete:false,
 					pageArray: [], //界面总数组
 					grdList: [], //年级数组
+					clsList: [], //班级数组
+					xwList: [], //行为数组
+					kmList: [], // 科目数组 
 					grdValue: {}, //年级选择值
+					clsValue: {}, //班级选择值
+					xwValue: {}, //行为选择值
+					kmValue: {}, //科目选择值 
 				},
 				methods: {
 					clickLi: function(model) {
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						console.log(JSON.stringify(model))
-						utils.mOpenWithData("../../html/stu_behavior/class_behavior_detail.html", model);
+						//如果自己写的，有没有权限都能删除，如果别人写的，需要验证add权限
+						//学生管理这边有点特殊，它又一个规则：创建人默认有编辑和删除权限，就是即使创建人根据按钮权限接口没有编辑和删除权限，但如果它是创建人，那就默认有编辑和删除权限，所以后端返回的这两个字段已经把创建人和按钮权限这两种情况考虑在里面了
+						if(model.del==1){
+							model.canDelete = true
+						}else{
+							model.canDelete = false;
+						}
+						// model.canDelete = this.canDelete;
+						utils.mOpenWithData("../../html/stu_behavior/extra_behavior_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -375,6 +400,53 @@
 								flagRef = 0;
 								datasource.pageArray = [];
 								getClsList(items[0].value)
+								userPicker.dispose();
+								userPicker = null;
+							}
+						});
+					},
+					showCls: function() {
+						var userPicker = new $M.PopPicker();
+						userPicker.setData(datasource.clsList);
+						setTimeout(function() {
+							userPicker.pickers[0].setSelectedValue(datasource.clsValue.value);
+						}, 100);
+						userPicker.show(function(items) {
+							console.log(JSON.stringify(items[0]))
+							if (JSON.stringify(items[0]) == '{}') {
+								mui.toast('未选择班级')
+							} else {
+								datasource.clsValue = items[0]
+								//获取课堂考勤列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getPageDataArray();
+								userPicker.dispose();
+								userPicker = null;
+							}
+						});
+					},
+					showXw: function() {
+						var userPicker = new $M.PopPicker();
+						console.log("datasource.xwList: " + JSON.stringify(datasource.xwList));
+						userPicker.setData(datasource.xwList);
+						setTimeout(function() {
+							userPicker.pickers[0].setSelectedValue(datasource.xwValue.value);
+						}, 100);
+						userPicker.show(function(items) {
+							console.log(JSON.stringify(items[0]))
+							if (JSON.stringify(items[0]) == '{}') {
+								mui.toast('未选择行为细项')
+							} else {
+								datasource.xwValue = items[0]
+								//获取课堂考勤列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getPageDataArray();
 								userPicker.dispose();
 								userPicker = null;
 							}
@@ -414,6 +486,7 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
+							//1.课堂考勤记录列表
 							events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
@@ -429,6 +502,7 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
+								//1.获取课堂考勤记录列表
 								events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
@@ -486,7 +560,8 @@
 							datasource.grdList = grdList;
 							datasource.grdValue = grdList[0];
 							let grd_code = grds[0].value;
-							getPageDataArray()
+							//获取数据范围授权：班级
+							getClsList(grd_code)
 						} else {
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
@@ -497,26 +572,87 @@
 					}
 				});
 			}
+			//获取数据范围授权：班级
+			function getClsList(grd_code) {
+				const params = {
+					op_code: 'index',
+					grd_code: grd_code ? grd_code : '-1',
+					get_cls: true,
+					all_cls: true,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
+					console.log(JSON.stringify(data))
+					if (data.code == 0) {
+						let clss = data.data.cls_list;
+						let clsList = [];
+						clss.map(function(currentValue) {
+							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
+							let obj = {};
+							obj.value = currentValue.value;
+							obj.text = name;
+							clsList.push(obj)
+						})
+
+						if (clsList.length > 0) {
+							datasource.clsList = clsList;
+							datasource.clsValue = clsList[0];
+							//获取行为细项数组
+							getXwList()
+						} else {
+							events.closeWaiting();
+							mui.toast('无数据授权 无法获取班级');
+						}
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
 
 
-			//获取列表数据  
+			// 获取行为细项数组
+			function getXwList() {
+				comData = {
+					op_code: 'index',
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/ExtraBehavior/getDict', {}, comData, 2,
+					function(data) {
+						if (data.code == 0) {
+							if (data.data.qbArray.length > 0) {
+								let xwList = [{
+									value: '',
+									text: '全部行为'
+								}].concat(data.data.qbArray);
+								datasource.xwList = xwList;
+								datasource.xwValue = xwList[0];
+								// 获取课外考勤列表
+								getPageDataArray();
+							} else {
+								events.closeWaiting();
+								mui.toast('无法获取行为细项');
+							}
+						} else {
+							events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					});
+			}
+
+			//获取课外考勤列表数据  
 			function getPageDataArray() {
 				//需要加密的数据
 				comData = {
-					msg_type:'学校通知',
-					msg_content:'',
-					dest_user:'',
-					send_time_begin:'1970-01-01',
-					send_time_end:'2051-01-01',
-					send_user:personal.user_code,
-					grd_code:datasource.grdValue.value,
-					cls_code:'',
+					grd_code: datasource.grdValue.value,
+					cls_code: datasource.clsValue.value,
+					item_code: datasource.xwValue.value,
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
-				} 
+				}
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/ExtraBehavior/list', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
