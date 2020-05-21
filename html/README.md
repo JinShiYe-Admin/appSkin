@@ -10,3 +10,4 @@ stu_behavior|学生行为|Liu
 teachercAttendance|教师考勤|Zhao
 stu_comment|学生评语|Liu
 stu_dorm|学生宿舍|Liu
+interaction|家校互动|Liu

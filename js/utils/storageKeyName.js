@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
+	mod.key = 4; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -71,7 +71,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_WORK = 'http://nwifapp.jiaobaowang.net/stukqsubapi/attendance/';//学生考勤系统接口(阮)
 			mod.INTERFACE_PROGRAMME = 'http://nwifapp.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://nwifapp.jiaobaowang.net/tecgpskqsubapi/sub/api/';//教师考勤（孔)
-			mod.INTERFACE_STUXWSUB = '???';//学生行为 and 学生评语（阮) 
+			mod.INTERFACE_STUXWSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/';//学生行为 and 学生评语（阮) 
 			break;
 		case 5://正式
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
