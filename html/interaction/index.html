@@ -119,6 +119,8 @@
 				methods: {
 					clickFunction: function(model) {
 						console.log('model:' + JSON.stringify(model));
+						model.href='../../html/interaction/selectCls.html';
+						model.name='选择年级';
 						utils.mOpenWithData(model.href, model);
 					}
 				},
