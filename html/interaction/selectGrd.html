@@ -188,6 +188,9 @@
 								selectData.push(item)
 							}
 						})
+						let obj={}
+						obj.grdName=selectGrds
+						obj.grdCode=selectData
 						mui.fire(plus.webview.currentWebview().opener(), 'refreshStudent', selectData);
 						setTimeout(function(){
 							mui.back()
