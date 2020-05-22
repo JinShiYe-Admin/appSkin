@@ -527,34 +527,33 @@
 			//获取数据范围授权：班级
 			function getClsList(grd_code) {
 				const params = {
-					op_code: 'index',
-					grd_code: grd_code ? grd_code : '-1',
-					get_cls: true,
-					all_cls: true,
+					op_code:'index',
+					grd_code:grd_code,
+					get_cls:true,
+					all_cls:true,
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let clss = data.data.cls_list;
-						let clsList = [];
+						let clsList=[];
 						clss.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
 							let obj = {};
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部班级';
 							obj.value = currentValue.value;
 							obj.text = name;
 							clsList.push(obj)
 						})
-
-						if (clsList.length > 0) {
-							datasource.clsList = clsList;
-							datasource.clsValue = clsList[0];
-							getPageDataArray()
-						} else {
+						if(clsList.length>0 ){
+							datasource.clsList=clsList;
+							datasource.clsValue=clsList[0];
+							getPageDataArray();
+						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
-					} else {
+					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
 					}
@@ -562,16 +561,18 @@
 			}
 
 			function getPageDataArray() {
+				let grd_code=datasource.grdValue.value
+				let cls_code=datasource.clsValue.value
 				//需要加密的数据
 				comData = {
-					msg_type:'学校通知',
+					sms_msgtype_code:'班级通知',
 					msg_content:'',
 					dest_user:'',
 					send_time_begin:'1970-01-01',
 					send_time_end:'2051-01-01',
 					send_user:personal.user_code,
-					grd_code:datasource.grdValue.value,
-					cls_code:datasource.clsValue.value,
+					grd_code:grd_code=='-1'?'':grd_code,
+					cls_code:cls_code=='-1'?'':cls_code,
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
@@ -581,28 +582,34 @@
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						totalPageCount = data.data.total_page;
-						pageIndex++;
-						if (flagRef == 0) { //刷新
-							datasource.pageArray = data.data.list
-							if (data.data.list.length == 0) {
+						if(data.data!=null){
+								totalPageCount = data.data.total_page;
+								pageIndex++;
+								if (flagRef == 0) { //刷新
+									datasource.pageArray = data.data.list
+									if (data.data.list.length == 0) {
+										mui.toast('暂无数据');
+									}
+									mui(".mui-scroll-wrapper").scroll().refresh();
+								} else { //加载更多
+									//合并数组
+									datasource.pageArray = datasource.pageArray.concat(data.data.list);
+									if (data.data.list.length == 0) {
+										mui.toast('已加载全部');
+									}
+								}
+								if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+									mui(".mui-pull-loading")[0].innerHTML = "";
+								}
+							}else{
+								events.closeWaiting();
 								mui.toast('暂无数据');
+								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
-							mui(".mui-scroll-wrapper").scroll().refresh();
-						} else { //加载更多
-							//合并数组
-							datasource.pageArray = datasource.pageArray.concat(data.data.list);
-							if (data.data.list.length == 0) {
-								mui.toast('已加载全部');
-							}
+						} else {
+							events.closeWaiting();
+							mui.toast(data.msg);
 						}
-						if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-							mui(".mui-pull-loading")[0].innerHTML = "";
-						}
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					}
 				});
 			};
 		</script>

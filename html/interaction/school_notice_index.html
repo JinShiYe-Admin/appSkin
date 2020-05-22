@@ -331,7 +331,7 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/stu_behavior/extra_behavior_add.html", model);
+							utils.mOpenWithData("../../html/interaction/school_notice_add.html", model);
 					}
 				}
 			});
@@ -429,208 +429,10 @@
 			});
 
 
-			//获取课外考勤列表数据  
 			function getPageDataArray() {
-				datasource.pageArray =[
-            {
-               "tousers":[
-                                   {
-                                       "grd_code":"6",
-                                       "grd_name":"一年级",
-                                       "cls_code":"1",
-                                       "cls_name":"1901班",
-                                       "stu_names":"李嘉如,陈少爽,符雨珊"
-                                   },
-                                   {
-                                       "grd_code":"7",
-                                       "grd_name":"二年级",
-                                       "cls_code":"72",
-                                       "cls_name":"1801班",
-                                       "stu_names":"田求怡,张玉"
-                                   }
-                               ],
-                "id":138,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"gdffgh",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-05-19 09:01:33",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":95,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"   你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 17:27:46",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":94,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"      ",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 17:22:41",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":93,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"      第一行",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 17:20:06",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":89,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"测试",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 17:11:01",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":83,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"232",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 10:22:44",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":79,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"21",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 10:16:33",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":73,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111300",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-22 08:44:38",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":70,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"6669996669996669996669996669996669996669996669996666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-21 13:58:22",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":67,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"33",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-21 11:52:39",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":65,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"123456",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-21 11:35:52",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":48,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"测试测试测试",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-20 16:40:37",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":47,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-20 16:40:25",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":46,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"111111111111111111111111111111111111111111111",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-20 16:39:55",
-                "is_copy":0
-            },
-            {
-                "tousers":null,
-                "id":45,
-                "unit_code":"100004",
-                "unit_name":"联测小学",
-                "msg_content":"111111111111111111111111111111111111111",
-                "msg_type":"学校通知",
-                "send_user":"1205693233401692160",
-                "send_user_tname":"周展（校领导）",
-                "send_time":"2020-04-20 16:39:31",
-                "is_copy":0
-            }
-        ]
 				//需要加密的数据
 				comData = {
-					msg_type:'学校通知',
+					sms_msgtype_code:'school',
 					msg_content:'',
 					dest_user:'',
 					send_time_begin:'1970-01-01',
@@ -669,6 +471,7 @@
 						}else{
 							events.closeWaiting();
 							mui.toast('暂无数据');
+							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {
 						events.closeWaiting();

@@ -339,7 +339,7 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/stu_behavior/class_behavior_add.html", model);
+							utils.mOpenWithData("../../html/interaction/grade_notice_add.html", model);
 					}
 				}
 			});
@@ -501,15 +501,16 @@
 
 			//获取列表数据  
 			function getPageDataArray() {
+				let grd_code=datasource.grdValue.value
 				//需要加密的数据
 				comData = {
-					msg_type:'学校通知',
+					sms_msgtype_code:'grade',
 					msg_content:'',
 					dest_user:'',
 					send_time_begin:'1970-01-01',
 					send_time_end:'2051-01-01',
 					send_user:personal.user_code,
-					grd_code:datasource.grdValue.value,
+					grd_code:grd_code=='-1'?'':grd_code,
 					cls_code:'',
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
@@ -520,22 +521,28 @@
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						totalPageCount = data.data.total_page;
-						pageIndex++;
-						if (flagRef == 0) { //刷新
-							datasource.pageArray = data.data.list
-							if (data.data.list.length == 0) {
-								mui.toast('暂无数据');
+						if(data.data!=null){
+							totalPageCount = data.data.total_page;
+							pageIndex++;
+							if (flagRef == 0) { //刷新
+								datasource.pageArray = data.data.list
+								if (data.data.list.length == 0) {
+									mui.toast('暂无数据');
+								}
+								mui(".mui-scroll-wrapper").scroll().refresh();
+							} else { //加载更多
+								//合并数组
+								datasource.pageArray = datasource.pageArray.concat(data.data.list);
+								if (data.data.list.length == 0) {
+									mui.toast('已加载全部');
+								}
 							}
-							mui(".mui-scroll-wrapper").scroll().refresh();
-						} else { //加载更多
-							//合并数组
-							datasource.pageArray = datasource.pageArray.concat(data.data.list);
-							if (data.data.list.length == 0) {
-								mui.toast('已加载全部');
+							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
-						}
-						if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+						}else{
+							events.closeWaiting();
+							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {
