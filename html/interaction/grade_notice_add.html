@@ -191,7 +191,7 @@
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
 							<label class="aCss">已选年级</label> 
-							<div class="test-textarea">{{formData.selectGrade.join(",")}}</div>
+							<div class="test-textarea">{{formData.selectGradeNames.join(",")}}</div>
 						</div>
 					</div>
 				</div>
@@ -249,7 +249,8 @@
 				data: {
 					formData: {
 						comment:'',//说明
-						selectGrade:[],//选择的年级
+						selectGradeNames:[],//选择的年级名称
+						selectGradeCodes:[],//选择的年级Code
 						selectData:[],//选择的年级对象
 					},  
 				},
@@ -257,6 +258,7 @@
 					selectGrade:function(){
 						let model ={};
 						model.index_code = curPage.index_code;
+						mode.grd_codes=this.formData.selectGradeCodes
 						utils.mOpenWithData("../../html/interaction/selectGrd.html", model);
 					}
 				}
@@ -276,11 +278,14 @@
 				});
 				
 				window.addEventListener('refreshStudent', function(data) {
-					let grdName=[]
+					let grd_names=[]
+					let grd_codes=[]
 					data.detail.map(function(item){
-						grdName.push(item.grd_name)
+						grd_names.push(item.grd_name)
+						grd_codes.push(item.grd_code)
 					})
-					datasource.formData.selectGrade=grdName
+					datasource.formData.selectGradeNames=grd_names
+					datasource.formData.selectGradeCodes=grd_codes
 					datasource.formData.selectData=data.detail
 				});
 			});
@@ -291,12 +296,12 @@
 				let tousers=[]
 				datasource.formData.selectData.map(function(item){
 					let obj={
-						grd_code:item.grd_code,
-						grd_name:item.grd_name,
 						col_code:'',
 						col_name:'',
 						maj_code:'',
 						maj_name:'',
+						grd_code:item.grd_code,
+						grd_name:item.grd_name,
 						cls_code:'',
 						cls_name:'',
 						stu_codes:'',
