@@ -88,7 +88,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//学生考勤系统接口(阮)
 			mod.INTERFACE_PROGRAMME = 'http://apps.108800.com/tecrcsubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//教师考勤（孔)
-			mod.INTERFACE_STUXWSUB = '???';//学生行为 and 学生评语（阮) 
+			mod.INTERFACE_STUXWSUB = 'http://apps.108800.com/stuxwsubapi/';//学生行为 and 学生评语（阮) 
 			break;
 		default:
 			break;

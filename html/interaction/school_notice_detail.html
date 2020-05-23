@@ -272,6 +272,11 @@
 			    padding-left: 0.625rem;
 			    border: 0;
 			}
+			
+			.double-line{
+				height: 10px;
+				background-color: #EAEAEA;
+			}
 		</style>
 	</head>
 
@@ -279,53 +284,43 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
-			<a v-if="showDelete" @click="_delete()" class="mui-pull-right" style="font-size: 0.9375rem;margin-top: 0px;">删除</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div class="mui-input-row">
-							<label class="aCss">年级</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">班级</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >姓名</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >行为细项</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">发生日期</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">行为说明</label>
-							<textarea style="border: 0px solid rgba(0,0,0,.2);word-break: break-all;" maxlength="300" v-model="formData.comment" rows="8"
-							 placeholder="暂无说明" readonly></textarea>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row" v-if="formData.asset_ids&&formData.asset_ids.length>0">
-							<label class="aCss">附件</label>
-							<div style="width: 70%;float: right;padding:0px;font-size: 14px;">
-								<!-- <img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;border: solid 1px #EAEAEA;border-radius: 3px;" v-for="model in formData.asset_ids" :src="model.url"/> -->
-								<div v-for="model in formData.asset_ids" style="margin-top:8px;">
-									<a @tap="clickImg(model.url)"  href="javascript:void(0)">{{model.name}}</a>
-								</div>
-							</div>
-						</div>
-					</div>
+						 <div style="padding: 0 10px;">
+							 <p class="tow-line" v-if="formData.msg_content">{{formData.msg_content}}</p>
+							 <h5 class="mui-ellipsis" >状态:{{formData.is_copy?'已发送':'等待'}}</h5>
+							 <div style="margin-top: 0.55rem;">
+							 	<div class="mui-table-cell mui-col-xs-5">
+							 		<h5 class="mui-ellipsis" >发布人:{{formData.send_user_tname}}</h5>
+							 	</div>
+							 	<div class="mui-table-cell mui-col-xs-7">
+							 		<h5 class="mui-ellipsis mui-text-right">{{formData.send_time}}</h5>
+							 	</div>
+							 </div>
+						 </div>
+						 <div class="double-line"></div>
+						 <div class="mui-input-row">
+						 	<label class="aCss">接收人</label>
+							<ul v-cloak class="mui-table-view">
+								<li v-cloak v-for="grd_child in student" class="mui-table-view-cell">
+										<div class="mui-table">
+												<ul v-cloak class="mui-table-view">
+													<li v-cloak v-for="cls_child in grd_child.children" class="mui-table-view-cell">
+														<template v-if="cls_child.children.length>0">
+															<div class="mui-table">
+																{{cls_child.children.length}}
+																<p>{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
+																<span v-for="stu_child in cls_child.children" v-if="stu_child.stu_name">{{stu_child.stu_name}},</span>
+															</div>
+														</template>
+													</li>
+												</ul>
+										</div>
+								</li>
+							</ul>
+						 </div>
 				</div>
 			</div>
 		</div>
@@ -362,48 +357,15 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '课外行为详情',
-					showDelete:false,
-				},
-				methods:{
-					_delete:function(){
-						var btnArray = ['是', '否'];
-						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
-							console.log(e.index)
-							if (e.index == 0) {
-								events.showWaiting();
-								comData = {
-									id: curPage.id,
-									index_code: curPage.index_code,
-								}
-								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/delete', {}, comData, 2, function(data) {
-									console.log(JSON.stringify(data))
-									events.closeWaiting();
-									if (data.code == 0) {
-										mui.toast('删除成功');
-										 setTimeout(function(){
-										 	 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-										 	 mui.back()
-										 },300)
-									} else {
-										mui.toast(data.msg);
-									}
-								});
-							}
-						})
-					}
+					titleName: '通知详情',
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
 					formData: {}, //表单内容
+					student:[]//年级 班级 学生 数组
 				},
-				methods:{
-					clickImg:function(url){
-						plus.runtime.openURL(url);
-					}
-				}
 			});
 
 			mui.plusReady(function() {
@@ -421,8 +383,83 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
+				getStudentFromHR();
 			});
 			
+			
+			function getStudentFromHR() {
+				const params = {
+					op_code:'index',
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'grd', {}, params, 2, function(data) {
+					console.log(JSON.stringify(data))
+					if (data.code == 0) {
+						if(data.data.list && data.data.list.length>0){
+							let grd_list =data.data.list
+							let grd_codes=[]
+							grd_list.map(function(item){
+								grd_codes.push(item.grd_code)
+							})
+							const params = {
+								grd_codes:grd_codes.join(","),
+								is_finish:0,
+								op_code:'index',
+								index_code: curPage.index_code,
+							}
+							postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'cls', {}, params, 2, function(data) {
+								console.log(JSON.stringify(data))
+								if(data.data.list && data.data.list.length>0){
+									let cls_list =data.data.list
+									let cls_codes=[]
+									grd_list.map(function(grd_item){ 
+										let children=[]
+										cls_list.map(function(cls_item){
+											if(grd_item.grd_code==cls_item.grd_code){
+												children.push(cls_item)
+											}
+										})
+										grd_item.children=children
+									})
+									cls_list.map(function(item){
+										cls_codes.push(item.cls_code)
+									})
+									const params = {
+										grd_codes:grd_codes.join(","),
+										cls_codes:cls_codes.join(","),
+										op_code:'index',
+										index_code: curPage.index_code,
+									}
+									postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'stu', {}, params, 2, function(data) {
+										console.log(JSON.stringify(data))
+										if(data.data.list && data.data.list.length>0){
+											let stu_list =data.data.list
+											grd_list.map(function(grd_item){ 
+												let cls_list=grd_item.children
+												let grd_code=grd_item.grd_code
+												cls_list.map(function(cls_item){
+													let cls_code=cls_item.cls_code
+													let children=[]
+													stu_list.map(function(stu_item){
+													 	 if(grd_code== stu_item.grd_code && cls_code==stu_item.cls_code){
+															 children.push(stu_item)
+														 }
+													})
+													cls_item.children=children
+												})
+											})
+											datasource.student=grd_list
+										}
+									});
+								}
+							});
+						}
+					}else{
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
 		</script>
 	</body>
 
