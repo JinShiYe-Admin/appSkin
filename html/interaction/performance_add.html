@@ -184,14 +184,8 @@
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @click="selectGrade()">接收班级</label>
-							<input @click="selectGrade()" type="text" placeholder="点击选择年级和班级"  readonly>
-							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
-						</div>
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
 							<label class="aCss" @click="selectGrade()">接收人员</label>
-							<input @click="selectStudent()" type="text" placeholder="点击选择人员"  readonly>
+							<input @click="selectGrade()" type="text" placeholder="点击选择人员"  readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
@@ -256,16 +250,17 @@
 					formData: {
 						comment:'',//说明
 						selectGradeNames:[],//选择的年级名称
-						selectGradeCodes:[],//选择的年级Code
 						selectData:[],//选择的年级对象
 					},  
 				},
 				methods:{
 					selectGrade:function(){
 						let model ={};
-						model.index_code = curPage.index_code;
-						model.grd_codes=this.formData.selectGradeCodes
-						utils.mOpenWithData("../../html/interaction/selectGrd.html", model);
+						model.access = curPage.index_code;
+						model.selectData=this.formData.selectData;
+						model.name = '选择学生';
+						model.dataFlag = 3;//1选择年级，2选择班级，3选择学生
+						utils.mOpenWithData("../../html/interaction/selectGrdClsStu.html", model);
 					}
 				}
 			});
@@ -284,14 +279,7 @@
 				});
 				
 				window.addEventListener('refreshStudent', function(data) {
-					let grd_names=[]
-					let grd_codes=[]
-					data.detail.map(function(item){
-						grd_names.push(item.grd_name)
-						grd_codes.push(item.grd_code)
-					})
-					datasource.formData.selectGradeNames=grd_names
-					datasource.formData.selectGradeCodes=grd_codes
+					console.log("data.detail: " + JSON.stringify(data.detail));
 					datasource.formData.selectData=data.detail
 				});
 			});

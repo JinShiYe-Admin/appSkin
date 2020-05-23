@@ -338,9 +338,9 @@
 							tempM.clsArray = [];
 							tempM.clsFlag = 0; //当前年级没有获取过班级0，获取过班级1
 							var tempFlag = 0;
-							if (curPage.grd_codes.length > 0) {
-								for (var a = 0; a < curPage.grd_codes.length; a++) {
-									if (tempM.value == curPage.grd_codes[a].value) {
+							if (curPage.selectData.length > 0) {
+								for (var a = 0; a < curPage.selectData.length; a++) {
+									if (tempM.value == curPage.selectData[a].value) {
 										tempFlag++;
 										//获取数据范围授权：班级
 										getClsDataArray(tempM);
@@ -379,9 +379,9 @@
 							var tempM = data.data.cls_list[i];
 							tempM.stuArray = [];
 							var tempFlag = 0;
-							if (curPage.grd_codes.length > 0) {
-								for (var a = 0; a < curPage.grd_codes.length; a++) {
-									var tempGrd = curPage.grd_codes[a];
+							if (curPage.selectData.length > 0) {
+								for (var a = 0; a < curPage.selectData.length; a++) {
+									var tempGrd = curPage.selectData[a];
 									for (var b = 0; b < tempGrd.children.length; b++) {
 										var tempCls = tempGrd.children[b];
 										if (tempM.value == tempCls.value) {
@@ -424,9 +424,9 @@
 						for (var i = 0; i < data.data.grd_list.length; i++) {
 							var tempM = data.data.grd_list[i];
 							var tempFlag = 0;
-							if (curPage.grd_codes.length > 0) {
-								for (var a = 0; a < curPage.grd_codes.length; a++) {
-									if (tempM.value == curPage.grd_codes[a].value) {
+							if (curPage.selectData.length > 0) {
+								for (var a = 0; a < curPage.selectData.length; a++) {
+									if (tempM.value == curPage.selectData[a].value) {
 										tempFlag++;
 									}
 								}

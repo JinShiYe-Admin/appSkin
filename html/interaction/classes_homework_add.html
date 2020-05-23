@@ -191,7 +191,7 @@
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
 							<label class="aCss">已选年级</label> 
-							<div class="test-textarea">{{formData.selectGradeNames.join(",")}}</div>
+							<div class="test-textarea">{{formData.selectGradeClassesNames.join(",")}}</div>
 						</div>
 					</div>
 				</div>
@@ -235,7 +235,7 @@
 					submit:function(){//表单提交
 						if(datasource.formData.comment==''){
 							mui.toast('请输入通知内容')
-						}else if(datasource.formData.selectGrade.length==0){
+						}else if(datasource.formData.selectGradeClassesNames.length==0){
 							mui.toast('请选择年级')
 						}else{
 							var wd = events.showWaiting();
@@ -249,17 +249,18 @@
 				data: {
 					formData: {
 						comment:'',//说明
-						selectGradeNames:[],//选择的年级名称
-						selectGradeCodes:[],//选择的年级Code
+						selectGradeClassesNames:[],//选择的年级名称
 						selectData:[],//选择的年级对象
 					},  
 				},
 				methods:{
 					selectGrade:function(){
 						let model ={};
-						model.index_code = curPage.index_code;
-						model.grd_codes=this.formData.selectGradeCodes
-						utils.mOpenWithData("../../html/interaction/selectGrd.html", model);
+						model.access = curPage.index_code;
+						model.selectData=this.formData.selectData;
+						model.name = '选择班级';
+						model.dataFlag = 2;//1选择年级，2选择班级，3选择学生
+						utils.mOpenWithData("../../html/interaction/selectGrdClsStu.html", model);
 					}
 				}
 			});
@@ -278,14 +279,13 @@
 				});
 				
 				window.addEventListener('refreshStudent', function(data) {
-					let grd_names=[]
-					let grd_codes=[]
-					data.detail.map(function(item){
-						grd_names.push(item.grd_name)
-						grd_codes.push(item.grd_code)
+					let selectGradeClassesNames=[]
+					data.detail.map(function(grd_item){
+						 grd_item.children.map(function(cls_item){
+							selectGradeClassesNames.push(grd_item.name+cls_item.name)
+						})
 					})
-					datasource.formData.selectGradeNames=grd_names
-					datasource.formData.selectGradeCodes=grd_codes
+					datasource.formData.selectGradeClassesNames=selectGradeClassesNames
 					datasource.formData.selectData=data.detail
 				});
 			});
