@@ -184,13 +184,13 @@
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @click="selectGrade()">接收年级</label>
-							<input @click="selectGrade()" type="text" placeholder="点击选择年级"  readonly>
+							<label class="aCss" @click="selectGrade()">接收班级</label>
+							<input @click="selectGrade()" type="text" placeholder="点击选择班级"  readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss">已选年级</label> 
+							<label class="aCss">已选班级</label> 
 							<div class="test-textarea">{{formData.selectGrade.join(",")}}</div>
 						</div>
 					</div>
@@ -250,15 +250,17 @@
 					formData: {
 						comment:'',//说明
 						selectGrade:[],//选择的年级
-						selectData:[],//选择的年级对象
+						selectData:[],//选择的班级对象
 					},  
 				},
 				methods:{
 					selectGrade:function(){
 						let model ={};
-						model.index_code = curPage.index_code;
-						model.cls_codes = curPage.index_code;
-						utils.mOpenWithData("../../html/interaction/selectCls.html", model);
+						model.access = curPage.index_code;
+						model.grd_codes=this.formData.selectData;
+						model.name = '选择班级';
+						model.dataFlag = 2;//1选择年级，2选择班级，3选择学生
+						utils.mOpenWithData("../../html/interaction/selectGrdClsStu.html", model);
 					}
 				}
 			});

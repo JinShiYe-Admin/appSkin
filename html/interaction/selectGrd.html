@@ -133,7 +133,7 @@
 							<div class="mui-table">
 								<div class="mui-table-cell">
 									<div class="mui-input-row mui-checkbox mui-left">
-									  <label>{{model.grd_name}}</label>
+									  <label>{{model.name}}</label>
 									  <div v-if="model.selectFlag == 0">
 									  	<input name="checkbox1" value="Item 1" type="checkbox">
 									  </div>
@@ -180,6 +180,7 @@
 				},
 				methods:{
 					sure: function() {
+						console.log('datasource.pageArray:'+JSON.stringify(datasource.pageArray));
 						let selectGrds=[]
 						let selectGrdCodes=[]
 						let selectData=[]
@@ -221,7 +222,7 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
 				events.showWaiting();
-				//1.4.学校年级
+				//获取数据范围授权：年级
 				getPageDataArray();
 
 				//阻尼系数、初始化刷新加载更多
@@ -233,26 +234,37 @@
 				});
 			});
 
-			//1.4.学校年级
+			//获取数据范围授权：年级
 			function getPageDataArray() {
-				//需要加密的数据
-				comData = {
-					unit_code: personal.unit_code, //学校代码,必传
-					is_finish: '0', //0未毕业,1已毕业,-1全部
-					index_code: curPage.index_code,
-					op_code: 'index'
+				var comData = {
+					op_code: 'index',
+					get_grd: true,
+					all_grd: false,
+					index_code: curPage.access,
 				}
-				//1.4.学校年级
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'grd', {}, comData, 2, function(
-					data) {
+				//获取数据范围授权：年级
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
 					events.closeWaiting();
-					console.log('1.4.学校年级:'+JSON.stringify(data));
 					if (data.code == 0) {
-						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM = data.data.list[i];
-							tempM.selectFlag = 0;
+						for (var i = 0; i < data.data.grd_list.length; i++) {
+							var tempM = data.data.grd_list[i];
+							var tempFlag = 0;
+							if(curPage.grd_codes.length>0){
+								for (var a = 0; a < curPage.grd_codes.length; a++) {
+									if(tempM.value == curPage.grd_codes[a].value){
+										tempFlag++;
+									}
+								}
+								if(tempFlag == 0){
+									tempM.selectFlag = 0;
+								}else{
+									tempM.selectFlag = 1;
+								}
+							}else{
+								tempM.selectFlag = 0;
+							}
 						}
-						datasource.pageArray = data.data.list;
+						datasource.pageArray = data.data.grd_list;
 					} else {
 						mui.toast(data.msg);
 					}

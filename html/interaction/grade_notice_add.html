@@ -257,9 +257,11 @@
 				methods:{
 					selectGrade:function(){
 						let model ={};
-						model.index_code = curPage.index_code;
-						mode.grd_codes=this.formData.selectGradeCodes
-						utils.mOpenWithData("../../html/interaction/selectGrd.html", model);
+						model.access = curPage.index_code;
+						model.grd_codes=this.formData.selectData;
+						model.name = '选择年级';
+						model.dataFlag = 1;//1选择年级，2选择班级，3选择学生
+						utils.mOpenWithData("../../html/interaction/selectGrdClsStu.html", model);
 					}
 				}
 			});
@@ -281,8 +283,8 @@
 					let grd_names=[]
 					let grd_codes=[]
 					data.detail.map(function(item){
-						grd_names.push(item.grd_name)
-						grd_codes.push(item.grd_code)
+						grd_names.push(item.name)
+						grd_codes.push(item.value)
 					})
 					datasource.formData.selectGradeNames=grd_names
 					datasource.formData.selectGradeCodes=grd_codes
