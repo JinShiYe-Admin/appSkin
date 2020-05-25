@@ -272,7 +272,7 @@
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
 											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
-											<h5 class="mui-ellipsis" >年级:{{model.grd_names.join(",")}}</h5>
+											<h5 class="mui-ellipsis" >班级:{{model.names.join("，")}}</h5>
 											<div style="margin-top: 0.55rem;">
 												<div class="mui-table-cell mui-col-xs-5">
 													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
@@ -582,6 +582,14 @@
 						if(data.data!=null){
 								totalPageCount = data.data.total_page;
 								pageIndex++;
+								data.data.list.map(function(item){
+									let tousers=item.tousers
+									let names=[]
+									tousers.map(function(item){
+										names.push(item.grd_name+item.cls_name)
+									})
+									item.names=names
+								})
 								if (flagRef == 0) { //刷新
 									datasource.pageArray = data.data.list
 									if (data.data.list.length == 0) {

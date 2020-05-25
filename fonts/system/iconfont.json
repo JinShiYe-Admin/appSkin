@@ -1,0 +1,100 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13798402",
+      "name": "学生评语",
+      "font_class": "xueshengpingyu",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "13798403",
+      "name": "OA系统",
+      "font_class": "OAxitong",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "13798404",
+      "name": "物品管理",
+      "font_class": "wupinguanli",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "13798405",
+      "name": "学生行为",
+      "font_class": "xueshenghangwei",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "13798406",
+      "name": "更多",
+      "font_class": "gengduo",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "13798407",
+      "name": "学生量化考评",
+      "font_class": "xueshenglianghuakaoping",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "13798408",
+      "name": "系统考勤",
+      "font_class": "xitongkaoqin",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "13798409",
+      "name": "考务系统",
+      "font_class": "kaowuxitong",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "13798410",
+      "name": "资源管理",
+      "font_class": "ziyuanguanli",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "14905434",
+      "name": "老师考勤",
+      "font_class": "laoshikaoqin",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "14905435",
+      "name": "学生宿舍",
+      "font_class": "xueshengsushe",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "14905436",
+      "name": "日程",
+      "font_class": "richeng",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "14905437",
+      "name": "家长互动",
+      "font_class": "jiachanghudong",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    }
+  ]
+}
