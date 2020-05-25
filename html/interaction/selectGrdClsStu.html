@@ -123,6 +123,16 @@
 				color: black;
 				height: 30px;
 			}
+			.mui-table-view-cell.mui-collapse-3 .mui-table-view .mui-table-view-cell:last-child:after, .mui-table-view-cell.mui-collapse-3 .mui-table-view:after, .mui-table-view-cell.mui-collapse-3 .mui-table-view:before { height:0 }
+			.mui-table-view-cell.mui-collapse-3>.mui-navigate-right:after, .mui-table-view-cell.mui-collapse-3>.mui-push-right:after { content:'\e581' }  
+			.mui-table-view-cell.mui-collapse-3.mui-active { margin-top:-1px }  
+			.mui-table-view-cell.mui-collapse-3.mui-active>.mui-navigate-right:after, .mui-table-view-cell.mui-collapse-3.mui-active>.mui-push-right:after { content:'\e580' }  
+			.mui-table-view-cell.mui-collapse-3 .mui-collapse-content>.mui-input-group, .mui-table-view-cell.mui-collapse-3 .mui-collapse-content>.mui-slider { width:auto; height:auto; margin:-8px -15px }  
+			.mui-table-view-cell.mui-collapse-3 .mui-collapse-content>.mui-slider { margin:-8px -16px }  
+			.mui-table-view-cell.mui-collapse-3 .mui-table-view { display:none; margin-top:11px; margin-right:-15px; margin-bottom:-11px; margin-left:-15px; border:0 }  
+			.mui-table-view-cell.mui-collapse-3 .mui-table-view.mui-table-view-chevron { margin-right:-65px }  
+			.mui-table-view-cell.mui-collapse-3 .mui-table-view .mui-table-view-cell { padding-left:31px; background-position:31px 100% }  
+			.mui-collapse-content{margin-left: 30px;}  
 		</style>
 	</head>
 
@@ -135,29 +145,35 @@
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0" v-cloak>
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;" v-cloak>
 				<div class="mui-scroll" v-cloak>
-					<ul class="mui-table-view" v-cloak>
-						<div v-if="dataFlag == 1">
-							<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickGrdLi(model)">
-								<div class="mui-table">
-									<div class="mui-table-cell">
-										<div class="mui-input-row mui-checkbox mui-left">
-											<label>{{model.name}}</label>
-											<div v-if="model.selectFlag == 0">
-												<input name="checkbox1" value="Item 1" type="checkbox">
-											</div>
-											<div v-else-if="model.selectFlag == 1">
-												<input name="checkbox1" value="Item 1" type="checkbox" checked>
+					<!-- <div class="mui-card">
+					<ul class="mui-table-view" v-cloak> -->
+					<div v-if="dataFlag == 1">
+						<div class="mui-scroll" v-cloak>
+							<ul class="mui-table-view" v-cloak>
+								<li v-for="model in pageArray" class="mui-table-view-cell" @tap="clickGrdLi(model)">
+									<div class="mui-table">
+										<div class="mui-table-cell">
+											<div class="mui-input-row mui-checkbox mui-left">
+												<label>{{model.name}}</label>
+												<div v-if="model.selectFlag == 0">
+													<input name="checkbox1" value="Item 1" type="checkbox">
+												</div>
+												<div v-else-if="model.selectFlag == 1">
+													<input name="checkbox1" value="Item 1" type="checkbox" checked>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</li>
+								</li>
+							</ul>
 						</div>
-						<div v-if="dataFlag == 2">
+					</div>
+					<div v-if="dataFlag == 2">
+						<ul class="mui-table-view" v-cloak>
 							<li class="mui-table-view-cell mui-collapse" v-for="model in pageArray" @tap="clickGrdLi(model)">
 								<a class="mui-navigate-right" href="#">{{model.name}}</a>
 								<div class="mui-collapse-content">
-									<ul class="mui-table-view" style="margin-top: -7px;" v-cloak>
+									<ul class="mui-table-view" style="margin-top: -7px;margin-left: -10px;" v-cloak>
 										<li v-for="clsmodel in model.clsArray" class="mui-table-view-cell" @tap="clickClsLi(clsmodel)">
 											<div class="mui-table">
 												<div class="mui-table-cell">
@@ -176,11 +192,41 @@
 									</ul>
 								</div>
 							</li>
-						</div>
-						<div v-if="dataFlag == 3">
-							<p class="grdName mui-navigate-right">{{model.name}}</p>
-						</div>
-					</ul>
+						</ul>
+					</div>
+					<div v-if="dataFlag == 3">
+						<ul class="mui-table-view" v-cloak>
+							<li class="mui-table-view-cell mui-collapse-3" v-for="model in pageArray" @tap="clickGrdLi(model)">
+								<a class="mui-navigate-right" href="#">{{model.name}}</a>
+								<div class="mui-collapse-content">
+									<ul class="mui-table-view" style="margin-left: -55px;" v-cloak>
+										<li class="mui-table-view-cell mui-collapse-3" v-for="clsModel in model.clsArray" @tap="clickClsLi(clsModel)">
+											<a class="mui-navigate-right" href="#">{{clsModel.name}}</a>
+											<div class="mui-collapse-content">
+												<ul class="mui-table-view" style="margin-left: -50px;" v-cloak>
+													<li v-for="stuModel in clsModel.stuArray" class="mui-table-view-cell" @tap="clickStuLi(stuModel)">
+														<div class="mui-table">
+															<div class="mui-table-cell">
+																<div class="mui-input-row mui-checkbox mui-left">
+																	<label>{{stuModel.name}}</label>
+																	<div v-if="stuModel.selectFlag == 0">
+																		<input name="checkbox1" value="Item 1" type="checkbox">
+																	</div>
+																	<div v-else-if="stuModel.selectFlag == 1">
+																		<input name="checkbox1" value="Item 1" type="checkbox" checked>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -235,9 +281,9 @@
 							let tempData = []
 							datasource.pageArray.map(function(item) {
 								var tempGrd = {
-									name:item.name,
-									value:item.value,
-									children:[]
+									name: item.name,
+									value: item.value,
+									children: []
 								}
 								item.clsArray.map(function(clsItem) {
 									if (clsItem.selectFlag == 1) {
@@ -251,7 +297,46 @@
 									selectData.push(item);
 								}
 							})
-							console.log('selectData:'+JSON.stringify(selectData));
+							console.log('selectData:' + JSON.stringify(selectData));
+							let obj = {}
+							obj.grdCode = selectData
+							mui.fire(plus.webview.currentWebview().opener(), 'refreshStudent', selectData);
+							setTimeout(function() {
+								mui.back()
+							}, 100)
+						} else if (datasource.dataFlag == 3) {
+							let selectData = []
+							let tempData = []
+							datasource.pageArray.map(function(item) {
+								var tempGrd = {
+									name: item.name,
+									value: item.value,
+									children: []
+								}
+								item.clsArray.map(function(clsItem) {
+									var tempCls = {
+										name: clsItem.name,
+										value: clsItem.value,
+										grdValue: clsItem.grdValue,
+										children: []
+									}
+									clsItem.stuArray.map(function(stuItem) {
+										if (stuItem.selectFlag == 1) {
+											tempCls.children.push(stuItem);
+										}
+									})
+									if (tempCls.children.length > 0) {
+										tempGrd.children.push(tempCls);
+									}
+								})
+								tempData.push(tempGrd);
+							})
+							tempData.map(function(item) {
+								if (item.children.length > 0) {
+									selectData.push(item);
+								}
+							})
+							console.log('selectData:' + JSON.stringify(selectData));
 							let obj = {}
 							obj.grdCode = selectData
 							mui.fire(plus.webview.currentWebview().opener(), 'refreshStudent', selectData);
@@ -278,14 +363,17 @@
 								model.selectFlag = 0;
 							}
 						} else if (datasource.dataFlag == 2 || datasource.dataFlag == 3) {
-							if (model.clsFlag == 0) {
+							if (model.grdFlag == 0) {
 								//获取数据范围授权：班级
 								getClsDataArray(model);
+							}
+							if (datasource.dataFlag == 3) {
+								mui(".mui-scroll-wrapper").scroll().refresh();
 							}
 						}
 					},
 					clickClsLi: function(model) {
-						console.log('clickGrdLi.model:' + JSON.stringify(model));
+						console.log('clickClsLi.model:' + JSON.stringify(model));
 						if (datasource.dataFlag == 2) {
 							if (model.selectFlag == 0) {
 								model.selectFlag = 1;
@@ -293,10 +381,19 @@
 								model.selectFlag = 0;
 							}
 						} else if (datasource.dataFlag == 3) {
-							if (model.stuFlag == 0) {
+							mui(".mui-scroll-wrapper").scroll().refresh();
+							if (model.clsFlag == 0) {
 								//获取数据范围授权：学生
 								getStuDataArray(model);
 							}
+						}
+					},
+					clickStuLi: function(model) {
+						console.log('clickStuLi.model:' + JSON.stringify(model));
+						if (model.selectFlag == 0) {
+							model.selectFlag = 1;
+						} else {
+							model.selectFlag = 0;
 						}
 					}
 				}
@@ -336,14 +433,16 @@
 						for (var i = 0; i < data.data.grd_list.length; i++) {
 							var tempM = data.data.grd_list[i];
 							tempM.clsArray = [];
-							tempM.clsFlag = 0; //当前年级没有获取过班级0，获取过班级1
+							tempM.grdFlag = 0; //当前年级没有获取过班级0，获取过班级1
 							var tempFlag = 0;
 							if (curPage.selectData.length > 0) {
 								for (var a = 0; a < curPage.selectData.length; a++) {
 									if (tempM.value == curPage.selectData[a].value) {
 										tempFlag++;
-										//获取数据范围授权：班级
-										getClsDataArray(tempM);
+										if (datasource.dataFlag == 2 || datasource.dataFlag == 3) {
+											//获取数据范围授权：班级
+											getClsDataArray(tempM);
+										}
 									}
 								}
 								if (tempFlag == 0) {
@@ -363,10 +462,10 @@
 			};
 
 			//获取数据范围授权：班级
-			function getClsDataArray(clsModel) {
+			function getClsDataArray(grdModel) {
 				const params = {
 					op_code: 'index',
-					grd_code: clsModel.value,
+					grd_code: grdModel.value,
 					get_cls: true,
 					all_cls: false,
 					index_code: curPage.access,
@@ -377,7 +476,9 @@
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.cls_list.length; i++) {
 							var tempM = data.data.cls_list[i];
+							tempM.clsFlag = 0; //当前班级没有获取过学生0，获取过学生1
 							tempM.stuArray = [];
+							tempM.grdValue = grdModel.value;
 							var tempFlag = 0;
 							if (curPage.selectData.length > 0) {
 								for (var a = 0; a < curPage.selectData.length; a++) {
@@ -386,6 +487,58 @@
 										var tempCls = tempGrd.children[b];
 										if (tempM.value == tempCls.value) {
 											tempFlag++;
+											if (datasource.dataFlag == 3) {
+												//获取数据范围授权：学生
+												getStuDataArray(tempM);
+											}
+										}
+									}
+								}
+								if (tempFlag == 0) {
+									tempM.selectFlag = 0;
+								} else {
+									tempM.selectFlag = 1;
+								}
+							} else {
+								tempM.selectFlag = 0;
+							}
+						}
+						grdModel.grdFlag = 1;
+						grdModel.clsArray = data.data.cls_list;
+						console.log('datasource.pageArray:' + JSON.stringify(datasource.pageArray));
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			};
+
+			//获取数据范围授权：学生
+			function getStuDataArray(clsModel) {
+				var params = {
+					op_code: 'index',
+					grd_code: clsModel.grdValue,
+					cls_code: clsModel.value,
+					get_stu: true,
+					all_stu: false,
+					index_code: curPage.access,
+				}
+				//获取数据范围授权：学生
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						for (var i = 0; i < data.data.stu_list.length; i++) {
+							var tempM = data.data.stu_list[i];
+							var tempFlag = 0;
+							if (curPage.selectData.length > 0) {
+								for (var a = 0; a < curPage.selectData.length; a++) {
+									var tempGrd = curPage.selectData[a];
+									for (var b = 0; b < tempGrd.children.length; b++) {
+										var tempCls = tempGrd.children[b];
+										for (var c = 0; c < tempCls.children.length; c++) {
+											var tempStu = tempCls.children[c];
+											if (tempM.value == tempStu.value) {
+												tempFlag++;
+											}
 										}
 									}
 								}
@@ -399,7 +552,7 @@
 							}
 						}
 						clsModel.clsFlag = 1;
-						clsModel.clsArray = data.data.cls_list;
+						clsModel.stuArray = data.data.stu_list;
 						console.log('datasource.pageArray:' + JSON.stringify(datasource.pageArray));
 					} else {
 						mui.toast(data.msg);
@@ -407,44 +560,62 @@
 				});
 			};
 
-			//获取数据范围授权：学生
-			function getStuDataArray() {
-				var comData = {
-					op_code: 'index',
-					grd_code: grd_id,
-					cls_code: cls_id,
-					get_stu: true,
-					all_stu: false,
-					index_code: curPage.access,
-				}
-				//获取数据范围授权：学生
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					events.closeWaiting();
-					if (data.code == 0) {
-						for (var i = 0; i < data.data.grd_list.length; i++) {
-							var tempM = data.data.grd_list[i];
-							var tempFlag = 0;
-							if (curPage.selectData.length > 0) {
-								for (var a = 0; a < curPage.selectData.length; a++) {
-									if (tempM.value == curPage.selectData[a].value) {
-										tempFlag++;
-									}
-								}
-								if (tempFlag == 0) {
-									tempM.selectFlag = 0;
-								} else {
-									tempM.selectFlag = 1;
-								}
-							} else {
-								tempM.selectFlag = 0;
-							}
-						}
-						datasource.pageArray = data.data.grd_list;
-					} else {
-						mui.toast(data.msg);
+			var inputTap = false;
+			mui('.mui-scroll').on('tap', '.allSelect', function() {
+				inputTap = true;
+			});
+			mui('.mui-scroll').on('tap', '.mui-navigate-right', function() {
+				if (datasource.dataFlag == 3) {
+					if (inputTap) {
+						inputTap = false;
+						return;
 					}
-				});
-			};
+					//记录状态  
+					var li = this.parentNode;
+					var ul = this.parentNode.querySelector('.mui-table-view');
+					var _style = ul.style.display;
+					//关闭同级菜单  
+					// var parent = this.parentNode.parentNode.children;
+					// for (var i = 0; i < parent.length; i++) {
+					// 	if (!!parent[i].querySelector('.mui-table-view')) {
+					// 		parent[i].querySelector('.mui-table-view').style.display = '';
+					// 		removeClass(parent[i], 'mui-active');
+					// 	}
+					// }
+					//更改状态  
+					if (_style == 'block') {
+						ul.style.display = '';
+						removeClass(li, 'mui-active');
+					} else {
+						ul.style.display = 'block';
+						addClass(li, 'mui-active');
+					}
+					//关闭下级子菜单  
+					var children = ul.children;
+					for (var i = 0; i < children.length; i++) {
+						var child = children[i].querySelector('.mui-table-view');
+						if (!!child) {
+							child.style.display = '';
+							removeClass(children[i], 'mui-active');
+						}
+					}
+				}
+			});
+
+			function hasClass(obj, cls) {
+				return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+			}
+
+			function addClass(obj, cls) {
+				if (!this.hasClass(obj, cls)) obj.className += " " + cls;
+			}
+
+			function removeClass(obj, cls) {
+				if (hasClass(obj, cls)) {
+					var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+					obj.className = obj.className.replace(reg, '');
+				}
+			}
 		</script>
 	</body>
 
