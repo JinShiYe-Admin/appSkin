@@ -403,7 +403,7 @@
 							pageIndex = 1;
 							flagRef = 0;
 							//1.请假记录列表
-							events.showWaiting();
+							// events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
 							setTimeout(function() {
@@ -419,7 +419,7 @@
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
 								//1.获取请假记录列表
-								events.showWaiting();
+								// events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -437,7 +437,7 @@
 					}
 				});
 
-				events.showWaiting();
+				// events.showWaiting();
 				//1.17.当前登录用户部门及额外角色
 				getUserInfo();
 				// 获取当前日期
@@ -466,14 +466,14 @@
 							//1.14.学校部门用户
 							getDptUser(dpts[0]) 
 						}else{
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取部门');
 							setTimeout(function() {
 								mui.back()
 							}, 1000);
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -521,13 +521,13 @@
 					}else{
 						mui.toast(data.msg);
 					}
-					events.closeWaiting();
+					// events.closeWaiting();
 				});
 			}
 			//5.获取部门日程列表
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				events.showWaiting();
+				// events.showWaiting();
 					// 
 					comData = {
 						dpt_code: datasource.dptValue.dpt_code,//部门Code
@@ -575,7 +575,7 @@
 							mui.toast(data.msg);
 						}
 						setTimeout(function() {
-							events.closeWaiting();
+							// events.closeWaiting();
 						}, 500);
 					});
 			};

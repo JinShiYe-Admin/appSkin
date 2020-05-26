@@ -149,8 +149,16 @@
 												<div>
 													<a class="tempCss">[{{model.DoneStatusName}}]</a><a class="biaoti">{{model.NoticeTitle}}</a>
 												</div>
-												<div>
+												<!-- <div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+												</div> -->
+												<div class="mui-row" style="margin-top: 0.55rem;">
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+													</div>
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -170,8 +178,16 @@
 												<div>
 													<a class="biaoti" style="width: 80%;">{{model.NoticeTitle}}</a>
 												</div>
-												<div>
+												<!-- <div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+												</div> -->
+												<div class="mui-row" style="margin-top: 0.55rem;">
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+													</div>
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -192,8 +208,16 @@
 												<div>
 													<a class="biaoti" style="width: 80%;">{{model.NoticeTitle}}</a>
 												</div>
-												<div>
+												<!-- <div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+												</div> -->
+												<div class="mui-row" style="margin-top: 0.55rem;">
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+													</div>
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -213,8 +237,16 @@
 												<div>
 													<a class="tempCss">[{{model.NoticeStatusName}}]</a><a class="biaoti">{{model.NoticeTitle}}</a>
 												</div>
-												<div>
+												<!-- <div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+												</div> -->
+												<div class="mui-row" style="margin-top: 0.55rem;">
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+													</div>
+													<div class="mui-table-cell mui-col-xs-5">
+														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -331,7 +363,7 @@
 				if (datasource.sliderFlag == 3) {
 					datasource.send.refreshFlag = 0;
 					datasource.send.pageIndex = 1;
-					events.showWaiting();
+					// events.showWaiting();
 					getData(null, 0);
 				}
 			});
@@ -376,7 +408,7 @@
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					console.log('data:'+JSON.stringify(data));
 					if (data.code!=0) {
 						mui.toast(data.msg);
@@ -475,7 +507,7 @@
 								tempVue.showAdd = 1;
 							}
 						});
-						events.showWaiting();
+						// events.showWaiting();
 						getData(null, 0);
 						//循环初始化所有下拉刷新，上拉加载。
 						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {

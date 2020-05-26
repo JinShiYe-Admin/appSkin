@@ -405,7 +405,7 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
 				datasource.dataFlag = curPage.dataFlag;
-				events.showWaiting();
+				// events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdDataArray();
 
@@ -428,7 +428,7 @@
 				}
 				//获取数据范围授权：年级
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
-					events.closeWaiting();
+					// // events.closeWaiting
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.grd_list.length; i++) {
 							var tempM = data.data.grd_list[i];
@@ -472,7 +472,7 @@
 				}
 				//获取数据范围授权：班级
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					events.closeWaiting();
+					// // events.closeWaiting();
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.cls_list.length; i++) {
 							var tempM = data.data.cls_list[i];
@@ -524,7 +524,7 @@
 				}
 				//获取数据范围授权：学生
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					events.closeWaiting();
+					// // events.closeWaiting
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.stu_list.length; i++) {
 							var tempM = data.data.stu_list[i];

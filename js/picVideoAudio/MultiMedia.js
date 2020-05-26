@@ -271,7 +271,7 @@ var MultiMedia = (function($, mod) {
 									plus.compressVideo.compress(JSON.stringify(json), function(result) {
 										console.log("result：" + result[0]);
 										var obj = JSON.parse(result[0]);
-										var wd = events.showWaiting('处理中...');
+										var wd =  events.showWaiting('处理中...');
 										if (obj.code == 0) {
 											self.data.VideoNum--;
 
@@ -306,7 +306,7 @@ var MultiMedia = (function($, mod) {
 							//										plus.compressVideo.compress(JSON.stringify(json),function(result){
 							//											console.log("result："+result[0]);
 							//											var obj=JSON.parse(result[0]);
-							//											var wd = events.showWaiting('处理中...');
+							//											var wd = // events.showWaiting('处理中...');
 							//											if(obj.code==0){
 							//												self.data.VideoNum--;
 							//												
@@ -385,7 +385,7 @@ var MultiMedia = (function($, mod) {
 									plus.compressVideo.compress(JSON.stringify(json), function(result) {
 										console.log(JSON.stringify(result));
 										var obj = JSON.parse(result[0]);
-										var wd = events.showWaiting('处理中...');
+										var wd =  events.showWaiting('处理中...');
 										if (obj.code == 0) {
 											self.data.VideoNum--;
 											self.addVideos(obj.msg, function() {
@@ -563,7 +563,7 @@ var MultiMedia = (function($, mod) {
 		var self = this;
 		mod.cameraTake(function(path) {
 			console.log('pictureTake :' + path);
-			var wd = events.showWaiting('处理中...');
+			var wd =  events.showWaiting('处理中...');
 			var myDate = new Date();
 			var fileName = self.options.Key + myDate.getTime() + (Math.floor(Math.random() * 10)) + '.png';
 			var dst = '_documents/' + imageId + '_' + fileName;
@@ -594,7 +594,7 @@ var MultiMedia = (function($, mod) {
 		console.log('picturesPick--NumPick:' + NumPick);
 		var self = this;
 		mod.galleryPickFalse('image', true, NumPick, function(event) {
-			var wd = events.showWaiting('处理中...');
+			var wd =  events.showWaiting('处理中...');
 			var files = event.files; // 保存多选的图片或视频文件路径
 			console.log('files.length:' + files.length);
 			console.log('files:' + JSON.stringify(files));

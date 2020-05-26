@@ -135,8 +135,16 @@
 									<div>
 										<div class="biaoti">{{model.LetterName}}</div>
 									</div>
-									<div>
+									<!-- <div>
 										<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+									</div> -->
+									<div class="mui-row" style="margin-top: 0.55rem;">
+										<div class="mui-table-cell mui-col-xs-5">
+											<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+										</div>
+										<div class="mui-table-cell mui-col-xs-5">
+											<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -198,7 +206,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
-				events.showWaiting();
+				// events.showWaiting();
 				//79.获取某人接收的通知单列表
 				getPageDataArray();
 
@@ -272,7 +280,7 @@
 				//79.获取某人接收的通知单列表
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'noticeLetter/getReceiveNoticeLetterByMan', {}, comData, 2, function(
 					data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;

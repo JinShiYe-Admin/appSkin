@@ -363,17 +363,17 @@
 					deceleration: deceleration
 				});
 
-				events.showWaiting();
+				// // events.showWaiting();
 				// 获取数据
 				getPageDataArray('');
 			});
 
 
-			$(document).keydown(function (event) {
-		        if (event.keyCode == 13) {
+			$(document).keydown(function (event) {
+		        if (event.keyCode == 13) {
 					datasource.$options.methods.selectItem()
-		        }
-	        });
+		        }
+	        });
 		
 			//获取课堂考勤列表数据  
 			function getPageDataArray(inputText) {
@@ -383,7 +383,7 @@
 						index_code: curPage.access.split('#')[1],
 					} 
 					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'query/getInventory4App', {}, comData, 2, function(data) {
-						events.closeWaiting();
+						// // events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							datasource.dataList = data.data.list
@@ -391,7 +391,7 @@
 								mui.toast('暂无数据');
 							}
 						} else {
-							events.closeWaiting();
+							// // events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});

@@ -423,7 +423,7 @@
 			//10.获取某人考勤列表
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				events.showWaiting();
+				// events.showWaiting();
 				// 需要加密的数据
 				comData = {
 					user_code: personal.user_code, //用户Code
@@ -477,7 +477,7 @@
 						mui.toast(data.msg);
 					}
 					setTimeout(function() {
-						events.closeWaiting();
+						// events.closeWaiting();
 					}, 500);
 				});
 			};

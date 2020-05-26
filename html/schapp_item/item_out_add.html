@@ -294,7 +294,7 @@
 			
 			// 提交表单数据
 			function submitData(data) {
-				events.showWaiting();
+				// // events.showWaiting();
 				comData = {
 					receiveManName:data.receiveManName,
 					outManCode:personal.user_code,
@@ -326,7 +326,7 @@
 						tempHead.canClick=true
 						mui.toast(data.msg);
 					}
-					events.closeWaiting();
+					// // events.closeWaiting();
 				});
 			}
 			

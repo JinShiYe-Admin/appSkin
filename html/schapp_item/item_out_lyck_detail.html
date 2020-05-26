@@ -410,7 +410,7 @@
 					datasource.ckdDetail=curPage
 				}
 				
-				// events.showWaiting();
+				// // events.showWaiting();
 				// 获取数据
 				// getPageDataArray(curPage.receiveAplyId)
 			});
@@ -423,7 +423,7 @@
 			// 			index_code: curPage.index_code,
 			// 		} 
 			// 		postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'receiveApply/getReceiveApplyById', {}, comData, 2, function(data) {
-			// 			events.closeWaiting();
+			// 			// events.closeWaiting();
 			// 			console.log(JSON.stringify(data))
 			// 			if (data.code == 0) {
 			// 				let note=data.data.note;
@@ -436,14 +436,14 @@
 			// 					datasource.ckdDetail=data.data
 			// 				}
 			// 			} else {
-			// 				events.closeWaiting();
+			// 				// events.closeWaiting();
 			// 				mui.toast(data.msg);
 			// 			}
 			// 		});
 			// };
 			
 			function addReceiveOut() {
-				events.showWaiting();
+				// // events.showWaiting();
 					comData = {
 						receiveOutId:curPage.receiveOutId,
 						outManCode:personal.user_code,
@@ -454,7 +454,7 @@
 						index_code: curPage.index_code,
 					} 
 					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'receiveOut/addReceiveOut', {}, comData, 2, function(data) {
-						events.closeWaiting();
+						// // events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							 mui.toast('发货成功');
@@ -466,7 +466,7 @@
 							tempVue.canClick=true
 							mui.toast(data.msg);
 						}
-						events.closeWaiting();
+						// // events.closeWaiting();
 					});
 			};
 			

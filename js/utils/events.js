@@ -423,6 +423,10 @@ var events = (function(mod) {
 			oldBack();
 		}
 	}
+	
+	
+	var lastCallTime=0
+	
 	/**
 	 * 返回一个安卓手机返回键无法关闭的等待框
 	 * @author 莫尚霖
@@ -433,10 +437,33 @@ var events = (function(mod) {
 		if(string) {
 			title = string;
 		}
-		var showWaiting = plus.nativeUI.showWaiting(title, {
+		showWaiting = plus.nativeUI.showWaiting(title, {
 			back: 'none'
 		});
-		return showWaiting;
+		return showWaiting
+	}
+	
+	mod.showWaitingRequest = function(string) {
+		let show=false
+		let showWaiting=''
+		let currCallTime =new Date().getTime()
+		if ((currCallTime - lastCallTime) >= 2500) {
+			show = true;
+			lastCallTime=currCallTime
+		}
+		if(show){
+			var title = '加载中...';
+			if(string) {
+				title = string;
+			}
+			showWaiting = plus.nativeUI.showWaiting(title, {
+				back: 'none'
+			});
+			setTimeout(function(){//如果请求超时, 那么10S后强制关闭该加载框
+				mod.closeWaiting()
+			},10*1000)
+		}
+		return showWaiting
 	}
 
 	/**

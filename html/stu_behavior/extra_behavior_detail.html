@@ -371,14 +371,14 @@
 						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
 							console.log(e.index)
 							if (e.index == 0) {
-								events.showWaiting();
+								// events.showWaiting();
 								comData = {
 									id: curPage.id,
 									index_code: curPage.index_code,
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/delete', {}, comData, 2, function(data) {
 									console.log(JSON.stringify(data))
-									events.closeWaiting();
+									// events.closeWaiting();
 									if (data.code == 0) {
 										mui.toast('删除成功');
 										 setTimeout(function(){

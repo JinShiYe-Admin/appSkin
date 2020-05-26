@@ -155,7 +155,7 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-				events.showWaiting();
+				// events.showWaiting();
 				var tempData = {
 					letterId: curPage.LetterId, //公告ID
 					noticeManId: personal.user_code, //通知人姓名
@@ -163,7 +163,7 @@
 					op_code: 'index'
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'noticeLetter/getReceiveNoticeLetterById', {}, tempData, 2,function(data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					if(data.code == 0) {
 						// data.data.BeginTime = data.data.BeginTime.split(' ')[0];
 						// data.data.EndTime = data.data.EndTime.split(' ')[0];

@@ -537,7 +537,7 @@
 							}
 							fj.push('1');
 						}
-						var wd = events.showWaiting();
+						var wd =  events.showWaiting();
 						if(fj.length == 0) {
 							var oriName = multiMedia.data.PictureArray[0].path.substring(multiMedia.data.PictureArray[0].path.lastIndexOf("/") + 1);
 							addNotice(wd, '3', multiMedia.data.PictureArray[0].path, '', 0, oriName);
@@ -553,7 +553,7 @@
 						var btnArray = ['否', '是'];
 						mui.confirm(tempStr, '确认', btnArray, function(e) {
 							if (e.index == 1) {
-								events.showWaiting();
+								// events.showWaiting();
 								var tempFlag = 1;
 								if (model.InfoUploadCloseStatus == 1) {
 									tempFlag = 2;
@@ -570,7 +570,7 @@
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUploadOper', {}, tempData1,
 									2,
 									function(data) {
-										events.closeWaiting();
+										// events.closeWaiting();
 										if (data.code == 0) {
 											mui.toast('成功');
 											getNoticeByReceiveId_sendId_Detail(curPage.flag);
@@ -585,7 +585,7 @@
 						var btnArray = ['否', '是'];
 						mui.confirm('确认要退回吗？', '确认', btnArray, function(e) {
 							if (e.index == 1) {
-								events.showWaiting();
+								// events.showWaiting();
 								//65.退回信息上交
 								var tempData1 = {
 									infoCollectId: noticeDetailData.detailModel.InfoCollectId, //信息收集ID
@@ -597,7 +597,7 @@
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoUploadBack', {}, tempData1,
 									2,
 									function(data) {
-										events.closeWaiting();
+										// events.closeWaiting();
 										if (data.code == 0) {
 											mui.toast('成功');
 											getNoticeByReceiveId_sendId_Detail(curPage.flag);
@@ -634,7 +634,7 @@
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUpload', {}, tempData1, 2,
 					function(data) {
 						encNameList = [];
-						events.closeWaiting();
+						// events.closeWaiting();
 						if (data.code == 0) {
 							noticeDetailData.content = '';
 							multiMedia.imageRefresh();
@@ -648,7 +648,7 @@
 
 			//获取详情
 			var getNoticeByReceiveId_sendId_Detail = function(flag) {
-				events.showWaiting();
+				// events.showWaiting();
 				var comData0 = {};
 				var url;
 				if (flag == 0) { //72.通过信息收集接收表ID获取信息收集
@@ -669,7 +669,7 @@
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2,
 					function(data) {
-						events.closeWaiting();
+						// events.closeWaiting();
 						console.log('data:' + JSON.stringify(data));
 						if (data.code == 0) {
 							if (data.data.InfoCollectEncName) {

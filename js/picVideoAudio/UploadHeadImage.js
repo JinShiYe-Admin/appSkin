@@ -90,7 +90,7 @@ var UploadHeadImage = (function($, mod) {
 						//拍照成功的回调
 						//capturedFile ：图片的路径
 						//显示等待窗口
-						var wd = events.showWaiting();
+						var wd =  events.showWaiting();
 						////console.log('拍照成功,图片的路径为：' + capturedFile);
 						//将本地URL路径转换成平台绝对路径
 						//capturedFile = 'file://' + plus.io.convertLocalFileSystemURL(capturedFile);
@@ -137,7 +137,7 @@ var UploadHeadImage = (function($, mod) {
 	function pick() {
 		try {
 			plus.gallery.pick(function(file) {
-				var wd = events.showWaiting();
+				var wd =  events.showWaiting();
 				console.log('从相册选取图片成功,图片的路径为：' + file);
 				compressImage(wd, file) //压缩图片
 			}, function(error) {
@@ -344,10 +344,10 @@ var UploadHeadImage = (function($, mod) {
 			val: domain, //对应类型的值
 			access_token: personal.access_token //用户令牌
 		};
-		// events.showWaiting();
+		// // events.showWaiting();
 		postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'user/upUserInfo', {}, comData0, 0, function(data3) {
 			console.log('UpUserInfo:' + JSON.stringify(data3));
-			// events.showWaiting();
+			// // events.showWaiting();
 			wd.close();
 			if(data3.code == 0) {
 				successCallBack(imgeURL);

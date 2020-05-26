@@ -367,7 +367,7 @@
 								mui.toast('未选择年级')
 							} else {
 								datasource.grdValue = items[0]
-								events.showWaiting();
+								// events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -394,7 +394,7 @@
 				});
 
 				window.addEventListener('refreshList', function(data) {
-					events.showWaiting();
+					// events.showWaiting();
 					pageIndex = 1;
 					flagRef = 0;
 					datasource.pageArray = [];
@@ -411,7 +411,7 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
-							events.showWaiting();
+							// events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
 							setTimeout(function() {
@@ -426,7 +426,7 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								events.showWaiting();
+								// events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -444,7 +444,7 @@
 					}
 				});
 
-				events.showWaiting();
+				// events.showWaiting();
 				// 获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
@@ -485,11 +485,11 @@
 							let grd_code = grds[0].value;
 							getPageDataArray()
 						} else {
-							events.closeWaiting();
+							// // events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting();
+						// // events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -516,7 +516,7 @@
 				// 1.1.列表页
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
 					data) {
-					events.closeWaiting();
+					// // events.closeWaiting();
 					if (data.code == 0) {
 						if(data.data!=null){
 							totalPageCount = data.data.total_page;
@@ -538,12 +538,12 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
-							events.closeWaiting();
+							// // events.closeWaiting();
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {
-						events.closeWaiting();
+						// // events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});

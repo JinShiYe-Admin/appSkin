@@ -239,7 +239,7 @@
 						}else if(datasource.formData.selectData.length==0){
 							mui.toast('请选择班级')
 						}else{
-							var wd = events.showWaiting();
+							// events.showWaiting();
 							submitData(wd,datasource.formData)
 						}
 					}
@@ -293,7 +293,7 @@
 			
 			
 			// 提交表单数据
-			function submitData(wd,data) {
+			function submitData(data) {
 				let tousers=[]
 				datasource.formData.selectData.map(function(gitem){
 					gitem.children.map(function(citem){
@@ -335,15 +335,14 @@
 				}
 				console.log("comData: " + JSON.stringify(comData));
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsA', {}, comData, 2, function(data) {
+					// events.showWaiting();
 					if (data.code == 0) {
-						wd.close();
 						 mui.toast(data.msg);
 						 setTimeout(function(){
 							 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 							 mui.back()
 						 },1500)
 					} else {
-							wd.close();
 						mui.toast(data.msg);
 					}
 				});

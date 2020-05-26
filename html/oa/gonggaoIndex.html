@@ -135,8 +135,16 @@
 									<div>
 										<div class="biaoti">{{model.AnnouncementTitle}}</div>
 									</div>
-									<div>
+									<!-- <div>
 										<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
+									</div> -->
+									<div class="mui-row" style="margin-top: 0.55rem;">
+										<div class="mui-table-cell mui-col-xs-5">
+											<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+										</div>
+										<div class="mui-table-cell mui-col-xs-5">
+											<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -197,14 +205,14 @@
 								var urlStr = encodeURI(model.CalendarAddr)
 								plus.runtime.openURL(urlStr);
 							} else{
-								events.showWaiting();
+								// events.showWaiting();
 								var tempData = {
 									schoolCalendarId: model.AnnouncementId, //公告ID
 									index_code:model.access.split('#')[1],
 									op_code:'index'
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getCalendarById', {}, tempData, 2,function(data) {
-									events.closeWaiting();
+									// events.closeWaiting();
 									if(data.code == 0) {
 										model.CalendarAddr = data.data.CalendarAddr;
 										var urlStr = encodeURI(data.data.CalendarAddr);
@@ -226,7 +234,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
-				events.showWaiting();
+				// events.showWaiting();
 				//32.获取浏览的公告（周程/校历）列表
 				getPageDataArray();
 
@@ -300,7 +308,7 @@
 				//32.获取浏览的公告（周程/校历）列表
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getReceiveAnnouncement', {}, comData, 2, function(
 					data) {
-						events.closeWaiting();
+						// events.closeWaiting();
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;
