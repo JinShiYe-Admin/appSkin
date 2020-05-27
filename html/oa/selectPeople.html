@@ -192,12 +192,6 @@
 				//获取接收人列表
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUserOfApp', {}, comData, 1, function(
 					data) {
-<<<<<<< HEAD
-						events.closeWaiting();
-=======
-						// events.closeWaiting();
-					console.log('获取接收人列表:' + JSON.stringify(data));
->>>>>>> 6f030957a8a602b1368fb9d8f68355c9d2e08096
 					if (data.code == 0) {
 						var tempCode = [];
 						for (var i = 0; i < data.data.list.length; i++) {
