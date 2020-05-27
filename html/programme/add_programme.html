@@ -257,12 +257,13 @@
 				tempHead.headTitle = curPage.title_name;
 				tempHead.showBack = 1;
 				
+				events.showWaiting();
 				// 刚进入界面，自动定位
 				getGeocode();
 			});
 			// 提交表单数据
 			function submitDataLast() {
-				events.showWaiting();
+				// events.showWaiting();
 				comData = {
 					user_code: personal.user_code,//用户Code
 					user_name: personal.user_name,//用户名称
@@ -287,7 +288,7 @@
 						tempHead.canClick = true
 						mui.toast(data.msg);
 					}
-					events.closeWaiting();
+					// events.closeWaiting();
 					tempHead.canClick = true
 				});
 			}
@@ -295,14 +296,49 @@
 			function getGeocode() {
 				console.log("获取定位位置信息:");
 				plus.geolocation.getCurrentPosition(geoInf, function(e) {
-					mui.toast("获取定位位置信息失败：" + e.message);
+					if(plus.os.name=="Android"){
+						android(e);
+					}else if(plus.os.name=="iOS"){
+						ios(e);
+					}
+					events.closeWaiting();
 				}, {
 					geocode: true
 				});
 			}
+			
+			//判断android 是否打开gps按钮
+			function android(e){
+				console.log("获取定位位置信息失败：" + e.message);
+				var context = plus.android.importClass("android.content.Context");
+				var locationManager=plus.android.importClass("android.location.LocationManager"); 
+				var main=plus.android.runtimeMainActivity(); 
+				var mainSvr=main.getSystemService(context.LOCATION_SERVICE); 
+				androidIsOpen=mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER); 
+				if(!androidIsOpen){ 
+					plus.nativeUI.alert("请开启GPS以获取正确的位置信息"); 
+				} 
+			}
+			
+			//判断ios 是否授权使用我的位置  ，android部分可用，暂不考虑
+			function ios(e){
+				var pp = plus.navigator.checkPermission('LOCATION');
+					switch(pp){
+						case 'denied':
+							plus.nativeUI.alert('未授权使用我的位置');
+						break;
+						// case 'undetermined':
+						// 	plus.nativeUI.alert('未授权使用我的位置');
+						// break;
+						default:
+							console.log("获取定位位置信息失败：" + e.message);
+						break;
+					}
+			}
 
 			function geoInf(position) {
 				events.closeWaiting();
+				// events.closeWaiting();
 				var str = "";
 				str += "地址：" + position.addresses + "\n"; //获取地址信息
 				str += "坐标类型：" + position.coordsType + "\n";

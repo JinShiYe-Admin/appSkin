@@ -174,7 +174,7 @@
 										return;
 									}
 									sendFlag = 1;
-									var wd = events.showWaiting();
+									var wd =  events.showWaiting();
 									if (multiMedia.data.PictureArray.length == 0) { //没有传附件
 										addNotice(wd, '3', '', '', 0, '');
 									} else {
@@ -329,7 +329,7 @@
 				tempTime = tempTime.replace(/ /g,'');
 				tempTime = tempTime.replace(/:/g,'');
 				console.log('tempTime:'+tempTime);
-				events.showWaiting();
+				// events.showWaiting();
 				var tempData = {
 					schoolId: personal.unit_code, //学校ID
 					title: message.title, //标题
@@ -351,7 +351,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/addInfoCollect', {}, tempData, 2,function(data) {
 					console.log('addInfoCollect:' + JSON.stringify(data));
-					events.closeWaiting();
+					// events.closeWaiting();
 					if (data.code == 0) {
 						mui.toast("发布成功")
 						setTimeout(function() {

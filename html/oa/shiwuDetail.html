@@ -275,7 +275,7 @@
 						if (tempVue.moreFlag == 1) {
 							mui.confirm('确定撤销吗？', '提醒', btnArray, function(e) {
 								if (e.index == 1) {
-									events.showWaiting();
+									// events.showWaiting();
 									var comData = {
 										noticeId: noticeDetailData.detailModel.NoticeId,
 										index_code: curPage.access.split('#')[1],
@@ -283,7 +283,7 @@
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/setNoticeUndo', {}, comData, 2,
 										function(data) {
-											events.closeWaiting();
+											// events.closeWaiting();
 											if (data.code == 0 && data.data.Result == 1) {
 												mui.toast("成功");
 												tempVue.moreFlag = 0;
@@ -294,7 +294,7 @@
 						} else {
 							mui.confirm('确定关闭吗？', '提醒', btnArray, function(e) {
 								if (e.index == 1) {
-									events.showWaiting();
+									// events.showWaiting();
 									var comData = {
 										noticeId: noticeDetailData.detailModel.NoticeId,
 										index_code: curPage.access.split('#')[1],
@@ -302,7 +302,7 @@
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/setNoticeClose', {}, comData, 2,
 										function(data) {
-											events.closeWaiting();
+											// events.closeWaiting();
 											if (data.code == 0 && data.data.Result == 1) {
 												mui.toast("成功");
 												tempVue.moreFlag = 0;
@@ -335,7 +335,7 @@
 					saveTag: function() {
 						console.log('saveTag');
 						if (noticeDetailData.tag != noticeDetailData.detailModel.Tag) {
-							events.showWaiting();
+							// events.showWaiting();
 							//55.修改发送的协同事务标签
 							var comData = {
 								noticeId: noticeDetailData.detailModel.NoticeId, //通知ID
@@ -352,7 +352,7 @@
 							}
 							//55.修改发送的协同事务标签
 							postDataEncry(url, {}, comData, 2, function(data) {
-								events.closeWaiting();
+								// events.closeWaiting();
 								console.log('55.修改发送的协同事务标签:' + JSON.stringify(data));
 								if (data.code == 0 && data.data.Result == 1) {
 									noticeDetailData.detailModel.Tag = noticeDetailData.tag;
@@ -370,7 +370,7 @@
 							mui.toast("回复内容不能超过50字", "cancel");
 							return;
 						}
-						var wd = events.showWaiting();
+						var wd =  events.showWaiting();
 						if (multiMedia.data.PictureArray.length == 0) { //没有传附件
 							addNotice(wd, '3', '', '', 0, '');
 						} else {
@@ -493,7 +493,7 @@
 				//28.回复通知公告
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/addNoticeReply', {}, tempData1, 2,
 					function(data) {
-						events.closeWaiting();
+						// events.closeWaiting();
 						encNameList = [];
 						if (data.code == 0) {
 							noticeDetailData.content = '';
@@ -508,7 +508,7 @@
 
 			//获取详情
 			var getNoticeByReceiveId_sendId_Detail = function(flag) {
-				events.showWaiting();
+				// events.showWaiting();
 				var comData0 = {};
 				var url;
 				if (flag == 0) { //60.通过协同事务接收表ID获取协同事务
@@ -529,7 +529,7 @@
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2,
 					function(data) {
-						events.closeWaiting();
+						// events.closeWaiting();
 						console.log('data:' + JSON.stringify(data));
 						if (data.code == 0) {
 							// var localSkey = utils.getDataFromUrl(window.location.href);

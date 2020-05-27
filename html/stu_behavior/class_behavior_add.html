@@ -276,7 +276,7 @@
 						}else if(datasource.formData.time==''){
 							mui.toast('请选择发生日期')
 						}else{
-							var wd = events.showWaiting();
+							var wd =  events.showWaiting();
 							if (multiMedia.data.PictureArray.length == 0) { //没有传附件
 								submitData(wd,datasource.formData)
 							} else {
@@ -471,7 +471,7 @@
 					datasource.formData.stu=obj
 				});
 
-				events.showWaiting();
+				// events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
 				// 获取常量数组
@@ -807,11 +807,11 @@
 							//获取数据范围授权：班级
 							getClsList(grd_id) 
 						}else{
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -844,11 +844,11 @@
 							//获取数据范围授权：科目
 							getKmList(grd_id,cls_id);
 						}else{
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
 					}else{
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -876,13 +876,13 @@
 						if(stuList.length>0 ){
 							datasource.stuList=stuList;
 						}else{
-							events.closeWaiting();
-							events.closeWaiting();
+							// events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取学生');
 						}
 						
 					}else{
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -908,14 +908,14 @@
 							subList.push(obj)
 						})
 						if(subList.length>0 ){
-							events.closeWaiting();
+							// events.closeWaiting();
 							datasource.subList=subList;
 						}else{
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取科目');
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -923,7 +923,7 @@
 			
 			// 获取行为细项，节次数组
 			function getXwList() {
-				events.showWaiting();
+				// events.showWaiting();
 				comData = {
 					op_code: 'index',
 					index_code: curPage.index_code,
@@ -935,18 +935,18 @@
 							if (jcList.length > 0) {
 								datasource.jcList=jcList
 							}else{
-								events.closeWaiting();
+								// events.closeWaiting();
 								mui.toast('无法获取节次');
 							}
 							if (data.data.qbArray.length > 0) {
-								events.closeWaiting();
+								// events.closeWaiting();
 								datasource.xwList = data.data.qbArray;
 							} else {
-								events.closeWaiting();
+								// events.closeWaiting();
 								mui.toast('无法获取行为细项');
 							}
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});

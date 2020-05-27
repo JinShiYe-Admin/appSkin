@@ -303,23 +303,22 @@
 						 <div class="double-line"></div>
 						 <div class="mui-input-row">
 						 	<label class="aCss">接收人</label>
-							<ul v-cloak class="mui-table-view">
-								<li v-cloak v-for="grd_child in student" class="mui-table-view-cell">
-										<div class="mui-table">
-												<ul v-cloak class="mui-table-view">
-													<li v-cloak v-for="cls_child in grd_child.children" class="mui-table-view-cell">
-														<template v-if="cls_child.children.length>0">
-															<div class="mui-table">
-																{{cls_child.children.length}}
-																<p>{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
-																<span v-for="stu_child in cls_child.children" v-if="stu_child.stu_name">{{stu_child.stu_name}},</span>
-															</div>
-														</template>
-													</li>
-												</ul>
-										</div>
-								</li>
-							</ul>
+						 </div>
+						 <div class="mui-input-row">
+							<div v-cloak v-for="grd_child in student" >
+								<div v-cloak v-for="cls_child in grd_child.children" v-if="cls_child.children.length>0" style="margin: 0 15px;">
+										<p >{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
+										<span v-for="(stu_child,index) in cls_child.children" v-if="stu_child.stu_name">
+											<template v-if="index==cls_child.children.length-1">
+												{{stu_child.stu_name}}
+											</template>
+											<template v-else>
+												{{stu_child.stu_name}},
+											</template>
+										</span>
+										<div class="line"></div>
+								</div>
+							</div>
 						 </div>
 				</div>
 			</div>
@@ -371,11 +370,7 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log(JSON.stringify(curPage));
-				// tempVue.titleName =curPage.behavior_type_txt+'详情';
 				datasource.formData=curPage;
-				if(curPage.canDelete){
-					tempVue.showDelete=true
-				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -383,6 +378,7 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
+				// events.showWaiting();
 				getStudentFromHR();
 			});
 			
@@ -455,12 +451,11 @@
 							});
 						}
 					}else{
-						events.closeWaiting();
 						mui.toast(data.msg);
 					}
+					// // events.closeWaiting();
 				});
 			}
 		</script>
 	</body>
-
 </html>

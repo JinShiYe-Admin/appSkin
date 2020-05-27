@@ -452,7 +452,7 @@
 				});
 				
 				window.addEventListener('refreshList', function(data) {
-					events.showWaiting();
+					// // events.showWaiting();
 					pageIndex = 1;
 					flagRef = 0;
 					datasource.sgckList = [];
@@ -461,7 +461,7 @@
 				});
 				
 				window.addEventListener('refreshListLyck', function(data) {
-					events.showWaiting();
+					// // events.showWaiting();
 					flagRef = 0;
 					lyck_pageIndex = 1;
 					datasource.lyckList = [];
@@ -482,7 +482,7 @@
 						tempVue.showAdd = false
 						if(datasource.canGetData){
 							datasource.canGetData=false
-							events.showWaiting();
+							// // events.showWaiting();
 							getLyckPageDataArray();
 						}
 					}
@@ -497,7 +497,7 @@
 							var self = this;
 							//console.log("下拉刷新");
 							flagRef = 0;
-							events.showWaiting();
+							// // events.showWaiting();
 							if(datasource.ckType==1){
 								pageIndex = 1;
 								totalPageCount = 1;
@@ -521,7 +521,7 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								events.showWaiting();
+								// events.showWaiting();
 								if(datasource.ckType==1){
 									getPageDataArray();	
 								}else if(datasource.ckType==2){
@@ -543,7 +543,7 @@
 					}
 				});
 
-				events.showWaiting();
+				// // events.showWaiting();
 				// 获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
@@ -570,7 +570,7 @@
 						index_code: curPage.access.split('#')[1],
 					} 
 					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'handOut/getHandOuts', {}, comData, 2, function(data) {
-						events.closeWaiting();
+						// // events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -591,7 +591,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							events.closeWaiting();
+							// // events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});
@@ -613,7 +613,7 @@
 						index_code: curPage.access.split('#')[1],
 					} 
 					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'receiveOut/getReceiveOuts', {}, comData, 2, function(data) {
-						events.closeWaiting();
+						// // events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -634,7 +634,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							events.closeWaiting();
+							// // events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});

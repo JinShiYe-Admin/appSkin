@@ -385,7 +385,7 @@
 			//14.获取某部门某日考勤明细列表 
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				events.showWaiting();
+				// events.showWaiting();
 					//
 					comData = {
 						dpt_code: datasource.curPage.dpt_code,//部门Code
@@ -397,7 +397,7 @@
 					}
 					// 14.获取某部门某日考勤明细列表
 					postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attendDptQry/getDptDayAttendItem', {}, comData, 2, function(data) {
-						events.closeWaiting();
+						// events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -420,7 +420,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});

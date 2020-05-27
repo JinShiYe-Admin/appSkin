@@ -193,8 +193,8 @@
 						if(datasource.formData.comment==''){
 							mui.toast('请输入通知内容')
 						}else{
-							var wd = events.showWaiting();
-							submitData(wd,datasource.formData)
+							// events.showWaiting();
+							submitData(datasource.formData)
 						}
 					}
 				}
@@ -225,7 +225,7 @@
 			
 			
 			// 提交表单数据
-			function submitData(wd,data) {
+			function submitData(data) {
 				comData = {
 					unit_name:personal.unit_name,
 					send_user_tname:personal.user_name,
@@ -247,15 +247,14 @@
 					index_code:curPage.index_code
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsA', {}, comData, 2, function(data) {
+					// // events.closeWaiting();
 					if (data.code == 0) {
-						wd.close();
 						 mui.toast(data.msg);
 						 setTimeout(function(){
 							 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
 							 mui.back()
 						 },1500)
 					} else {
-							wd.close();
 						mui.toast(data.msg);
 					}
 				});

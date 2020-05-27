@@ -272,17 +272,14 @@
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
 											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
+											<h5 class="mui-ellipsis" >班级:{{model.names.join("，")}}</h5>
 											<div style="margin-top: 0.55rem;">
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >班级:{{model.send_user_tname}}</h5>
-												</div>
 												<div class="mui-table-cell mui-col-xs-5">
 													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
 												</div>
 												<div class="mui-table-cell mui-col-xs-7">
 													<h5 class="mui-ellipsis mui-text-right">{{model.send_time}}</h5>
 												</div>
-												
 											</div>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
@@ -341,7 +338,7 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/stu_behavior/extra_behavior_add.html", model);
+							utils.mOpenWithData("../../html/interaction/classes_homework_add.html", model);
 					}
 				}
 			});
@@ -358,8 +355,8 @@
 				methods: {
 					clickLi: function(model) {
 						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						utils.mOpenWithData("../../html/stu_behavior/extra_behavior_detail.html", model);
+						model.index_code = index_code; 
+						utils.mOpenWithData("../../html/interaction/classes_homework_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -373,7 +370,7 @@
 								mui.toast('未选择年级')
 							} else {
 								datasource.grdValue = items[0]
-								events.showWaiting();
+								// events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -396,7 +393,7 @@
 							} else {
 								datasource.clsValue = items[0]
 								//获取课堂考勤列表
-								events.showWaiting();
+								// events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -423,7 +420,7 @@
 				});
 
 				window.addEventListener('refreshList', function(data) {
-					events.showWaiting();
+					// events.showWaiting();
 					pageIndex = 1;
 					flagRef = 0;
 					datasource.pageArray = [];
@@ -440,7 +437,7 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
-							events.showWaiting();
+							// events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
 							setTimeout(function() {
@@ -455,7 +452,7 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								events.showWaiting();
+								// events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -473,7 +470,7 @@
 					}
 				});
 
-				events.showWaiting();
+				// events.showWaiting();
 				// 获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
@@ -515,11 +512,11 @@
 							//获取数据范围授权：班级
 							getClsList(grd_code)
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting
 						mui.toast(data.msg);
 					}
 				});
@@ -551,11 +548,11 @@
 							datasource.clsValue = clsList[0];
 							getPageDataArray()
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting
 							mui.toast('无数据授权 无法获取班级');
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting
 						mui.toast(data.msg);
 					}
 				});
@@ -581,11 +578,19 @@
 				// 1.1.列表页
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
 					data) {
-					events.closeWaiting();
+					// events.closeWaiting
 					if (data.code == 0) {
 						if(data.data!=null){
 							totalPageCount = data.data.total_page;
 							pageIndex++;
+							data.data.list.map(function(item){
+								let tousers=item.tousers
+								let names=[]
+								tousers.map(function(item){
+									names.push(item.grd_name+item.cls_name)
+								})
+								item.names=names
+							})
 							if (flagRef == 0) { //刷新
 								datasource.pageArray = data.data.list
 								if (data.data.list.length == 0) {
@@ -603,12 +608,12 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
-							events.closeWaiting();
+							// events.closeWaiting
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting
 						mui.toast(data.msg);
 					}
 				});

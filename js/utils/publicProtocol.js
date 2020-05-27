@@ -257,6 +257,7 @@ var checkNewWork = function(callback) {
 var jQAjaxPost = function(url, data, callback) {
 	checkNewWork(callback);
 	console.log('jQAP-Data:' + data);
+	events.showWaitingRequest();
 	jQuery.ajax({
 		url: url,
 		type: "POST",
@@ -267,6 +268,9 @@ var jQAjaxPost = function(url, data, callback) {
 		async: true,
 		success: function(success_data) { //请求成功的回调
 			console.log('jQAP-Success:' + url + ',' + JSON.stringify(success_data));
+			setTimeout(function(){//防止一闪就没，体验不好
+				events.closeWaiting();
+			},600)
 			if (success_data.code == 6 || success_data.code == 'sup6'|| success_data.code == '0006'|| success_data.code == 'sup_0006') { //令牌过期
 				//续订令牌
 				// var personal = store.get(window.storageKeyName.PERSONALINFO);

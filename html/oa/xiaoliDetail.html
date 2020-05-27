@@ -118,14 +118,14 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				events.showWaiting();
+				// events.showWaiting();
 				var tempData = {
 					schoolCalendarId: curPage.AnnouncementId, //公告ID
 					index_code:curPage.access.split('#')[1],
 					op_code: 'index'
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getCalendarById', {}, tempData, 2,function(data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					if(data.code == 0) {
 						if (data.data.CalendarAddr) {
 							data.data.CalendarAddr = data.data.CalendarAddr.split("|");

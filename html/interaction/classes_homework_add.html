@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-	<!-- 考务模块  列表页
+	<!-- 课堂考勤详情
 
  -->
 	<head>
@@ -11,14 +11,10 @@
 		<link href="../../css/common.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
 		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
-		<link rel="stylesheet" href="../../fonts/iconfont1.css" />
-		<link rel="stylesheet" href="../../css/utils/MultiMedia.css" />
-		<link rel="stylesheet" href="../../css/utils/preview.css" />
-		<link rel="stylesheet" href="../../css/utils/audiopopover.css" />
 		<style>
 			[v-cloak] {
 				visibility: hidden;
-				display:none !important;
+				display: none !important;
 			}
 			html,
 			body {
@@ -29,12 +25,104 @@
 				background-color: #FFFFFF;
 			}
 			
+			.mui-bar~.mui-content .mui-fullscreen {
+				top: 44px;
+				height: auto;
+			}
+			
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1;
+			}
+			
+			.mui-bar~.mui-pull-top-tips {
+				top: 24px;
+			}
+			
+			.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}
+			
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			
+			.mui-pull-top-tips .mui-pull-loading {
+				margin: 0;
+			}
+			
+			.mui-pull-top-wrapper .mui-icon,
+			.mui-pull-top-wrapper .mui-spinner {
+				margin-top: 7px;
+			}
+			
+			.mui-pull-top-wrapper .mui-icon.mui-reverse {
+				/*-webkit-transform: rotate(180deg) translateZ(0);*/
+			}
+			
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+			
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+			
+			.mui-slider-indicator.mui-segmented-control {
+				background-color: #efeff4;
+			}
+			.peopleImg {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+			}
 			.time {
 				font-size: 14px;
 				float: right;
 				color: gray;
 			}
 			
+			.biaoti {
+				color: #000000;
+				width: 80%;
+				font-size: 1.0625rem;
+				white-space:normal;
+			}
+			
+			.tempCss {
+				font-size: 14px;
+				color: gray;
+			}
 			
 			.mui-table h4,.mui-table h5,.mui-table .mui-h5,.mui-table .mui-h6,.mui-table p{
 			    margin-top: 0;
@@ -57,6 +145,11 @@
 				margin-top: 1.25rem;
 			}
 			
+			.line{
+				background-color: #00CFBD;
+				margin-bottom: 0.3125rem;
+				height: 0.125rem;
+			}
 			.selectDiv{
 				background-color: #eaeaea;
 			}
@@ -65,6 +158,62 @@
 				border-radius: 0rem;
 				background-color: #FFFFFF;
 				height: 3rem;
+			}
+			
+			.ant-avatar{
+				-webkit-box-sizing: border-box;
+				    box-sizing: border-box;
+				    margin: 0;
+				    padding: 0;
+				    color: rgba(0, 0, 0, 0.65);
+				    font-size: 14px;
+				    font-variant: tabular-nums;
+				    line-height: 1.5;
+				    list-style: none;
+				    -webkit-font-feature-settings: 'tnum';
+				    font-feature-settings: 'tnum';
+				    position: relative;
+				    display: inline-block;
+				    overflow: hidden;
+				    color: #fff;
+				    white-space: nowrap;
+				    text-align: center;
+				    vertical-align: middle;
+				    background: #ccc;
+				    width: 32px;
+				    height: 32px;
+				    line-height: 32px;
+				    border-radius: 50%;
+			}
+			
+			.ant-avatar-lg {
+			    width: 40px;
+			    height: 40px;
+			    line-height: 40px;
+			    border-radius: 50%;
+			}
+			
+			.mui-segmented-control {
+				border: 0px;
+				background: #F0F0F0;
+			}
+			
+			.mui-segmented-control .mui-control-item {
+				border: 0px;
+				color: #666;
+				font-size: 12px;
+			}
+			
+			.mui-segmented-control .mui-control-item.mui-active {
+				background-color: transparent;
+				color: #666;
+				font-size: 12px;
+			}
+			
+			.mui-segmented-control .mui-control-item span {
+				font-size: 12px;
+				padding: 0 0 0 5px;
+				color: #666;
 			}
 			
 			.aCss {
@@ -111,60 +260,18 @@
 			    font-family: 'Helvetica Neue',Helvetica,sans-serif;
 			    line-height: 1.1;
 			    float: left;
-			    width: 30%;
+			    width: 28%;
 			    padding: 11px 15px;
 			}
 			
 			.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea {
 			    float: right;
-			    width: 68%;
+			    width: 70%;
 				margin-right: 2%;
 			    margin-bottom: 0;
 			    padding-left: 0.625rem;
 			    border: 0;
 			}
-			
-			.mui-dtpicker-header button:last-child {
-			    background-color: #00CFBD;
-				border: #00CFBD;
-			}
-			
-			.test-textarea{
-				width: 68%;
-				float: right;
-				margin-top: 8px;
-				margin-right: 7px;
-				min-height: 26px;
-				line-height: 20px;
-				padding: 3px;
-				outline: 0;
-				font-size: 14px;
-				word-wrap: break-word;
-				overflow-x: hidden;
-				overflow-y: auto;
-				border-radius: 4px;
-				color:#999999 ;
-			}
-		/* 	
-			.test-textarea {
-			            width: 400px;
-			            min-height: 26px;
-			            line-height: 20px;
-			            _height: 30px;
-			            /* max-height: 150px;*/
-			            margin-left: auto;
-			            margin-right: auto;
-			            padding: 3px;
-			            outline: 0;
-			            border: 1px solid #ccc;
-			            font-size: 12px;
-			            word-wrap: break-word;
-			            overflow-x: hidden;
-			            overflow-y: auto;
-			            -webkit-user-modify: read-write-plaintext-only;
-			            border-radius: 4px;
-			        } */
-			
 		</style>
 	</head>
 
@@ -172,42 +279,66 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
-			<a @click="submit()" class="mui-pull-right" style="font-size: 0.875rem">确定</a>
+			<a v-if="showDelete" @click="_delete()" class="mui-pull-right" style="font-size: 0.9375rem;margin-top: 0px;">删除</a>
 		</header>
-		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
 					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div v-cloak class="mui-input-row">
-							<label class="aCss">通知内容</label>
-							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="300" v-model="formData.comment" rows="5" placeholder="请输入通知内容,最多300字"></textarea>
+						<div class="mui-input-row">
+							<label class="aCss">年级</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
 						</div>
 						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" @click="selectGrade()">接收年级</label>
-							<input @click="selectGrade()" type="text" placeholder="点击选择年级"  readonly>
-							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
+						<div class="mui-input-row">
+							<label class="aCss">班级</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
 						</div>
 						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss">已选年级</label> 
-							<div class="test-textarea">{{formData.selectGradeClassesNames.join(",")}}</div>
+						<div class="mui-input-row">
+							<label class="aCss" >姓名</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
+						</div>
+						<div class="line"></div>
+						<div class="mui-input-row">
+							<label class="aCss" >行为细项</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
+						</div>
+						<div class="line"></div>
+						<div class="mui-input-row">
+							<label class="aCss">发生日期</label>
+							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
+						</div>
+						<div class="line"></div>
+						<div class="mui-input-row">
+							<label class="aCss">行为说明</label>
+							<textarea style="border: 0px solid rgba(0,0,0,.2);word-break: break-all;" maxlength="300" v-model="formData.comment" rows="8"
+							 placeholder="暂无说明" readonly></textarea>
+						</div>
+						<div class="line"></div>
+						<div class="mui-input-row" v-if="formData.asset_ids&&formData.asset_ids.length>0">
+							<label class="aCss">附件</label>
+							<div style="width: 70%;float: right;padding:0px;font-size: 14px;">
+								<!-- <img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;border: solid 1px #EAEAEA;border-radius: 3px;" v-for="model in formData.asset_ids" :src="model.url"/> -->
+								<div v-for="model in formData.asset_ids" style="margin-top:8px;">
+									<a @tap="clickImg(model.url)"  href="javascript:void(0)">{{model.name}}</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
-		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
+		<!-- <script src="../../js/utils/vconsole.min.js"></script> -->
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
+		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
-		<script src="../../js/utils/events.js"></script>
-		
-		 
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/utils.js"></script>
-		<script src="../../js/utils/vconsole.min.js"></script>
-		<script src="../../js/qiniu/cloudutil.js"></script>
+		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/utils/mui.picker.min.js"></script>
 		<script src="../../js/utils/mui.poppicker.js"></script>
 		<!--加密-->
@@ -225,51 +356,64 @@
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
-			
+			var pageIndex = 1; //请求数据页面
+			var totalPageCount; //总页码
+			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '新建通知'
+					titleName: '课外行为详情',
+					showDelete:false,
 				},
 				methods:{
-					submit:function(){//表单提交
-						if(datasource.formData.comment==''){
-							mui.toast('请输入通知内容')
-						}else if(datasource.formData.selectGradeClassesNames.length==0){
-							mui.toast('请选择年级')
-						}else{
-							var wd = events.showWaiting();
-							submitData(wd,datasource.formData)
-						}
+					_delete:function(){
+						var btnArray = ['是', '否'];
+						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
+							console.log(e.index)
+							if (e.index == 0) {
+								// events.showWaiting();
+								comData = {
+									id: curPage.id,
+									index_code: curPage.index_code,
+								}
+								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/delete', {}, comData, 2, function(data) {
+									console.log(JSON.stringify(data))
+									// events.closeWaiting();
+									if (data.code == 0) {
+										mui.toast('删除成功');
+										 setTimeout(function(){
+										 	 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+										 	 mui.back()
+										 },300)
+									} else {
+										mui.toast(data.msg);
+									}
+								});
+							}
+						})
 					}
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					formData: {
-						comment:'',//说明
-						selectGradeClassesNames:[],//选择的年级名称
-						selectData:[],//选择的年级对象
-					},  
+					formData: {}, //表单内容
 				},
 				methods:{
-					selectGrade:function(){
-						let model ={};
-						model.access = curPage.index_code;
-						model.selectData=this.formData.selectData;
-						model.name = '选择班级';
-						model.dataFlag = 2;//1选择年级，2选择班级，3选择学生
-						utils.mOpenWithData("../../html/interaction/selectGrdClsStu.html", model);
+					clickImg:function(url){
+						plus.runtime.openURL(url);
 					}
 				}
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				// tempVue.titleName = '添加'+curPage.title;
-
-
+				console.log(JSON.stringify(curPage));
+				// tempVue.titleName =curPage.behavior_type_txt+'详情';
+				datasource.formData=curPage;
+				if(curPage.canDelete){
+					tempVue.showDelete=true
+				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -277,73 +421,8 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-				
-				window.addEventListener('refreshStudent', function(data) {
-					let selectGradeClassesNames=[]
-					data.detail.map(function(grd_item){
-						 grd_item.children.map(function(cls_item){
-							selectGradeClassesNames.push(grd_item.name+cls_item.name)
-						})
-					})
-					datasource.formData.selectGradeClassesNames=selectGradeClassesNames
-					datasource.formData.selectData=data.detail
-				});
 			});
 			
-			
-			// 提交表单数据
-			function submitData(wd,data) {
-				let tousers=[]
-				datasource.formData.selectData.map(function(item){
-					let obj={
-						col_code:'',
-						col_name:'',
-						maj_code:'',
-						maj_name:'',
-						grd_code:item.grd_code,
-						grd_name:item.grd_name,
-						cls_code:'',
-						cls_name:'',
-						stu_codes:'',
-						stu_names:'',
-					}
-					tousers.push(obj)
-				})
-				comData = {
-					unit_name:personal.unit_name,
-					send_user_tname:personal.user_name,
-					msg_content:data.comment,
-					sms_msgtype_code:'classes',
-					sms_msgtype_name:'123',
-					sms_usertype_code:'123',
-					sms_usertype_name:'123',
-					sms_appcode:'123',
-					sms_group_lv:'123',
-					is_delay:'0',
-					delay_time:'2020-05-22 09:19:51',
-					servied:'0',
-					sms_msg_lv:9,
-					send_user:personal.user_code,
-					send_soure:'App',
-					send_unit_code:personal.unit_code,
-					tousers:tousers,
-					index_code:curPage.index_code
-				}
-				console.log("comData: " + JSON.stringify(comData));
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsA', {}, comData, 2, function(data) {
-					if (data.code == 0) {
-						wd.close();
-						 mui.toast(data.msg);
-						 setTimeout(function(){
-							 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-							 mui.back()
-						 },1500)
-					} else {
-							wd.close();
-						mui.toast(data.msg);
-					}
-				});
-			}
 		</script>
 	</body>
 

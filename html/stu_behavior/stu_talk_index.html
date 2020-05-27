@@ -467,7 +467,7 @@
 								mui.toast('未选择年级')
 							} else {
 								datasource.grdValue = items[0]
-								events.showWaiting();
+								// events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -490,7 +490,7 @@
 							} else {
 								datasource.clsValue = items[0]
 								//获取课堂考勤列表
-								events.showWaiting();
+								// events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -514,7 +514,7 @@
 							}else{
 								that.xwlx=''
 							}
-							events.showWaiting();
+							// events.showWaiting();
 							pageIndex = 1;
 							flagRef = 0;
 							datasource.pageArray = [];
@@ -534,7 +534,7 @@
 								mui.toast('未选择科目')
 							} else {
 								datasource.ztValue = items[0]
-								events.showWaiting();
+								// events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -562,7 +562,7 @@
 				});
 
 				window.addEventListener('refreshList', function(data) {
-					events.showWaiting();
+					// events.showWaiting();
 					pageIndex = 1;
 					flagRef = 0;
 					datasource.pageArray = [];
@@ -599,7 +599,7 @@
 							pageIndex = 1;
 							flagRef = 0;
 							//1.课堂考勤记录列表
-							events.showWaiting();
+							// events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
 							setTimeout(function() {
@@ -615,7 +615,7 @@
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
 								//1.获取课堂考勤记录列表
-								events.showWaiting();
+								// events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -632,7 +632,7 @@
 						}
 					}
 				});
-				events.showWaiting();
+				// events.showWaiting();
 				// 获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
@@ -674,11 +674,11 @@
 							//获取数据范围授权：班级
 							getClsList(grd_code)
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -711,11 +711,11 @@
 							//获取常量
 							getClList();
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -733,10 +733,10 @@
 					function(data) {
 						if (data.code == 0) {
 							if (data.data.qbArray&& data.data.qbArray.length == 0) {
-								events.closeWaiting();
+								// events.closeWaiting();
 								mui.toast('无法获取行为细项');
 							}  else if(data.data.statusArray&& data.data.statusArray.length == 0){
-								events.closeWaiting();
+								// events.closeWaiting();
 								mui.toast('无法获取谈话状态');
 							}else{
 								let lxList = [{
@@ -755,7 +755,7 @@
 								getPageDataArray();
 							}
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});
@@ -777,7 +777,7 @@
 				// 1.1.列表页
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/list', {}, comData, 2, function(
 					data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					if (data.code == 0) {
 						totalPageCount = data.data.total_page;
 						pageIndex++;
@@ -798,7 +798,7 @@
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});

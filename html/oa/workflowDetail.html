@@ -221,7 +221,7 @@
 						var btnArray = ['取消', '确定'];
 						mui.confirm('确定撤销吗？', '提醒', btnArray, function(e) {
 							if (e.index == 1) {
-								events.showWaiting();
+								// events.showWaiting();
 								var comData = {
 									applyId: noticeDetailData.detailModel.ApplyId,
 									index_code: curPage.access.split('#')[1],
@@ -229,7 +229,7 @@
 								}
 								postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApplyUndo', {}, comData, 2,
 									function(data) {
-										events.closeWaiting();
+										// events.closeWaiting();
 										if (data.code == 0 && data.data.Result == 1) {
 											mui.toast("成功");
 											tempVue.moreFlag = 0;
@@ -258,7 +258,7 @@
 					saveTag: function() {
 						console.log('saveTag');
 						if (noticeDetailData.tag != noticeDetailData.detailModel.Tag) {
-							events.showWaiting();
+							// events.showWaiting();
 							//19.修改发送的申请标签
 							var comData = {
 								applyId: noticeDetailData.detailModel.ApplyId, //申请ID
@@ -276,7 +276,7 @@
 							//
 							postDataEncry(url, {}, comData, 2,
 								function(data) {
-									events.closeWaiting();
+									// events.closeWaiting();
 									console.log('修改标签:' + JSON.stringify(data));
 									if (data.code == 0 && data.data.Result == 1) {
 										noticeDetailData.detailModel.Tag = noticeDetailData.tag;
@@ -304,7 +304,7 @@
 						// } else if (flag == 2) {
 						// 	tempContent = '退回';
 						// }
-						events.showWaiting();
+						// events.showWaiting();
 						//18.审批事务及文件申请
 						var tempData1 = {
 							approveId: curPage.ApproveId, //审批ID
@@ -315,7 +315,7 @@
 						}
 						//18.审批事务及文件申请
 						postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApprove', {}, tempData1, 2, function(data) {
-							events.closeWaiting();
+							// events.closeWaiting();
 							if (data.code == 0) {
 								noticeDetailData.content = '';
 								mui.toast('成功');
@@ -330,7 +330,7 @@
 
 			//获取详情
 			var getNoticeByReceiveId_sendId_Detail = function(flag) {
-				events.showWaiting();
+				// events.showWaiting();
 				var comData0 = {};
 				var url;
 				if (flag == 0) { //24.通过审批ID获取事务及文件申请及审批
@@ -350,7 +350,7 @@
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					console.log('data:' + JSON.stringify(data));
 					if (data.code == 0) {
 						if (data.data.ApplyEncName) {

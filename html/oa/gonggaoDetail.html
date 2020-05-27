@@ -118,14 +118,14 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				events.showWaiting();
+				// events.showWaiting();
 				var tempData = {
 					announcementId: curPage.AnnouncementId, //公告ID
 					index_code:curPage.access.split('#')[1],
 					op_code: 'index'
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getAnnouncementById', {}, tempData, 2,function(data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					if(data.code == 0) {
 						// if (data.data.Status == 1) {//1 待审2 发出3 撤回4 被退
 						// 	data.data.StatusName = '待审';

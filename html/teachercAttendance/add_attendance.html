@@ -228,7 +228,7 @@
 							sendFlag = 0;
 							return;
 						}
-						var wd = events.showWaiting();
+						var wd =  events.showWaiting();
 						if (multiMedia.data.PictureArray.length == 0) { //没有传附件
 							// 9.新增考勤
 							submitDataLast(wd, '3', '', '', 0, '');
@@ -256,6 +256,7 @@
 				init(); //初始化控件
 
 				// 刚进入界面，自动定位
+				events.showWaiting();
 				getGeocode();
 			});
 			//多媒体控件
@@ -327,7 +328,7 @@
 				// console.log('encAddr:' + encAddr);
 				// console.log('encImg:' + encImg);
 				// console.log('encLen:' + encLen);
-				events.showWaiting();
+				// events.showWaiting();
 				var comData = {
 					user_code: personal.user_code, //用户Code
 					user_name: personal.user_name, //用户名称
@@ -340,7 +341,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attend/addAttend', {}, comData, 2, function(data) {
 					console.log('addAttend:' + JSON.stringify(data));
-					events.closeWaiting();
+					// events.closeWaiting();
 					if (data.code == 0) {
 						mui.toast("发布成功")
 						setTimeout(function() {
@@ -357,12 +358,46 @@
 			function getGeocode() {
 				console.log("获取定位位置信息:");
 				plus.geolocation.getCurrentPosition(geoInf, function(e) {
-					mui.toast("获取定位位置信息失败：" + e.message);
+					if(plus.os.name=="Android"){
+						android(e);
+					}else if(plus.os.name=="iOS"){
+						ios(e);
+					}
+					events.closeWaiting();
 				}, {
 					geocode: true
 				});
 			}
-
+			
+			//判断android 是否打开gps按钮
+			function android(e){
+				console.log("获取定位位置信息失败：" + e.message);
+				var context = plus.android.importClass("android.content.Context");
+				var locationManager=plus.android.importClass("android.location.LocationManager"); 
+				var main=plus.android.runtimeMainActivity(); 
+				var mainSvr=main.getSystemService(context.LOCATION_SERVICE); 
+				androidIsOpen=mainSvr.isProviderEnabled(locationManager.GPS_PROVIDER); 
+				if(!androidIsOpen){ 
+					plus.nativeUI.alert("请开启GPS以获取正确的位置信息"); 
+				} 
+			}
+			
+			//判断ios 是否授权使用我的位置  ，android部分可用，暂不考虑
+			function ios(e){
+				var pp = plus.navigator.checkPermission('LOCATION');
+					switch(pp){
+						case 'denied':
+							plus.nativeUI.alert('未授权使用我的位置');
+						break;
+						// case 'undetermined':
+						// 	plus.nativeUI.alert('未授权使用我的位置');
+						// break;
+						default:
+							console.log("获取定位位置信息失败：" + e.message);
+						break;
+					}
+			}
+			
 			function geoInf(position) {
 				events.closeWaiting();
 				var str = "";

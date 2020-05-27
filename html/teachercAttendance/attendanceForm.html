@@ -399,14 +399,14 @@
 							datasource.dptValue = dpts[0];
 							getPageDataArray();
 						} else {
-							events.closeWaiting();
+							// events.closeWaiting();
 							mui.toast('无数据授权 无法获取部门');
 							setTimeout(function() {
 								mui.back()
 							}, 1000);
 						}
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -415,7 +415,7 @@
 			//12.获取部门按人考勤情况
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				events.showWaiting();
+				// events.showWaiting();
 				//
 				var tempA = datasource.dateValue.split('-');
 				comData = {
@@ -456,7 +456,7 @@
 							mui.toast(data.msg);
 						}
 						setTimeout(function() {
-							events.closeWaiting();
+							// events.closeWaiting();
 						}, 500);
 					});
 			};

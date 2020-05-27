@@ -44,7 +44,7 @@ var appUpdate = (function(mod) {
 //		};
 		
 		// 等待的对话框
-//		var wd_0 = events.showWaiting();
+//		var wd_0 =  events.showWaiting();
 //		postDataPro_PostVerInfo(comData9, function(data) {
 //			console.log('获取APP版本号0:', data);
 //			if(data.code == 0) {

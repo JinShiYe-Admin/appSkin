@@ -306,7 +306,7 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				datasource.titleName = curPage.name;
 				datasource.selectType = curPage.selectType;
-				events.showWaiting();
+				// events.showWaiting();
 				getDetail(function() {
 					setTimeout(function() {
 						getPjfDetail()
@@ -341,7 +341,7 @@
 						callback();
 						datasource.tabsDetail = data.data
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -377,7 +377,7 @@
 
 						closeWaiting();
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -412,7 +412,7 @@
 
 						closeWaiting();
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -435,7 +435,7 @@
 
 						closeWaiting();
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -469,7 +469,7 @@
 
 						closeWaiting();
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -502,7 +502,7 @@
 
 						closeWaiting();
 					} else {
-						events.closeWaiting();
+						// events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -512,9 +512,9 @@
 			function closeWaiting() {
 				if (datasource.pjfDetail != '' && datasource.zfdDetail != '' && datasource.zgfDetail != '' &&  datasource.jtbDetail != '') {
 					if(curPage.selectType=='qk' && datasource.sxlDetail !=''){
-						events.closeWaiting();	
+						// events.closeWaiting();	
 					}else{
-						events.closeWaiting();
+						// events.closeWaiting();
 					}
 				}
 			}

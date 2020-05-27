@@ -204,14 +204,14 @@
 			});
 			//获取秘钥
 			var getEncryptKeyLogin = function() {
-				events.showWaiting();
+				// events.showWaiting();
 				//不需要加密的数据
 				var comData0 = {
 					platform_code: window.storageKeyName.PLATFORMCODE //平台代码
 				};
 				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login/getEncryptKey', {}, comData0, 0,function(data) {
 					console.log('getEncryptKey:' + JSON.stringify(data));
-					events.closeWaiting();
+					// events.closeWaiting();
 					if (data.code == 0) {
 						curPageKey = data.data.encryptKey;
 					} else {
@@ -229,10 +229,10 @@
 					app_code: window.storageKeyName.APPCODE, //应用系统代码
 					index_code:''
 				};
-				events.showWaiting();
+				// events.showWaiting();
 				//发送网络请求，data为网络返回值
 				postDataEncry(window.storageKeyName.INTERFACE_SSO_HR + 'login/getRegUserTypeList', {}, comData0, 0,function(data) {
-					events.closeWaiting();
+					// events.closeWaiting();
 					console.log('getRegUserTypeList:' + JSON.stringify(data));
 					if(data.code == 0) {
 						var tempA = [];
@@ -314,11 +314,11 @@
 									user_name: register.uname, //姓名，注册老师的时候输入老师的姓名，注册学生和家长时输入学生姓名
 									phone: register.uphone //电话，注册老师的时候输入老师的姓名，注册学生和家长时输入家长电话
 								};
-								events.showWaiting();
+								// events.showWaiting();
 								//发送网络请求，data为网络返回值
 								postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + 'register/userInfo', {}, comData0, 0,function(data) {
 									console.log('register/userInfo:' + JSON.stringify(data));
-									events.closeWaiting();
+									// events.closeWaiting();
 									if(data.code == 0) {
 										var tempA = [];
 										for(var i = 0; i < data.data.list.length; i++) {
@@ -420,11 +420,11 @@
 								password: hex_md5(curPageKey + register.confirmpassword), //密码,秘钥+密码再MD5加密
 							};
 							console.log('comData0:' + JSON.stringify(comData0));
-							events.showWaiting();
+							// events.showWaiting();
 							//发送网络请求，data为网络返回值
 							postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + 'register', {}, comData0, 0,function(data) {
 								console.log('register:' + JSON.stringify(data));
-								events.closeWaiting();
+								// events.closeWaiting();
 								if(data.code == 0) {
 									mui.toast(data.msg);
 									mui.back();

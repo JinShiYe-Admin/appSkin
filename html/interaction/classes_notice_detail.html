@@ -272,6 +272,11 @@
 			    padding-left: 0.625rem;
 			    border: 0;
 			}
+			
+			.double-line{
+				height: 10px;
+				background-color: #EAEAEA;
+			}
 		</style>
 	</head>
 
@@ -279,53 +284,42 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
-			<a v-if="showDelete" @click="_delete()" class="mui-pull-right" style="font-size: 0.9375rem;margin-top: 0px;">删除</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-					<div class="" v-cloak style="margin-top: 0.625rem;">
-						<div class="mui-input-row">
-							<label class="aCss">年级</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.grd_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">班级</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.class_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >姓名</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.stu_name" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss" >行为细项</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text"  placeholder="暂无数据" v-model="formData.item_txt" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">发生日期</label>
-							<input style="border: 0px solid rgba(0,0,0,.2);" type="text" placeholder="暂无数据" v-model="formData.create_time" readonly>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row">
-							<label class="aCss">行为说明</label>
-							<textarea style="border: 0px solid rgba(0,0,0,.2);word-break: break-all;" maxlength="300" v-model="formData.comment" rows="8"
-							 placeholder="暂无说明" readonly></textarea>
-						</div>
-						<div class="line"></div>
-						<div class="mui-input-row" v-if="formData.asset_ids&&formData.asset_ids.length>0">
-							<label class="aCss">附件</label>
-							<div style="width: 70%;float: right;padding:0px;font-size: 14px;">
-								<!-- <img @tap="clickImg(model.url)" style="object-fit: cover; width: 85px;height:85px;margin:0 5px 5px 0;border: solid 1px #EAEAEA;border-radius: 3px;" v-for="model in formData.asset_ids" :src="model.url"/> -->
-								<div v-for="model in formData.asset_ids" style="margin-top:8px;">
-									<a @tap="clickImg(model.url)"  href="javascript:void(0)">{{model.name}}</a>
+						 <div style="padding: 0 10px;">
+							 <p class="tow-line" v-if="formData.msg_content">{{formData.msg_content}}</p>
+							 <h5 class="mui-ellipsis" >状态:{{formData.is_copy?'已发送':'等待'}}</h5>
+							 <div style="margin-top: 0.55rem;">
+							 	<div class="mui-table-cell mui-col-xs-5">
+							 		<h5 class="mui-ellipsis" >发布人:{{formData.send_user_tname}}</h5>
+							 	</div>
+							 	<div class="mui-table-cell mui-col-xs-7">
+							 		<h5 class="mui-ellipsis mui-text-right">{{formData.send_time}}</h5>
+							 	</div>
+							 </div>
+						 </div>
+						 <div class="double-line"></div>
+						 <div class="mui-input-row">
+						 	<label class="aCss">接收人</label>
+						 </div>
+						 <div class="mui-input-row">
+							<div v-cloak v-for="grd_child in student" >
+								<div v-cloak v-for="cls_child in grd_child.children" v-if="cls_child.children.length>0" style="margin: 0 15px;">
+										<p >{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
+										<span v-for="(stu_child,index) in cls_child.children" v-if="stu_child.stu_name">
+											<template v-if="index==cls_child.children.length-1">
+												{{stu_child.stu_name}}
+											</template>
+											<template v-else>
+												{{stu_child.stu_name}},
+											</template>
+										</span>
+										<div class="line"></div>
 								</div>
 							</div>
-						</div>
-					</div>
+						 </div>
 				</div>
 			</div>
 		</div>
@@ -356,64 +350,28 @@
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
+			var pageArray=[];
 			var pageIndex = 1; //请求数据页面
 			var totalPageCount; //总页码
 			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '课外行为详情',
-					showDelete:false,
-				},
-				methods:{
-					_delete:function(){
-						var btnArray = ['是', '否'];
-						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
-							console.log(e.index)
-							if (e.index == 0) {
-								events.showWaiting();
-								comData = {
-									id: curPage.id,
-									index_code: curPage.index_code,
-								}
-								postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/delete', {}, comData, 2, function(data) {
-									console.log(JSON.stringify(data))
-									events.closeWaiting();
-									if (data.code == 0) {
-										mui.toast('删除成功');
-										 setTimeout(function(){
-										 	 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-										 	 mui.back()
-										 },300)
-									} else {
-										mui.toast(data.msg);
-									}
-								});
-							}
-						})
-					}
+					titleName: '通知详情',
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
 					formData: {}, //表单内容
+					student:[]//年级 班级 学生 数组
 				},
-				methods:{
-					clickImg:function(url){
-						plus.runtime.openURL(url);
-					}
-				}
 			});
-
+			
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log(JSON.stringify(curPage));
-				// tempVue.titleName =curPage.behavior_type_txt+'详情';
 				datasource.formData=curPage;
-				if(curPage.canDelete){
-					tempVue.showDelete=true
-				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -421,9 +379,115 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
+				// events.showWaiting();
+				let tousers=curPage.tousers;
+				for (var i = 0; i < tousers.length; i++) {
+					let item=tousers[i]
+					let grd_code=item.grd_code
+					let grd_name=item.grd_name
+					getClsList(grd_name,grd_code);
+				}
 			});
 			
+			let NUMBER=0;//总循环次数
+			let INDEX=0;//当前循环数
+			//获取数据范围授权：班级
+			function getClsList(grd_name,grd_code) {
+				const params = {
+					op_code: 'index',
+					grd_code: grd_code ? grd_code : '-1',
+					get_cls: true,
+					all_cls: false,
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
+					try{
+						if (data.code == 0) {
+							let clss = data.data.cls_list;
+							NUMBER+=clss.length
+							if (clss.length > 0) {
+								let newClss=[]
+								for (var i = 0; i < clss.length; i++) {
+									let obj={}
+									obj.cls_code=clss[i].value
+									obj.cls_name=clss[i].name
+									obj.children=[]
+									newClss.push(obj)
+								}
+								let obj={}
+								obj.grd_name=grd_name
+								obj.grd_code=grd_code
+								obj.children=newClss
+								datasource.student.push(obj)
+								for (var i = 0; i < clss.length; i++) {
+									let item =clss[i]
+									//循环获取学生数组
+									getStuList(grd_name,grd_code,item.name,item.value)
+								}
+							} else {
+								// // events.closeWaiting();
+								mui.toast('无数据授权 无法获取班级');
+							}
+						} else {
+							// // events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					}catch(e){
+						// // events.closeWaiting();
+						mui.toast(e)
+					}
+				});
+			}
+			
+			
+			//获取数据范围授权：学生
+			function getStuList(grd_name,grd_code,cls_name,cls_code) {
+				const params = {
+					op_code:'index',
+					grd_code: grd_code,
+					cls_code: cls_code,
+					get_stu:true,
+					all_stu:false,
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
+					try{
+						if (data.code == 0) {
+							 INDEX++;
+							 let list=data.data.stu_list
+							 list.map(function(item){
+								 let obj={
+									stu_code:item.value,
+									stu_name:item.name,
+								 }
+								 datasource.student.map(function(gItem){
+									 let children=gItem.children
+									 children.map(function(cItem){
+										 if(gItem.grd_code==grd_code && cItem.cls_code==cls_code){
+											 cItem.children.push(obj)
+										 }
+									 })
+								 })
+							 })
+							 if(INDEX==NUMBER){
+								// // events.closeWaiting();
+								endList()
+							 }
+						}else{
+							// // events.closeWaiting();
+							mui.toast(data.msg);
+						}
+					}catch(e){
+						// // events.closeWaiting();
+						mui.toast(e)
+					}
+				});
+			}
+			
+			function endList(){
+				//TODO 根据将来的 订购学生接口 排除未订购的学生
+				console.log("学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生学生: " + JSON.stringify(datasource.student));
+			}
 		</script>
 	</body>
-
 </html>
