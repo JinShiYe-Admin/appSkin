@@ -340,7 +340,7 @@ var UploadHeadImage = (function($, mod) {
 			app_code: window.storageKeyName.APPCODE, //应用系统代码
 			unit_code: personal.unit_code, //单位代码
 			type: 'uico', //修改类型，uico:头像
-			val: domain, //对应类型的值
+			val: imgeURL, //对应类型的值
 			access_token: personal.access_token //用户令牌
 		};
 		// // events.showWaiting();

@@ -20,8 +20,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_WORK = '? 需连广西开发环境';//学生考勤系统接口(阮)
 			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net:8081/notesubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net:8081/attendsubapi/sub/api/';//教师考勤（孔)
-			mod.INTERFACE_STUXWSUB = '? 需连广西开发环境';//学生行为 and 学生评语（阮) 
-			mod.INTERFACE_THIRD = 'http://develop309.jiaobaowang.net/hrsubapi/api/admin/';//第三方系统
+			mod.INTERFACE_STUXWSUB = '? 需连广西开发环境';//学生行为 and 学生评语（阮)
 			break;
 		case 2: //广西开发
 			mod.PLATFORMCODE = 'PT0036'; //平台代码
