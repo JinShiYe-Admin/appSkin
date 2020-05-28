@@ -447,7 +447,7 @@ var events = (function(mod) {
 		let show=false
 		let showWaiting=''
 		let currCallTime =new Date().getTime()
-		if ((currCallTime - lastCallTime) >= 2500) {
+		if ((currCallTime - lastCallTime) >= 4000) {
 			show = true;
 			lastCallTime=currCallTime
 		}
