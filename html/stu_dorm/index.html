@@ -17,6 +17,19 @@
 				width: 30px;
 				height: 30px;
 			}
+			.index-bt{
+				background:#FFFFFF;
+				font-weight: 600;
+				padding-left: 15px;
+				margin: 0;
+				font-size: 15px;
+				margin-top: 10px;
+			}
+			
+			.mui-grid-view.mui-grid-9 {
+			     border-top: 0px solid #eee; 
+			     border-left: 0px solid #eee;
+			}
 		</style>
 	</head>
 
@@ -25,26 +38,40 @@
 			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
-		<div v-cloak class="mui-content" style="margin-top: 0px;" id="contentData">
-			<div></div>
-			<h5 style="background:#FFFFFF ;">住宿分配与查询</h5>
-			<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
-				<li v-cloak v-cloak v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
-					<a href="#" @click="clickFunction(model)">
-						<img class="circular-square" :src=model.icon />
-						<div class="mui-media-body divNameCss">{{model.name}}</div>
-					</a>
-				</li>
-			</ul>
-			<h5 style="background:#FFFFFF ;">日常记录</h5>
-			<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
-				<li v-cloak v-cloak v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
-					<a href="#" @click="clickFunction(model)">
-						<img class="circular-square" :src=model.icon />
-						<div class="mui-media-body divNameCss">{{model.name}}</div>
-					</a>
-				</li>
-			</ul>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background-color: #FFFFFF;" id="contentData">
+			<div v-if="baseinfo_icons.length>0" class="mui-row">
+				<div class="index-bt">基本信息</div>
+				<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+					<li v-cloak v-for="model in baseinfo_icons" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
+						<a href="#" @click="clickFunction(model)">
+							<img class="circular-square" :src=model.icon />
+							<div class="mui-media-body divNameCss">{{model.name}}</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div v-if="select_icons.length>0" class="mui-row">
+				<div class="index-bt">住宿分配与查询</div>
+				<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+					<li v-cloak v-cloak v-for="model in select_icons" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
+						<a href="#" @click="clickFunction(model)">
+							<img class="circular-square" :src=model.icon />
+							<div class="mui-media-body divNameCss">{{model.name}}</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div v-if="daily_icons.length>0" class="mui-row">
+				<div class="index-bt">日常记录</div>
+				<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+					<li v-cloak v-cloak v-for="model in daily_icons" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
+						<a href="#" @click="clickFunction(model)">
+							<img class="circular-square" :src=model.icon />
+							<div class="mui-media-body divNameCss">{{model.name}}</div>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -71,7 +98,9 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					showArray:[],
+					baseinfo_icons:[],//基本信息数组 
+					select_icons:[],// 住宿分配与查询数组 
+					daily_icons:[],// 日常记录数组
 				},
 				methods: {
 					clickFunction: function(model) {
@@ -81,41 +110,41 @@
 				},
 			});
 			
-			// // 获取未读数
-			// var getUnReadCntFun = function(){
-			// 	for (var a = 0; a < contentData.showArray.length; a++) {
-			// 		var tempM0 = contentData.showArray[a];
-			// 		if (tempM0.redspot_url!=null) {
-			// 			// 获取未读数
-			// 			getUnReadCut(tempM0.access,tempM0.redspot_url,function(data){
-			// 				console.log('getUnReadCut:'+JSON.stringify(data));
-			// 				if (data.code == 0) {
-			// 					for (var b = 0; b < contentData.showArray.length; b++) {
-			// 						var tempM1 = contentData.showArray[b];
-			// 						if (tempM1.access == data.data.list[0].access) {
-			// 							tempM1.NoReadCnt = data.data.list[0].dotnum;
-			// 						}
-			// 					}
-			// 				}
-			// 			});
-			// 		}
-			// 	}
-			// }
 			
 			mui.plusReady(function() {
 				var ws = plus.webview.currentWebview(); 
 				console.log("当前Webview：" + JSON.stringify(ws.preload));
 				if (ws.preload) { 
 					tempHead.headTitle = ws.preload.name;
-					contentData.showArray=ws.preload.childList;
+					let list=ws.preload.childList
+					list.map(function(item){
+						if('schapp_Dorm_Info'==item.url){
+							contentData.baseinfo_icons.push(item)
+						}
+						
+						if('schapp_Dorm_Classes'==item.url||
+							'schapp_Dorm_Select'==item.url||
+							'schapp_Dorm_EmptyBed'==item.url||
+							'schapp_Dorm_EmptyRoom'==item.url
+							){
+							contentData.select_icons.push(item)
+						}
+						
+						if('schapp_Dorm_Calle'==item.url||
+							'schapp_Dorm_Attendance'==item.url||
+							'schapp_Dorm_Action'==item.url||
+							'schapp_Dorm_Health'==item.url||
+							'schapp_Dorm_Evaluation'==item.url
+						){
+							contentData.daily_icons.push(item)
+						}
+					})
+					console.log("contentData.baseinfo_icons: " + JSON.stringify(contentData.baseinfo_icons));
+					console.log("contentData.select_icons: " + JSON.stringify(contentData.select_icons));
+					console.log("contentData.daily_icons: " + JSON.stringify(contentData.daily_icons));
 				} else {
 					tempHead.showBack = 1;
 				}
-				// //获取未读数 TODO 触发条件还没写
-				// window.addEventListener('getKaoqinNoReadCnt', function(data) {
-				// 	//获取未读数
-				// 	getUnReadCntFun();
-				// });
 			});
 			
 			
