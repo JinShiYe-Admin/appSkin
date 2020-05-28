@@ -84,6 +84,32 @@
 				if(isPoneAvailable(personal.login_name)) {
 					peopleInfo.peoplePhone = personal.login_name;
 				}
+				
+				var img = document.getElementById("imgLi");
+				UploadHeadImage.addListener(img, 0, {
+					id: personal.user_code, //user_code
+					//name: data.studentName //资料名称
+				}, function(successCB) {
+					// var wd =  events.showWaiting('更新头像...');
+					console.log('上传并修改个人头像，成功的回调' + JSON.stringify(successCB));
+					mui.toast('个人头像更新成功');
+					setTimeout(function() {
+						document.getElementById("img").src = successCB;
+						document.getElementById("img").onload = function() {
+							// wd.close();
+						}
+					}, 2000);
+					// 设置头像
+					personal.img_url = successCB;
+					peopleInfo.peopleHeadImg = successCB;
+					store.set(window.storageKeyName.PERSONALINFO, personal);
+					mui.fire(plus.webview.currentWebview().opener(), 'mine_setHeadImg', {
+						img_url: successCB
+					});
+				}, function(errorCB) {
+					//console.log('上传并修改个人头像，失败的回调' + JSON.stringify(errorCB));
+					mui.toast(errorCB.msg);
+				});
 			});
 
 			function isPoneAvailable(str) {
@@ -169,31 +195,7 @@
 					// }
 				}
 			});
-			var img = document.getElementById("imgLi");
-			UploadHeadImage.addListener(img, 0, {
-				id: personal.user_code, //user_code
-				//name: data.studentName //资料名称
-			}, function(successCB) {
-				// var wd =  events.showWaiting('更新头像...');
-				console.log('上传并修改个人头像，成功的回调' + JSON.stringify(successCB));
-				mui.toast('个人头像更新成功');
-				setTimeout(function() {
-					document.getElementById("img").src = successCB;
-					document.getElementById("img").onload = function() {
-						// wd.close();
-					}
-				}, 2000);
-				// 设置头像
-				personal.img_url = successCB;
-				peopleInfo.peopleHeadImg = successCB;
-				store.set(window.storageKeyName.PERSONALINFO, personal);
-				mui.fire(plus.webview.currentWebview().opener(), 'mine_setHeadImg', {
-					img_url: successCB
-				});
-			}, function(errorCB) {
-				//console.log('上传并修改个人头像，失败的回调' + JSON.stringify(errorCB));
-				mui.toast(errorCB.msg);
-			});
+			
 			//上传附件
 			// function uploadFile(path, index) {
 			// 	if(chenkNetwork()) {

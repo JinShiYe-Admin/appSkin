@@ -35,8 +35,7 @@ var UploadHeadImage = (function($, mod) {
 		var titleStr = '';
 		switch(imageType) {
 			case 0: //个人头像
-				// fileName = 'headimage' + headData.id + '.png';
-				fileName = 'headimage' + '.png';
+				fileName = 'headimage' + headData.id + '.png';
 				titleStr = '选择修改个人头像的方式';
 				break;
 			case 1: //资料头像
