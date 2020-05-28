@@ -26,6 +26,17 @@
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;" id="contentData">
+			<div></div>
+			<h5 style="background:#FFFFFF ;">住宿分配与查询</h5>
+			<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+				<li v-cloak v-cloak v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
+					<a href="#" @click="clickFunction(model)">
+						<img class="circular-square" :src=model.icon />
+						<div class="mui-media-body divNameCss">{{model.name}}</div>
+					</a>
+				</li>
+			</ul>
+			<h5 style="background:#FFFFFF ;">日常记录</h5>
 			<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
 				<li v-cloak v-cloak v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
 					<a href="#" @click="clickFunction(model)">
