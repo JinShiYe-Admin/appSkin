@@ -438,33 +438,12 @@ var events = (function(mod) {
 			title = string;
 		}
 		showWaiting = plus.nativeUI.showWaiting(title, {
-			back: 'none'
+			back: 'none',
+			modal:true,
 		});
 		return showWaiting
 	}
 	
-	mod.showWaitingRequest = function(string) {
-		let show=false
-		let showWaiting=''
-		let currCallTime =new Date().getTime()
-		if ((currCallTime - lastCallTime) >= 3000) {
-			show = true;
-			lastCallTime=currCallTime
-		}
-		if(show){
-			var title = '加载中...';
-			if(string) {
-				title = string;
-			}
-			showWaiting = plus.nativeUI.showWaiting(title, {
-				back: 'none'
-			});
-			setTimeout(function(){//如果请求超时, 那么10S后强制关闭该加载框
-				mod.closeWaiting()
-			},10*1000)
-		}
-		return showWaiting
-	}
 
 	/**
 	 * 关闭一个或所有的等待框

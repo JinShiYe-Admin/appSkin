@@ -206,7 +206,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
-				// events.showWaiting();
+				events.showWaiting();
 				//79.获取某人接收的通知单列表
 				getPageDataArray();
 
@@ -280,7 +280,7 @@
 				//79.获取某人接收的通知单列表
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'noticeLetter/getReceiveNoticeLetterByMan', {}, comData, 2, function(
 					data) {
-					// events.closeWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						//总页数
 						totalPageCount = data.data.total_page;

@@ -165,7 +165,7 @@
 			};
 			events.showWaiting();
 			//发送网络请求，data为网络返回值
-			postDataEncryNoWait(window.storageKeyName.INTERFACE_SSO_SKIN+'login/getEncryptKey', enData0, comData0, 0, function(data) {
+			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login/getEncryptKey', enData0, comData0, 0, function(data) {
 				console.log('2121212data:' + JSON.stringify(data));
 				events.closeWaiting();
 				if(data.code == '0000') {
@@ -195,7 +195,7 @@
 			};
 			events.showWaiting();
 			//登录
-			postDataEncryNoWait(window.storageKeyName.INTERFACE_SSO_SKIN+'login', enData1, comData1, 0, function(data1) {
+			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login', enData1, comData1, 0, function(data1) {
 				events.closeWaiting();
 				console.log('login.data:'+JSON.stringify(data1));
 				if(data1.code == 0) {
@@ -217,7 +217,7 @@
 					console.log('comData3:'+JSON.stringify(comData3));
 					events.showWaiting();
 					//登录用户岗位信息
-					postDataEncryNoWait(window.storageKeyName.INTERFACE_HR_SUB+ 'user/getUserImg', {}, comData3, 0, function(data3) {
+					postDataEncry(window.storageKeyName.INTERFACE_HR_SUB+ 'user/getUserImg', {}, comData3, 0, function(data3) {
 						console.log('data3:' + JSON.stringify(data3));
 						events.closeWaiting();
 						if(data3.code == 0) {
@@ -246,7 +246,7 @@
 					};
 					events.showWaiting();
 					//登录用户岗位信息
-					postDataEncryNoWait(window.storageKeyName.INTERFACE_SSO_SKIN+'acl/menu', {}, comData4, 0, function(data4) {
+					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'acl/menu', {}, comData4, 0, function(data4) {
 						console.log('data4:' + JSON.stringify(data4));
 						events.closeWaiting();
 						if(data4.code == '0000') {

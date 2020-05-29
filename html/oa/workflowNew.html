@@ -223,7 +223,7 @@
 							}
 							postDataEncry(window.storageKeyName.INTERFACE_OA + 'flow/getWorkFlowListById', {}, tempData, 2, function(data) {
 								console.log('getWorkFlowListById:' + JSON.stringify(data));
-								// events.closeWaiting();
+								events.closeWaiting();
 								if (data.code == 0) {
 									for (var i = 0; i < message.selectFlowArray.length; i++) {
 										var tempM =  message.selectFlowArray[i];
@@ -264,7 +264,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'flow/getSelWorkFlow', {}, tempData, 2, function(data) {
 					console.log('getSelWorkFlow:' + JSON.stringify(data));
-					// events.closeWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.list.length; i++) {
 							var tempM =  data.data.list[i];
@@ -384,7 +384,7 @@
 					sendFlag = 0;
 					return;
 				}
-				// events.showWaiting();
+				events.showWaiting();
 				var tempData = {
 					schoolId: personal.unit_code, //学校ID
 					applyTitle: message.title, //标题
@@ -405,7 +405,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/addAffairApply', {}, tempData, 2, function(data) {
 					console.log('addAffairApply:' + JSON.stringify(data));
-					// events.closeWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						mui.toast("发布成功")
 						setTimeout(function() {

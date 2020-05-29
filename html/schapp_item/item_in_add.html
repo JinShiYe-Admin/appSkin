@@ -329,7 +329,7 @@
 			
 			// 提交表单数据
 			function submitData(data) {
-				// // events.showWaiting();
+				events.showWaiting();
 				comData = {
 					purchasingManName: data.purchasingManName,
 					supplierName:data.supplierName,
@@ -354,7 +354,7 @@
 						tempHead.canClick=true
 						mui.toast(data.msg);
 					}
-					// // events.closeWaiting();
+					events.closeWaiting();
 				});
 			}
 			

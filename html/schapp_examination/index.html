@@ -353,7 +353,7 @@
 							}
 							datasource.kqValue = items[0]
 							//获取考务列表
-							// events.showWaiting();
+							events.showWaiting();
 							pageIndex=1;
 							flagRef = 0;
 							datasource.pageArray=[];
@@ -372,7 +372,7 @@
 							console.log(JSON.stringify(items[0]))
 							datasource.xnValue = items[0]
 							//获取考务列表
-							// events.showWaiting();
+							events.showWaiting();
 							pageIndex=1;
 							flagRef = 0;
 							datasource.pageArray=[];
@@ -391,7 +391,7 @@
 							console.log(JSON.stringify(items[0]))
 							datasource.xqValue = items[0]
 							//获取考务列表
-							// events.showWaiting();
+							events.showWaiting();
 							pageIndex=1;
 							flagRef = 0;
 							datasource.pageArray=[];
@@ -441,7 +441,7 @@
 							pageIndex = 1;
 							flagRef = 0;
 							//32.获取浏览的公告（周程/校历）列表
-							// events.showWaiting();
+							events.showWaiting();
 							datasource.pageArray=[];
 							getPageDataArray();
 							setTimeout(function() {
@@ -457,7 +457,7 @@
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
 								//32.获取浏览的公告（周程/校历）列表
-								// events.showWaiting();
+								events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -475,7 +475,7 @@
 					}
 				});
 
-				// events.showWaiting();
+				events.showWaiting();
 				//获取科目
 				getKmList();
 				//获取学年
@@ -509,7 +509,7 @@
 						//获取考务列表
 						getPageDataArray();
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -569,7 +569,7 @@
 						 //获取考务列表
 						 getPageDataArray();
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					} 
 				});
@@ -606,11 +606,11 @@
 							 //获取考务列表
 							 getPageDataArray();
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('获取学期信息为空');
 						}
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					} 
 				});
@@ -631,7 +631,7 @@
 					} 
 					// 1.1.列表页
 					postDataEncry(window.storageKeyName.INTERFACE_EXAMINATION + 'page', {}, comData, 2, function(data) {
-						// events.closeWaiting();
+						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -653,13 +653,13 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});
 				}else{
 					setTimeout(function(){
-						// events.closeWaiting();
+						events.closeWaiting();
 					},3000)
 				}
 			};

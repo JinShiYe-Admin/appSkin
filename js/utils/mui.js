@@ -2793,16 +2793,16 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		}
 		$.doAction('backs');
 	};
-	window.addEventListener('tap', function(e) {
-		var action = $.targets.action;
-		setTimeout(function(){
+	setTimeout(function(){
+		window.addEventListener('tap', function(e) {
+			var action = $.targets.action;
 			if (action && action.classList.contains('mui-action-back')) {
 				$.back();
 				$.targets.action = false;
 			}
-		},300)
-		
-	});
+			
+		});
+	},600)
 	window.addEventListener('swiperight', function(e) {
 		var detail = e.detail;
 		if ($.options.swipeBack === true && Math.abs(detail.angle) < 3) {

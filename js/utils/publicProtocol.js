@@ -60,7 +60,7 @@ var getUnReadCut = function(access,url, callback) {
 		numtp: 0,
 	};
 	//获取权限
-	postDataEncryNoWait(url, {}, comData2, 0, function(
+	postDataEncry(url, {}, comData2, 0, function(
 		data2) {
 		console.log('获取未读数 '+url+'：' + JSON.stringify(data2));
 		callback(data2);
@@ -116,43 +116,7 @@ var postDataEncry = function(url, encryData, commonData, flag, callback) {
 }
 
 
-var postDataEncryNoWait = function(url, encryData, commonData, flag, callback) {
-	checkNewWork(callback);
-	//拼接登录需要的签名
-	var signTemp = postDataEncry1(encryData, commonData, flag);
-	console.log('signTemp000:' + signTemp);
-	//生成签名，返回值sign则为签名
-	signHmacSHA1.sign(signTemp, 'jsy309', function(sign) {
-		//组装发送握手协议需要的data
-		//合并对象
-		var tempData = $.extend(encryData, commonData);
-		//添加签名
-		tempData.sign = sign;
-		console.log('传递的参数' + url + ':', JSON.stringify(tempData));
-		var tempStr = JSON.stringify(tempData).replace(/\\/g, "");
-		console.log('tempStr:' + tempStr);
-		jQAjaxPostNoWait(url, tempStr, callback);
-	});
-}
 
-// var postDataEncry2 = function(url, encryData, commonData, flag, callback) {
-// 	checkNewWork(callback);
-// 	//拼接登录需要的签名
-// 	var signTemp = postDataEncry1(encryData, commonData, flag);
-// 	console.log('signTemp000:' + signTemp);
-// 	//生成签名，返回值sign则为签名
-// 	signHmacSHA1.sign(signTemp, 'jsy309', function(sign) {
-// 		//组装发送握手协议需要的data
-// 		//合并对象
-// 		var tempData = $.extend(encryData, commonData);
-// 		//添加签名
-// 		tempData.sign = sign;
-// 		console.log('传递的参数' + url + ':', JSON.stringify(tempData));
-// 		var tempStr = JSON.stringify(tempData).replace(/\\/g, "");
-// 		console.log('tempStr:' + tempStr);
-// 		jQAjaxPost(url, tempStr, callback);
-// 	});
-// }
 //修改数组，改变格式
 var arrayToStr1 = function(array) {
 	if (array == null) {
@@ -277,7 +241,6 @@ var checkNewWork = function(callback) {
 var jQAjaxPost = function(url, data, callback) {
 	checkNewWork(callback);
 	console.log('jQAP-Data:' + data);
-	events.showWaitingRequest();
 	jQuery.ajax({
 		url: url,
 		type: "POST",
@@ -288,16 +251,7 @@ var jQAjaxPost = function(url, data, callback) {
 		async: true,
 		success: function(success_data) { //请求成功的回调
 			console.log('jQAP-Success:' + url + ',' + JSON.stringify(success_data));
-			setTimeout(function(){//防止一闪就没，体验不好
-				events.closeWaiting();
-			},600)
 			if (success_data.code == 6 || success_data.code == 'sup6'|| success_data.code == '0006'|| success_data.code == 'sup_0006') { //令牌过期
-				//续订令牌
-				// var personal = store.get(window.storageKeyName.PERSONALINFO);
-				// //需要参数
-				// var comData = {
-				// 	access_token: personal.utoken
-				// };
 				//令牌续订
 				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'token/refresh', {}, {}, 2, function(data1) {
 					console.log('data1:' + JSON.stringify(data1));
@@ -336,140 +290,7 @@ var jQAjaxPost = function(url, data, callback) {
 }
 
 
-/**
- * 不显示等待框
- */
-var jQAjaxPostNoWait = function(url, data, callback) {
-	checkNewWork(callback);
-	console.log('jQAP-Data:' + data);
-	jQuery.ajax({
-		url: url,
-		type: "POST",
-		data: data,
-		timeout: 10000,
-		dataType: "json",
-		contentType: "application/json",
-		async: true,
-		success: function(success_data) { //请求成功的回调
-			events.closeWaiting();
-			console.log('jQAP-Success:' + url + ',' + JSON.stringify(success_data));
-			if (success_data.code == 6 || success_data.code == 'sup6'|| success_data.code == '0006'|| success_data.code == 'sup_0006') { //令牌过期
-				//续订令牌
-				// var personal = store.get(window.storageKeyName.PERSONALINFO);
-				// //需要参数
-				// var comData = {
-				// 	access_token: personal.utoken
-				// };
-				//令牌续订
-				postDataEncryNoWait(window.storageKeyName.INTERFACE_SSO_SKIN + 'token/refresh', {}, {}, 2, function(data1) {
-					console.log('data1:' + JSON.stringify(data1));
-					if (data1.code == 0) {
-						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
-						tempInfo00.access_token = data1.data.access_token;
-						store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
-						var urlArr = url.split('/');
-						var tempData = JSON.parse(data);
-						tempData.access_token = data1.data.access_token;
-						delete tempData.sign;
-						console.log('urlArr:' + urlArr[urlArr.length - 1]);
-						console.log('data:' + JSON.stringify(tempData));
-						postDataEncryNoWait(url, {}, tempData, 0, function(data2) {
-							data2 = modifyParameter(url, data2);
-							callback(data2);
-						});
-					}
-				});
-			} else {
-				success_data = modifyParameter(url, success_data);
-				callback(success_data);
-			}
-		},
-		error: function(xhr, type, errorThrown) {
-			console.log('jQAP-Error777:', url, xhr, type);
-			events.closeWaiting();
-			mui.toast('网络连接失败,请重新尝试一下');
-			callback({
-				code: 404,
-				RspData: null,
-				msg: "网络连接失败,请重新尝试一下"
-			});
-		}
-	});
-}
-
-// var tempPro = function(url, data0, callback) {
-// 	checkNewWork(callback);
-// 	console.log('data0:' + JSON.stringify(data0));
-// 	var xhr = new XMLHttpRequest();
-// 	xhr.open("post", url, true);
-// 	xhr.timeout = 10000; //10秒超时
-// 	xhr.contentType = 'application/json;';
-// 	xhr.onload = function(e) {
-// 		console.log("XHRP:onload:", JSON.stringify(e));
-// 		console.log('this.readyState:', this.readyState);
-// 		console.log('this.status', this.status);
-// 		if (this.readyState === 4 && this.status === 200) {
-// 			var urlArr = url.split('/');
-// 			var success_data = JSON.parse(this.responseText);
-// 			console.log('XHRP-Success:', JSON.stringify(success_data));
-// 			if (success_data.RspCode == 10 || success_data.code == 6) { //令牌过期
-// 				//续订令牌
-// 				var publicParameter = store.get(window.storageKeyName.PUBLICPARAMETER);
-// 				var personal = store.get(window.storageKeyName.PERSONALINFO);
-// 				//需要参数
-// 				var comData = {
-// 					access_token: personal.utoken
-// 				};
-// 				//令牌续订
-// 				postDataEncry('api/token/refresh', {}, comData, 0, function(data1) {
-// 					if (data1.RspCode == 0) {
-// 						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
-// 						tempInfo00.utoken = data1.RspData.access_token;
-// 						store.set(window.storageKeyName.PERSONALINFO, tempInfo00);
-// 						//						data0.utoken = data1.RspData;
-// 						delete data0.sign;
-// 						tempPro(url, data0, function(data2) {
-// 							data2 = modifyParameter(url, data2);
-// 						});
-// 					}
-// 				});
-// 			} else {
-// 				success_data = modifyParameter(url, success_data);
-// 				callback(success_data);
-// 			}
-// 		} else {
-// 			callback({
-// 				RspCode: 404,
-// 				RspData: null,
-// 				RspTxt: "网络连接失败,请重新尝试一下"
-// 			});
-// 		}
-// 	}
-// 	xhr.ontimeout = function(e) {
-// 		console.log("XHRP:ontimeout222:", e);
-// 		callback({
-// 			RspCode: 404,
-// 			RspData: null,
-// 			RspTxt: "网络连接失败,请重新尝试一下"
-// 		});
-// 	};
-// 	xhr.onerror = function(e) {
-// 		console.log("XHRP:onerror111:", e);
-// 		callback({
-// 			RspCode: 404,
-// 			RspData: null,
-// 			RspTxt: "网络连接失败,请重新尝试一下"
-// 		});
-// 	};
-// 	xhr.send(JSON.stringify(data0));
-// }
-
 var modifyParameter = function(url, model) {
-	// if(model.msg) {
-	// 	repalceKey(model, 'code', 'RspCode');
-	// 	repalceKey(model, 'data', 'RspData');
-	// 	repalceKey(model, 'msg', 'RspTxt');
-	// }
 	return model;
 }
 

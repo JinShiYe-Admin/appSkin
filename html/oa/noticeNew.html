@@ -293,7 +293,7 @@
 					sendFlag = 0;
 					return;
 				}
-				// events.showWaiting();
+				events.showWaiting();
 				var tempData = {
 					schoolId: personal.unit_code, //学校ID
 					noticeTitle: message.title, //标题
@@ -315,7 +315,7 @@
 				console.log('tempData:'+JSON.stringify(tempData));
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/addNotice', {}, tempData, 2,function(data) {
 					console.log('addNoticePro:' + JSON.stringify(data));
-					// events.closeWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						mui.toast("发布成功")
 						setTimeout(function() {

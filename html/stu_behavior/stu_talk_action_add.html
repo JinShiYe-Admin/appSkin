@@ -651,7 +651,7 @@
 			
 			//发送已阅请求
 			function sendRead(){
-				 // events.showWaiting();
+				 events.showWaiting();
 				comData = {
 					grd_code: curPage.grd_code,
 					cls_code: curPage.cls_code,
@@ -660,7 +660,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/read', {}, comData, 2, function(data) {
 					if (data.code == 0) {
-						   // events.closeWaiting();
+						   events.closeWaiting();
 						   let id=data.data.id
 						   datasource.curPage.edit=data.data.edit
 						   if(data.data.edit==1){
@@ -677,7 +677,7 @@
 								 mui.fire(plus.webview.currentWebview().opener(), 'refreshId', model);  
 						   },100)
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});

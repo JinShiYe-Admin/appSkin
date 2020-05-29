@@ -412,7 +412,7 @@
 							var self = this;
 							//console.log("上拉加载更多");
 							if (pageIndex <= totalPageCount) {
-								// // events.showWaiting();
+								events.showWaiting();
 								getPageDataArray(datasource.inputText);
 								setTimeout(function() {
 									//结束下拉刷新
@@ -430,7 +430,7 @@
 					}
 				});
 
-				// // events.showWaiting();
+				events.showWaiting();
 				// 获取数据
 				getPageDataArray('');
 			});
@@ -445,7 +445,7 @@
 						index_code: curPage.index_code,
 					} 
 					postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'query/getItemCodes4App', {}, comData, 2, function(data) {
-						// // events.closeWaiting();
+						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -460,7 +460,6 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							// // events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});

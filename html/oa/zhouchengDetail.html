@@ -117,14 +117,14 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				// events.showWaiting();
+				events.showWaiting();
 				var tempData = {
 					schoolWeekWorkId: curPage.AnnouncementId, //公告ID
 					index_code:curPage.access.split('#')[1],
 					op_code: 'index'
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getWeekWorkById', {}, tempData, 2,function(data) {
-					// events.closeWaiting();
+					events.closeWaiting();
 					if(data.code == 0) {
 						data.data.BeginTime = data.data.BeginTime.split(' ')[0];
 						data.data.EndTime = data.data.EndTime.split(' ')[0];

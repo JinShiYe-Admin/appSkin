@@ -379,7 +379,7 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-				// events.showWaiting();
+				events.showWaiting();
 				let tousers=curPage.tousers;
 				for (var i = 0; i < tousers.length; i++) {
 					let item=tousers[i]
@@ -425,15 +425,15 @@
 									getStuList(grd_name,grd_code,item.name,item.value)
 								}
 							} else {
-								// events.closeWaiting
+								events.closeWaiting()
 								mui.toast('无数据授权 无法获取班级');
 							}
 						} else {
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					}catch(e){
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(e)
 					}
 				});
@@ -470,15 +470,15 @@
 								 })
 							 })
 							 if(INDEX==NUMBER){
-								// events.closeWaiting();
+								events.closeWaiting();
 								endList()
 							 }
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					}catch(e){
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(e)
 					}
 				});

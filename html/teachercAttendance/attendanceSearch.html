@@ -416,14 +416,14 @@
 							datasource.dptValue=dpts[0]; 
 							getPageDataArray();
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取部门');
 							setTimeout(function() {
 								mui.back()
 							}, 1000);
 						}
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -432,7 +432,7 @@
 			//13.获取部门某日考勤情况
 			function getPageDataArray() {
 				console.log('getPageDataArray');
-				// events.showWaiting();
+				events.showWaiting();
 					//
 					comData = {
 						dpt_code: datasource.dptValue.dpt_code,//部门Code
@@ -469,7 +469,7 @@
 							mui.toast(data.msg);
 						}
 						setTimeout(function() {
-							// events.closeWaiting();
+							events.closeWaiting();
 						}, 500);
 					});
 			};
