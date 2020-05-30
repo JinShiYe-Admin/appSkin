@@ -343,10 +343,10 @@ var UploadHeadImage = (function($, mod) {
 			val: imgeURL, //对应类型的值
 			access_token: personal.access_token //用户令牌
 		};
-		// // events.showWaiting();
+		events.showWaiting();
 		postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'user/upUserInfo', {}, comData0, 0, function(data3) {
 			console.log('UpUserInfo:' + JSON.stringify(data3));
-			// // events.showWaiting();
+			events.showWaiting();
 			wd.close();
 			if(data3.code == 0) {
 				successCallBack(imgeURL);

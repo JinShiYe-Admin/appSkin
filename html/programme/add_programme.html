@@ -263,7 +263,7 @@
 			});
 			// 提交表单数据
 			function submitDataLast() {
-				// events.showWaiting();
+				events.showWaiting();
 				comData = {
 					user_code: personal.user_code,//用户Code
 					user_name: personal.user_name,//用户名称
@@ -288,7 +288,7 @@
 						tempHead.canClick = true
 						mui.toast(data.msg);
 					}
-					// events.closeWaiting();
+					events.closeWaiting();
 					tempHead.canClick = true
 				});
 			}
@@ -338,7 +338,6 @@
 
 			function geoInf(position) {
 				events.closeWaiting();
-				// events.closeWaiting();
 				var str = "";
 				str += "地址：" + position.addresses + "\n"; //获取地址信息
 				str += "坐标类型：" + position.coordsType + "\n";

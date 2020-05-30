@@ -541,7 +541,7 @@
 					console.log("obj: " + JSON.stringify(obj));
 					datasource.formData.stu=obj
 				});
-				// events.showWaiting();
+				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
 				// 获取当前日期
@@ -574,11 +574,11 @@
 							//获取数据范围授权：班级
 							getClsList(grd_id) 
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -609,11 +609,11 @@
 							//获取数据范围授权：学生
 							getStuList(grd_id,cls_id) 
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
 					}else{
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -643,11 +643,11 @@
 							//获取课外考勤常量
 							getKqlxList();
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取学生');
 						}
 					}else{
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -663,14 +663,14 @@
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let kqlxList = [].concat(data.data.qaArray);
-						// events.closeWaiting();
+						events.closeWaiting();
 						if(kqlxList.length>0){
 							datasource.kqlxList = kqlxList
 						}else{
 							mui.toast('无法获取考勤项目');
 						}
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -678,7 +678,7 @@
 			
 			// 提交表单数据
 			function submitData(data) {
-				// events.showWaiting();
+				events.showWaiting();
 				comData = {
 					grd_code: data.grd.value,
 					cls_code: data.cls.value,
@@ -699,7 +699,7 @@
 					} else {
 						mui.toast(data.msg);
 					}
-					// events.closeWaiting();
+					events.closeWaiting();
 				});
 			}
 			

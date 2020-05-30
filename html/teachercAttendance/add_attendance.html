@@ -328,7 +328,7 @@
 				// console.log('encAddr:' + encAddr);
 				// console.log('encImg:' + encImg);
 				// console.log('encLen:' + encLen);
-				// events.showWaiting();
+				events.showWaiting();
 				var comData = {
 					user_code: personal.user_code, //用户Code
 					user_name: personal.user_name, //用户名称
@@ -341,7 +341,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_ATTENDAND + 'attend/addAttend', {}, comData, 2, function(data) {
 					console.log('addAttend:' + JSON.stringify(data));
-					// events.closeWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						mui.toast("发布成功")
 						setTimeout(function() {

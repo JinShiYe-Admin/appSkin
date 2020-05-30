@@ -31,7 +31,7 @@ function renderPage(num) {
 }
 
 PDFJS.getDocument(url).then(function(pdf) {
-	// events.closeWaiting();
+	events.closeWaiting();
 	pdfDoc = pdf;
 	for(var i = 1; i <= pdfDoc.numPages; i++) {
 		renderPage(i)

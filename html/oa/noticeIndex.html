@@ -286,16 +286,19 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					showAdd:0//0不显示添加按钮，1显示
+					showAdd:0,//0不显示添加按钮，1显示
+					canBack:false  //不加这个，刚进页面快速点击返回按钮 plus未初始化完成，会报界面加载异常，
 				},
 				methods: {
 					add:function(){
 						utils.mOpenWithData("../../html/oa/noticeNew.html", curPage);
 					},
 					muiback: function() {
-						//在主界面重新获取通知未读数
-						mui.fire(plus.webview.currentWebview().opener(), 'getNoticeNoReadCnt', {});
-						mui.back();
+						if(this.canBack){
+							//在主界面重新获取通知未读数
+							mui.fire(plus.webview.currentWebview().opener(), 'getNoticeNoReadCnt', {});
+							mui.back();
+						}
 					}
 				}
 			});
@@ -363,7 +366,7 @@
 				if (datasource.sliderFlag == 3) {
 					datasource.send.refreshFlag = 0;
 					datasource.send.pageIndex = 1;
-					// events.showWaiting();
+					events.showWaiting();
 					getData(null, 0);
 				}
 			});
@@ -408,7 +411,7 @@
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
-					// events.closeWaiting();
+					events.closeWaiting();
 					console.log('data:'+JSON.stringify(data));
 					if (data.code!=0) {
 						mui.toast(data.msg);
@@ -490,6 +493,9 @@
 			
 			mui.plusReady(function() {
 				(function($) {
+					setTimeout(function(){
+						tempVue.canBack=true
+					},600)
 					//阻尼系数
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
 					$('.mui-scroll-wrapper').scroll({
@@ -507,7 +513,7 @@
 								tempVue.showAdd = 1;
 							}
 						});
-						// events.showWaiting();
+						events.showWaiting();
 						getData(null, 0);
 						//循环初始化所有下拉刷新，上拉加载。
 						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {

@@ -130,11 +130,11 @@ var appPay = (function(mod) {
 		}
 		var comData1 =extend(comData,data);
 		console.log('comData1:' + JSON.stringify(comData1));
-		// events.showWaiting();
+		events.showWaiting();
 		//发送网络请求，data为网络返回值----4.用户订购套餐
 		postDataEncry2(action, enData1, comData1, 0, function(data1) {
 			console.log('UserFee:' + JSON.stringify(data1));
-			// events.closeWaiting();
+			events.closeWaiting();
 			if(data1.code == 0) {
 				success();
 			} else {

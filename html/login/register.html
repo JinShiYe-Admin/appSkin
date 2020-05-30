@@ -209,7 +209,7 @@
 				var comData0 = {
 					platform_code: window.storageKeyName.PLATFORMCODE //平台代码
 				};
-				postDataEncryNoWait(window.storageKeyName.INTERFACE_SSO_SKIN + 'login/getEncryptKey', {}, comData0, 0,function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login/getEncryptKey', {}, comData0, 0,function(data) {
 					console.log('getEncryptKey:' + JSON.stringify(data));
 					events.closeWaiting();
 					if (data.code == 0) {
@@ -231,7 +231,7 @@
 				};
 				events.showWaiting();
 				//发送网络请求，data为网络返回值
-				postDataEncryNoWait(window.storageKeyName.INTERFACE_SSO_HR + 'login/getRegUserTypeList', {}, comData0, 0,function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_SSO_HR + 'login/getRegUserTypeList', {}, comData0, 0,function(data) {
 					events.closeWaiting();
 					console.log('getRegUserTypeList:' + JSON.stringify(data));
 					if(data.code == 0) {
@@ -316,7 +316,7 @@
 								};
 								events.showWaiting();
 								//发送网络请求，data为网络返回值
-								postDataEncryNoWait(window.storageKeyName.INTERFACE_HR_SKIN + 'register/userInfo', {}, comData0, 0,function(data) {
+								postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + 'register/userInfo', {}, comData0, 0,function(data) {
 									console.log('register/userInfo:' + JSON.stringify(data));
 									events.closeWaiting();
 									if(data.code == 0) {
@@ -422,7 +422,7 @@
 							console.log('comData0:' + JSON.stringify(comData0));
 							events.showWaiting();
 							//发送网络请求，data为网络返回值
-							postDataEncryNoWait(window.storageKeyName.INTERFACE_HR_SKIN + 'register', {}, comData0, 0,function(data) {
+							postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + 'register', {}, comData0, 0,function(data) {
 								console.log('register:' + JSON.stringify(data));
 								events.closeWaiting();
 								if(data.code == 0) {

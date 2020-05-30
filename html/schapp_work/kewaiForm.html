@@ -352,7 +352,7 @@
 							}else{
 								datasource.grdValue = items[0]
 								//获取课外考勤报表
-								// events.showWaiting();
+								events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
@@ -371,7 +371,7 @@
 						var datePicker=new $M.DtPicker(dtObj);
 						datePicker.show(function(rs) {
 							datasource.dateValue=rs.text
-							// events.showWaiting();
+							events.showWaiting();
 							pageIndex = 1;
 							flagRef = 0;
 							datasource.pageArray = [];
@@ -390,7 +390,7 @@
 							console.log(JSON.stringify(items[0]))
 							datasource.kqlxValue = items[0]
 							//获取课外考勤报表
-							// events.showWaiting();
+							events.showWaiting();
 							pageIndex = 1;
 							flagRef = 0;
 							datasource.pageArray = [];
@@ -426,7 +426,7 @@
 							pageIndex = 1;
 							flagRef = 0;
 							//1.课外考勤报表
-							// events.showWaiting();
+							events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
 							setTimeout(function() {
@@ -442,7 +442,7 @@
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
 								//1.获取课外考勤报表
-								// events.showWaiting();
+								events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
 									//结束下拉刷新
@@ -460,7 +460,7 @@
 					}
 				});
 
-				// events.showWaiting();
+				events.showWaiting();
 				//获取数据范围授权：年级
 				getGrdList();
 				// 获取当前日期
@@ -493,11 +493,11 @@
 							//获取考勤常量
 							getKqList();
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -526,12 +526,12 @@
 							//获取考勤列表数据
 							getPageDataArray();
 						}else{
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast('无法获取考勤项目');
 						}
 						
 					} else {
-						// events.closeWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -540,7 +540,7 @@
 			//获取课外考勤报表数据  
 			function getPageDataArray() {
 				if(datasource.kqList.length==0){
-					// events.closeWaiting();
+					events.closeWaiting();
 					mui.toast('无法获取考勤项目')
 					return 0;
 				}
@@ -558,7 +558,7 @@
 					} 
 					// 1.1.列表页
 					postDataEncry(window.storageKeyName.INTERFACE_WORK + 'AttendanceReport/statisticsExtraAttendance', {}, comData, 2, function(data) {
-						// events.closeWaiting();
+						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
@@ -594,7 +594,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							// events.closeWaiting();
+							events.closeWaiting();
 							mui.toast(data.msg);
 						}
 					});

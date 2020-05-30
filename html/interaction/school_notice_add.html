@@ -193,7 +193,7 @@
 						if(datasource.formData.comment==''){
 							mui.toast('请输入通知内容')
 						}else{
-							// events.showWaiting();
+							events.showWaiting();
 							submitData(datasource.formData)
 						}
 					}
@@ -247,7 +247,7 @@
 					index_code:curPage.index_code
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsA', {}, comData, 2, function(data) {
-					// // events.closeWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						 mui.toast(data.msg);
 						 setTimeout(function(){

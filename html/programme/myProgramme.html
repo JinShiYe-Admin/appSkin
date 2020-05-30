@@ -216,7 +216,7 @@
 						tempVue.showAdd = true;
 					}
 				});
-				// events.showWaiting();
+				events.showWaiting();
 				//4.获取某人日程列表
 				getPageDataArray();
 
@@ -317,7 +317,7 @@
 						mui.toast(data.msg);
 					}
 					setTimeout(function() {
-						// events.closeWaiting();
+						events.closeWaiting();
 					}, 500);
 				});
 			};
