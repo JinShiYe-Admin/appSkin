@@ -120,35 +120,35 @@
 					<div v-cloak class="mui-col-xs-6 tab-btn">  
 						<a id="pjftab" class="mui-control-item mui-active" href="#pjf">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/pjf.png' /><span class="mui-col-xs-8" v-cloak>平均分:{{tabsDetail.avg_score}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/pjf.png' /><span class="mui-col-xs-8" v-cloak>平均分:{{tabsDetail.avg_score}}</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="zfdtab" class="mui-control-item" href="#zfd">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zfd.png' /><span class="mui-col-xs-8" v-cloak>主分段:{{tabsDetail.score_section}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/zfd.png' /><span class="mui-col-xs-8" v-cloak>主分段:{{tabsDetail.score_section}}</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="zgftab" class="mui-control-item" href="#zgf">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/zgf.png' /><span class="mui-col-xs-8" v-cloak>最高分:{{tabsDetail.max_score}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/zgf.png' /><span class="mui-col-xs-8" v-cloak>最高分:{{tabsDetail.max_score}}</span>
 							</div>
 						</a>
 					</div>
 					<div v-if="selectType=='qk'" class="mui-col-xs-6 tab-btn">
 						<a id="sxltab" class="mui-control-item" href="#sxl">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/sxl.png' /><span class="mui-col-xs-8" v-cloak>{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/sxl.png' /><span class="mui-col-xs-8" v-cloak>{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="jtbtab" class="mui-control-item" href="#jtb">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/examination/jtb.png' /><span class="mui-col-xs-8" v-cloak>进退比:{{tabsDetail.ranking_step}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/jtb.png' /><span class="mui-col-xs-8" v-cloak>进退比:{{tabsDetail.ranking_step}}</span>
 							</div>
 						</a>
 					</div>
@@ -308,6 +308,7 @@
 				datasource.selectType = curPage.selectType;
 				events.showWaiting();
 				getDetail(function() {
+					events.showWaiting();
 					setTimeout(function() {
 						getPjfDetail()
 					}, 100) //平均分详情
@@ -337,11 +338,11 @@
 				// 1.2.详情页
 				postDataEncry(window.storageKeyName.INTERFACE_EXAMINATION + 'detail', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						callback();
 						datasource.tabsDetail = data.data
 					} else {
-						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});

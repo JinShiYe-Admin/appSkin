@@ -781,6 +781,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						let stu = data.data.stu_list;
 						let stuList=[];

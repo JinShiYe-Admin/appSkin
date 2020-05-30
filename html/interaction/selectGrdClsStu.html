@@ -458,35 +458,40 @@
 				}
 				//获取数据范围授权：年级
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
-					events.closeWaiting
+					
 					if (data.code == 0) {
-						for (var i = 0; i < data.data.grd_list.length; i++) {
-							var tempM = data.data.grd_list[i];
-							tempM.clsArray = [];
-							tempM.stuArray = [];
-							tempM.grdFlag = 0; //当前年级没有获取过班级0，获取过班级1
-							var tempFlag = 0;
-							if (curPage.selectData.length > 0) {
-								for (var a = 0; a < curPage.selectData.length; a++) {
-									if (tempM.value == curPage.selectData[a].value) {
-										tempFlag++;
-										if (datasource.dataFlag == 2 || datasource.dataFlag == 3) {
-											//获取数据范围授权：班级
-											getClsDataArray(tempM);
+						try{
+							for (var i = 0; i < data.data.grd_list.length; i++) {
+								var tempM = data.data.grd_list[i];
+								tempM.clsArray = [];
+								tempM.stuArray = [];
+								tempM.grdFlag = 0; //当前年级没有获取过班级0，获取过班级1
+								var tempFlag = 0;
+								if (curPage.selectData.length > 0) {
+									for (var a = 0; a < curPage.selectData.length; a++) {
+										if (tempM.value == curPage.selectData[a].value) {
+											tempFlag++;
+											if (datasource.dataFlag == 2 || datasource.dataFlag == 3) {
+												//获取数据范围授权：班级
+												getClsDataArray(tempM);
+											}
 										}
 									}
-								}
-								if (tempFlag == 0) {
-									tempM.selectFlag = 0;
+									if (tempFlag == 0) {
+										tempM.selectFlag = 0;
+									} else {
+										tempM.selectFlag = 1;
+									}
 								} else {
-									tempM.selectFlag = 1;
+									tempM.selectFlag = 0;
 								}
-							} else {
-								tempM.selectFlag = 0;
 							}
+							datasource.pageArray = data.data.grd_list;
+						}catch(e){
+							events.closeWaiting()
 						}
-						datasource.pageArray = data.data.grd_list;
 					} else {
+						events.closeWaiting()
 						mui.toast(data.msg);
 					}
 				});
@@ -503,41 +508,46 @@
 				}
 				//获取数据范围授权：班级
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					events.closeWaiting();
+					
 					if (data.code == 0) {
-						for (var i = 0; i < data.data.cls_list.length; i++) {
-							var tempM = data.data.cls_list[i];
-							tempM.clsFlag = 0; //当前班级没有获取过学生0，获取过学生1
-							tempM.stuArray = [];
-							tempM.grdValue = grdModel.value;
-							var tempFlag = 0;
-							if (curPage.selectData.length > 0) {
-								for (var a = 0; a < curPage.selectData.length; a++) {
-									var tempGrd = curPage.selectData[a];
-									for (var b = 0; b < tempGrd.children.length; b++) {
-										var tempCls = tempGrd.children[b];
-										if (tempM.value == tempCls.value) {
-											tempFlag++;
-											if (datasource.dataFlag == 3) {
-												//获取数据范围授权：学生
-												getStuDataArray(tempM);
+						try{
+							for (var i = 0; i < data.data.cls_list.length; i++) {
+								var tempM = data.data.cls_list[i];
+								tempM.clsFlag = 0; //当前班级没有获取过学生0，获取过学生1
+								tempM.stuArray = [];
+								tempM.grdValue = grdModel.value;
+								var tempFlag = 0;
+								if (curPage.selectData.length > 0) {
+									for (var a = 0; a < curPage.selectData.length; a++) {
+										var tempGrd = curPage.selectData[a];
+										for (var b = 0; b < tempGrd.children.length; b++) {
+											var tempCls = tempGrd.children[b];
+											if (tempM.value == tempCls.value) {
+												tempFlag++;
+												if (datasource.dataFlag == 3) {
+													//获取数据范围授权：学生
+													getStuDataArray(tempM);
+												}
 											}
 										}
 									}
-								}
-								if (tempFlag == 0) {
-									tempM.selectFlag = 0;
+									if (tempFlag == 0) {
+										tempM.selectFlag = 0;
+									} else {
+										tempM.selectFlag = 1;
+									}
 								} else {
-									tempM.selectFlag = 1;
+									tempM.selectFlag = 0;
 								}
-							} else {
-								tempM.selectFlag = 0;
 							}
+							grdModel.grdFlag = 1;
+							grdModel.clsArray = data.data.cls_list;
+							console.log('datasource.pageArray:' + JSON.stringify(datasource.pageArray));
+						}catch(e){
+							events.closeWaiting();
 						}
-						grdModel.grdFlag = 1;
-						grdModel.clsArray = data.data.cls_list;
-						console.log('datasource.pageArray:' + JSON.stringify(datasource.pageArray));
 					} else {
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -568,7 +578,7 @@
 				}
 				//获取数据范围授权：学生
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					events.closeWaiting
+					events.closeWaiting()
 					if (data.code == 0) {
 						if (datasource.dataFlag == 1) {
 							if (data.data.stu_list.length > 0) {

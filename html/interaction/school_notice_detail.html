@@ -390,6 +390,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'grd', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						if(data.data.list && data.data.list.length>0){
 							let grd_list =data.data.list
@@ -453,7 +454,6 @@
 					}else{
 						mui.toast(data.msg);
 					}
-					events.closeWaiting();
 				});
 			}
 		</script>

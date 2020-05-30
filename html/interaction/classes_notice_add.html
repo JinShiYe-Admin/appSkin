@@ -335,7 +335,7 @@
 				}
 				console.log("comData: " + JSON.stringify(comData));
 				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsA', {}, comData, 2, function(data) {
-					events.showWaiting();
+					events.closeWaiting();
 					if (data.code == 0) {
 						 mui.toast(data.msg);
 						 setTimeout(function(){

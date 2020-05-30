@@ -193,22 +193,27 @@
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUserOfApp', {}, comData, 1, function(
 					data) {
 					if (data.code == 0) {
-						var tempCode = [];
-						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM = data.data.list[i];
-							tempCode.push(tempM.user_code);
-							tempM.selectFlag = 0;
-							for (var a = 0; a < contentData.defaltSelect.length; a++) {
-								var tempM1 = contentData.defaltSelect[a];
-								if (tempM.user_code == tempM1.user_code) {
-									tempM.selectFlag = 1;
+						try{
+							var tempCode = [];
+							for (var i = 0; i < data.data.list.length; i++) {
+								var tempM = data.data.list[i];
+								tempCode.push(tempM.user_code);
+								tempM.selectFlag = 0;
+								for (var a = 0; a < contentData.defaltSelect.length; a++) {
+									var tempM1 = contentData.defaltSelect[a];
+									if (tempM.user_code == tempM1.user_code) {
+										tempM.selectFlag = 1;
+									}
 								}
 							}
+							var tempcodes = tempCode.join(',');
+							getUserInfo(tempcodes);
+							contentData.peopleArray = [].concat(data.data.list);
+						}catch(e){
+							events.closeWaiting()
 						}
-						var tempcodes = tempCode.join(',');
-						getUserInfo(tempcodes);
-						contentData.peopleArray = [].concat(data.data.list);
 					}else{
+						events.closeWaiting()
 						mui.toast(data.msg);
 					}
 				});
@@ -216,7 +221,6 @@
 			
 			// 3.2:获取指定用户信息
 			var getUserInfo = function(codes) {
-				events.showWaiting();
 				var temp = curPage.access.split('#');
 				var comData = {
 					user_codes:codes,

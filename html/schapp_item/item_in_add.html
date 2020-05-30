@@ -344,6 +344,7 @@
 				console.log("comData: " + JSON.stringify(comData));
 				postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'purchasingIn/addPurchasingIn ', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						 mui.toast('保存成功');
 						 setTimeout(function(){
@@ -354,7 +355,6 @@
 						tempHead.canClick=true
 						mui.toast(data.msg);
 					}
-					events.closeWaiting();
 				});
 			}
 			

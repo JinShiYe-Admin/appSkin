@@ -661,16 +661,15 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_WORK + 'ExtraAttendance/getDict', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						let kqlxList = [].concat(data.data.qaArray);
-						events.closeWaiting();
 						if(kqlxList.length>0){
 							datasource.kqlxList = kqlxList
 						}else{
 							mui.toast('无法获取考勤项目');
 						}
 					} else {
-						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -690,6 +689,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_WORK + 'ExtraAttendance/saveData', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						 mui.toast(data.msg);
 						 setTimeout(function(){
@@ -699,7 +699,6 @@
 					} else {
 						mui.toast(data.msg);
 					}
-					events.closeWaiting();
 				});
 			}
 			
