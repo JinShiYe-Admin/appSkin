@@ -143,9 +143,6 @@ var CloudFileUtil = (function($, mod) {
 //		console.log("getUpLoadTokens " + JSON.stringify(data));
 		var appId = data.appId; //项目id
 		var desKey = getAppKey(appId); //项目名称
-//		if (appId==8) {
-//			appId = 4;
-//		}
 		var configure = {}; //配置的数据
 		var params = []; //配置的参数信息
 
@@ -301,11 +298,7 @@ var CloudFileUtil = (function($, mod) {
 					ops = "vframe/png/offset/1|saveas/" + configure.thumbKey;
 				} else {
 					//图片
-					if(appId == 5) { //头像
-						configure.thumbKey = Qiniu.URLSafeBase64Encode(imageThumb + ":" + thumbSpace + QNFileName);
-					} else if(appId == 4) { //云存储
-						configure.thumbKey = Qiniu.URLSafeBase64Encode(imageThumb + ":" + thumbSpace + thumbName + '.png');
-					}
+					configure.thumbKey = Qiniu.URLSafeBase64Encode(imageThumb + ":" + thumbSpace + thumbName + '.png');
 					ops = "imageView2/1/w/" + maxWidth + "/h/" + maxHeight + "/format/png|saveas/" + configure.thumbKey;
 				}
 			}

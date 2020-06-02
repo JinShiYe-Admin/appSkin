@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 4; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
+	mod.key = 1; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -21,6 +21,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net:8081/notesubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net:8081/attendsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = '? 需连广西开发环境';//学生行为 and 学生评语（阮)
+			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
 			break;
 		case 2: //广西开发
 			mod.PLATFORMCODE = 'PT0036'; //平台代码
@@ -38,6 +39,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_PROGRAMME = '? 需连山东开发环境';//日程（孔)
 			mod.INTERFACE_ATTENDAND = '? 需连山东开发环境';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8080/stuxwsubapi/';//学生行为 and 学生评语（阮) 
+			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
 			break;
 		case 3: //联测
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
@@ -55,6 +57,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生行为 and 学生评语（阮) 
+			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
 			break;
 		case 4: //云测
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -72,6 +75,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_PROGRAMME = 'http://nwifapp.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://nwifapp.jiaobaowang.net/tecgpskqsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/';//学生行为 and 学生评语（阮) 
+			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
 			break;
 		case 5://正式
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
@@ -89,6 +93,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_PROGRAMME = 'http://apps.108800.com/tecrcsubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://apps.108800.com/stuxwsubapi/';//学生行为 and 学生评语（阮) 
+			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
 			break;
 		default:
 			break;
@@ -172,6 +177,7 @@ var storageKeyName = (function(mod) {
 	mod.QNPUBSPACE = "pb"; //七牛公开空间
 	mod.QNPRISPACE = "pv"; //七牛私有空间
 	mod.XXTNOTICE = 'notice/'; //笔校讯通、通知
+	mod.QNAPPID = 4; 
 	//---七牛---end---
 
 

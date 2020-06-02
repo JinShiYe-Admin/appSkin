@@ -367,7 +367,7 @@
 			function uploadFile(wd) {
 				var getUpTokenData = {
 					type: '0', //获取上传token的方式
-					appId: 4, //项目id
+					appId: window.storageKeyName.QNAPPID, //项目id
 					fileArray: [], //文件数组
 					mainSpace: window.storageKeyName.QNPUBSPACE, //文件存放在私有空间或公有空间
 					uploadSpace: window.storageKeyName.XXTNOTICE, //上传的空间
@@ -463,7 +463,7 @@
 			 */
 			function BatchDelete(paths, wd) {
 				var batchDelete = {
-					appId: 4, //int 必填 项目id
+					appId: window.storageKeyName.QNAPPID, //int 必填 项目id
 					urls: paths //array 必填 需要获取下载token文件的路径
 				}
 				/**

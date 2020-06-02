@@ -199,7 +199,7 @@ var UploadHeadImage = (function($, mod) {
 		var getToken = {
 			type: '0', //str 必填 获取上传token的类型。0上传需要生成缩略图的文件；1上传文件
 			QNFileName: fileName, //str 必填 存放到七牛的文件名
-			appId: 4, //int 必填 项目id
+			appId: window.storageKeyName.QNAPPID, //int 必填 项目id
 			mainSpace: mainSpace, //str 必填 私有空间或公有空间
 			uploadSpace: uploadSpace, //str 必填  上传的空间
 		}

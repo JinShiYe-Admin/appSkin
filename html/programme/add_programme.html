@@ -278,6 +278,7 @@
 				console.log("comData: " + JSON.stringify(comData));
 				postDataEncry(window.storageKeyName.INTERFACE_PROGRAMME + 'note/addNote', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+						contentData.canClick = true
 					if (data.code == 0) {
 						mui.toast('保存成功');
 						setTimeout(function() {
@@ -285,11 +286,10 @@
 							mui.back()
 						}, 1500)
 					} else {
-						tempHead.canClick = true
+						contentData.canClick = true
 						mui.toast(data.msg);
 					}
 					events.closeWaiting();
-					tempHead.canClick = true
 				});
 			}
 
