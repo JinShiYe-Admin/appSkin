@@ -927,7 +927,7 @@
 					op_code: 'index',
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/getDict', {}, comData, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'StudentBehavior/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
 							let jcList = data.data.timeArray;
@@ -978,7 +978,7 @@
 					asset_ids:asset_ids,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/save', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'StudentBehavior/save', {}, comData, 2, function(data) {
 					if (data.code == 0) {
 						wd.close();
 						 mui.toast(data.msg);

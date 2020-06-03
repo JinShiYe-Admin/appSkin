@@ -658,7 +658,7 @@
 					student_behavior_id: curPage.student_behavior_id,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/read', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'Talk/read', {}, comData, 2, function(data) {
 					if (data.code == 0) {
 						   events.closeWaiting();
 						   let id=data.data.id
@@ -709,7 +709,7 @@
 					asset_ids:asset_ids,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/Talk/editSave', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'Talk/editSave', {}, comData, 2, function(data) {
 					if (data.code == 0) {
 						 mui.toast(data.msg);
 						 wd.close();

@@ -839,7 +839,7 @@
 					op_code: 'index',
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/ExtraBehavior/getDict', {}, comData, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'ExtraBehavior/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
 							if (data.data.qbArray.length > 0) {
@@ -883,7 +883,7 @@
 					asset_ids:asset_ids,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/ExtraBehavior/saveExtra', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'ExtraBehavior/saveExtra', {}, comData, 2, function(data) {
 					if (data.code == 0) {
 							wd.close();
 						 mui.toast(data.msg);

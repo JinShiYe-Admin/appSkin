@@ -647,7 +647,7 @@
 					op_code: 'index',
 					index_code: curPage.access.split('#')[1],
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'comment/Comment/getDict', {}, comData, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_STUPYSUB + 'Comment/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
 							if (data.data.yearArray&& data.data.yearArray.length == 0) {
@@ -700,7 +700,7 @@
 						index_code: curPage.access.split('#')[1],
 					} 
 					// 1.1.列表页
-					postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'comment/Comment/list', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_STUPYSUB + 'Comment/list', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;

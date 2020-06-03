@@ -686,7 +686,7 @@
 					op_code: 'index',
 					index_code: curPage.access.split('#')[1],
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/getDict', {}, comData, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'StudentBehavior/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
 							let jcList = data.data.timeArray;
@@ -725,7 +725,7 @@
 					index_code: curPage.access.split('#')[1],
 				}
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'behavior/StudentBehavior/list', {}, comData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'StudentBehavior/list', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
