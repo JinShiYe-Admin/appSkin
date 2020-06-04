@@ -1,8 +1,8 @@
 <!doctype html>
-<html>
-	<!-- 考勤模块  班级考勤报表 
-	列表页
+<!-- 
+		基本信息 列表页
 	-->
+<html>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -232,9 +232,90 @@
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll" style="margin-top: 40px;padding-bottom: 40px;">
+				<div v-cloak class="mui-scroll">
 					<template v-cloak v-if="pageArray.length>0">
-						 <div>666</div>
+						<ul v-cloak class="mui-table-view">
+							<li v-cloak class="mui-table-view-cell">
+								<div class="mui-row">
+									<div class="mui-table-cell mui-col-xs-12">
+										<div>
+											<div class="biaoti">总计（接口无此项）</div>
+										</div>
+									</div>
+								</div>
+								<div class="mui-row" style="text-align: left;">
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
+										<p class="mui-h5 mui-ellipsis">男生</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">层数:300</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">房间数:200</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
+									</div>
+								</div>
+								<div class="mui-row" style="text-align: left;">
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
+										<p class="mui-h5 mui-ellipsis">女生</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">层数:300</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">房间数:200</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
+									</div>
+								</div>
+								<div class="mui-row" style="text-align: left;">
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
+										<p class="mui-h5 mui-ellipsis">总计</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">层数:300</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">房间数:200</p>
+									</div>
+									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
+							<li v-cloak v-for="(model,index) in pageArray" class="mui-table-view-cell" @click="clickLi(model)">
+								<a class="mui-navigate-right">
+									<div class="mui-row">
+										<div class="mui-table-cell mui-col-xs-12">
+											<div>
+												<div class="mui-ellipsis" style="float: left;">楼房名：{{model.dorm_name}}</div>
+											</div>
+										</div>
+									</div>
+									<template v-for="item in model.list">
+										<div class="mui-row" style="text-align: left;">
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
+												<p class="mui-h5 mui-ellipsis">{{item.stu_sex_text}}</p>
+											</div>
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+												<p class="mui-h5 mui-ellipsis">层数:{{item.bed_nums}}</p>
+											</div>
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+												<p class="mui-h5 mui-ellipsis">房间数:{{item.room_nums}}</p>
+											</div>
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+												<p class="mui-h5 mui-ellipsis">床位数:{{item.floor_nums}}</p>
+											</div>
+										</div>
+									</template>
+								</a>
+							</li>
+						</ul>
 					</template>
 					<template v-else>
 						<div></div>
@@ -286,10 +367,9 @@
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
-						// let index_code = curPage.access.split('#')[1]
-						// model.index_code = index_code;
-						// model.selectType = datasource.selectType;
-						// utils.mOpenWithData("../../html/schapp_examination/details.html", model);
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						utils.mOpenWithData("../../html/stu_dorm/base_info_floor_list.html", model);
 					},
 				}
 			});
@@ -308,47 +388,47 @@
 				});
 
 				//上拉下拉注册
-				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
-					down: {
-						callback: function() {
-							//清除节点
-							// document.getElementById('list-container').innerHTML = "";
-							var self = this;
-							//console.log("下拉刷新");
-							pageIndex = 1;
-							flagRef = 0;
-							events.showWaiting();
-							datasource.pageArray = [];
-							getPageDataArray();
-							setTimeout(function() {
-								//结束下拉刷新
-								self.endPullDownToRefresh();
-							}, 1000);
-						}
-					},
-					up: {
-						callback: function() {
-							var self = this;
-							//console.log("上拉加载更多");
-							flagRef = 1;
-							if (pageIndex <= totalPageCount) {
-								events.showWaiting();
-								getPageDataArray();
-								setTimeout(function() {
-									//结束下拉刷新
-									self.endPullUpToRefresh();
-									if (mui(".mui-table-view-cell").length < 10) {
-										mui(".mui-pull-loading")[0].innerHTML = "";
-									}
-								}, 1000);
-							} else {
-								//结束下拉刷新
-								self.endPullUpToRefresh();
-								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-							}
-						}
-					}
-				});
+				// mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
+				// 	down: {
+				// 		callback: function() {
+				// 			//清除节点
+				// 			// document.getElementById('list-container').innerHTML = "";
+				// 			var self = this;
+				// 			//console.log("下拉刷新");
+				// 			pageIndex = 1;
+				// 			flagRef = 0;
+				// 			events.showWaiting();
+				// 			datasource.pageArray = [];
+				// 			getPageDataArray();
+				// 			setTimeout(function() {
+				// 				//结束下拉刷新
+				// 				self.endPullDownToRefresh();
+				// 			}, 1000);
+				// 		}
+				// 	},
+				// 	up: {
+				// 		callback: function() {
+				// 			var self = this;
+				// 			//console.log("上拉加载更多");
+				// 			flagRef = 1;
+				// 			if (pageIndex <= totalPageCount) {
+				// 				events.showWaiting();
+				// 				getPageDataArray();
+				// 				setTimeout(function() {
+				// 					//结束下拉刷新
+				// 					self.endPullUpToRefresh();
+				// 					if (mui(".mui-table-view-cell").length < 10) {
+				// 						mui(".mui-pull-loading")[0].innerHTML = "";
+				// 					}
+				// 				}, 1000);
+				// 			} else {
+				// 				//结束下拉刷新
+				// 				self.endPullUpToRefresh();
+				// 				mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+				// 			}
+				// 		}
+				// 	}
+				// });
 
 				events.showWaiting();
 				getPageDataArray();
@@ -357,9 +437,10 @@
 			 
 
 			function getPageDataArray() {
+					pageIndex=1;
 					comData = {
 						page_number: pageIndex, //当前页数
-						page_size: 10, //每页记录数
+						page_size: 10000, //每页记录数
 						index_code: curPage.access.split('#')[1],
 					} 
 					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/page', {}, comData, 2, function(data) {
@@ -367,22 +448,56 @@
 						console.log("data: " + JSON.stringify(data));
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
-							pageIndex++;
-							if (flagRef == 0) { //刷新
-								datasource.pageArray=[].concat(data.data.list);
+							// pageIndex++;
+							// if (flagRef == 0) { //刷新
+								datasource.pageArray=[
+									{
+										dorm_name:'一号楼',
+										list:[
+											{
+												bed_nums:1000,
+												stu_sex_text:'男生',
+												room_nums:'200',
+												floor_nums:'50',
+											},
+											{
+												bed_nums:1000,
+												stu_sex_text:'女生',
+												room_nums:'200',
+												floor_nums:'50',
+											},
+										]
+									},{
+										dorm_name:'二号楼',
+										list:[
+											{
+												bed_nums:1000,
+												stu_sex_text:'男生',
+												room_nums:'200',
+												floor_nums:'50',
+											},
+											{
+												bed_nums:1000,
+												stu_sex_text:'女生',
+												room_nums:'200',
+												floor_nums:'50',
+											},
+										]
+									}
+								].concat(data.data.list);
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
 								mui(".mui-scroll-wrapper").scroll().refresh();
-							} else { //加载更多
-								datasource.pageArray = datasource.pageArray.concat(data.data.list);
-								if (data.data.list.length == 0) {
-									mui.toast('已加载全部');
-								}
-							}
-							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-								mui(".mui-pull-loading")[0].innerHTML = "";
-							}
+							// } else { //加载更多
+							// 	datasource.pageArray = datasource.pageArray.concat(data.data.list);
+							// 	if (data.data.list.length == 0) {
+							// 		mui.toast('已加载全部');
+							// 	}
+							// }
+							// if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+							// 	mui(".mui-pull-loading")[0].innerHTML = "";
+							// }
 						} else {
 							mui.toast(data.msg);
 						}

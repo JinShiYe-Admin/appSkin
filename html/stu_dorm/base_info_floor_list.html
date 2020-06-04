@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<!DOCTYPE html>
-/**
- * 访客登记 列表页
- */
+<!doctype html>
 <html>
+	<!-- 
+		基础信息 楼层列表页
+	-->
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -222,7 +221,6 @@
 				position: fixed;
 				z-index: 20;
 			}
-			
 		</style>
 	</head>
 
@@ -231,89 +229,34 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 		</header>
-		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0;">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
+				<div class="select">
+					<div class="mui-segmented-control" v-cloak>
+						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showFloor()"><span>{{floorValue.text}}</span><span
+							 class="mui-icon mui-icon-arrowdown"></span></a>
+					</div>
+					<div class="line"></div>
+				</div>
+				<div v-cloak class="mui-scroll" style="margin-top: 35px">
 					<template v-cloak v-if="pageArray.length>0">
-						<ul v-cloak class="mui-table-view">
-							<li v-cloak class="mui-table-view-cell">
-								<div class="mui-row">
-									<div class="mui-table-cell mui-col-xs-12">
-										<div>
-											<div class="biaoti">总计（接口无此项）</div>
-										</div>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">男生</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">女生</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">总计</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-							</li>
-						</ul>
 						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
 							<li v-cloak v-for="(model,index) in pageArray" class="mui-table-view-cell" @click="clickLi(model)">
 								<a class="mui-navigate-right">
-									<div class="mui-row">
-										<div class="mui-table-cell mui-col-xs-12">
-											<div>
-												<div class="mui-ellipsis" style="float: left;">楼房名：{{model.dorm_name}}</div>
-											</div>
+									<div class="mui-row" style="text-align: left;">
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+											<p class="mui-h5 mui-ellipsis">楼层名:{{model.floor_num}}层</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
+											<p class="mui-h5 mui-ellipsis">居住性别:{{model.stu_sex_text}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+											<p class="mui-h5 mui-ellipsis">房间数:{{model.room_nums}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
+											<p class="mui-h5 mui-ellipsis">床位数:{{model.bed_nums}}</p>
 										</div>
 									</div>
-									<template v-for="item in model.list">
-										<div class="mui-row" style="text-align: left;">
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-												<p class="mui-h5 mui-ellipsis">{{item.stu_sex_text}}</p>
-											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">层数:{{item.bed_nums}}</p>
-											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">房间数:{{item.room_nums}}</p>
-											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">床位数:{{item.floor_nums}}</p>
-											</div>
-										</div>
-									</template>
 								</a>
 							</li>
 						</ul>
@@ -351,9 +294,6 @@
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
-			var pageIndex = 1; //请求数据页面
-			var totalPageCount; //总页码
-			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
@@ -364,21 +304,44 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
+					floorList: [], //楼层数组
+					floorValue: {}, //楼层选择值
 				},
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						utils.mOpenWithData("../../html/stu_dorm/base_info_floor_list.html", model);
+						model.index_code = curPage.index_code;
+						model.dorm_name=curPage.dorm_name;
+						model.floor_num=model.floor_num;
+						utils.mOpenWithData("../../html/stu_dorm/base_info_detail.html", model);
 					},
+					showFloor: function() {
+						var userPicker = new $M.PopPicker();
+						userPicker.setData(datasource.floorList);
+						setTimeout(function() {
+							userPicker.pickers[0].setSelectedValue(datasource.floorValue.value);
+						}, 100);
+						userPicker.show(function(items) {
+							console.log(JSON.stringify(items[0]))
+							if (JSON.stringify(items[0]) == '{}') {
+								mui.toast('未选择楼层')
+							} else {
+								datasource.floorValue = items[0]
+								events.showWaiting();
+								datasource.pageArray = [];
+								getPageDataArray();
+								userPicker.dispose();
+								userPicker = null;
+							}
+						});
+					}
 				}
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				tempVue.titleName = curPage.name;
+				tempVue.titleName = curPage.dorm_name;
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -388,123 +351,70 @@
 					deceleration: deceleration
 				});
 
-				//上拉下拉注册
-				// mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
-				// 	down: {
-				// 		callback: function() {
-				// 			//清除节点
-				// 			// document.getElementById('list-container').innerHTML = "";
-				// 			var self = this;
-				// 			//console.log("下拉刷新");
-				// 			pageIndex = 1;
-				// 			flagRef = 0;
-				// 			events.showWaiting();
-				// 			datasource.pageArray = [];
-				// 			getPageDataArray();
-				// 			setTimeout(function() {
-				// 				//结束下拉刷新
-				// 				self.endPullDownToRefresh();
-				// 			}, 1000);
-				// 		}
-				// 	},
-				// 	up: {
-				// 		callback: function() {
-				// 			var self = this;
-				// 			//console.log("上拉加载更多");
-				// 			flagRef = 1;
-				// 			if (pageIndex <= totalPageCount) {
-				// 				events.showWaiting();
-				// 				getPageDataArray();
-				// 				setTimeout(function() {
-				// 					//结束下拉刷新
-				// 					self.endPullUpToRefresh();
-				// 					if (mui(".mui-table-view-cell").length < 10) {
-				// 						mui(".mui-pull-loading")[0].innerHTML = "";
-				// 					}
-				// 				}, 1000);
-				// 			} else {
-				// 				//结束下拉刷新
-				// 				self.endPullUpToRefresh();
-				// 				mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-				// 			}
-				// 		}
-				// 	}
-				// });
-
 				events.showWaiting();
-				getPageDataArray();
+				getFloorList();
 			});
 
-			 
+			function getFloorList() {
+				comData = {
+					dorm_name: curPage.dorm_name,
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/queryFloorByDorm', {}, comData, 2, function(data) {
+					console.log(JSON.stringify(data))
+					events.closeWaiting();
+					if (data.code == 0) {
+						let floors = data.data.list;
+						let floorList = [{
+							text:'全部楼层',
+							value:''
+						}].concat(floors);
+						datasource.floorList = floorList;
+						datasource.floorValue = floorList[0];
+						getPageDataArray();
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
 
 			function getPageDataArray() {
-					pageIndex=1;
-					comData = {
-						page_number: pageIndex, //当前页数
-						page_size: 10000, //每页记录数
-						index_code: curPage.access.split('#')[1],
-					} 
-					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/page', {}, comData, 2, function(data) {
+				let pageIndex=1;
+				comData = {
+					page_number: pageIndex, //当前页数
+					page_size: 10000, //每页记录数
+					dorm_name:curPage.dorm_name,
+					floor_num: datasource.floorValue.value,
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/dormDetail', {}, comData, 2,
+					function(data) {
 						events.closeWaiting();
-						console.log("data: " + JSON.stringify(data));
+						console.log(JSON.stringify(data))
 						if (data.code == 0) {
-							totalPageCount = data.data.total_page;
-							// pageIndex++;
-							// if (flagRef == 0) { //刷新
-								datasource.pageArray=[
-									{
-										dorm_name:'一号楼',
-										list:[
-											{
-												bed_nums:1000,
-												stu_sex_text:'男生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-											{
-												bed_nums:1000,
-												stu_sex_text:'女生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-										]
-									},{
-										dorm_name:'二号楼',
-										list:[
-											{
-												bed_nums:1000,
-												stu_sex_text:'男生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-											{
-												bed_nums:1000,
-												stu_sex_text:'女生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-										]
-									}
-								].concat(data.data.list);
-								if (data.data.list.length == 0) {
-									mui.toast('暂无数据');
+							datasource.pageArray = [
+								{
+									bed_nums:100,
+									stu_sex_text:'男',
+									floor_num:1,
+									stu_sex:'1',
+									room_nums:200,
+								},{
+									bed_nums:100,
+									stu_sex_text:'女',
+									floor_num:1,
+									stu_sex:'1',
+									room_nums:200,
 								}
-								mui(".mui-scroll-wrapper").scroll().refresh();
-							// } else { //加载更多
-							// 	datasource.pageArray = datasource.pageArray.concat(data.data.list);
-							// 	if (data.data.list.length == 0) {
-							// 		mui.toast('已加载全部');
-							// 	}
-							// }
-							// if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-							// 	mui(".mui-pull-loading")[0].innerHTML = "";
-							// }
+							].concat(data.data.list);
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
 						} else {
 							mui.toast(data.msg);
 						}
 					});
 			};
-			 
 		</script>
 	</body>
 
