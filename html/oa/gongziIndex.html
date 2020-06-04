@@ -286,9 +286,9 @@
 						totalPageCount = data.data.total_page;
 						for (var i = 0; i < data.data.list.length; i++) {
 							var tempM = data.data.list[i];
-							if (tempM.SendManPic == '' || tempM.SendManPic == null) {
+							// if (tempM.SendManPic == '' || tempM.SendManPic == null) {
 								tempM.SendManPic = setImg(tempM.SendManPic);
-							}
+							// }
 						}
 						pageIndex++;
 						if (flagRef == 0) { //刷新

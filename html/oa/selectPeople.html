@@ -140,11 +140,9 @@
 								model.selectFlag = 1;
 								contentData.orderArray.push(model);
 							}else{
-								console.log('11111');
 								for (var i = 0; i < contentData.peopleArray.length; i++) {
 									var tempM = contentData.peopleArray[i];
 									if (tempM.user_code == model.user_code) {
-										console.log('22222');
 										tempM.selectFlag = 1;
 									}
 								}
