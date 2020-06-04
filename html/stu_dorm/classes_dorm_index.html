@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-/**
- * 班级宿舍 列表页
- */
+<!--  班级宿舍 列表页 -->
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -233,87 +230,31 @@
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
-				<div v-cloak class="mui-scroll">
+				<div class="select">
+					<div v-cloak class="mui-segmented-control" v-cloak>
+						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span
+							 class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span
+							 class="mui-icon mui-icon-arrowdown"></span></a>
+					</div>
+					<div class="line"></div>
+				</div>
+				<div v-cloak class="mui-scroll" style="margin-top: 40px;">
 					<template v-cloak v-if="pageArray.length>0">
-						<ul v-cloak class="mui-table-view">
-							<li v-cloak class="mui-table-view-cell">
-								<div class="mui-row">
-									<div class="mui-table-cell mui-col-xs-12">
-										<div>
-											<div class="biaoti">总计（接口无此项）</div>
-										</div>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">男生</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">女生</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">总计</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-							</li>
-						</ul>
-						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
-							<li v-cloak v-for="(model,index) in pageArray" class="mui-table-view-cell" @click="clickLi(model)">
+						<ul v-cloak class="mui-table-view" >
+							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right">
-									<div class="mui-row">
-										<div class="mui-table-cell mui-col-xs-12">
-											<div>
-												<div class="mui-ellipsis" style="float: left;">楼房名：{{model.dorm_name}}</div>
-											</div>
+									<div class="mui-row" style="text-align: left;">
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+											<p class="mui-h5 mui-ellipsis">班级:{{model.grd_name}}{{model.cls_name}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+											<p class="mui-h5 mui-ellipsis">居住性别:{{model.stu_sex_text}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+											<p class="mui-h5 mui-ellipsis">楼房:{{model.dorm_names}}</p>
 										</div>
 									</div>
-									<template v-for="item in model.list">
-										<div class="mui-row" style="text-align: left;">
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-												<p class="mui-h5 mui-ellipsis">{{item.stu_sex_text}}</p>
-											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">层数:{{item.bed_nums}}</p>
-											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">房间数:{{item.room_nums}}</p>
-											</div>
-											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-												<p class="mui-h5 mui-ellipsis">床位数:{{item.floor_nums}}</p>
-											</div>
-										</div>
-									</template>
 								</a>
 							</li>
 						</ul>
@@ -364,13 +305,62 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
+					grdList: [], //年级数组
+					clsList: [], //班级数组
+					grdValue: {}, //年级选择值
+					clsValue: {}, //班级选择值
 				},
 				methods: {
 					clickLi: function(model) {
 						console.log(JSON.stringify(model))
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/stu_dorm/base_info_floor_list.html", model);
+						utils.mOpenWithData("../../html/stu_dorm/classes_dorm_detail.html", model);
+					},
+					showGrd: function() {
+						var userPicker = new $M.PopPicker();
+						userPicker.setData(datasource.grdList);
+						setTimeout(function() {
+							userPicker.pickers[0].setSelectedValue(datasource.grdValue.value);
+						}, 100);
+						userPicker.show(function(items) {
+							console.log(JSON.stringify(items[0]))
+							if (JSON.stringify(items[0]) == '{}') {
+								mui.toast('未选择年级')
+							} else {
+								datasource.grdValue = items[0]
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getClsList(items[0].value)
+								userPicker.dispose();
+								userPicker = null;
+							}
+						});
+					},
+					showCls: function() {
+						var userPicker = new $M.PopPicker();
+						userPicker.setData(datasource.clsList);
+						setTimeout(function() {
+							userPicker.pickers[0].setSelectedValue(datasource.clsValue.value);
+						}, 100);
+						userPicker.show(function(items) {
+							console.log(JSON.stringify(items[0]))
+							if (JSON.stringify(items[0]) == '{}') {
+								mui.toast('未选择班级')
+							} else {
+								datasource.clsValue = items[0]
+								//获取课堂考勤列表
+								events.showWaiting();
+								pageIndex = 1;
+								flagRef = 0;
+								datasource.pageArray = [];
+								getPageDataArray();
+								userPicker.dispose();
+								userPicker = null;
+							}
+						});
 					},
 				}
 			});
@@ -388,117 +378,156 @@
 					deceleration: deceleration
 				});
 
-				//上拉下拉注册
-				// mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
-				// 	down: {
-				// 		callback: function() {
-				// 			//清除节点
-				// 			// document.getElementById('list-container').innerHTML = "";
-				// 			var self = this;
-				// 			//console.log("下拉刷新");
-				// 			pageIndex = 1;
-				// 			flagRef = 0;
-				// 			events.showWaiting();
-				// 			datasource.pageArray = [];
-				// 			getPageDataArray();
-				// 			setTimeout(function() {
-				// 				//结束下拉刷新
-				// 				self.endPullDownToRefresh();
-				// 			}, 1000);
-				// 		}
-				// 	},
-				// 	up: {
-				// 		callback: function() {
-				// 			var self = this;
-				// 			//console.log("上拉加载更多");
-				// 			flagRef = 1;
-				// 			if (pageIndex <= totalPageCount) {
-				// 				events.showWaiting();
-				// 				getPageDataArray();
-				// 				setTimeout(function() {
-				// 					//结束下拉刷新
-				// 					self.endPullUpToRefresh();
-				// 					if (mui(".mui-table-view-cell").length < 10) {
-				// 						mui(".mui-pull-loading")[0].innerHTML = "";
-				// 					}
-				// 				}, 1000);
-				// 			} else {
-				// 				//结束下拉刷新
-				// 				self.endPullUpToRefresh();
-				// 				mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-				// 			}
-				// 		}
-				// 	}
-				// });
+				// 上拉下拉注册
+				mui(".mui-scroll-wrapper .mui-scroll").pullToRefresh({
+					down: {
+						callback: function() {
+							//清除节点
+							// document.getElementById('list-container').innerHTML = "";
+							var self = this;
+							//console.log("下拉刷新");
+							pageIndex = 1;
+							flagRef = 0;
+							events.showWaiting();
+							datasource.pageArray = [];
+							getPageDataArray();
+							setTimeout(function() {
+								//结束下拉刷新
+								self.endPullDownToRefresh();
+							}, 1000);
+						}
+					},
+					up: {
+						callback: function() {
+							var self = this;
+							//console.log("上拉加载更多");
+							flagRef = 1;
+							if (pageIndex <= totalPageCount) {
+								events.showWaiting();
+								getPageDataArray();
+								setTimeout(function() {
+									//结束下拉刷新
+									self.endPullUpToRefresh();
+									if (mui(".mui-table-view-cell").length < 10) {
+										mui(".mui-pull-loading")[0].innerHTML = "";
+									}
+								}, 1000);
+							} else {
+								//结束下拉刷新
+								self.endPullUpToRefresh();
+								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+							}
+						}
+					}
+				});
 
 				events.showWaiting();
-				getPageDataArray();
+				//获取数据范围授权：年级
+				getGrdList();
 			});
 
+			 // 获取数据范围授权：年级
+			 function getGrdList() {
+			 	comData = {
+			 		op_code: 'index',
+			 		get_grd: true,
+			 		all_grd: true,
+			 		index_code: curPage.access.split('#')[1],
+			 	}
+			 	postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
+			 		console.log(JSON.stringify(data))
+			 		if (data.code == 0) {
+			 			let grds = data.data.grd_list;
+			 			let grdList = [];
+			 			grds.map(function(currentValue) {
+			 				let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部年级';
+			 				let obj = {};
+			 				obj.value = currentValue.value;
+			 				obj.text = name;
+			 				grdList.push(obj)
+			 			})
+			 			if (grdList.length > 0) {
+			 				datasource.grdList = grdList;
+			 				datasource.grdValue = grdList[0];
+			 				let grd_code = grds[0].value;
+			 				//获取数据范围授权：班级
+			 				getClsList(grd_code)
+			 			} else {
+			 				events.closeWaiting();
+			 				mui.toast('无数据授权 无法获取年级');
+			 			}
+			 		} else {
+			 			events.closeWaiting();
+			 			mui.toast(data.msg);
+			 		}
+			 	});
+			 }
+			 //获取数据范围授权：班级
+			 function getClsList(grd_code) {
+			 	const params = {
+			 		op_code: 'index',
+			 		grd_code: grd_code ? grd_code : '-1',
+			 		get_cls: true,
+			 		all_cls: true,
+			 		index_code: curPage.access.split('#')[1],
+			 	}
+			 	postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
+			 		console.log(JSON.stringify(data))
+			 		if (data.code == 0) {
+			 			let clss = data.data.cls_list;
+			 			let clsList = [];
+			 			clss.map(function(currentValue) {
+			 				let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
+			 				let obj = {};
+			 				obj.value = currentValue.value;
+			 				obj.text = name;
+			 				clsList.push(obj)
+			 			})
 			 
+			 			if (clsList.length > 0) {
+			 				datasource.clsList = clsList;
+			 				datasource.clsValue = clsList[0];
+			 				getPageDataArray();
+			 			} else {
+			 				events.closeWaiting(); 
+			 				mui.toast('无数据授权 无法获取班级');
+			 			}
+			 		} else {
+			 			events.closeWaiting();
+			 			mui.toast(data.msg);
+			 		}
+			 	});
+			 }
 
 			function getPageDataArray() {
-					pageIndex=1;
 					comData = {
 						page_number: pageIndex, //当前页数
-						page_size: 10000, //每页记录数
+						page_size: 10, //每页记录数
+						grd_code:datasource.grdValue.value,
+						cls_code:datasource.clsValue.value,
 						index_code: curPage.access.split('#')[1],
 					} 
-					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/page', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'classDorm/page', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log("data: " + JSON.stringify(data));
 						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
-							// pageIndex++;
-							// if (flagRef == 0) { //刷新
-								datasource.pageArray=[
-									{
-										dorm_name:'一号楼',
-										list:[
-											{
-												bed_nums:1000,
-												stu_sex_text:'男生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-											{
-												bed_nums:1000,
-												stu_sex_text:'女生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-										]
-									},{
-										dorm_name:'二号楼',
-										list:[
-											{
-												bed_nums:1000,
-												stu_sex_text:'男生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-											{
-												bed_nums:1000,
-												stu_sex_text:'女生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-										]
-									}
-								].concat(data.data.list);
+							pageIndex++;
+							if (flagRef == 0) { //刷新
+								datasource.pageArray=[].concat(data.data.list);
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
 								mui(".mui-scroll-wrapper").scroll().refresh();
-							// } else { //加载更多
-							// 	datasource.pageArray = datasource.pageArray.concat(data.data.list);
-							// 	if (data.data.list.length == 0) {
-							// 		mui.toast('已加载全部');
-							// 	}
-							// }
-							// if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
-							// 	mui(".mui-pull-loading")[0].innerHTML = "";
-							// }
+							} else { //加载更多
+								datasource.pageArray = datasource.pageArray.concat(data.data.list);
+								if (data.data.list.length == 0) {
+									mui.toast('已加载全部');
+								}
+							}
+							if (mui(".mui-table-view-cell").length < 10 && mui(".mui-pull-loading")[0]) {
+								mui(".mui-pull-loading")[0].innerHTML = "";
+							}
 						} else {
 							mui.toast(data.msg);
 						}

@@ -392,21 +392,7 @@
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
-							datasource.pageArray = [
-								{
-									bed_nums:100,
-									stu_sex_text:'男',
-									floor_num:1,
-									stu_sex:'1',
-									room_nums:200,
-								},{
-									bed_nums:100,
-									stu_sex_text:'女',
-									floor_num:1,
-									stu_sex:'1',
-									room_nums:200,
-								}
-							].concat(data.data.list);
+							datasource.pageArray = [].concat(data.data.list);
 							if (data.data.list.length == 0) {
 								mui.toast('暂无数据');
 							}

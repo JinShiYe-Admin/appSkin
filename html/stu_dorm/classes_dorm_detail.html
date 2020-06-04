@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<!-- 
-		基础信息 详情页
+		班级宿舍 详情页
 	-->
 	<head>
 		<meta charset="UTF-8">
@@ -252,64 +252,46 @@
 				<div v-cloak class="mui-scroll">
 					<ul v-cloak class="mui-table-view no-line">
 						<li v-cloak class="mui-table-view-cell no-bgc">
-							<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
-								<p class="mui-h5 mui-ellipsis">居住性别:{{stu_sex_text}}</p>
-							</div>
-						</li>
-					</ul>
-					<div class="double-line"></div>
-					<ul v-cloak class="mui-table-view no-line">
-						<li v-cloak class="mui-table-view-cell no-bgc">
 							<div class="mui-row">
-								<div class="mui-table-cell mui-col-xs-12">
-										<div class="mui-ellipsis" style="float: left;">管理员</div>
+								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">班级:{{name}}</p>
 								</div>
-							</div>
-						</li>
-						<li v-cloak v-for="model in officer" class="mui-table-view-cell no-bgc">
-							<div class="mui-row" style="text-align: left;">
-								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-									<p class="mui-h5 mui-ellipsis">姓名:{{model[0]}}</p>
-								</div>
-								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-									<p class="mui-h5 mui-ellipsis">电话:{{model[1]}}</p>
+								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">居住性别:{{sex}}</p>
 								</div>
 							</div>
 						</li>
 					</ul>
 					<div class="double-line"></div>
-					<ul v-cloak class="mui-table-view no-line">
-						<li v-cloak class="mui-table-view-cell no-bgc">
-							<div class="mui-row">
-								<div class="mui-table-cell mui-col-xs-12">
-										<div class="mui-ellipsis" style="float: left;">房间信息</div>
-								</div>
-							</div>
-						</li>
-						<li v-cloak v-for="model in room_array" class="mui-table-view-cell no-bgc">
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-										<p class="mui-h5 mui-ellipsis">房间名:{{model.room_name}}</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-										<p class="mui-h5 mui-ellipsis">床位数:{{model.bed_nums}}</p>
-									</div>
-								</div>
-						</li>
-					</ul>
-					<div class="double-line"></div>
-					<ul v-cloak class="mui-table-view no-line">
-						<li v-cloak class="mui-table-view-cell no-bgc">
+					<template v-for="(model,index) in pageArray">
+						<ul v-cloak class="mui-table-view no-line">
+							<li v-cloak class="mui-table-view-cell no-bgc">
 								<div class="mui-row">
 									<div class="mui-table-cell mui-col-xs-12">
-											<div class="mui-ellipsis" style="float: left;">备注</div>
+											<div class="mui-ellipsis" style="float: left;">{{model.floor}}</div>
 									</div>
 								</div>
-								<div class="mui-row" style="text-align: left;">
-										<p class="mui-h5" style="word-break: break-all;margin:10px 3px;">{{remark}}</p>
-								</div>
-						</li>
-					</ul>
+							</li>
+							<li v-cloak v-for="item in model.list" class="mui-table-view-cell no-bgc" @tap="clickLi(model,item)">
+								<a class="mui-navigate-right">
+									<div class="mui-row" style="text-align: left;">
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+											<p class="mui-h5 mui-ellipsis">房间号:{{item.room_name}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+											<p class="mui-h5 mui-ellipsis">床位数:{{item.bed_nums}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+											<p class="mui-h5 mui-ellipsis">已住数:{{item.stu_nums}}</p>
+										</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+						<template v-if="index<(pageArray.length-1)">
+							<div class="double-line"></div>
+						</template>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -349,20 +331,28 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					stu_sex_text: '', //性别名称
-					officer:[],//管理员
-					room_array:[],//房间信息
-					remark:'',//备注
+					name:'',
+					sex:'',
+					pageArray:[]
 				},
 				methods: {
-				}
+					clickLi: function(model,item) {
+						item.grd_code=curPage.grd_code;
+						item.cls_code=curPage.cls_code;
+						item.stu_sex=curPage.stu_sex; 
+						item.floor = model.floor;
+						item.index_code = curPage.index_code;
+						utils.mOpenWithData("../../html/stu_dorm/classes_dorm_stay.html", item);
+					},
+				}  
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				tempVue.titleName = curPage.dorm_name+curPage.floor_num+'层';
-
+				tempVue.titleName = '班级宿舍详情';
+				datasource.name=curPage.grd_name+curPage.cls_name
+				datasource.sex=curPage.stu_sex_text
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -378,21 +368,23 @@
 			 
 
 			function getPageDataArray() {
-				let pageIndex=1;
 				comData = {
-					dorm_name:curPage.dorm_name,
-					floor_num: curPage.floor_num,
+					page_size:1,
+					page_number:10000,
+					grd_code:curPage.grd_code,
+					cls_code:curPage.cls_code,
+					stu_sex:curPage.stu_sex,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/floorDetail', {}, comData, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'classDorm/pageClsDetail', {}, comData, 2,
 					function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
-							datasource.stu_sex_text = data.data.stu_sex_text
-							datasource.officer =data.data.officer 
-							datasource.room_array = data.data.room_array 
-							datasource.remark = data.data.remark 
+							datasource.pageArray=[].concat(data.data.list);
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
 						} else {
 							mui.toast(data.msg);
 						}

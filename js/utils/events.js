@@ -441,6 +441,7 @@ var events = (function(mod) {
 			back: 'none',
 			modal:true,
 		});
+		setTimeout(function(){plus.nativeUI.closeWaiting()},15000)
 		return showWaiting
 	}
 	

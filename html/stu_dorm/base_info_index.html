@@ -233,58 +233,32 @@
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-					<template v-cloak v-if="pageArray.length>0">
+					<template v-cloak v-if="total">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak class="mui-table-view-cell">
 								<div class="mui-row">
 									<div class="mui-table-cell mui-col-xs-12">
 										<div>
-											<div class="biaoti">总计（接口无此项）</div>
+											<div class="biaoti">总计</div>
 										</div>
 									</div>
 								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">男生</p>
+								<template v-for="item in total.list">
+									<div class="mui-row" style="text-align: left;">
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
+											<p class="mui-h5 mui-ellipsis">{{item.stu_sex_text}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+											<p class="mui-h5 mui-ellipsis">层数:{{item.floor_nums}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+											<p class="mui-h5 mui-ellipsis">房间数:{{item.room_nums}}</p>
+										</div>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
+											<p class="mui-h5 mui-ellipsis">床位数:{{item.bed_nums}}</p>
+										</div>
 									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">女生</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
-								<div class="mui-row" style="text-align: left;">
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-2">
-										<p class="mui-h5 mui-ellipsis">总计</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">层数:300</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">房间数:200</p>
-									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-3">
-										<p class="mui-h5 mui-ellipsis">床位数:1000</p>
-									</div>
-								</div>
+								</template>
 							</li>
 						</ul>
 						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
@@ -362,6 +336,7 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
+					total:{},//总计
 					pageArray: [], //界面总数组
 				},
 				methods: {
@@ -450,41 +425,8 @@
 							totalPageCount = data.data.total_page;
 							// pageIndex++;
 							// if (flagRef == 0) { //刷新
-								datasource.pageArray=[
-									{
-										dorm_name:'一号楼',
-										list:[
-											{
-												bed_nums:1000,
-												stu_sex_text:'男生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-											{
-												bed_nums:1000,
-												stu_sex_text:'女生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-										]
-									},{
-										dorm_name:'二号楼',
-										list:[
-											{
-												bed_nums:1000,
-												stu_sex_text:'男生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-											{
-												bed_nums:1000,
-												stu_sex_text:'女生',
-												room_nums:'200',
-												floor_nums:'50',
-											},
-										]
-									}
-								].concat(data.data.list);
+								datasource.total= data.data.total
+								datasource.pageArray=[].concat(data.data.list);
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
