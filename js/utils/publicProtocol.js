@@ -250,11 +250,21 @@ var jQAjaxPost = function(url, data, callback) {
 		contentType: "application/json",
 		async: true,
 		success: function(success_data) { //请求成功的回调
-			console.log('jQAP-Success:' + url + ',' + JSON.stringify(success_data));
+			console.log('jQAP-Success11111111:' + url + ',' + JSON.stringify(success_data));
 			if (success_data.code == 6 || success_data.code == 'sup6'|| success_data.code == '0006'|| success_data.code == 'sup_0006') { //令牌过期
+			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			var tempToken={
+				login_name:personal.userName0,//登录名
+				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+				device_type:'1'//登录设备类型，0：WEB、1：APP、2：客户端
+			}
+			console.log('qqq1111111111111111');
 				//令牌续订
-				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'token/refresh', {}, {}, 2, function(data1) {
-					console.log('data1:' + JSON.stringify(data1));
+				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'token/refresh', {}, tempToken, 2, function(data1) {
+					// console.log('data1:' + JSON.stringify(data1));
+					console.log('qwertyuiop');
 					if (data1.code == 0) {
 						var tempInfo00 = store.get(window.storageKeyName.PERSONALINFO);
 						tempInfo00.access_token = data1.data.access_token;
@@ -269,6 +279,8 @@ var jQAjaxPost = function(url, data, callback) {
 							data2 = modifyParameter(url, data2);
 							callback(data2);
 						});
+					}else{
+						mui.toast(data1.msg);
 					}
 				});
 			} else {

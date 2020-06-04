@@ -56,20 +56,6 @@ function sendAjax(url, ops, times) {
 						utp: personal.utp,
 						utname: personal.utname
 					};
-					//令牌续订
-					postDataEncry(0,'api/token/refresh', {}, comData, 0, function(data1) {
-						if(data1.code == 0) {
-							personal.access_token = data1.data;
-							store.set(window.storageKeyName.PERSONALINFO, personal);
-							if(times>5) {
-								plus.nativeUI.closeWaiting();
-								plus.nativeUI.toast("令牌过期，请重新登录");
-							}else{
-								times++;
-								sendAjax(url, ops, times);
-							}
-						}
-					});
 				}else{
 					var f = ops.fail && ops.fail(res);
 					if(f!="noToast"){

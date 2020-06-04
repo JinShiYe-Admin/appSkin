@@ -83,6 +83,7 @@
 				uuid: '',
 				appid: ''
 			}
+			console.log('11111:'+plus.os.name);
 			plus.device.getInfo({
 				success:function(info){
 					let id=''
@@ -94,23 +95,13 @@
 						tempModel.appid=id
 					}
 					console.log('getDeviceInfo success: '+JSON.stringify(info));
+					tempModel.webid = plus.os.name+plus.os.version;
 					console.log('tempModel: '+JSON.stringify(tempModel));
-				} 
-			});
-			
-			if(tempModel.uuid == '') {
-				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
-				if(publicPar){
-					tempModel.uuid = publicPar.uuid;
-					tempModel.appid = publicPar.appid;
+					store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
+					var backButtonPress = 0;
+					setUUID();
 				}
-			}
-			console.log('plus.device.uuid:' + tempModel.uuid);
-			console.log('plus.runtime.appid:' + tempModel.appid);
-			store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
-
-			var backButtonPress = 0;
-			setUUID();
+			});
 		});
 		document.getElementById("login").addEventListener('tap', function(event) {
 			console.log("登录");
@@ -183,10 +174,14 @@
 
 		//login登录
 		var loginPro = function(tempName, tempPW, key) {
+			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
 			var enData1 = {
 			};
 			//不需要加密的数据
 			var comData1 = {
+				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+				device_type:'1',//登录设备类型，0：WEB、1：APP、2：客户端
 				password: hex_md5(key + tempPW), //秘钥+密码再MD5加密
 				platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 				app_code: window.storageKeyName.APPCODE, //应用系统代码
