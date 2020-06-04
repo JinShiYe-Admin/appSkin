@@ -231,10 +231,10 @@
 				position: fixed;
 				z-index: 20;
 			}
-			
-			.bt{
-				
+			.mui-table-view:before,.mui-table-view:after{
+				height: 0;
 			}
+			
 		</style>
 	</head>
 
@@ -254,10 +254,14 @@
 						</li>
 					</ul>
 					<div class="double-line"></div>
-					<div style="height: 44x; padding: 5px 10px;">
-						<span class="mui-h5">管理员</span>
-					</div>
 					<ul v-cloak class="mui-table-view">
+						<li v-cloak class="mui-table-view-cell">
+							<div class="mui-row">
+								<div class="mui-table-cell mui-col-xs-12">
+										<div class="mui-ellipsis" style="float: left;">管理员</div>
+								</div>
+							</div>
+						</li>
 						<li v-cloak v-for="model in officer" class="mui-table-view-cell">
 							<div class="mui-row" style="text-align: left;">
 								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
@@ -270,10 +274,14 @@
 						</li>
 					</ul>
 					<div class="double-line"></div>
-					<div style="height: 44x; padding: 5px 10px;">
-						<span class="mui-h5">房间信息</span>
-					</div>
 					<ul v-cloak class="mui-table-view">
+						<li v-cloak class="mui-table-view-cell">
+							<div class="mui-row">
+								<div class="mui-table-cell mui-col-xs-12">
+										<div class="mui-ellipsis" style="float: left;">房间信息</div>
+								</div>
+							</div>
+						</li>
 						<li v-cloak v-for="model in room_array" class="mui-table-view-cell">
 								<div class="mui-row" style="text-align: left;">
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
@@ -286,10 +294,18 @@
 						</li>
 					</ul>
 					<div class="double-line"></div>
-					<div style="height: 44x; padding: 5px 10px;">
-						<span class="mui-h5">备注</span>
-						<p class="mui-h5" style="word-break: break-all;margin:0 3px;">{{remark}}</p>
-					</div>
+					<ul v-cloak class="mui-table-view">
+						<li v-cloak class="mui-table-view-cell">
+								<div class="mui-row">
+									<div class="mui-table-cell mui-col-xs-12">
+											<div class="mui-ellipsis" style="float: left;">备注</div>
+									</div>
+								</div>
+								<div class="mui-row" style="text-align: left;">
+										<p class="mui-h5" style="word-break: break-all;margin:10px 3px;">{{remark}}</p>
+								</div>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
