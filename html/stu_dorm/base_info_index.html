@@ -222,6 +222,14 @@
 				z-index: 20;
 			}
 			
+			.mui-table-view.no-line:before,.mui-table-view.no-line:after{
+				height: 0;
+			}
+			
+			.mui-table-view-cell.no-bgc.mui-active{
+				background-color: #FFFFFF;
+			}
+			
 		</style>
 	</head>
 
@@ -234,12 +242,12 @@
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
 					<template v-cloak v-if="total">
-						<ul v-cloak class="mui-table-view">
-							<li v-cloak class="mui-table-view-cell">
+						<ul v-cloak class="mui-table-view no-line">
+							<li v-cloak class="mui-table-view-cell no-bgc">
 								<div class="mui-row">
 									<div class="mui-table-cell mui-col-xs-12">
 										<div>
-											<div class="biaoti">总计</div>
+											<div class="biaoti">{{total.dorm_name}}</div>
 										</div>
 									</div>
 								</div>
@@ -261,7 +269,7 @@
 								</template>
 							</li>
 						</ul>
-						<ul v-cloak class="mui-table-view" style="margin-top: 0.375rem;">
+						<ul v-cloak class="mui-table-view no-line" style="margin-top: 0.375rem;">
 							<li v-cloak v-for="(model,index) in pageArray" class="mui-table-view-cell" @click="clickLi(model)">
 								<a class="mui-navigate-right">
 									<div class="mui-row">

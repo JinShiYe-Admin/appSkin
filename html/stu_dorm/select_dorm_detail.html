@@ -1,8 +1,6 @@
-<!doctype html>
+<!DOCTYPE html>
+<!--  宿舍查询 列表页 -->
 <html>
-	<!-- 
-		宿舍入住情况 详情页
-	-->
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -17,12 +15,8 @@
 				display:none !important;
 			}
 			html,
-			body{
-				background-color: #FFFFFF;
-			}
-			
-			.mui-content{
-				background-color: #FFFFFF;
+			body {
+				background-color: #efeff4;
 			}
 			
 			.mui-bar~.mui-content .mui-fullscreen {
@@ -150,12 +144,6 @@
 				margin-bottom: 0.3125rem;
 				height: 0.125rem;
 			}
-			
-			.double-line{
-				height: 10px;
-				background-color: #EAEAEA;
-			}
-			
 			.selectDiv{
 				background-color: #eaeaea;
 			}
@@ -231,13 +219,6 @@
 				position: fixed;
 				z-index: 20;
 			}
-			.mui-table-view.no-line:before,.mui-table-view.no-line:after{
-				height: 0;
-			}
-			
-			.mui-table-view-cell.no-bgc.mui-active{
-				background-color: #FFFFFF;
-			}
 			
 		</style>
 	</head>
@@ -253,11 +234,17 @@
 					<ul v-cloak class="mui-table-view no-line">
 						<li v-cloak class="mui-table-view-cell no-bgc">
 							<div class="mui-row">
-								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
-									<p class="mui-h5 mui-ellipsis">班级:{{name}}</p>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+									<p class="mui-h5 mui-ellipsis">{{curPage.dorm_name}}{{curPage.floor_num}}层{{curPage.room_name}}</p>
 								</div>
-								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
-									<p class="mui-h5 mui-ellipsis">居住性别:{{sex}}</p>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
+									<p class="mui-h5 mui-ellipsis">居住性别:{{curPage.stu_sex_text}}</p>
+								</div>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+									<p class="mui-h5 mui-ellipsis">床位数:{{curPage.bed_nums}}</p>
+								</div>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
+									<p class="mui-h5 mui-ellipsis">已住人数:{{curPage.stu_nums}}</p>
 								</div>
 							</div>
 						</li>
@@ -267,10 +254,10 @@
 						<li v-cloak v-for="model in pageArray" class="mui-table-view-cell no-bgc">
 							<div class="mui-row" style="text-align: left;">
 								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-									<p class="mui-h5 mui-ellipsis">姓名:{{model.grd_name}}{{model.cls_name}}{{model.stu_name}}</p>
+									<p class="mui-h5 mui-ellipsis">姓名:&emsp;&emsp;{{model.grd_name}}{{model.cls_name}}{{model.stu_name}}</p>
 								</div>
 								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-									<p class="mui-h5 mui-ellipsis">床位号:{{model.bed_num}}</p>
+									<p class="mui-h5 mui-ellipsis">床位号:&emsp;{{model.bed_num}}</p>
 								</div>
 							</div>
 						</li>
@@ -305,6 +292,9 @@
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
+			var pageIndex = 1; //请求数据页面
+			var totalPageCount; //总页码
+			var flagRef = 0; //是刷新0，还是加载更多1
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
@@ -314,9 +304,8 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					name:'',
-					sex:'',
-					pageArray:[]
+					curPage:'',
+					pageArray: [], //界面总数组
 				},
 				methods: {
 				}
@@ -324,10 +313,9 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('6666:' + JSON.stringify(curPage));
-				tempVue.titleName = '班级宿舍入住情况';
-				datasource.name=curPage.grd_name+curPage.cls_name
-				datasource.sex=curPage.stu_sex_text
+				console.log('2222:' + JSON.stringify(curPage));
+				tempVue.titleName = '宿舍查询详情';
+				datasource.curPage=curPage
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -339,31 +327,28 @@
 				events.showWaiting();
 				getPageDataArray();
 			});
-
-			 
-
+			
 			function getPageDataArray() {
-				comData = {
-					page_size:1
-					page_number:10000,
-					grd_code:curPage.grd_code,
-					cls_code:curPage.cls_code,
-					dorm_name:curPage.stu_sex,
-					floor_num:curPage.floor,
-					room_name:curPage.room_name,
-					index_code: curPage.index_code,
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'classDorm/pageRoomDetail', {}, comData, 2,
-					function(data) {
+					comData = {
+						page_number: pageIndex, //当前页数
+						page_size: 10, //每页记录数
+						dorm_name:curPage.dorm_name,
+						floor_num:curPage.floor_num,
+						room_name:curPage.room_name,
+						index_code: curPage.index_code,
+					} 
+					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'stuDorm/pageRoomDetail', {}, comData, 2, function(data) {
 						events.closeWaiting();
-						console.log(JSON.stringify(data))
+						console.log("data: " + JSON.stringify(data));
 						if (data.code == 0) {
-							datasource.pageArray=data.data.list
-						} else {
-							mui.toast(data.msg);
+							datasource.pageArray=data.data.list;
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
 						}
 					});
 			};
+			 
 		</script>
 	</body>
 
