@@ -275,3 +275,12 @@ viewport-fit=cover
 	font-size: 13px !important;
 	color: #878787 !important;
 }
+
+
+.mui-table-view.no-line:before,.mui-table-view.no-line:after{
+	height: 0;
+}
+
+.mui-table-view-cell.no-bgc.mui-active{
+	background-color: #FFFFFF;
+}
