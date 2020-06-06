@@ -231,14 +231,6 @@
 				position: fixed;
 				z-index: 20;
 			}
-			.mui-table-view.no-line:before,.mui-table-view.no-line:after{
-				height: 0;
-			}
-			
-			.mui-table-view-cell.no-bgc.mui-active{
-				background-color: #FFFFFF;
-			}
-			
 		</style>
 	</head>
 
@@ -359,6 +351,9 @@
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {
 							datasource.pageArray=data.data.list
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
 						} else {
 							mui.toast(data.msg);
 						}

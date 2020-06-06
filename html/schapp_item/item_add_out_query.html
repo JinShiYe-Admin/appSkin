@@ -358,7 +358,7 @@
 							mui.toast('请先输入搜索内容')
 						}else{
 							pageIndex=1;
-							this.dataList =[]
+							datasource.dataList =[]
 							getPageDataArray(datasource.inputText)
 						}
 					},
@@ -368,7 +368,7 @@
 			function inputChange(input){
 				if(input.value==''){
 					pageIndex=1;
-					this.dataList =[]
+					datasource.dataList =[]
 					getPageDataArray('');
 				}
 			}

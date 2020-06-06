@@ -108,6 +108,14 @@ var storageKeyName = (function(mod) {
 	mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1281905607';//IOS升级地址
 	
+	//云测 正式包 屏蔽控制台打印
+	['log','warn','info','error'].map(function(item){
+		if(mod.key==1||mod.key==2||mod.key==3){
+			console[item]=console[item].bind(console)
+		}else{
+			console[item]=function(){}
+		}
+	})
 	
 	
 	
