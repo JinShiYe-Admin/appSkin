@@ -247,17 +247,17 @@
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right">
 									<div class="mui-row" style="text-align: left;">
-										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-											<p class="mui-h5 mui-ellipsis">班级:{{model.grd_name}}{{model.cls_name}}</p>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+											<p class="mui-h5 mui-ellipsis">班级:{{model.dorm_name}}{{model.floor_num}}层{{model.room_name}}</p>
 										</div>
-										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
 											<p class="mui-h5 mui-ellipsis">居住性别:{{model.stu_sex_text}}</p>
 										</div>
-										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-											<p class="mui-h5 mui-ellipsis">床位数:{{model.dorm_names}}</p>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+											<p class="mui-h5 mui-ellipsis">床位数:{{model.bed_nums}}</p>
 										</div>
-										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-											<p class="mui-h5 mui-ellipsis">已住人数:{{model.dorm_names}}</p>
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
+											<p class="mui-h5 mui-ellipsis">已住人数:{{model.stu_nums}}</p>
 										</div>
 									</div>
 								</a>
@@ -309,6 +309,7 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
+					build_floor_list:[],//大楼和楼层数组
 					pageArray: [], //界面总数组
 					buildingList: [], //宿舍楼数组
 					floorList: [], //楼层数组
@@ -322,7 +323,7 @@
 						console.log(JSON.stringify(model))
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/stu_dorm/classes_dorm_detail.html", model);
+						utils.mOpenWithData("../../html/stu_dorm/select_dorm_detail.html", model);
 					},
 					showBuilding: function() {
 						var userPicker = new $M.PopPicker();
@@ -335,12 +336,14 @@
 							if (JSON.stringify(items[0]) == '{}') {
 								mui.toast('未选择楼号')
 							} else {
-								datasource.grdValue = items[0]
+								datasource.buildingValue = items[0]
 								events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
+								datasource.floorList = [];
+								datasource.dormList = [];
 								datasource.pageArray = [];
-								getClsList(items[0].value)
+								getFloorList(items[0].value)
 								userPicker.dispose();
 								userPicker = null;
 							}
@@ -357,13 +360,13 @@
 							if (JSON.stringify(items[0]) == '{}') {
 								mui.toast('未选择楼层')
 							} else {
-								datasource.clsValue = items[0]
-								//获取课堂考勤列表
+								datasource.floorValue = items[0]
 								events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
+								datasource.dormList = [];
 								datasource.pageArray = [];
-								getPageDataArray();
+								getDormList(datasource.buildingValue.value,items[0].value);
 								userPicker.dispose();
 								userPicker = null;
 							}
@@ -378,10 +381,9 @@
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							if (JSON.stringify(items[0]) == '{}') {
-								mui.toast('未选择班级')
+								mui.toast('未选择宿舍')
 							} else {
-								datasource.clsValue = items[0]
-								//获取课堂考勤列表
+								datasource.dormValue = items[0]
 								events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
@@ -452,92 +454,91 @@
 				});
 
 				events.showWaiting();
-				//获取数据范围授权：年级
-				getGrdList();
+				getBuildingList();
 			});
-
-			 // 获取数据范围授权：年级
-			 function getGrdList() {
-			 	comData = {
-			 		op_code: 'index',
-			 		get_grd: true,
-			 		all_grd: true,
-			 		index_code: curPage.access.split('#')[1],
-			 	}
-			 	postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
-			 		console.log(JSON.stringify(data))
-			 		if (data.code == 0) {
-			 			let grds = data.data.grd_list;
-			 			let grdList = [];
-			 			grds.map(function(currentValue) {
-			 				let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部年级';
-			 				let obj = {};
-			 				obj.value = currentValue.value;
-			 				obj.text = name;
-			 				grdList.push(obj)
-			 			})
-			 			if (grdList.length > 0) {
-			 				datasource.grdList = grdList;
-			 				datasource.grdValue = grdList[0];
-			 				let grd_code = grds[0].value;
-			 				//获取数据范围授权：班级
-			 				getClsList(grd_code)
-			 			} else {
-			 				events.closeWaiting();
-			 				mui.toast('无数据授权 无法获取年级');
-			 			}
-			 		} else {
-			 			events.closeWaiting();
-			 			mui.toast(data.msg);
-			 		}
-			 	});
-			 }
-			 //获取数据范围授权：班级
-			 function getClsList(grd_code) {
-			 	const params = {
-			 		op_code: 'index',
-			 		grd_code: grd_code ? grd_code : '-1',
-			 		get_cls: true,
-			 		all_cls: true,
-			 		index_code: curPage.access.split('#')[1],
-			 	}
-			 	postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-			 		console.log(JSON.stringify(data))
-			 		if (data.code == 0) {
-			 			let clss = data.data.cls_list;
-			 			let clsList = [];
-			 			clss.map(function(currentValue) {
-			 				let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
-			 				let obj = {};
-			 				obj.value = currentValue.value;
-			 				obj.text = name;
-			 				clsList.push(obj)
-			 			})
-			 
-			 			if (clsList.length > 0) {
-			 				datasource.clsList = clsList;
-			 				datasource.clsValue = clsList[0];
-			 				getPageDataArray();
-			 			} else {
-			 				events.closeWaiting(); 
-			 				mui.toast('无数据授权 无法获取班级');
-			 			}
-			 		} else {
-			 			events.closeWaiting();
-			 			mui.toast(data.msg);
-			 		}
-			 	});
-			 }
+			
+			//获取宿舍楼号和楼层数组
+			function getBuildingList(){
+				comData = {
+					index_code: curPage.access.split('#')[1],
+				} 
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/queryDorm', {}, comData, 2, function(data) {
+					console.log("data: " + JSON.stringify(data));
+					if (data.code == 0) {
+							 let list =data.data.list
+							 if(list.length>0){
+								 datasource.build_floor_list=list
+								 let buildingList=[]
+								 list.map(function(item){
+									 let obj={}
+									 obj.text=item.text,
+									 obj.value=item.value,
+									 buildingList.push(obj)
+								 })
+								 datasource.buildingList=buildingList;
+								 datasource.buildingValue=buildingList[0];
+								 getFloorList(buildingList[0].value)
+							 }else{
+								 mui.toast('无法获取楼号数据');
+								 events.closeWaiting();
+							 }
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			//根据宿舍楼号获取楼层
+			function getFloorList(building){
+				let list=datasource.build_floor_list
+				let floorList=[]
+				list.map(function(item){
+					  if(building==item.value){
+						  let array=item.floor_array
+						  array.map(function(item){
+							  item.text=item.text+'层'
+						  })
+						  floorList=[{text:'全部楼层',value:''}].concat(array)
+					  }
+				})
+				datasource.floorList=floorList
+				datasource.floorValue=floorList[0];
+				console.log("floorList: " + JSON.stringify(floorList));
+				getDormList(building,floorList[0].value)
+			}
+			
+			//根据宿舍楼号、楼层获取宿舍
+			function getDormList(building,floor) {
+				comData = {
+					dorm_name:building,
+					floor_num:floor,
+					index_code: curPage.access.split('#')[1],
+				} 
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dorm/queryRoom', {}, comData, 2, function(data) {
+					console.log("data: " + JSON.stringify(data));
+					if (data.code == 0) {
+							let list=[{text:'全部房间',value:''}].concat(data.data.list)
+						  datasource.dormList=list
+						  datasource.dormValue=list[0];
+						  getPageDataArray()
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
 
 			function getPageDataArray() {
 					comData = {
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
-						grd_code:datasource.grdValue.value,
-						cls_code:datasource.clsValue.value,
+						dorm_name:datasource.buildingValue.value,
+						floor_num:datasource.floorValue.value,
+						room_name:datasource.dormValue.value,
 						index_code: curPage.access.split('#')[1],
 					} 
-					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'classDorm/page', {}, comData, 2, function(data) {
+					postDataEncry(window.storageKeyName.INTERFACE_DORM + 'stuDorm/page', {}, comData, 2, function(data) {
 						events.closeWaiting();
 						console.log("data: " + JSON.stringify(data));
 						if (data.code == 0) {

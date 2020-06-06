@@ -231,14 +231,6 @@
 				position: fixed;
 				z-index: 20;
 			}
-			.mui-table-view.no-line:before,.mui-table-view.no-line:after{
-				height: 0;
-			}
-			
-			.mui-table-view-cell.no-bgc.mui-active{
-				background-color: #FFFFFF;
-			}
-			
 		</style>
 	</head>
 
@@ -357,20 +349,11 @@
 					function(data) {
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
-						datasource.pageArray = [
-							{
-								cls_name:'1092班',
-								grd_name:'一年级',
-								stu_name:'张三',
-								bed_num:'6',
-							},
-							{								cls_name:'1092班',
-								grd_name:'一年级',
-								stu_name:'李四',
-								bed_num:'7',							}
-						]
 						if (data.code == 0) {
-							
+							datasource.pageArray=data.data.list
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
 						} else {
 							mui.toast(data.msg);
 						}
