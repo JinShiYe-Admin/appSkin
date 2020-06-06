@@ -47,7 +47,7 @@ var contrastTime = function(selctTime) {
 }
 
 //获取未读数
-var getUnReadCut = function(access,url, callback) {
+var getUnReadCut = function(access, url, callback) {
 	var personal = store.get(window.storageKeyName.PERSONALINFO);
 	//不需要加密的数据
 	var comData2 = {
@@ -62,13 +62,13 @@ var getUnReadCut = function(access,url, callback) {
 	//获取权限
 	postDataEncry(url, {}, comData2, 0, function(
 		data2) {
-		console.log('获取未读数 '+url+'：' + JSON.stringify(data2));
+		console.log('获取未读数 ' + url + '：' + JSON.stringify(data2));
 		callback(data2);
 	});
 }
 
 //获取按钮权限,3.3:根据选择的年级班级科目查询权限符（前端调用，判断按钮是否显示，供子系统调用）
-var getPermissionByPosition = function(op_code,access, callback) {
+var getPermissionByPosition = function(op_code, access, callback) {
 	var personal = store.get(window.storageKeyName.PERSONALINFO);
 	//不需要加密的数据
 	var comData2 = {
@@ -251,16 +251,17 @@ var jQAjaxPost = function(url, data, callback) {
 		async: true,
 		success: function(success_data) { //请求成功的回调
 			console.log('jQAP-Success11111111:' + url + ',' + JSON.stringify(success_data));
-			if (success_data.code == 6 || success_data.code == 'sup6'|| success_data.code == '0006'|| success_data.code == 'sup_0006') { //令牌过期
-			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
-			var personal = store.get(window.storageKeyName.PERSONALINFO);
-			var tempToken={
-				login_name:personal.userName0,//登录名
-				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
-				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
-				device_type:'1'//登录设备类型，0：WEB、1：APP、2：客户端
-			}
-			console.log('qqq1111111111111111');
+			if (success_data.code == 6 || success_data.code == 'sup6' || success_data.code == '0006' || success_data.code ==
+				'sup_0006') { //令牌过期
+				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				var tempToken = {
+					login_name: personal.userName0, //登录名
+					uuid: publicPar.uuid, //设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+					webid: publicPar.webid, //浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+					device_type: '1' //登录设备类型，0：WEB、1：APP、2：客户端
+				}
+				console.log('qqq1111111111111111');
 				//令牌续订
 				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'token/refresh', {}, tempToken, 2, function(data1) {
 					// console.log('data1:' + JSON.stringify(data1));
@@ -279,10 +280,31 @@ var jQAjaxPost = function(url, data, callback) {
 							data2 = modifyParameter(url, data2);
 							callback(data2);
 						});
-					}else{
+					} else {
 						mui.toast(data1.msg);
 					}
 				});
+			} else if (success_data.code == 'sup_0014') {
+				mui.toast(success_data.msg);
+				//获取个人信息
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
+				utils.setBadgeNumber(0, 0);
+				
+				//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
+				store.remove(window.storageKeyName.PERSONALINFO);
+				plus.webview.open('../../html/login/loginIndex.html','../../html/login/loginIndex.html',{statusbar:{background: "#00CFBD"}});
+				// utils.mOpenWithData("../../html/login/loginIndex.html", {});
+				var curr = plus.webview.currentWebview();
+				var wvs = plus.webview.all();
+				for(var i = 0, len = wvs.length; i < len; i++) {
+					//关闭除login页面外的其他页面
+					if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+						continue;
+					}
+					plus.webview.close(wvs[i]);
+				}
+				curr.close();
 			} else {
 				success_data = modifyParameter(url, success_data);
 				callback(success_data);

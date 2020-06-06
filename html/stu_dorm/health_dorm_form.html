@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-	<!-- 学生宿舍考勤 
+	<!-- 宿舍卫生报表 
 	列表页
 	-->
 	<head>
@@ -14,7 +14,7 @@
 		<style>
 			[v-cloak] {
 				visibility: hidden;
-				display: none !important;
+				display:none !important;
 			}
 			html,
 			body {
@@ -141,14 +141,9 @@
 				margin-top: 1.25rem;
 			}
 			
-			.select{
-				position: fixed;
-				z-index: 2;
-			}
-			
 			.line{
 				background-color: #00CFBD;
-				margin-bottom: 0rem;
+				margin-bottom: 0.3125rem;
 				height: 0.125rem;
 			}
 			.selectDiv{
@@ -216,36 +211,16 @@
 				padding: 0 0 0 5px;
 				color: #666;
 			}
-			
+
 			.mui-dtpicker-header button:last-child {
 			    background-color: #00CFBD;
 				border: #00CFBD;
 			}
 			
-			.action{
-				border: 1px solid #FF9F0E;
-				color: #FF9F0E;
-				font-size: 12px;
-				margin-right: 0.2875rem;
-				padding:0.125rem
+			.select{
+				position: fixed;
+				z-index: 20;
 			}
-			
-			.mui-table-view-cell>a:not(.mui-btn){
-				    white-space: inherit;
-			}
-			
-			.tow-line{
-				overflow: hidden !important;
-				text-overflow: ellipsis !important;
-				display: -webkit-box !important;
-				-webkit-box-orient:vertical !important;
-				-webkit-line-clamp: 2 !important;
-				min-height:22px !important;
-				max-height:45px !important;
-				margin-top: 0.55rem !important;
-				word-break: break-all !important;
-			}
-
 		</style>
 	</head>
 
@@ -253,17 +228,18 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
-			<a @click="add()" class="mui-pull-right" style="font-size: 15px;margin-top: 0px;">统计</a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div class="select">
-					<div v-cloak class="mui-segmented-control" v-cloak>
+					<div class="mui-segmented-control" v-cloak>
 						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span
 							 class="mui-icon mui-icon-arrowdown"></span></a>
-						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span
+						<a v-cloak class="mui-control-item" style="text-align: right;margin: 0;" v-cloak href="javaScript:void(0)" @tap="showBeginDate()"><span>{{begintime}}</span><span
 							 class="mui-icon mui-icon-arrowdown"></span></a>
-						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showStu()"><span>{{stuValue.text}}</span><span
+						<a v-cloak class="mui-control-item" style="width: 2px;" v-cloak href="javaScript:void(0)"><span></span><span
+							 class="">~</span></a>
+						<a v-cloak class="mui-control-item" style="text-align: left;" v-cloak href="javaScript:void(0)" @tap="showEndDate()"><span>{{endtime}}</span><span
 							 class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
@@ -271,24 +247,21 @@
 				<div v-cloak class="mui-scroll" style="margin-top: 40px;padding-bottom: 40px;">
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
-							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
+							<li v-cloak v-for="(model,index) in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right">
-									<div class="mui-table">
-										<div class="mui-table-cell mui-col-xs-11">
-											<p class="tow-line">{{model.grd_name}}{{model.cls_name}}·{{model.stu_name}}</p>
-											<p class="tow-line">{{model.dorm_name}}{{model.floor_num}}层{{model.room_name}}{{model.bed_num}}</p>
-											<div style="margin-top: 0.55rem;">
-												<div class="mui-table-cell mui-col-xs-12">
-													<h5 class="mui-ellipsis">考勤:{{model.item_name}}</h5>
-												</div>
-												<div class="mui-table-cell mui-col-xs-12">
-													<h5 class="mui-ellipsis mui-text-right">{{model.attendance_date}}</h5>
-												</div>
+									<div class="mui-row">
+										<div class="mui-table-cell mui-col-xs-12">
+											<div>
+												<div class="mui-ellipsis" style="float: left;">{{model.grd_name}}{{model.cls_name}}</div>
 											</div>
 										</div>
-										<div class="mui-table-cell mui-col-xs-1">
-											<h5 class="mui-text-right"></h5>
-										</div>
+									</div>
+									<div class="mui-row" style="text-align: left;">
+										<template v-for="item in model.subList">
+											<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-4">
+												<p class="mui-h5 mui-ellipsis">{{item.name}}:{{item.value}} 次</p>
+											</div>
+										</template>
 									</div>
 								</a>
 							</li>
@@ -333,35 +306,25 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '',
-				},
-				methods: {
-					add: function() {
-						let model = {};
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						model.title = curPage.name
-						utils.mOpenWithData("../../html/stu_dorm/attendance_dorm_form.html", model);
-					}
+					titleName: '宿舍卫生报表'
 				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					canDelete: false,
 					pageArray: [], //界面总数组
 					grdList: [], //年级数组
-					clsList: [], //班级数组
-					stuList: [], //学生数组
 					grdValue: {}, //年级选择值
-					clsValue: {}, //班级选择值
-					stuValue: {}, //学生选择值
+					begintime: '', //日期选择值
+					endtime: '', //日期选择值
 				},
 				methods: {
 					clickLi: function(model) {
-						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code;
-						utils.mOpenWithData("../../html/stu_dorm/attendance_dorm_index_detail.html", model);
+						console.log(JSON.stringify(model));
+						model.index_code = curPage.index_code;
+						model.begintime = datasource.begintime;
+						model.endtime = datasource.endtime;
+						utils.mOpenWithData("../../html/stu_dorm/health_dorm_form_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -375,51 +338,7 @@
 								mui.toast('未选择年级')
 							} else {
 								datasource.grdValue = items[0]
-								events.showWaiting();
-								pageIndex = 1;
-								flagRef = 0;
-								datasource.pageArray = [];
-								getClsList(items[0].value)
-								userPicker.dispose();
-								userPicker = null;
-							}
-						});
-					},
-					showCls: function() {
-						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.clsList);
-						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.clsValue.value);
-						}, 100);
-						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							if (JSON.stringify(items[0]) == '{}') {
-								mui.toast('未选择班级')
-							} else {
-								datasource.clsValue = items[0]
-								events.showWaiting();
-								pageIndex = 1;
-								flagRef = 0;
-								datasource.pageArray = [];
-								getStuList(datasource.grdValue.value, items[0].value)
-								userPicker.dispose();
-								userPicker = null;
-							}
-						});
-					},
-					showStu: function() {
-						var userPicker = new $M.PopPicker();
-						console.log("datasource.stuList: " + JSON.stringify(datasource.stuList));
-						userPicker.setData(datasource.stuList);
-						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.stuValue.value);
-						}, 100);
-						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							if (JSON.stringify(items[0]) == '{}') {
-								mui.toast('未选择学生')
-							} else {
-								datasource.stuValue = items[0]
+								//获取学生考勤报表
 								events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
@@ -430,13 +349,60 @@
 							}
 						});
 					},
+					showBeginDate: function() {
+						var datePicker = new $M.DtPicker({
+							value: datasource.begintime,
+							type: "date"
+						});
+						datePicker.show(function(rs) {
+							if (compareTime(rs.text, datasource.endtime) == 1) {
+								mui.toast("开始时间不能晚于结束时间", "cancel");
+								return 0;
+							}
+							datasource.begintime = rs.text
+							events.showWaiting();
+							pageIndex = 1;
+							flagRef = 0;
+							datasource.pageArray = [];
+							getPageDataArray();
+							datePicker.dispose();
+							datePicker = null;
+						});
+					},
+					showEndDate: function() {
+						let myDate = new Date()
+						var year = myDate.getFullYear();
+						var month = myDate.getMonth() + 1;
+						var date = myDate.getDate();
+						let dtObj = {
+							value: datasource.endtime,
+							endYear: year,
+							endMonth: month,
+							endDay: date,
+							type: "date"
+						}
+						var datePicker = new $M.DtPicker(dtObj);
+						datePicker.show(function(rs) {
+							if (compareTime(datasource.begintime, rs.text) == 1) {
+								mui.toast("结束时间不能早当前时间", "cancel");
+								return 0;
+							}
+							datasource.endtime = rs.text
+							events.showWaiting();
+							pageIndex = 1;
+							flagRef = 0;
+							datasource.pageArray = [];
+							getPageDataArray();
+							datePicker.dispose();
+							datePicker = null;
+						});
+					},
 				}
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
-				tempVue.titleName = curPage.name;
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -444,14 +410,6 @@
 					bounce: false,
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
-				});
-
-				window.addEventListener('refreshList', function(data) {
-					events.showWaiting();
-					pageIndex = 1;
-					flagRef = 0;
-					datasource.pageArray = [];
-					getPageDataArray();
 				});
 
 				//上拉下拉注册
@@ -464,7 +422,7 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
-							//1.课堂考勤记录列表
+							//1.学生考勤报表
 							events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
@@ -480,7 +438,7 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								//1.获取课堂考勤记录列表
+								//1.获取学生考勤报表
 								events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
@@ -510,143 +468,66 @@
 					op_code: 'index',
 					get_grd: true,
 					all_grd: true,
-					index_code: curPage.access.split('#')[1],
+					index_code: curPage.index_code,
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						let grds = data.data.grd_list;
 						let grdList = [];
 						grds.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部年级';
 							let obj = {};
 							obj.value = currentValue.value;
-							obj.text = name;
+							obj.text = currentValue.name;
 							grdList.push(obj)
 						})
 						if (grdList.length > 0) {
 							datasource.grdList = grdList;
 							datasource.grdValue = grdList[0];
-							let grd_code = grds[0].value;
-							//获取数据范围授权：班级
-							getClsList(grd_code)
+							// 获取当前日期
+							getCurrentDate();
 						} else {
-							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					}
-				});
-			}
-			//获取数据范围授权：班级
-			function getClsList(grd_code) {
-				const params = {
-					op_code: 'index',
-					grd_code: grd_code ? grd_code : '-1',
-					get_cls: true,
-					all_cls: true,
-					index_code: curPage.access.split('#')[1],
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					console.log(JSON.stringify(data))
-					if (data.code == 0) {
-						let clss = data.data.cls_list;
-						let clsList = [];
-						clss.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
-							let obj = {};
-							obj.value = currentValue.value;
-							obj.text = name;
-							clsList.push(obj)
-						})
-
-						if (clsList.length > 0) {
-							datasource.clsList = clsList;
-							datasource.clsValue = clsList[0];
-							//获取学生数组
-							getStuList(grd_code, clsList[0].value)
-						} else {
-							events.closeWaiting();
-							mui.toast('无数据授权 无法获取班级');
-						}
-					} else {
-						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
 			}
 
-
-			//获取数据范围授权：学生
-			function getStuList(grd_id, cls_id) {
-				const params = {
-					op_code: 'index',
-					grd_code: grd_id,
-					cls_code: cls_id,
-					get_stu: true,
-					all_stu: true,
-					index_code: curPage.access.split('#')[1],
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					console.log(JSON.stringify(data))
-					if (data.code == 0) {
-						let stu = data.data.stu_list;
-						let stuList = [];
-						stu.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部学生';
-							let obj = {};
-							obj.value = currentValue.value;
-							obj.text = name;
-							stuList.push(obj)
-						})
-						if (stuList.length > 0) {
-							datasource.stuList = stuList;
-							datasource.stuValue = stuList[0];
-							getPageDataArray()
-						} else {
-							events.closeWaiting();
-							mui.toast('无数据授权 无法获取学生');
-						}
-
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					}
-				});
-			}
-
+			//获取学生考勤报表数据  
 			function getPageDataArray() {
-				let grd_code = datasource.grdValue.value
-				let cls_code = datasource.clsValue.value
-				let stu_code = datasource.stuValue.value
 				//需要加密的数据
 				comData = {
-					grd_code: grd_code,
-					cls_code: cls_code,
-					stu_code: stu_code,
+					grd_code: datasource.grdValue.value,
+					begintime: datasource.begintime ? datasource.begintime : getCurrentDate(),
+					endtime: datasource.endtime ? datasource.endtime : getCurrentDate(),
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
-					index_code: curPage.access.split('#')[1],
+					index_code: curPage.index_code,
 				}
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dormAttendance/page', {}, comData, 2, function(
-					data) {
-					events.closeWaiting();
-					if (data.code == 0) {
-						if (data.data != null) {
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dormHealth/statistics', {}, comData, 2,
+					function(data) {
+						events.closeWaiting();
+						console.log(JSON.stringify(data))
+						if (data.code == 0) {
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							if (flagRef == 0) { //刷新
-								datasource.pageArray = data.data.list
+								addKqName(data.data.head, data.data.list, function(list) {
+									datasource.pageArray = [].concat(list);
+								})
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
 								mui(".mui-scroll-wrapper").scroll().refresh();
 							} else { //加载更多
 								//合并数组
-								datasource.pageArray = datasource.pageArray.concat(data.data.list);
+								addKqName(data.data.head, data.data.list, function(list) {
+									datasource.pageArray = datasource.pageArray.concat(list);
+								})
 								if (data.data.list.length == 0) {
 									mui.toast('已加载全部');
 								}
@@ -655,14 +536,61 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						} else {
-							mui.toast('暂无数据');
-							mui(".mui-pull-loading")[0].innerHTML = "";
+							mui.toast(data.msg);
 						}
-					} else {
-						mui.toast(data.msg);
-					}
-				});
+					});
+				// }
 			};
+
+			// 给list中的考勤类型赋值名字
+			function addKqName(qaList, listS, callback) {
+				listS.map(function(currValue) {
+					console.log("currValue: " + JSON.stringify(currValue));
+					let list = []
+					qaList.map(function(currValue2) {
+						let key = currValue2.key;
+						if ("" + currValue[key]) {
+							let obj = {}
+							obj.name = currValue2.text;
+							obj.value = currValue[key];
+							list.push(obj)
+						}
+					})
+					currValue.subList = list;
+				})
+				console.log("list: " + JSON.stringify(listS));
+				callback(listS)
+			}
+
+			// 获取当前日期
+			function getCurrentDate() {
+				var myDate = new Date()
+				var year = myDate.getFullYear();
+				var month = myDate.getMonth() + 1;
+				var date = myDate.getDate();
+				var now = year + '-' + conver(month) + "-" + conver(date);
+				datasource.begintime = now;
+				datasource.endtime = now;
+				getPageDataArray();
+			}
+
+			function conver(s) {
+				return s < 10 ? '0' + s : s;
+			}
+
+			//判断当前选择时间是否小于是指定时间
+			function compareTime(beginTime, endTime) {
+				beginTime = beginTime.replace(/-/g, '');
+				beginTime = beginTime.replace(/ /g, '');
+				beginTime = beginTime.replace(/:/g, '');
+				endTime = endTime.replace(/-/g, '');
+				endTime = endTime.replace(/ /g, '');
+				endTime = endTime.replace(/:/g, '');
+				if (parseFloat(beginTime) <= parseFloat(endTime)) {
+					return 0;
+				}
+				return 1;
+			}
 		</script>
 	</body>
 
