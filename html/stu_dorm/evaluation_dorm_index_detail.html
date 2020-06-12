@@ -18,11 +18,11 @@
 			}
 			html,
 			body{
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			
 			.mui-content{
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			
 			.mui-bar~.mui-content .mui-fullscreen {
@@ -265,29 +265,29 @@
 							<div style="margin-top: 0.3125rem;">
 								<div class="cellKey">班级：<span class="cellValue">{{grdCls}}</span></div>
 								<div class="cellKey">时间段：<span class="cellValue">{{timeSum}}</span></div>
+								<div class="cellKey">宿舍总得分：<span class="cellValue">{{total_score}}</span></div>
 							</div>
 						</li>
 					</ul>
-					<div v-for="itemModel in dataArray">
-						<div class="double-line"></div>
-						<ul v-cloak class="mui-table-view no-line">
-							<li v-cloak class="mui-table-view-cell no-bgc">
-								<div class="mui-row">
-									<div class="mui-table-cell mui-col-xs-12">
-										<div class="mui-ellipsis" style="float: left;color: #000000;">{{itemModel.name}}({{itemModel.list.length}}次)</div>
-									</div>
+					<div class="double-line"></div>
+					<ul v-cloak class="mui-table-view no-line">
+						<li v-cloak v-for="model in dataArray" class="mui-table-view-cell no-bgc">
+							<div class="mui-row" style="text-align: left;">
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">房间:{{model.dorm_name}}{{model.floor_num}}层{{model.room_name}}房间</p>
 								</div>
-							</li>
-							<li v-cloak v-for="model in itemModel.list" class="mui-table-view-cell no-bgc">
-								<div class="mui-row" style="text-align: left;">
-									<div class="cellKey">姓名：<span class="cellValue">{{model.stu_name}}</span></div>
-									<div class="cellKey">床位：<span class="cellValue">{{model.dorm_name}}{{model.floor_num}}层{{model.room_name}}{{model.bed_num}}床位</span></div>
-									<div class="cellKey">说明：<span class="cellValue">{{model.remark}}</span></div>
-									<div class="cellKey">日期：<span class="cellValue">{{model.create_time}}</span></div>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">居住性别:{{model.stu_sex_text}}</p>
 								</div>
-							</li>
-						</ul>
-					</div>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">考评得分:{{model.total_score}}</p>
+								</div>
+								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">称号:{{model.grade_name}}</p>
+								</div>
+							</div>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -329,6 +329,7 @@
 				data: {
 					grdCls: '', //
 					timeSum: '', //
+					total_score: '',
 					dataArray: []
 				},
 				methods: {}
@@ -339,11 +340,7 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				datasource.grdCls = curPage.grd_name + curPage.cls_name;
 				datasource.timeSum = curPage.begintime + '~' + curPage.endtime;
-				for (var i = 0; i < curPage.subList.length; i++) {
-					var tempA = curPage.subList[i];
-					tempA.list = [];
-					datasource.dataArray.push(tempA);
-				}
+				datasource.total_score = curPage.total_score;
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -366,24 +363,15 @@
 					endtime: curPage.endtime,
 					index_code: curPage.index_code,
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dormHealth/statisticsDetail', {}, comData, 2,function(data) {
-						events.closeWaiting();
-						if (data.code == 0) {
-							for (var i = 0; i < data.data.list.length; i++) {
-								var tempD = data.data.list[i];
-								var tempS = tempD.key.split('_')[1];
-								for (var a = 0; a < datasource.dataArray.length; a++) {
-									var tempH = datasource.dataArray[a];
-									if (tempS == tempH.name) {
-										tempH.list = [].concat(tempD.list);
-									}
-								}
-							}
-							console.log('datasource.dataArray:'+JSON.stringify(datasource.dataArray));
-						} else {
-							mui.toast(data.msg);
-						}
-					});
+				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dormEvaluation/detail', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						datasource.dataArray = [].concat(data.data.list);
+						console.log('datasource.dataArray:' + JSON.stringify(datasource.dataArray));
+					} else {
+						mui.toast(data.msg);
+					}
+				});
 			};
 		</script>
 	</body>

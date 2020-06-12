@@ -245,14 +245,15 @@
 								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-5">
 									<p class="mui-h5 mui-ellipsis">居住性别:{{curPage.stu_sex_text}}</p>
 								</div>
-								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
+								<div v-if="grdClsFlag>0" style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-7">
 									<p class="mui-h5 mui-ellipsis">班级:{{curPage.grd_name}}{{curPage.cls_name}}</p>
 								</div>
 							</div>
 						</li>
 					</ul>
-					<div v-if="pageArray.length>0" class="double-line"></div>
+					<!-- <div v-if="pageArray.length>0" class="double-line"></div> -->
 					<template v-for="item in pageArray">
+						<div class="double-line"></div>
 						<ul v-cloak class="mui-table-view no-line">
 							<li v-cloak class="mui-table-view-cell no-bgc">
 								<div class="mui-row">
@@ -266,7 +267,7 @@
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
 										<p class="mui-h5 mui-ellipsis">房间:{{model.room_name}}</p>
 									</div>
-									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
+									<div v-if="grdClsFlag<2" style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
 										<p class="mui-h5 mui-ellipsis">分配班级:{{model.cls_name}}</p>
 									</div>
 									<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
@@ -321,6 +322,8 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
+					grdClsStr:'',
+					grdClsFlag:0,//0不显示，1具体年级全部班级，2具体年级具体班级
 					curPage:'',
 					pageArray: [], //界面总数组
 				},
@@ -332,7 +335,19 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName ='空床查询详情';
-				datasource.curPage=curPage
+				datasource.curPage=curPage;
+				if(curPage.grd_code == '-1'&&curPage.cls_code == '-1'){
+					datasource.grdClsFlag = 0;
+					datasource.grdClsStr = 0;
+				}
+				if(curPage.grd_code != '-1'&&curPage.cls_code == '-1'){
+					datasource.grdClsFlag = 1;
+					datasource.grdClsStr = curPage.grd_name+curPage.cls_name;
+				}
+				if(curPage.grd_code != '-1'&&curPage.cls_code != '-1'){
+					datasource.grdClsFlag = 2;
+					datasource.grdClsStr = curPage.grd_name+curPage.cls_name;
+				}
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({

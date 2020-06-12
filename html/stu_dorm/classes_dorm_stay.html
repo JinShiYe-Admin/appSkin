@@ -18,11 +18,11 @@
 			}
 			html,
 			body{
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			
 			.mui-content{
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			
 			.mui-bar~.mui-content .mui-fullscreen {
@@ -245,11 +245,17 @@
 					<ul v-cloak class="mui-table-view no-line">
 						<li v-cloak class="mui-table-view-cell no-bgc">
 							<div class="mui-row">
-								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
+								<div style="margin-top: 0.3125rem;text-align: left;" class="mui-col-xs-6">
 									<p class="mui-h5 mui-ellipsis">班级:{{name}}</p>
 								</div>
-								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
-									<p class="mui-h5 mui-ellipsis">居住性别:{{sex}}</p>
+								<div style="margin-top: 0.3125rem;text-align: left;" class="mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">居住性别:{{stu_sex_text}}</p>
+								</div>
+								<div style="margin-top: 0.3125rem;text-align: left;" class="mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">床位数:{{bed_nums}}</p>
+								</div>
+								<div style="margin-top: 0.3125rem;text-align: left;" class="mui-col-xs-6">
+									<p class="mui-h5 mui-ellipsis">已住数:{{stu_nums}}</p>
 								</div>
 							</div>
 						</li>
@@ -307,7 +313,9 @@
 				el: "#datasource",
 				data: {
 					name:'',
-					sex:'',
+					stu_sex_text:'',
+					bed_nums:'',
+					stu_nums:'',
 					pageArray:[]
 				},
 				methods: {
@@ -318,8 +326,10 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('6666:' + JSON.stringify(curPage));
 				tempVue.titleName = '班级宿舍入住情况';
-				datasource.name=curPage.grd_name+curPage.cls_name
-				datasource.sex=curPage.stu_sex_text
+				datasource.name=curPage.grd_name+curPage.cls_name;
+				datasource.stu_sex_text=curPage.stu_sex_text;
+				datasource.bed_nums=curPage.bed_nums;
+				datasource.stu_nums=curPage.stu_nums;
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
@@ -336,12 +346,12 @@
 
 			function getPageDataArray() {
 				comData = {
-					page_size:1
-					page_number:10000,
+					page_size:999,
+					page_number:1,
 					grd_code:curPage.grd_code,
 					cls_code:curPage.cls_code,
-					dorm_name:curPage.stu_sex,
-					floor_num:curPage.floor,
+					dorm_name:curPage.dorm_name,
+					floor_num:curPage.floor_num,
 					room_name:curPage.room_name,
 					index_code: curPage.index_code,
 				}
@@ -352,7 +362,7 @@
 						if (data.code == 0) {
 							datasource.pageArray=data.data.list
 							if (data.data.list.length == 0) {
-								mui.toast('暂无数据');
+								mui.toast('暂无入住人员');
 							}
 						} else {
 							mui.toast(data.msg);

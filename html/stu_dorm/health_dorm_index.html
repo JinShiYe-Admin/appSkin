@@ -399,35 +399,12 @@
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
-								getStuList(datasource.grdValue.value, items[0].value)
-								userPicker.dispose();
-								userPicker = null;
-							}
-						});
-					},
-					showStu: function() {
-						var userPicker = new $M.PopPicker();
-						console.log("datasource.stuList: " + JSON.stringify(datasource.stuList));
-						userPicker.setData(datasource.stuList);
-						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.stuValue.value);
-						}, 100);
-						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							if (JSON.stringify(items[0]) == '{}') {
-								mui.toast('未选择学生')
-							} else {
-								datasource.stuValue = items[0]
-								events.showWaiting();
-								pageIndex = 1;
-								flagRef = 0;
-								datasource.pageArray = [];
 								getPageDataArray();
 								userPicker.dispose();
 								userPicker = null;
 							}
 						});
-					},
+					}
 				}
 			});
 

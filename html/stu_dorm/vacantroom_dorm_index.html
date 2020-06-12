@@ -271,7 +271,7 @@
 								<a class="mui-navigate-right">
 									<div class="mui-row" style="text-align: left;">
 										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
-											<p class="mui-h5 mui-ellipsis">楼房:{{model.dorm_name}}</p>
+											<p class="mui-h5 mui-ellipsis">楼房:{{model.dorm_name}}{{model.floor_num}}层</p>
 										</div>
 										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
 											<p class="mui-h5 mui-ellipsis">居住性别:{{model.stu_sex_text}}</p>
@@ -391,7 +391,7 @@
 								flagRef = 0;
 								datasource.dormList = [];
 								datasource.pageArray = [];
-								getDormList(datasource.buildingValue.value,items[0].value);
+								getPageDataArray();
 								userPicker.dispose();
 								userPicker = null;
 							}

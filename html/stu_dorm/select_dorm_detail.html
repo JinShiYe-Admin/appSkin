@@ -258,10 +258,10 @@
 						<li v-cloak v-for="model in pageArray" class="mui-table-view-cell no-bgc">
 							<div class="mui-row" style="text-align: left;">
 								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-									<p class="mui-h5 mui-ellipsis">姓名:&emsp;&emsp;{{model.grd_name}}{{model.cls_name}}{{model.stu_name}}</p>
+									<p class="mui-h5 mui-ellipsis">姓名:{{model.grd_name}}{{model.cls_name}}{{model.stu_name}}</p>
 								</div>
 								<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
-									<p class="mui-h5 mui-ellipsis">床位号:&emsp;{{model.bed_num}}</p>
+									<p class="mui-h5 mui-ellipsis">床位号:{{model.bed_num}}</p>
 								</div>
 							</div>
 						</li>
@@ -347,7 +347,7 @@
 						if (data.code == 0) {
 							datasource.pageArray=data.data.list;
 							if (data.data.list.length == 0) {
-								mui.toast('暂无数据');
+								mui.toast('暂无入住人员');
 							}
 						}
 					});

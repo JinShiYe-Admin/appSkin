@@ -18,11 +18,11 @@
 			}
 			html,
 			body{
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			
 			.mui-content{
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			
 			.mui-bar~.mui-content .mui-fullscreen {
@@ -245,10 +245,10 @@
 					<ul v-cloak class="mui-table-view no-line">
 						<li v-cloak class="mui-table-view-cell no-bgc">
 							<div class="mui-row">
-								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
+								<div style="margin-top: 0.3125rem;text-align: left;" class="mui-col-xs-6">
 									<p class="mui-h5 mui-ellipsis">班级:{{name}}</p>
 								</div>
-								<div style="margin-top: 0.3125rem;text-align: center;" class="mui-col-xs-6">
+								<div style="margin-top: 0.3125rem;text-align: left;" class="mui-col-xs-6">
 									<p class="mui-h5 mui-ellipsis">居住性别:{{sex}}</p>
 								</div>
 							</div>
@@ -267,7 +267,7 @@
 							<li v-cloak v-for="item in model.list" class="mui-table-view-cell no-bgc" @tap="clickLi(model,item)">
 								<a class="mui-navigate-right">
 									<div class="mui-row" style="text-align: left;">
-										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
+										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-12">
 											<p class="mui-h5 mui-ellipsis">房间号:{{item.room_name}}</p>
 										</div>
 										<div style="margin-top: 0.3125rem;" class="mui-table-cell-1 mui-col-xs-6">
@@ -331,7 +331,9 @@
 					clickLi: function(model,item) {
 						item.grd_code=curPage.grd_code;
 						item.cls_code=curPage.cls_code;
-						item.stu_sex=curPage.stu_sex; 
+						item.grd_name=curPage.grd_name;
+						item.cls_name=curPage.cls_name;
+						item.stu_sex_text=curPage.stu_sex_text; 
 						item.floor = model.floor;
 						item.index_code = curPage.index_code;
 						utils.mOpenWithData("../../html/stu_dorm/classes_dorm_stay.html", item);
@@ -361,8 +363,8 @@
 
 			function getPageDataArray() {
 				comData = {
-					page_size:1,
-					page_number:10000,
+					page_size:999,
+					page_number:1,
 					grd_code:curPage.grd_code,
 					cls_code:curPage.cls_code,
 					stu_sex:curPage.stu_sex,

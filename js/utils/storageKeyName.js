@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 2; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
+	mod.key = 3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -60,7 +60,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生评语（阮)
-			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
+			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
 			break;
 		case 4: //云测
 			mod.PLATFORMCODE = 'PT0002'; //平台代码

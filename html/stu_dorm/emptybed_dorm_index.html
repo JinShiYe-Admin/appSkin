@@ -349,11 +349,11 @@
 						model.grd_name = datasource.grdValue.text;
 						model.cls_name = datasource.clsValue.text;
 						console.log("clsValue: " + JSON.stringify(datasource.clsValue));
-						if(datasource.clsValue.value=='-1'){
+						// if(datasource.clsValue.value=='-1'){
 							utils.mOpenWithData("../../html/stu_dorm/emptybed_dorm_all_class_detail.html", model);
-						}else{
-							utils.mOpenWithData("../../html/stu_dorm/emptybed_dorm_class_detail.html", model);
-						}
+						// }else{
+						// 	utils.mOpenWithData("../../html/stu_dorm/emptybed_dorm_class_detail.html", model);
+						// }
 						
 					},
 					showGrd: function() {
