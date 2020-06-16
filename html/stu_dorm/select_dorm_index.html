@@ -497,7 +497,9 @@
 					  if(building==item.value){
 						  let array=item.floor_array
 						  array.map(function(item){
-							  item.text=item.text+'层'
+							  if((item.text+'').indexOf('层')==-1){
+								  item.text=item.text+'层'
+							  }
 						  })
 						  floorList=[{text:'全部楼层',value:''}].concat(array)
 					  }

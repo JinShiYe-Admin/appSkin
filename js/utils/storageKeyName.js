@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
+	mod.key = 4; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -58,8 +58,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_WORK = 'http://139.129.252.49:8180/stukqsubapi/attendance/';//学生考勤系统接口(阮)
 			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/notesubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/attendsubapi/sub/api/';//教师考勤（孔)
-			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生行为（阮) 
-			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/';//学生评语（阮)
+			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/behavior/';//学生行为（阮) 
+			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
 			break;
 		case 4: //云测
@@ -77,9 +77,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_WORK = 'http://nwifapp.jiaobaowang.net/stukqsubapi/attendance/';//学生考勤系统接口(阮)
 			mod.INTERFACE_PROGRAMME = 'http://nwifapp.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://nwifapp.jiaobaowang.net/tecgpskqsubapi/sub/api/';//教师考勤（孔)
-			mod.INTERFACE_STUXWSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/';//学生行为（阮) 
-			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/';//学生评语（阮)
-			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
+			mod.INTERFACE_STUXWSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/behavior/';//学生行为（阮) 
+			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/comment/';//学生评语（阮)
+			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			break;
 		case 5://正式
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
@@ -96,8 +96,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_WORK = 'http://apps.108800.com/stukqsubapi/attendance/';//学生考勤系统接口(阮)
 			mod.INTERFACE_PROGRAMME = 'http://apps.108800.com/tecrcsubapi/sub/api/';//日程（孔)
 			mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//教师考勤（孔)
-			mod.INTERFACE_STUXWSUB = 'http://apps.108800.com/stuxwsubapi/';//学生行为（阮) 
-			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/';//学生评语（阮)
+			mod.INTERFACE_STUXWSUB = 'http://apps.108800.com/stuxwsubapi/behavior/';//学生行为（阮) 
+			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
 			break;
 		default:
@@ -108,9 +108,9 @@ var storageKeyName = (function(mod) {
 	mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1281905607';//IOS升级地址
 	
-	//云测 正式包 屏蔽控制台打印
+	//正式包 屏蔽控制台打印
 	['log','warn','info','error'].map(function(item){
-		if(mod.key==1||mod.key==2||mod.key==3){
+		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4){
 			console[item]=console[item].bind(console)
 		}else{
 			console[item]=function(){}
