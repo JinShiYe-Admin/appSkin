@@ -253,7 +253,8 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
-			<a @click="add()" class="mui-pull-right" style="font-size: 15px;margin-top: 0px;">统计</a>
+			<a v-if="ADD" @click="add()" class="mui-pull-right"><span class="mui-icon mui-icon-plusempty" style="font-size: 27px;font-weight: 600;"></span></a>
+			<a @click="form()" class="mui-pull-right"><span class="mui-icon mui-icon-list" style="font-size: 22px;margin:5px 3px 0 0 ;"></span></a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
@@ -332,14 +333,22 @@
 				el: "#tempVue",
 				data: {
 					titleName: '',
+					ADD:false,
 				},
 				methods: {
-					add: function() {
+					form: function() {
 						let model = {};
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
 						model.title = curPage.name
 						utils.mOpenWithData("../../html/stu_dorm/health_dorm_form.html", model);
+					},
+					add:function(){
+						let model = {};
+						let index_code = curPage.access.split('#')[1]
+						model.index_code = index_code;
+						model.title = curPage.name
+						utils.mOpenWithData("../../html/stu_dorm/health_dorm_add.html", model);
 					}
 				}
 			});
@@ -475,6 +484,18 @@
 				});
 
 				events.showWaiting();
+				
+				// 获取权限
+				getPermissionByPosition('add', curPage.access, function(data) {
+					console.log('getPermissionByPosition:' + JSON.stringify(data));
+					if (data.code == 0) {
+						let result =data.data.result.split(",")
+						if(result[0]==1){
+							tempVue.ADD = true;
+						}
+					}
+				});
+				
 				//获取数据范围授权：年级
 				getGrdList();
 			});

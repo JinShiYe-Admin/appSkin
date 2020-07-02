@@ -9,5 +9,5 @@ schapp_work|学生考勤|Liu|Ruan(广西)
 stu_behavior|学生行为|Liu|Ruan(广西)
 teachercAttendance|教师考勤|Zhao|Kong
 stu_comment|学生评语|Liu|Ruan(广西)
-stu_dorm|学生宿舍|Liu|Ruan(广西)
+stu_dorm|学生宿舍|Liu,Zhao|Ruan(广西)
 interaction|家校互动||Gu(广西)

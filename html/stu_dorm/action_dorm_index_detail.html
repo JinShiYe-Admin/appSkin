@@ -295,6 +295,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
+			<a v-if="DELETE" @click="Delete()" class="mui-pull-right" style="font-size: 0.875rem">删除</a>
 		</header>
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
@@ -408,6 +409,35 @@
 				el: "#tempVue",
 				data: {
 					titleName: '行为详情',
+					DELETE:false,
+				},
+				methods:{
+					Delete:function(){
+						var btnArray = ['是', '否'];
+						mui.confirm('确定要删除该内容吗？', '提示', btnArray, function(e) {
+							console.log(e.index)
+							if (e.index == 0) {
+								events.showWaiting();
+								comData = {
+									id: curPage.id,
+									index_code: curPage.index_code,
+								}
+								postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dormBehavior/delete', {}, comData, 2, function(data) {
+									console.log(JSON.stringify(data))
+									events.closeWaiting();
+									if (data.code == 0) {
+										mui.toast('删除成功');
+										 setTimeout(function(){
+										 	 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+										 	 mui.back()
+										 },300)
+									} else {
+										mui.toast(data.msg);
+									}
+								});
+							}
+						})
+					}
 				}
 			});
 			var datasource = new Vue({
@@ -421,6 +451,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log(JSON.stringify(curPage));
 				datasource.formData = curPage;
+				tempVue.DELETE =curPage.delete==1;
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
