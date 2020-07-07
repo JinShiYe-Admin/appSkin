@@ -306,7 +306,7 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '宿舍卫生报表'
+					titleName: '宿舍考评报表'
 				}
 			});
 			var datasource = new Vue({
@@ -565,12 +565,18 @@
 			// 获取当前日期
 			function getCurrentDate() {
 				var myDate = new Date()
-				var year = myDate.getFullYear();
-				var month = myDate.getMonth() + 1;
-				var date = myDate.getDate();
-				var now = year + '-' + conver(month) + "-" + conver(date);
-				datasource.begintime = now;
-				datasource.endtime = now;
+				var nyear = myDate.getFullYear();
+				var nmonth = myDate.getMonth() + 1;
+				var ndate = myDate.getDate();
+				var end = nyear + '-' + conver(nmonth) + "-" + conver(ndate);
+				
+				myDate.setDate(myDate.getDate()-7);
+				var byear = myDate.getFullYear();
+				var bmonth = myDate.getMonth() + 1;
+				var bdate = myDate.getDate();
+				var begin = byear + '-' + conver(bmonth) + "-" + conver(bdate);
+				datasource.begintime = begin
+				datasource.endtime = end;
 				getPageDataArray();
 			}
 

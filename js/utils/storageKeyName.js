@@ -2,11 +2,11 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
+	mod.key = 3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
 	
 	switch(mod.key) {
 		case 1: //山东开发
-			mod.PLATFORMCODE = 'PT0001'; //平台代码
+			mod.PLATFORMCODE = 'PT0002'; //平台代码
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用

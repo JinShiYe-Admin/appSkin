@@ -284,7 +284,7 @@ var jQAjaxPost = function(url, data, callback) {
 						mui.toast(data1.msg);
 					}
 				});
-			} else if (success_data.code == 'sup_0014') {
+			} else if (success_data.code == 'sup_0015') {
 				mui.toast(success_data.msg);
 				//获取个人信息
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
@@ -297,14 +297,19 @@ var jQAjaxPost = function(url, data, callback) {
 				// utils.mOpenWithData("../../html/login/loginIndex.html", {});
 				var curr = plus.webview.currentWebview();
 				var wvs = plus.webview.all();
-				for(var i = 0, len = wvs.length; i < len; i++) {
-					//关闭除login页面外的其他页面
-					if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
-						continue;
+				try{
+					for(var i = 0, len = wvs.length; i < len; i++) {
+						//关闭除login页面外的其他页面
+						if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+							continue;
+						}
+						plus.webview.close(wvs[i]);
 					}
-					plus.webview.close(wvs[i]);
+				}catch(e){
+					console.log(e)
 				}
 				curr.close();
+				events.closeWaiting();
 			} else {
 				success_data = modifyParameter(url, success_data);
 				callback(success_data);
