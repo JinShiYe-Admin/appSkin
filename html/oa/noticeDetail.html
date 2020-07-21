@@ -207,7 +207,7 @@
 									index_code: curPage.access.split('#')[1],
 									op_code: 'index'
 								}
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/setNoticeUndo', {}, comData, 2,
+								postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/doSetNoticeUndo', {}, comData, 2,
 									function(data) {
 										if (data.code == 0 && data.data.Result == 1) {
 											mui.toast("成功");
@@ -247,10 +247,10 @@
 							}
 							var url = '';
 							if (curPage.flag == 1) { //我发送的
-								url = window.storageKeyName.INTERFACE_OA + 'notice/setSendNoticeTag';
+								url = window.storageKeyName.INTERFACE_OA + 'notice/doSetSendNoticeTag';
 							} else { //接收的
 								comData.receiveManId = personal.user_code; //阅读人ID
-								url = window.storageKeyName.INTERFACE_OA + 'notice/setReceiveNoticeTag';
+								url = window.storageKeyName.INTERFACE_OA + 'notice/doSetReceiveNoticeTag';
 							}
 							postDataEncry(url, {}, comData, 2, function(data) {
 								events.closeWaiting();
@@ -328,7 +328,7 @@
 									op_code: 'index'
 								}
 								//9.阅读通知
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/setNoticeRead', {}, comData1, 2,
+								postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/doSetNoticeRead', {}, comData1, 2,
 									function(data) {
 
 									});

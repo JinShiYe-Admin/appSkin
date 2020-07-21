@@ -227,7 +227,7 @@
 									index_code: curPage.access.split('#')[1],
 									op_code: 'index'
 								}
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApplyUndo', {}, comData, 2,
+								postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/doSetAffairApplyUndo', {}, comData, 2,
 									function(data) {
 										events.closeWaiting();
 										if (data.code == 0 && data.data.Result == 1) {
@@ -268,10 +268,10 @@
 							}
 							var url = '';
 							if (curPage.flag == 1) { //我发送的
-								url = window.storageKeyName.INTERFACE_OA + 'approve/setSendApplyTag';
+								url = window.storageKeyName.INTERFACE_OA + 'approve/doSetSendApplyTag';
 							} else { //接收的
 								comData.receiveManId = personal.user_code; //阅读人ID
-								url = window.storageKeyName.INTERFACE_OA + 'approve/setReceiveApplyTag';
+								url = window.storageKeyName.INTERFACE_OA + 'approve/doSetReceiveApplyTag';
 							}
 							//
 							postDataEncry(url, {}, comData, 2,
@@ -314,7 +314,7 @@
 							op_code: 'index'
 						}
 						//18.审批事务及文件申请
-						postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/setAffairApprove', {}, tempData1, 2, function(data) {
+						postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/doSetAffairApprove', {}, tempData1, 2, function(data) {
 							events.closeWaiting();
 							if (data.code == 0) {
 								noticeDetailData.content = '';

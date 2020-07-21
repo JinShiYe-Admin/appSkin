@@ -413,7 +413,7 @@
 										index_code: curPage.access.split('#')[1],
 										op_code: 'index'
 									}
-									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUndo', {}, comData, 2,
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetInfoCollectUndo', {}, comData, 2,
 										function(data) {
 											if (data.code == 0 && data.data.Result == 1) {
 												mui.toast("成功");
@@ -433,7 +433,7 @@
 										index_code: curPage.access.split('#')[1],
 										op_code: 'index'
 									}
-									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectClose', {}, comData, 2,
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetInfoCollectClose', {}, comData, 2,
 										function(data) {
 											if (data.code == 0 && data.data.Result == 1) {
 												mui.toast("成功");
@@ -482,10 +482,10 @@
 							}
 							var url = '';
 							if (curPage.flag == 1) { //我发送的
-								url = window.storageKeyName.INTERFACE_OA + 'infoCollect/setSendInfoCollectTag';
+								url = window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetSendInfoCollectTag';
 							} else { //接收的
 								comData.receiveManId = personal.user_code; //阅读人ID
-								url = window.storageKeyName.INTERFACE_OA + 'infoCollect/setReceiveInfoCollectTag';
+								url = window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetReceiveInfoCollectTag';
 							}
 							//67.修改发送的信息收集标签
 							postDataEncry(url, {}, comData, 2, function(data) {
@@ -510,7 +510,7 @@
 								op_code: 'index'
 							}
 							//68.修改接收的信息收集标签
-							postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setReceiveInfoCollectTag', {}, comData, 2,
+							postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetReceiveInfoCollectTag', {}, comData, 2,
 								function(data) {
 									console.log('68.修改接收的信息收集标签:' + JSON.stringify(data));
 									if (data.code == 0 && data.data.Result == 1) {
@@ -567,7 +567,7 @@
 									op_code: 'index'
 								}
 								//66.打开/关闭某人信息收集
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUploadOper', {}, tempData1,
+								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetInfoCollectUploadOper', {}, tempData1,
 									2,
 									function(data) {
 										events.closeWaiting();
@@ -594,7 +594,7 @@
 									op_code: 'index'
 								}
 								//65.退回信息上交
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoUploadBack', {}, tempData1,
+								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetInfoUploadBack', {}, tempData1,
 									2,
 									function(data) {
 										events.closeWaiting();
@@ -631,7 +631,7 @@
 					op_code: 'index'
 				}
 				//28.回复通知公告
-				postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/setInfoCollectUpload', {}, tempData1, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetInfoCollectUpload', {}, tempData1, 2,
 					function(data) {
 						encNameList = [];
 						events.closeWaiting();
