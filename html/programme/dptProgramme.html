@@ -325,11 +325,11 @@
 							userPicker.pickers[0].setSelectedValue(datasource.dptValue.value);
 						}, 100);
 						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
 							if(JSON.stringify(items[0]) =='{}'){
 								mui.toast('未选择部门')
 							}else{
 								datasource.dptValue = items[0];
+								console.log(JSON.stringify(datasource.dptValue))
 								if (datasource.dptValue.userArray.length>0) {
 									datasource.userList=datasource.dptValue.userArray;
 									datasource.userValue=datasource.userList[0];
@@ -528,16 +528,29 @@
 			function getPageDataArray() {
 				console.log('getPageDataArray');
 				events.showWaiting();
-					// 
+					let user_codes=[]
+					let user_names=[]
+					if(datasource.userValue.user_code=='0'){
+						datasource.userList.map(function(item){
+							if(item.user_code=='0'){}else{
+								user_codes.push(item.user_code)
+								user_names.push(item.user_name)
+							}
+						})
+					}else{
+						user_codes.push(datasource.userValue.user_code)
+						user_names.push(datasource.userValue.user_name)
+					}
 					comData = {
 						dpt_code: datasource.dptValue.dpt_code,//部门Code
 						dpt_name: datasource.dptValue.dpt_name,//部门名称
-						user_code: datasource.userValue.user_code,//用户Code
-						user_name: datasource.userValue.user_name,//用户名称
+						user_codes:user_codes.join(","),//用户Code
+						user_names:user_names.join(","),//用户名称
 						begin_time: datasource.dateValue, //查询开始时间
 						end_time: datasource.dateValue, //查询结束时间
 						index_code: curPage.access.split('#')[1],
 					}
+					console.log("comData: " + JSON.stringify(comData));
 					// 5.获取部门日程列表
 					postDataEncry(window.storageKeyName.INTERFACE_PROGRAMME + 'note/getDptNotes', {}, comData, 2, function(data) {
 						console.log(JSON.stringify(data))

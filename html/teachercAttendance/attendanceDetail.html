@@ -358,6 +358,7 @@
 				data: {
 					pageArray: [], //界面总数组
 					curPage:{},
+					user_codes:'',
 				},
 				methods: {
 					clickAttendPic:function(tempUrl){
@@ -379,7 +380,35 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-				getPageDataArray();
+				
+				comData = {
+					dpt_codes:datasource.curPage.dpt_code,
+					page_size:10000,
+					page_number:-1,
+					index_code: datasource.curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUser', {}, comData, 2, function(data) {
+					if (data.code == 0) {
+						let list = data.data.list;
+						if(list.length>0 ){
+							let codes=[]
+							for (var i = 0; i < list.length; i++) {
+								codes.push(list[i].user_code);
+							}
+							datasource.user_codes=codes.join(",");
+							getPageDataArray();
+						}else{
+							events.closeWaiting();
+							mui.toast('无法获取部门人员');
+							setTimeout(function() {
+								mui.back()
+							}, 1000);
+						}
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
 			});
 
 			//14.获取某部门某日考勤明细列表 
@@ -390,6 +419,7 @@
 					comData = {
 						dpt_code: datasource.curPage.dpt_code,//部门Code
 						attend_item: datasource.curPage.attend_item,//
+						user_codes:datasource.user_codes,
 						begin_time: datasource.curPage.dateValue.replace(/-/g,''),//查询开始时间
 						end_time: datasource.curPage.dateValue.replace(/-/g,''),//查询结束时间
 						index_code: datasource.curPage.index_code,

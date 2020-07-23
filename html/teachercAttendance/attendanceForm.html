@@ -312,6 +312,7 @@
 					pageArray: [], //界面总数组
 					dptList: [], //部门数组
 					userList: [], //选择部门对应的人员数组 
+					user_codes:'',
 					dptValue: {}, //部门选择值
 					userValue: {}, //人员选择值
 					dateValue: '', //日期选择值
@@ -397,7 +398,35 @@
 							}
 							datasource.dptList = dpts;
 							datasource.dptValue = dpts[0];
-							getPageDataArray();
+							
+							comData = {
+								dpt_codes:dpts[0].dpt_code,
+								page_size:10000,
+								page_number:-1,
+								index_code: curPage.access.split('#')[1],
+							}
+							postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUser', {}, comData, 2, function(data) {
+								if (data.code == 0) {
+									let list = data.data.list;
+									if(list.length>0 ){
+										let codes=[]
+										for (var i = 0; i < list.length; i++) {
+											codes.push(list[i].user_code);
+										}
+										datasource.user_codes=codes.join(",");
+										getPageDataArray();
+									}else{
+										events.closeWaiting();
+										mui.toast('无法获取部门人员');
+										setTimeout(function() {
+											mui.back()
+										}, 1000);
+									}
+								} else {
+									events.closeWaiting();
+									mui.toast(data.msg);
+								}
+							});
 						} else {
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取部门');
@@ -421,8 +450,7 @@
 				comData = {
 					dpt_code: datasource.dptValue.dpt_code, //部门Code
 					dpt_name: datasource.dptValue.dpt_name, //部门名称
-					user_code: 0, //用户Code，0 全部
-					user_name: '', //用户名称
+					user_codes:datasource.user_codes,//部门人员codes
 					begin_time: tempA[0] + tempA[1] + '01', //查询开始时间
 					end_time: tempA[0] + tempA[1] + getLastDayOfMonth(tempA[0], tempA[1]), //查询结束时间
 					index_code: curPage.access.split('#')[1],
