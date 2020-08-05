@@ -631,6 +631,7 @@
 					} 
 					// 1.1.列表页
 					postDataEncry(window.storageKeyName.INTERFACE_EXAMINATION + 'page', {}, comData, 2, function(data) {
+						console.log('11111111111111123456789')
 						events.closeWaiting();
 						console.log(JSON.stringify(data))
 						if (data.code == 0) {

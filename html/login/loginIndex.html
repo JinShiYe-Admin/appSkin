@@ -148,20 +148,25 @@
 		//获取秘钥
 		var getEncryptKeyLogin = function(tempName, tempPW) {
 			console.log('tempName:'+tempName+',tempPW:'+tempPW);
+			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
 			//握手
 			var enData0 = {};
 			//不需要加密的数据
 			var comData0 = {
-				platform_code: window.storageKeyName.PLATFORMCODE //平台代码
+				platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+				app_code: window.storageKeyName.APPCODE, //应用系统代码
+				unit_code: '-1', //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+				shaketype:'1',//
 			};
 			events.showWaiting();
 			//发送网络请求，data为网络返回值
 			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login/getEncryptKey', enData0, comData0, 0, function(data) {
-				console.log('2121212data:' + JSON.stringify(data));
 				events.closeWaiting();
 				if(data.code == '0000') {
-					store.set(window.storageKeyName.SHAKEHAND, data.data.encryptKey);
-					loginPro(tempName, tempPW, data.data.encryptKey);
+					store.set(window.storageKeyName.SHAKEHAND, data.data);
+					loginPro(tempName, tempPW, data.data);
 				} else {
 					if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
 						mui.toast('网络异常，请检查网络设置！');
@@ -181,18 +186,19 @@
 			var comData1 = {
 				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
 				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+				shaketype:'1',//
+				login_name: RSAEncrypt.enctype(tempName), //登录名
+				password: RSAEncrypt.enctype(tempPW), //
 				device_type:'1',//登录设备类型，0：WEB、1：APP、2：客户端
-				password: hex_md5(key + tempPW), //秘钥+密码再MD5加密
 				platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 				app_code: window.storageKeyName.APPCODE, //应用系统代码
 				unit_code: '-1', //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
-				login_name: tempName //登录名
+				verify_code:''
 			};
 			events.showWaiting();
 			//登录
 			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login', enData1, comData1, 0, function(data1) {
 				events.closeWaiting();
-				console.log('login.data:'+JSON.stringify(data1));
 				if(data1.code == 0) {
 					loginFlag = 1;
 					data1.data.userName0 = tempName;
@@ -205,15 +211,13 @@
 						platform_code: data1.data.user.platform_code, //平台代码
 						app_code: data1.data.user.app_code, //应用系统代码
 						index_code: '' ,//页面权限符,必传,从登录皮肤处获得
-						unit_code: data1.data.user.unit_code ,//学校代码,必传
-						user_code: data1.data.user.user_code ,//用户代码,必传
+						unit_code: data1.data.user.unit_code,//学校代码,必传
+						user_code: data1.data.user.user_code,//用户代码,必传
 						access_token: data1.data.access_token //用户令牌
 					};
-					console.log('comData3:'+JSON.stringify(comData3));
 					events.showWaiting();
 					//登录用户岗位信息
 					postDataEncry(window.storageKeyName.INTERFACE_HR_SUB+ 'user/getUserImg', {}, comData3, 0, function(data3) {
-						console.log('data3:' + JSON.stringify(data3));
 						events.closeWaiting();
 						if(data3.code == 0) {
 							var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
@@ -235,14 +239,13 @@
 					//不需要加密的数据
 					var comData4 = {
 						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
-						app_type: "1", //应用系统类型，0：WEB，1：APP，如需获取全部类型则传“*”
 						app_code: window.storageKeyName.APPCODE, //应用系统代码
+						unit_code: data1.data.user.unit_code ,
 						access_token: data1.data.access_token //用户令牌
 					};
 					events.showWaiting();
 					//登录用户岗位信息
 					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'acl/menu', {}, comData4, 0, function(data4) {
-						console.log('data4:' + JSON.stringify(data4));
 						events.closeWaiting();
 						if(data4.code == '0000') {
 							if (data4.data.list.length>0) {

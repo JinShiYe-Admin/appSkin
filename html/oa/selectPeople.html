@@ -230,10 +230,9 @@
 					if (data.code == 0) {
 						for(var i = 0; i < contentData.peopleArray.length; i++) {
 							var tempPeo = contentData.peopleArray[i];
-							for(var a = 0; a < data.data.length; a++) {
-								var tempUser = data.data[a];
+							for(var a = 0; a < data.data.list.length; a++) {
+								var tempUser = data.data.list[a];
 								if(tempPeo.user_code == tempUser.user_code){
-									console.log('11111');
 									tempPeo.user_img = tempUser.img_url;
 								}
 							}

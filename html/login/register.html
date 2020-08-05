@@ -205,15 +205,21 @@
 			//获取秘钥
 			var getEncryptKeyLogin = function() {
 				events.showWaiting();
+				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
 				//不需要加密的数据
 				var comData0 = {
-					platform_code: window.storageKeyName.PLATFORMCODE //平台代码
+					platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+					app_code: window.storageKeyName.APPCODE, //应用系统代码
+					unit_code: '-1', //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+					uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+					webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+					shaketype:'1',//
 				};
 				postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login/getEncryptKey', {}, comData0, 0,function(data) {
 					console.log('getEncryptKey:' + JSON.stringify(data));
 					events.closeWaiting();
 					if (data.code == 0) {
-						curPageKey = data.data.encryptKey;
+						curPageKey = data.data;
 					} else {
 						mui.toast(data.msg);
 					}
@@ -227,13 +233,13 @@
 				var comData0 = {
 					platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 					app_code: window.storageKeyName.APPCODE, //应用系统代码
-					index_code:''
+					unit_code:'-1'
 				};
 				events.showWaiting();
 				//发送网络请求，data为网络返回值
-				postDataEncry(window.storageKeyName.INTERFACE_SSO_HR + 'login/getRegUserTypeList', {}, comData0, 0,function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_SUP_HR + 'login/getPlatformUserTypeList', {}, comData0, 0,function(data) {
 					events.closeWaiting();
-					console.log('getRegUserTypeList:' + JSON.stringify(data));
+					console.log('getPlatformUserTypeList:' + JSON.stringify(data));
 					if(data.code == 0) {
 						var tempA = [];
 						for(var i = 0; i < data.data.length; i++) {
@@ -359,7 +365,7 @@
 									console.log('items:' + JSON.stringify(items[0]));
 									register.uschool = items[0].text;
 									register.uschool_value = items[0].value;
-									register.userid = items[0].userid;
+									register.userid = items[0].user_code;
 								});
 							} else {
 								mui.toast('没有可供选择的学校');

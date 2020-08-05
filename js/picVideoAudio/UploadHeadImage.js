@@ -336,15 +336,11 @@ var UploadHeadImage = (function($, mod) {
 		var enData0 = {};
 		//不需要加密的数据
 		var comData0 = {
-			platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
-			app_code: window.storageKeyName.APPCODE, //应用系统代码
-			unit_code: personal.unit_code, //单位代码
-			type: 'uico', //修改类型，uico:头像
-			val: domain, //对应类型的值
-			access_token: personal.access_token //用户令牌
+			index_code: 'uico', //修改类型，uico:头像
+			img_url: domain, //对应类型的值
 		};
-		postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'user/upUserInfo', {}, comData0, 0, function(data3) {
-			console.log('UpUserInfo:' + JSON.stringify(data3));
+		postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'user/updImg', {}, comData0, 2, function(data3) {
+			console.log('updImg:' + JSON.stringify(data3));
 			wd.close();
 			if(data3.code == 0) {
 				successCallBack(imgeURL);

@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式
+	mod.key = 6; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -10,6 +10,7 @@ var storageKeyName = (function(mod) {
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://develop309.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://develop309.jiaobaowang.net/hrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://develop309.jiaobaowang.net/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
@@ -29,6 +30,7 @@ var storageKeyName = (function(mod) {
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/suptohr/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/suptosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
@@ -48,6 +50,7 @@ var storageKeyName = (function(mod) {
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
@@ -67,6 +70,7 @@ var storageKeyName = (function(mod) {
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
 			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
 			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
@@ -86,6 +90,7 @@ var storageKeyName = (function(mod) {
 			mod.APPCODE = 'schapp#'; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://sso.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_HR = 'http://sso.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://sso.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
 			mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
 			mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
@@ -100,17 +105,38 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
 			break;
+		case 6://性能测试
+			mod.PLATFORMCODE = 'PT0002'; //平台代码
+			mod.APPCODE = 'schapp#'; //应用系统代码
+			mod.INTERFACE_SSO_SKIN = 'http://cs1.108800.com/suptohr2/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_HR = 'http://cs1.108800.com/suptohr2/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_SUB = 'http://cs1.108800.com/suptohr2/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
+			mod.INTERFACE_HR_SUB = 'http://cs1.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
+			mod.INTERFACE_HR_SKIN = 'http://cs1.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
+			mod.INTERFACE_OA = 'http://cs1.108800.com/oasubapi/sub/api/';//oa接口(孔)
+			mod.INTERFACE_ITEM = 'http://cs1.108800.com/imsubapi/sub/api/';//物品管理接口(孔)
+			mod.INTERFACE_BASESUB = 'http://cs1.108800.com/baseapi/api/Data/';//统一信息接口:考务、家校用(顾)
+			mod.INTERFACE_EXAMINATION = 'http://cs1.108800.com/stuzy/api/paper/';//考务系统接口(蒙)
+			mod.INTERFACE_WORK = 'http://cs1.108800.com/stukqsubapi/attendance/';//学生考勤系统接口(阮)
+			mod.INTERFACE_PROGRAMME = 'http://cs1.108800.com/tecrcsubapi/sub/api/';//日程（孔)
+			mod.INTERFACE_ATTENDAND = 'http://cs1.108800.com/tecgpskqsubapi/sub/api/';//教师考勤（孔)
+			mod.INTERFACE_STUXWSUB = 'http://cs1.108800.com/stuxwsubapi/behavior/';//学生行为（阮) 
+			mod.INTERFACE_STUPYSUB = 'http://cs1.108800.com/stuxwsubapi/comment/';//学生评语（阮)
+			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
+			break;
 		default:
 			break;
 	}
 	
+	mod.PWD_ENCRYPTION = '#@_JFnice_@#';//修改密码时，加密密钥
 	mod.SCHOOLID = 100005;//学校ID
 	mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1281905607';//IOS升级地址
 	
 	//正式包 屏蔽控制台打印
 	['log','warn','info','error'].map(function(item){
-		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4){
+		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
 			console[item]=console[item].bind(console)
 		}else{
 			console[item]=function(){}

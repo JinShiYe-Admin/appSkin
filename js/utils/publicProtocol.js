@@ -256,7 +256,8 @@ var jQAjaxPost = function(url, data, callback) {
 				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				var tempToken = {
-					login_name: personal.userName0, //登录名
+					index_code:'',
+					user_code: personal.user_code, //登录名
 					uuid: publicPar.uuid, //设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
 					webid: publicPar.webid, //浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
 					device_type: '1' //登录设备类型，0：WEB、1：APP、2：客户端

@@ -177,7 +177,7 @@
 			var getUnReadCntFun = function(){
 				for (var a = 0; a < contentData.showArray.length; a++) {
 					var tempM0 = contentData.showArray[a];
-					if (tempM0.redspot_url!=null) {
+					if (tempM0.redspot_url!=null&&tempM0.redspot_url.length>0) {
 						// 获取未读数
 						getUnReadCut(tempM0.access,tempM0.redspot_url,function(data){
 							console.log('getUnReadCut:'+JSON.stringify(data));
