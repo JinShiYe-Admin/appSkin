@@ -425,7 +425,7 @@
 								utils.mOpenWithData("../../html/schapp_item/item_in_add.html", model);
 							}else if(datasource.rkType==2){
 								model.title_name = '新建归还入库';
-								utils.mOpenWithData("../../html/schapp_item/item_in_ghrk_add.html", model);
+								utils.mOpenWithData("../../html/schapp_item/item_in_ghrk_add.html",  model);
 							}
 					}
 				}
@@ -444,6 +444,7 @@
 						console.log(JSON.stringify(model))
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
+						model.note=model.note.replace(/\'/g,"’")
 						if(datasource.rkType==1){
 							utils.mOpenWithData("../../html/schapp_item/item_in_detail.html", model);
 						}else if(datasource.rkType==2){

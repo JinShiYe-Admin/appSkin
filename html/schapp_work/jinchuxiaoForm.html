@@ -557,7 +557,11 @@
 			//获取考勤列表数据 
 			function getPageDataArray() {
 				// console.log(datasource.xnValue.length)
-				if(datasource.kqList.length==0){
+				if(datasource.grdList.length==0){
+					events.closeWaiting();
+					mui.toast('无法获取年级')
+					return 0;
+				}else if(datasource.kqList.length==0){
 					events.closeWaiting();
 					mui.toast('无法获取考勤项目')
 					return 0;

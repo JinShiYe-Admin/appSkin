@@ -464,6 +464,8 @@
 				});
 
 				events.showWaiting();
+				// 获取当前日期
+				getCurrentDate();
 				//获取数据范围授权：年级
 				getGrdList();
 			});
@@ -490,8 +492,7 @@
 						if(grdList.length>0 ){
 							datasource.grdList=grdList;
 							datasource.grdValue=grdList[0];
-							// 获取当前日期
-							getCurrentDate();
+							getPageDataArray()
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
@@ -505,6 +506,11 @@
 
 			//获取班级考勤报表数据  
 			function getPageDataArray() {
+				if(datasource.grdList.length==0){
+					events.closeWaiting();
+					mui.toast('无法获取年级')
+					return 0;
+				} 
 				// console.log(datasource.xnValue.length)
 				// if (datasource.kqValue != '' && datasource.xnValue != '' && datasource.xqValue != '') {
 					//需要加密的数据
@@ -589,7 +595,6 @@
 				var now = year + '-' + conver(month) + "-" + conver(date);
 				datasource.begintime=now;
 				datasource.endtime=now;
-				getPageDataArray();
 			}
 			function conver(s) {
 				return s < 10 ? '0' + s : s;

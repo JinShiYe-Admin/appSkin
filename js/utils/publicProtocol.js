@@ -317,7 +317,7 @@ var jQAjaxPost = function(url, data, callback) {
 			}
 		},
 		error: function(xhr, type, errorThrown) {
-			console.log('jQAP-Error777:', url, xhr, type);
+			console.log('jQAP-Error777:', url, JSON.stringify(xhr), type);
 			events.closeWaiting();
 			mui.toast('网络连接失败,请重新尝试一下');
 			callback({

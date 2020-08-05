@@ -418,6 +418,7 @@
 						console.log(JSON.stringify(model))
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
+						model.note=model.note.replace(/\'/g,"’")
 						if(datasource.ckType==1){
 							utils.mOpenWithData("../../html/schapp_item/item_out_detail.html", model);
 						}else if(datasource.ckType==2){

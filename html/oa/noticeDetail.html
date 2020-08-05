@@ -137,7 +137,7 @@
 			<p class="contentCSS" style="font-size: 14px;color: #666;" v-html="detailModel.NoticeContent"></p>
 			<template v-for="(extraFile,index) in detailModel.NoticeEncName" v-show="detailModel.NoticeEncName.length==0">
 				<p class="encName" v-show="extraFile">附件:
-					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">图片{{index+1}}.png</a>
+					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">附件{{index+1}}</a>
 				</p>
 			</template>
 			<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
@@ -258,8 +258,12 @@
 								if (data.code == 0 && data.data.Result == 1) {
 									mui.toast("保存成功");
 									noticeDetailData.detailModel.Tag = noticeDetailData.tag;
+								}else{
+									mui.toast(data.msg);
 								}
 							});
+						}else{
+							mui.toast('请改变标签内容再保存');
 						}
 					}
 				}

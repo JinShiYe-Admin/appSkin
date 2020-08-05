@@ -141,7 +141,7 @@
 		<!-- <div class="mui-content" id="noticeDetailData" v-show="flag>0" style="background-color: white;"> -->
 		<div class="mui-content" id="noticeDetailData" v-cloak style="background-color: white;">
 			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3">
-				<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
+				<input maxlength="10" type="text" readonly v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
 				 placeholder="请输入我的标签" />
 			</template>
 			<template v-else-if="pageFlag==1||detailModel.NoticeStatus==2||detailModel.NoticeStatus==3||detailModel.NoticeProgress==3">
@@ -157,7 +157,7 @@
 			<p class="contentCSS" style="font-size: 14px;color: #666;" v-html="detailModel.NoticeContent">{{detailModel.NoticeContent}}</p>
 			<template v-for="(extraFile,index) in detailModel.NoticeEncName" v-show="detailModel.NoticeEncName.length==0">
 				<p class="encName" v-show="extraFile">附件:
-					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">图片{{index+1}}.png</a>
+					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">附件{{index+1}}</a>
 				</p>
 			</template>
 			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3">
@@ -194,7 +194,7 @@
 								</div>
 								<template v-for="(extraFile,indexEnc) in replyModel.EncName" v-show="replyModel.EncName.length==0">
 									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
-										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">图片{{indexEnc+1}}.png</a>
+										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">附件{{indexEnc+1}}</a>
 									</p>
 								</template>
 							</a>
@@ -356,8 +356,13 @@
 								console.log('55.修改发送的协同事务标签:' + JSON.stringify(data));
 								if (data.code == 0 && data.data.Result == 1) {
 									noticeDetailData.detailModel.Tag = noticeDetailData.tag;
+									mui.toast("保存成功");
+								}else{
+									mui.toast(data.msg);
 								}
 							});
+						}else{
+							mui.toast('请改变标签内容再保存');
 						}
 					},
 					replyContent: function() {
@@ -491,7 +496,7 @@
 					op_code: 'index'
 				}
 				//28.回复通知公告
-				postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/addNoticeReply', {}, tempData1, 2,
+				postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/doAddNoticeReply', {}, tempData1, 2,
 					function(data) {
 						events.closeWaiting();
 						encNameList = [];
