@@ -123,7 +123,7 @@ var utils = (function(mod) {
 		var dataStr = JSON.stringify(data);
 		console.log("mOpen " + url + ' ' + dataStr);
 		mui.openWindow({
-			url:url + "?v=" + Math.random() + "&data=" + encodeURIComponent(dataStr),
+			url:url + "?v=" + Math.random() + "&data=" + encodeURIComponent(dataStr).replace(/\'/g, "’"),
 			id:ids[ids.length - 1],
 			styles:{
 				statusbar:{

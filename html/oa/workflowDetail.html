@@ -255,7 +255,7 @@
 						var urlStr = encodeURI(tempUrl)
 						plus.runtime.openURL(urlStr);
 					},
-					saveTag: function() {
+					saveTag: function(showT) {
 						console.log('saveTag');
 						if (noticeDetailData.tag != noticeDetailData.detailModel.Tag) {
 							events.showWaiting();
@@ -286,11 +286,14 @@
 									}
 								});
 						}else{
-							mui.toast('请改变标签内容再保存');
+							if(showT!=1){
+								mui.toast('请勿重复保存标签');
+							}
+							
 						}
 					},
 					replyContent: function(flag) {
-						noticeDetailData.saveTag();
+						noticeDetailData.saveTag(1);
 						if (noticeDetailData.content.trim().length == 0) {
 							mui.toast("请输入批复内容", "cancel");
 							return;

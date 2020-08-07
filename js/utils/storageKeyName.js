@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key = 6; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key = 5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -88,10 +88,10 @@ var storageKeyName = (function(mod) {
 		case 5://正式
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
 			mod.APPCODE = 'schapp#'; //应用系统代码
-			mod.INTERFACE_SSO_SKIN = 'http://sso.108800.com/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理  单点对人事及登录皮肤接口
-			mod.INTERFACE_SSO_HR = 'http://sso.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
-			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
-			mod.INTERFACE_SSO_SUB = 'http://sso.108800.com/suptosub/api/sub/'; //单点登录,供各子系统用 			     单点对子系统接口
+			mod.INTERFACE_SSO_SKIN = 'http://sso.108800.com:8080/ssotoskin/api/skin/'; // 单点对登录框接口
+			mod.INTERFACE_SSO_HR = 'http://sso.108800.com:8080/ssotohr/api/hr/'; // 单点对人事接口 (gu )
+			mod.INTERFACE_SUP_HR = 'http://sso.108800.com/suptohr/api/hr/'; //单点对人事及登录皮肤接口  (zeng)
+			mod.INTERFACE_SSO_SUB = 'http://sso.108800.com:8080/ssotosub/api/sub/'; // 单点对子系统接口
 			mod.INTERFACE_HR_SUB = 'http://apps.108800.com/hrtosub/api/sub/'; //人事接口,供子系统用 				     人事对子系统接口
 			mod.INTERFACE_HR_SKIN = 'http://apps.108800.com/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用        人事对单点及登录皮肤接口
 			mod.INTERFACE_OA = 'http://apps.108800.com/oasubapi/sub/api/';//oa接口(孔)
@@ -103,7 +103,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_ATTENDAND = 'http://apps.108800.com/tecgpskqsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://apps.108800.com/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
-			mod.INTERFACE_DORM = '??';//学生宿舍（阮)
+			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			break;
 		case 6://性能测试
 			mod.PLATFORMCODE = 'PT0002'; //平台代码

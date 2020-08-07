@@ -141,7 +141,7 @@
 		<!-- <div class="mui-content" id="noticeDetailData" v-show="flag>0" style="background-color: white;"> -->
 		<div class="mui-content" id="noticeDetailData" v-cloak style="background-color: white;">
 			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3">
-				<input maxlength="10" type="text" readonly v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
+				<input maxlength="10" type="text" v-model="tag" style="float: right;border: 1px solid gainsboro;margin-bottom: 0px;margin-top: 5px;margin-right: 10px;font-size: 14px;width: 150px;height: 35px;"
 				 placeholder="请输入我的标签" />
 			</template>
 			<template v-else-if="pageFlag==1||detailModel.NoticeStatus==2||detailModel.NoticeStatus==3||detailModel.NoticeProgress==3">
@@ -332,7 +332,7 @@
 						var urlStr = encodeURI(tempUrl)
 						plus.runtime.openURL(urlStr);
 					},
-					saveTag: function() {
+					saveTag: function(showT) {
 						console.log('saveTag');
 						if (noticeDetailData.tag != noticeDetailData.detailModel.Tag) {
 							events.showWaiting();
@@ -362,11 +362,14 @@
 								}
 							});
 						}else{
-							mui.toast('请改变标签内容再保存');
+							if(showT!=1){
+								mui.toast('请勿重复保存标签');
+							}
+							
 						}
 					},
 					replyContent: function() {
-						noticeDetailData.saveTag();
+						noticeDetailData.saveTag(1);
 						if (noticeDetailData.content.trim().length == 0) {
 							mui.toast("请输入回复内容", "cancel");
 							return;
