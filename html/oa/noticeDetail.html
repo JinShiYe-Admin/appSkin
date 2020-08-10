@@ -301,43 +301,37 @@
 								data.data.NoticeEncAddr = data.data.NoticeEncAddr.split("|");
 							}
 							noticeDetailData.flag = 1;
-							for (var i = 0; i < data.data.list.length; i++) {
-								var tempM = data.data.list[i];
-								tempM.ReceiveManPic = setImg(tempM.ReceiveManPic);
-								// if (tempM.IsRead == 1) {
-								// 	tempM.readName = '已读';
-								// } else {
-								// 	tempM.readName = '未读';
-								// }
-							}
-							//如果是接收的，判断是否右上角有功能
-							if (flag == 1) {
-								console.log('11111');
-								// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
-								if (data.data.Progress == 1 && data.data.Status == 1) {
-									console.log('222222');
-									tempVue.moreFlag = 1;
-									tempVue.moreName = '撤回';
+							getUserInfo(data.data.list, curPage.access.split('#')[1], 'ReceiveManId','ReceiveManPic', function(callData) {
+								console.log('callData:' + JSON.stringify(callData));
+								//如果是接收的，判断是否右上角有功能
+								if (flag == 1) {
+									console.log('11111');
+									// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
+									if (data.data.Progress == 1 && data.data.Status == 1) {
+										console.log('222222');
+										tempVue.moreFlag = 1;
+										tempVue.moreName = '撤回';
+									}
 								}
-							}
-							noticeDetailData.tag = data.data.Tag;
-							noticeDetailData.detailModel = data.data;
-							console.log('noticeDetailData.detailModel:' + JSON.stringify(noticeDetailData.detailModel));
-							if (data.data.ReadStatus == 2) { //未读
-								//9.阅读通知
-								var comData1 = {
-									noticeId: data.data.NoticeId, //通知ID
-									receiveManId: personal.user_code, //阅读人ID
-									index_code: curPage.access.split('#')[1],
-									op_code: 'index'
-								}
-								//9.阅读通知
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/doSetNoticeRead', {}, comData1, 2,
-									function(data) {
+								noticeDetailData.tag = data.data.Tag;
+								noticeDetailData.detailModel = data.data;
+								console.log('noticeDetailData.detailModel:' + JSON.stringify(noticeDetailData.detailModel));
+								if (data.data.ReadStatus == 2) { //未读
+									//9.阅读通知
+									var comData1 = {
+										noticeId: data.data.NoticeId, //通知ID
+										receiveManId: personal.user_code, //阅读人ID
+										index_code: curPage.access.split('#')[1],
+										op_code: 'index'
+									}
+									//9.阅读通知
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'notice/doSetNoticeRead', {}, comData1, 2,
+										function(data) {
 
-									});
-							}
-							// getUserInfo(data.data.list,curPage.access.split('#')[1]);
+										});
+								}
+								// getUserInfo(data.data.list,curPage.access.split('#')[1]);
+							});
 						} else {
 							mui.toast(data.msg);
 						}

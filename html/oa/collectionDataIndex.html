@@ -419,99 +419,86 @@
 						mui.toast(data.msg);
 						return;
 					}
-					if (self) {
-						if (flag == 0) {
-							self.endPullDownToRefresh();
-						} else {
-							self.endPullUpToRefresh();
-						}
-					}
-					if (comData0.page_number == 1) { //刷新
-						if (data.data.list.length == 0) {
-							mui.toast('暂无数据');
-						}
-					} else { //加载更多
-						if (data.data.list.length == 0) {
-							mui.toast('已加载全部');
-						}
-					}
-					for (var i = 0; i < data.data.list.length; i++) {
-						var tempM = data.data.list[i];
-						tempM.SendManPic = setImg(tempM.SendManPic);
-					}
-					if (datasource.sliderFlag == 0) {
-						if (datasource.receive0.refreshFlag == 0) {
-							datasource.receive0.data = [];
-						}
-						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM = data.data.list[i];
-							if (tempM.InfoUploadStatus == 1) {
-								tempM.DoneStatusName = '需交';
+					getUserInfo(data.data.list, curPage.access.split('#')[1], 'SendManId','SendManPic', function(callData) {
+						console.log('callData:' + JSON.stringify(callData));
+						if (self) {
+							if (flag == 0) {
+								self.endPullDownToRefresh();
 							} else {
-								tempM.DoneStatusName = '已交';
+								self.endPullUpToRefresh();
 							}
 						}
-						datasource.receive0.data = datasource.receive0.data.concat(data.data.list);
-						// if (data.data.list.length > 0) {
-						// 	datasource.receive0.pageIndex++;
-						// }
-						datasource.receive0.pageIndex++;
-						if (data.data.total_page!=0&&datasource.receive0.pageIndex < data.data.total_page) {
-						}else{
-							mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-						}
-					} else if (datasource.sliderFlag == 1) {
-						if (datasource.receive1.refreshFlag == 0) {
-							datasource.receive1.data = [];
-						}
-						datasource.receive1.data = datasource.receive1.data.concat(data.data.list);
-						// if (data.data.list.length > 0) {
-						// 	datasource.receive1.pageIndex++;
-						// }
-						datasource.receive1.pageIndex++;
-						if (data.data.total_page!=0&&datasource.receive1.pageIndex < data.data.total_page) {
-						}else{
-							mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
-						}
-					} else if (datasource.sliderFlag == 2) {
-						if (datasource.receive2.refreshFlag == 0) {
-							datasource.receive2.data = [];
-						}
-						datasource.receive2.data = datasource.receive2.data.concat(data.data.list);
-						// if (data.data.list.length > 0) {
-						// 	datasource.receive2.pageIndex++;
-						// }
-						datasource.receive2.pageIndex++;
-						if (data.data.total_page!=0&&datasource.receive2.pageIndex < data.data.total_page) {
-						}else{
-							mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
-						}
-					} else if (datasource.sliderFlag == 3) {
-						if (datasource.send.refreshFlag == 0) {
-							datasource.send.data = [];
-						}
-						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM = data.data.list[i];
-							if (tempM.InfoCollectStatus == 1) {
-								tempM.NoticeStatusName = '发出';
-							} else if (tempM.InfoCollectStatus == 2) {
-								tempM.NoticeStatusName = '关闭';
-							} else if (tempM.InfoCollectStatus == 3) {
-								tempM.NoticeStatusName = '部分关闭';
-							} else if (tempM.InfoCollectStatus == 4) {
-								tempM.NoticeStatusName = '撤回';
+						if (comData0.page_number == 1) { //刷新
+							if (data.data.list.length == 0) {
+								mui.toast('暂无数据');
+							}
+						} else { //加载更多
+							if (data.data.list.length == 0) {
+								mui.toast('已加载全部');
 							}
 						}
-						datasource.send.data = datasource.send.data.concat(data.data.list);
-						// if (data.data.list.length > 0) {
-						// 	datasource.send.pageIndex++;
-						// }
-						datasource.send.pageIndex++;
-						if (data.data.total_page!=0&&datasource.send.pageIndex < data.data.total_page) {
-						}else{
-							mui(".mui-pull-loading")[3].innerHTML = "没有更多了";
+						if (datasource.sliderFlag == 0) {
+							if (datasource.receive0.refreshFlag == 0) {
+								datasource.receive0.data = [];
+							}
+							for (var i = 0; i < data.data.list.length; i++) {
+								var tempM = data.data.list[i];
+								if (tempM.InfoUploadStatus == 1) {
+									tempM.DoneStatusName = '需交';
+								} else {
+									tempM.DoneStatusName = '已交';
+								}
+							}
+							datasource.receive0.data = datasource.receive0.data.concat(data.data.list);
+							if (data.data.list.length > 0) {
+								datasource.receive0.pageIndex++;
+							}else{
+								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+							}
+						} else if (datasource.sliderFlag == 1) {
+							if (datasource.receive1.refreshFlag == 0) {
+								datasource.receive1.data = [];
+							}
+							datasource.receive1.data = datasource.receive1.data.concat(data.data.list);
+							if (data.data.list.length > 0) {
+								datasource.receive1.pageIndex++;
+							}else{
+								mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+							}
+						} else if (datasource.sliderFlag == 2) {
+							if (datasource.receive2.refreshFlag == 0) {
+								datasource.receive2.data = [];
+							}
+							datasource.receive2.data = datasource.receive2.data.concat(data.data.list);
+							if (data.data.list.length > 0) {
+								datasource.receive2.pageIndex++;
+							}else{
+								mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
+							}
+						} else if (datasource.sliderFlag == 3) {
+							if (datasource.send.refreshFlag == 0) {
+								datasource.send.data = [];
+							}
+							for (var i = 0; i < data.data.list.length; i++) {
+								var tempM = data.data.list[i];
+								if (tempM.InfoCollectStatus == 1) {
+									tempM.NoticeStatusName = '发出';
+								} else if (tempM.InfoCollectStatus == 2) {
+									tempM.NoticeStatusName = '关闭';
+								} else if (tempM.InfoCollectStatus == 3) {
+									tempM.NoticeStatusName = '部分关闭';
+								} else if (tempM.InfoCollectStatus == 4) {
+									tempM.NoticeStatusName = '撤回';
+								}
+							}
+							datasource.send.data = datasource.send.data.concat(data.data.list);
+							if (data.data.list.length > 0) {
+								datasource.send.pageIndex++;
+							}else{
+								mui(".mui-pull-loading")[3].innerHTML = "没有更多了";
+							}
 						}
-					}
+					});
 				});
 			}
 			mui.plusReady(function() {

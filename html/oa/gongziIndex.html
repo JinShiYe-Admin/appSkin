@@ -282,31 +282,28 @@
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						//总页数
-						totalPageCount = data.data.total_page;
-						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM = data.data.list[i];
-							// if (tempM.SendManPic == '' || tempM.SendManPic == null) {
-								tempM.SendManPic = setImg(tempM.SendManPic);
-							// }
-						}
-						pageIndex++;
-						if (flagRef == 0) { //刷新
-							datasource.pageArray = data.data.list;
-							if (data.data.list.length == 0) {
-								mui.toast('暂无数据');
+						getUserInfo(data.data.list, curPage.access.split('#')[1], 'SendManId','SendManPic', function(callData) {
+							console.log('callData:' + JSON.stringify(callData));
+							//总页数
+							totalPageCount = data.data.total_page;
+							pageIndex++;
+							if (flagRef == 0) { //刷新
+								datasource.pageArray = data.data.list;
+								if (data.data.list.length == 0) {
+									mui.toast('暂无数据');
+								}
+								mui(".mui-scroll-wrapper").scroll().refresh();
+							} else { //加载更多
+								//合并数组
+								datasource.pageArray = datasource.pageArray.concat(data.data.list);
+								if (data.data.list.length == 0) {
+									mui.toast('已加载全部');
+								}
 							}
-							mui(".mui-scroll-wrapper").scroll().refresh();
-						} else { //加载更多
-							//合并数组
-							datasource.pageArray = datasource.pageArray.concat(data.data.list);
-							if (data.data.list.length == 0) {
-								mui.toast('已加载全部');
+							if (mui(".mui-table-view-cell").length < 10) {
+								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
-						}
-						if (mui(".mui-table-view-cell").length < 10) {
-							mui(".mui-pull-loading")[0].innerHTML = "";
-						}
+						});
 					} else {
 						mui.toast(data.msg);
 					}

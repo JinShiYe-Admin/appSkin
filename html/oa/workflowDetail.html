@@ -364,23 +364,22 @@
 							data.data.ApplyEncAddr = data.data.ApplyEncAddr.split("|");
 						}
 						noticeDetailData.flag = 1;
-						for (var i = 0; i < data.data.ApproveList.length; i++) {
-							var tempM = data.data.ApproveList[i];
-							tempM.ApproveManPic = setImg(tempM.ApproveManPic);
-						}
-						//如果是接收的，判断是否右上角有功能
-						if (flag == 1) {
-							console.log('11111');
-							// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
-							if (data.data.Progress == 1 && data.data.Status == 1) {
-								console.log('222222');
-								tempVue.moreFlag = 1;
-								tempVue.moreName = '撤销';
+						getUserInfo(data.data.ApproveList, curPage.access.split('#')[1], 'ApproveManId','ApproveManPic', function(callData) {
+							console.log('callData:' + JSON.stringify(callData));
+							//如果是接收的，判断是否右上角有功能
+							if (flag == 1) {
+								console.log('11111');
+								// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
+								if (data.data.Progress == 1 && data.data.Status == 1) {
+									console.log('222222');
+									tempVue.moreFlag = 1;
+									tempVue.moreName = '撤销';
+								}
 							}
-						}
-						noticeDetailData.tag = data.data.Tag;
-						noticeDetailData.detailModel = data.data;
-						console.log('noticeDetailData.detailModel:' + JSON.stringify(noticeDetailData.detailModel));
+							noticeDetailData.tag = data.data.Tag;
+							noticeDetailData.detailModel = data.data;
+							console.log('noticeDetailData.detailModel:' + JSON.stringify(noticeDetailData.detailModel));
+						});
 					} else {
 						mui.toast(data.msg);
 					}

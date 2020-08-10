@@ -689,28 +689,34 @@
 							noticeDetailData.flag = 1;
 							//如果是接收的，判断是否右上角有功能
 							if (flag == 1) {
-								for (var i = 0; i < data.data.noUploadList.length; i++) {
-									var tempM = data.data.noUploadList[i];
-									tempM.ReceiveManPic = setImg(tempM.ReceiveManPic);
-									if (tempM.InfoUploadCloseStatus == 1) {
-										tempM.InfoUploadCloseStatusName = '关闭上交';
-									} else {
-										tempM.InfoUploadCloseStatusName = '打开上交';
+								getUserInfo(data.data.noUploadList, curPage.access.split('#')[1], 'ReceiveManId','ReceiveManPic', function(callData) {
+									console.log('callData:' + JSON.stringify(callData));
+									for (var i = 0; i < data.data.noUploadList.length; i++) {
+										var tempM = data.data.noUploadList[i];
+										if (tempM.InfoUploadCloseStatus == 1) {
+											tempM.InfoUploadCloseStatusName = '关闭上交';
+										} else {
+											tempM.InfoUploadCloseStatusName = '打开上交';
+										}
 									}
-								}
-								for (var i = 0; i < data.data.uploadedList.length; i++) {
-									var tempM = data.data.uploadedList[i];
-									tempM.ReceiveManPic = setImg(tempM.ReceiveManPic);
-									if (tempM.UploadEncName) {
-										tempM.UploadEncName = tempM.UploadEncName.split("|");
-										tempM.UploadEncAddr = tempM.UploadEncAddr.split("|");
+								});
+								getUserInfo(data.data.uploadedList, curPage.access.split('#')[1], 'ReceiveManId','ReceiveManPic', function(callData) {
+									console.log('callData:' + JSON.stringify(callData));
+									for (var i = 0; i < data.data.uploadedList.length; i++) {
+										var tempM = data.data.uploadedList[i];
+										if (tempM.UploadEncName) {
+											tempM.UploadEncName = tempM.UploadEncName.split("|");
+											tempM.UploadEncAddr = tempM.UploadEncAddr.split("|");
+										}
+										if (tempM.InfoUploadCloseStatus == 1) {
+											tempM.InfoUploadCloseStatusName = '关闭上交';
+										} else {
+											tempM.InfoUploadCloseStatusName = '打开上交';
+										}
 									}
-									if (tempM.InfoUploadCloseStatus == 1) {
-										tempM.InfoUploadCloseStatusName = '关闭上交';
-									} else {
-										tempM.InfoUploadCloseStatusName = '打开上交';
-									}
-								}
+								});
+								
+								
 								console.log('11111');
 								// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
 								if (data.data.InfoCollectProgress == 1 && data.data.InfoCollectStatus == 1) {

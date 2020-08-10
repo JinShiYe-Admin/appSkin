@@ -192,8 +192,8 @@
 								<div class="chat_content_left" v-show="replyModel.ReplyContent.length>0">
 									<p style="color: #666;font-size: 13px; white-space:pre-wrap;">{{replyModel.ReplyContent}}</p>
 								</div>
-								<template v-for="(extraFile,indexEnc) in replyModel.EncName" v-show="replyModel.EncName.length==0">
-									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
+								<template v-for="(extraFile,indexEnc) in replyModel.EncAddr" v-show="replyModel.EncAddr.length!=0">
+									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件{{extraFile}}:
 										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">附件{{indexEnc+1}}</a>
 									</p>
 								</template>
@@ -545,64 +545,59 @@
 								data.data.NoticeEncName = data.data.NoticeEncName.split("|");
 								data.data.NoticeEncAddr = data.data.NoticeEncAddr.split("|");
 							}
-							for (var i = 0; i < data.data.list.length; i++) {
-								var tempM = data.data.list[i];
-								tempM.ReceiveManPic = setImg(tempM.ReceiveManPic);
-								if (tempM.EncName) {
-									tempM.EncName = tempM.EncName.split("|");
-									tempM.EncAddr = tempM.EncAddr.split("|");
+							getUserInfo(data.data.list, curPage.access.split('#')[1], 'ReceiveManId','ReceiveManPic', function(callData) {
+								console.log('callData:' + JSON.stringify(callData));
+								//如果是接收的，判断是否右上角有功能
+								if (flag == 1) {
+									console.log('11111');
+									// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
+									if (data.data.NoticeProgress == 1 && data.data.NoticeStatus == 1) {
+										console.log('222222');
+										tempVue.moreFlag = 1;
+										tempVue.moreName = '撤销';
+									} else if ((data.data.NoticeProgress == 2 || data.data.NoticeProgress == 3) && data.data.NoticeStatus == 1) { // 进程处于 “处理中”或“完毕”  且 状态处于 “发出”  显示关闭按钮
+										console.log('333333');
+										tempVue.moreFlag = 2;
+										tempVue.moreName = '关闭';
+									}
 								}
-							}
-							//如果是接收的，判断是否右上角有功能
-							if (flag == 1) {
-								console.log('11111');
-								// 进程处于“新建”且 状态处于“发出”时 显示撤销按钮
-								if (data.data.NoticeProgress == 1 && data.data.NoticeStatus == 1) {
-									console.log('222222');
-									tempVue.moreFlag = 1;
-									tempVue.moreName = '撤销';
-								} else if ((data.data.NoticeProgress == 2 || data.data.NoticeProgress == 3) && data.data.NoticeStatus == 1) { // 进程处于 “处理中”或“完毕”  且 状态处于 “发出”  显示关闭按钮
-									console.log('333333');
-									tempVue.moreFlag = 2;
-									tempVue.moreName = '关闭';
+								noticeDetailData.tag = data.data.Tag;
+								noticeDetailData.detailModel = data.data;
+								noticeDetailData.flag = 1;
+								console.log('noticeDetailData.detailModel:' + JSON.stringify(noticeDetailData.detailModel));
+								if (flag == 0) { //54.阅读收到的协同事务
+									//54.阅读收到的协同事务
+									var comData1 = {
+										noticeId: data.data.NoticeId, //通知ID
+										receiveManId: personal.user_code, //阅读人ID
+										index_code: curPage.access.split('#')[1],
+										op_code: 'index'
+									}
+									//54.阅读收到的协同事务
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/doSetReceiveNoticeRead', {}, comData1, 2,
+										function(data) {
+								
+										});
+								} else { //53.阅读发出的协同事务
+									//53.阅读发出的协同事务
+									var comData1 = {
+										noticeId: data.data.NoticeId, //通知ID
+										index_code: curPage.access.split('#')[1],
+										op_code: 'index'
+									}
+									//53.阅读发出的协同事务
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/doSetSendNoticeRead', {}, comData1, 2,
+										function(data) {
+								
+										});
 								}
-							}
-							noticeDetailData.tag = data.data.Tag;
-							noticeDetailData.detailModel = data.data;
-							noticeDetailData.flag = 1;
-							console.log('noticeDetailData.detailModel:' + JSON.stringify(noticeDetailData.detailModel));
-							if (flag == 0) { //54.阅读收到的协同事务
-								//54.阅读收到的协同事务
-								var comData1 = {
-									noticeId: data.data.NoticeId, //通知ID
-									receiveManId: personal.user_code, //阅读人ID
-									index_code: curPage.access.split('#')[1],
-									op_code: 'index'
+								console.log('123456789');
+								if (noticeDetailData.pageFlag==0&&data.data.NoticeStatus==1&&data.data.NoticeProgress!=3) {
+									document.getElementById("MultiMedia").style.display = 'block';
+								}else{
+									document.getElementById("MultiMedia").style.display = 'none';
 								}
-								//54.阅读收到的协同事务
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/doSetReceiveNoticeRead', {}, comData1, 2,
-									function(data) {
-
-									});
-							} else { //53.阅读发出的协同事务
-								//53.阅读发出的协同事务
-								var comData1 = {
-									noticeId: data.data.NoticeId, //通知ID
-									index_code: curPage.access.split('#')[1],
-									op_code: 'index'
-								}
-								//53.阅读发出的协同事务
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/doSetSendNoticeRead', {}, comData1, 2,
-									function(data) {
-
-									});
-							}
-							console.log('123456789');
-							if (noticeDetailData.pageFlag==0&&data.data.NoticeStatus==1&&data.data.NoticeProgress!=3) {
-								document.getElementById("MultiMedia").style.display = 'block';
-							}else{
-								document.getElementById("MultiMedia").style.display = 'none';
-							}
+							});
 						} else {
 							mui.toast(data.msg);
 						}

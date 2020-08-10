@@ -18,7 +18,7 @@ var setImg = function(imgURL, imgFlag) {
 }
 
 // 3.2:获取指定用户信息
-var getUserInfo = function(dataList,indexCode,key,callback) {
+var getUserInfo = function(dataList,indexCode,key,pic_key,callback) {
 	var tempCode = [];
 	for (var i = 0; i < dataList.length; i++) {
 		var tempM = dataList[i];
@@ -38,7 +38,7 @@ var getUserInfo = function(dataList,indexCode,key,callback) {
 				for (var a = 0; a < data.data.list.length; a++) {
 					var tempUser = data.data.list[a];
 					if (tempPeo[key] == tempUser.user_code) {
-						tempPeo.img_url = tempUser.img_url;
+						tempPeo[pic_key] = tempUser.img_url;
 					}
 				}
 			}
