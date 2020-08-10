@@ -13,8 +13,9 @@
 		<style>
 			[v-cloak] {
 				visibility: hidden;
-				display:none !important;
+				display: none !important;
 			}
+
 			html,
 			body {
 				background-color: #efeff4;
@@ -155,7 +156,7 @@
 												</div> -->
 												<div class="mui-row" style="margin-top: 0.55rem;">
 													<div class="mui-table-cell mui-col-xs-5">
-														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+														<h5 class="mui-ellipsis">{{model.SendManName}}</h5>
 													</div>
 													<div class="mui-table-cell mui-col-xs-5">
 														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
@@ -184,7 +185,7 @@
 												</div> -->
 												<div class="mui-row" style="margin-top: 0.55rem;">
 													<div class="mui-table-cell mui-col-xs-5">
-														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+														<h5 class="mui-ellipsis">{{model.SendManName}}</h5>
 													</div>
 													<div class="mui-table-cell mui-col-xs-5">
 														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
@@ -214,7 +215,7 @@
 												</div> -->
 												<div class="mui-row" style="margin-top: 0.55rem;">
 													<div class="mui-table-cell mui-col-xs-5">
-														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+														<h5 class="mui-ellipsis">{{model.SendManName}}</h5>
 													</div>
 													<div class="mui-table-cell mui-col-xs-5">
 														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
@@ -243,7 +244,7 @@
 												</div> -->
 												<div class="mui-row" style="margin-top: 0.55rem;">
 													<div class="mui-table-cell mui-col-xs-5">
-														<h5 class="mui-ellipsis" >{{model.SendManName}}</h5>
+														<h5 class="mui-ellipsis">{{model.SendManName}}</h5>
 													</div>
 													<div class="mui-table-cell mui-col-xs-5">
 														<h5 class="mui-ellipsis mui-text-right">{{model.SendTime}}</h5>
@@ -287,15 +288,15 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					showAdd: 0 ,//0不显示添加按钮，1显示
-					canBack:false  //不加这个，刚进页面快速点击返回按钮 plus未初始化完成，会报界面加载异常，
+					showAdd: 0, //0不显示添加按钮，1显示
+					canBack: false //不加这个，刚进页面快速点击返回按钮 plus未初始化完成，会报界面加载异常，
 				},
 				methods: {
 					add: function() {
 						utils.mOpenWithData("../../html/oa/shiwuNew.html", curPage);
 					},
 					muiback: function() {
-						if(this.canBack){
+						if (this.canBack) {
 							//在主界面重新获取通知未读数
 							mui.fire(plus.webview.currentWebview().opener(), 'getNoticeNoReadCnt', {});
 							mui.back();
@@ -362,7 +363,7 @@
 				var i = event.detail.slideNumber;
 				datasource.clickSlider(i);
 			})
-			
+
 			window.addEventListener('refreshMinePage', function(data) {
 				if (datasource.sliderFlag == 3) {
 					datasource.send.refreshFlag = 0;
@@ -414,6 +415,9 @@
 				postDataEncry(url, {}, comData0, 2, function(data) {
 					events.closeWaiting();
 					console.log('data:' + JSON.stringify(data));
+					getUserInfo(data.data.list, curPage.access.split('#')[1], 'SendManId', function(callData) {
+						console.log('callData:' + JSON.stringify(callData));
+					});
 					if (data.code != 0) {
 						mui.toast(data.msg);
 						return;
@@ -437,7 +441,7 @@
 					for (var i = 0; i < data.data.list.length; i++) {
 						var tempM = data.data.list[i];
 						// if (tempM.SendManPic == '' || tempM.SendManPic == null) {
-							tempM.SendManPic = setImg(tempM.SendManPic);
+						tempM.SendManPic = setImg(tempM.SendManPic);
 						// }
 					}
 					if (datasource.sliderFlag == 0) {
@@ -457,8 +461,7 @@
 						// 	datasource.receive0.pageIndex++;
 						// }
 						datasource.receive0.pageIndex++;
-						if (data.data.total_page!=0&&datasource.receive0.pageIndex < data.data.total_page) {
-						}else{
+						if (data.data.total_page != 0 && datasource.receive0.pageIndex < data.data.total_page) {} else {
 							mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 						}
 					} else if (datasource.sliderFlag == 1) {
@@ -470,8 +473,7 @@
 						// 	datasource.receive1.pageIndex++;
 						// }
 						datasource.receive1.pageIndex++;
-						if (data.data.total_page!=0&&datasource.receive1.pageIndex < data.data.total_page) {
-						}else{
+						if (data.data.total_page != 0 && datasource.receive1.pageIndex < data.data.total_page) {} else {
 							mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 						}
 					} else if (datasource.sliderFlag == 2) {
@@ -483,8 +485,7 @@
 						// 	datasource.receive2.pageIndex++;
 						// }
 						datasource.receive2.pageIndex++;
-						if (data.data.total_page!=0&&datasource.receive2.pageIndex < data.data.total_page) {
-						}else{
+						if (data.data.total_page != 0 && datasource.receive2.pageIndex < data.data.total_page) {} else {
 							mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
 						}
 					} else if (datasource.sliderFlag == 3) {
@@ -506,8 +507,7 @@
 						// 	datasource.send.pageIndex++;
 						// }
 						datasource.send.pageIndex++;
-						if (data.data.total_page!=0&&datasource.send.pageIndex < data.data.total_page) {
-						}else{
+						if (data.data.total_page != 0 && datasource.send.pageIndex < data.data.total_page) {} else {
 							mui(".mui-pull-loading")[3].innerHTML = "没有更多了";
 						}
 					}
@@ -515,9 +515,9 @@
 			}
 			mui.plusReady(function() {
 				(function($) {
-					setTimeout(function(){
-						tempVue.canBack=true
-					},600)
+					setTimeout(function() {
+						tempVue.canBack = true
+					}, 600)
 					//阻尼系数
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
 					$('.mui-scroll-wrapper').scroll({

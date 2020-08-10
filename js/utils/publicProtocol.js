@@ -18,11 +18,11 @@ var setImg = function(imgURL, imgFlag) {
 }
 
 // 3.2:获取指定用户信息
-var getUserInfo = function(dataList,indexCode) {
+var getUserInfo = function(dataList,indexCode,key,callback) {
 	var tempCode = [];
 	for (var i = 0; i < dataList.length; i++) {
 		var tempM = dataList[i];
-		tempCode.push(tempM.user_code);
+		tempCode.push(tempM[key]);
 	}
 	var codes = tempCode.join(',');
 	var comData = {
@@ -33,15 +33,16 @@ var getUserInfo = function(dataList,indexCode) {
 	postDataEncry(window.storageKeyName.INTERFACE_SSO_SUB + 'user/getUserInfo', {}, comData, 2, function(data) {
 		events.closeWaiting();
 		if (data.code == 0) {
-			// for (var i = 0; i < contentData.peopleArray.length; i++) {
-			// 	var tempPeo = contentData.peopleArray[i];
-			// 	for (var a = 0; a < dataList.length; a++) {
-			// 		var tempUser = dataList[a];
-			// 		if (tempPeo.user_code == tempUser.user_code) {
-			// 			tempPeo.user_img = tempUser.img_url;
-			// 		}
-			// 	}
-			// }
+			for (var i = 0; i < dataList.length; i++) {
+				var tempPeo = dataList[i];
+				for (var a = 0; a < data.data.list.length; a++) {
+					var tempUser = data.data.list[a];
+					if (tempPeo[key] == tempUser.user_code) {
+						tempPeo.img_url = tempUser.img_url;
+					}
+				}
+			}
+			callback(dataList);
 		} else {
 			mui.toast(data.msg);
 		}
