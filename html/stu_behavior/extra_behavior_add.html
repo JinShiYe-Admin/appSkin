@@ -260,10 +260,11 @@
 						}else if(datasource.formData.time==''){
 							mui.toast('请选择发生日期')
 						}else{
-							var wd =  events.showWaiting();
 							if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+								var wd = events.showWaiting();
 								submitData(wd,datasource.formData)
 							} else {
+								var wd = events.showWaiting('上传中...');
 								uploadFile(wd); //上传文件
 							}
 						}

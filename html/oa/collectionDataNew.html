@@ -174,10 +174,11 @@
 										return;
 									}
 									sendFlag = 1;
-									var wd =  events.showWaiting();
 									if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+										var wd = events.showWaiting();
 										addNotice(wd, '3', '', '', 0, '');
 									} else {
+										var wd = events.showWaiting('上传中...');
 										uploadFile(wd); //上传文件
 									}
 								}

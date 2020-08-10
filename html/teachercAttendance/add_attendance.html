@@ -228,11 +228,12 @@
 							sendFlag = 0;
 							return;
 						}
-						var wd =  events.showWaiting();
 						if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+							var wd = events.showWaiting();
 							// 9.新增考勤
 							submitDataLast(wd, '3', '', '', 0, '');
 						} else {
+							var wd = events.showWaiting('上传中...');
 							uploadFile(wd); //上传文件
 						}
 					}

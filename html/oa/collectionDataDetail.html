@@ -539,11 +539,12 @@
 							}
 							fj.push('1');
 						}
-						var wd =  events.showWaiting();
 						if(fj.length == 0) {
+							var wd = events.showWaiting();
 							var oriName = multiMedia.data.PictureArray[0].path.substring(multiMedia.data.PictureArray[0].path.lastIndexOf("/") + 1);
 							addNotice(wd, '3', multiMedia.data.PictureArray[0].path, '', 0, oriName);
 						} else {
+							var wd = events.showWaiting('上传中...');
 							uploadFile(wd); //上传文件
 						}
 					},

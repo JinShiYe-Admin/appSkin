@@ -10,7 +10,7 @@ window.onerror = function(errorMessage, scriptURI, lineNumber, columnNumber, err
 	var ids = webUrl.split("/");
 	var webId = ids[ids.length - 1];
 	var showAlert = false;
-	switch(webId) { //主页，预加载的页面
+	switch (webId) { //主页，预加载的页面
 		case "firstPage.html": //初始页
 		case "index.html": //主页
 		case "cloud_home.html": //云盘主页
@@ -29,22 +29,24 @@ window.onerror = function(errorMessage, scriptURI, lineNumber, columnNumber, err
 			break;
 	}
 	var isMuiLazyError = false; //是否是mui懒加载的BUG
-	if(errorMessage.detail != undefined) {
+	if (errorMessage.detail != undefined) {
 		//mui懒加载的BUG的判断逻辑
-		if(errorMessage.detail["element"] != undefined && errorMessage.detail["uri"] != undefined) {
-			if(errorMessage.detail["element"]["_mui_lazy_width"] != undefined || errorMessage.detail["element"]["_mui_lazy_height"] != undefined) {
+		if (errorMessage.detail["element"] != undefined && errorMessage.detail["uri"] != undefined) {
+			if (errorMessage.detail["element"]["_mui_lazy_width"] != undefined || errorMessage.detail["element"][
+					"_mui_lazy_height"
+				] != undefined) {
 				isMuiLazyError = true;
 			}
 		}
 	}
-	if(!scriptURI) {
+	if (!scriptURI) {
 		return;
 	}
-	if(window.plus) {
-		if(isMuiLazyError) {
+	if (window.plus) {
+		if (isMuiLazyError) {
 			return;
 		}
-		if(showAlert) {
+		if (showAlert) {
 			console.log("界面id:" + plus.webview.currentWebview().id);
 			plus.nativeUI.alert('当前界面加载出现错误', function() {
 				console.log("界面id:" + webId);
@@ -66,7 +68,7 @@ var events = (function(mod) {
 
 	//判断输入字符串是否为空或者全部都是空格
 	mod.isNull = function(str) {
-		if(str == "") return true;
+		if (str == "") return true;
 		var regu = "^[ ]+$";
 		var re = new RegExp(regu);
 		return re.test(str);
@@ -89,7 +91,7 @@ var events = (function(mod) {
 		};
 		//发送网络请求，data为网络返回值
 		postDataEncry(2, 'ShakeHand', enData0, comData0, 0, function(data) {
-			if(data.code == 0) {
+			if (data.code == 0) {
 				store.set(window.storageKeyName.SHAKEHAND, data.data);
 				var enData1 = {
 					login_name: '00000000000', //用户账号
@@ -105,7 +107,7 @@ var events = (function(mod) {
 				};
 				//登录
 				postDataEncry(2, 'Login', enData1, comData1, 0, function(data1) {
-					if(data1.code == 0) {
+					if (data1.code == 0) {
 						var personal = store.get(window.storageKeyName.PERSONALINFO);
 						content = content + '[' + personal.utname + ']';
 						var enData0 = {};
@@ -145,7 +147,7 @@ var events = (function(mod) {
 		};
 		//发送网络请求，data为网络返回值
 		postDataEncry(2, 'ShakeHand', enData0, comData0, 0, function(data) {
-			if(data.code == 0) {
+			if (data.code == 0) {
 				store.set(window.storageKeyName.SHAKEHAND, data.data);
 				var enData1 = {
 					login_name: '00000000000', //用户账号
@@ -161,7 +163,7 @@ var events = (function(mod) {
 				};
 				//登录
 				postDataEncry(2, 'Login', enData1, comData1, 0, function(data1) {
-					if(data1.code == 0) {
+					if (data1.code == 0) {
 						var personal = store.get(window.storageKeyName.PERSONALINFO);
 						content = content + '[' + personal.utname + ']';
 						var enData0 = {};
@@ -203,7 +205,7 @@ var events = (function(mod) {
 	 * @param {Object} targetPage 目标界面
 	 */
 	mod.openNewWindow = function(tarPagePath) {
-		if(mod.click) {
+		if (mod.click) {
 			return false;
 		}
 		mod.click = true;
@@ -214,7 +216,7 @@ var events = (function(mod) {
 		var tarPageIds = tarPagePath.split('/');
 		var targetPage = plus.webview.getWebviewById(tarPageIds[tarPageIds.length - 1]);
 		//console.log('targetPage是否存在:' + Boolean(targetPage))
-		if(targetPage) {
+		if (targetPage) {
 			targetPage.show('slide-in-right', 250);
 		} else {
 			mui.openWindow({
@@ -240,7 +242,7 @@ var events = (function(mod) {
 	 * @param {Object} passData 获取要传的值
 	 */
 	mod.openNewWindowWithData = function(targetHTML, passData) {
-		if(mod.click) {
+		if (mod.click) {
 			return false;
 		}
 		mod.click = true;
@@ -271,18 +273,18 @@ var events = (function(mod) {
 	 */
 	mod.preload = function(tarPage, interval, navBarStyle) {
 
-		if(!interval) {
+		if (!interval) {
 			interval = 0;
 		}
 		var styles
-		if(navBarStyle) {
+		if (navBarStyle) {
 			styles = mod.getNavBarStyle(navBarStyle);
 		} else {
 			styles = mod.getWebStyle(tarPage);
 		}
 
 		//console.log("预加载的页面：" + tarPage)
-		if(!plus.webview.getWebviewById(tarPage)) {
+		if (!plus.webview.getWebviewById(tarPage)) {
 			//初始化预加载详情页面
 			setTimeout(function() {
 				mui.preload({
@@ -330,7 +332,7 @@ var events = (function(mod) {
 		tarPage = tarPage.split('/')[tarPage.split('/').length - 1];
 		var targetPage = null;
 		//获得目标页面
-		if(!targetPage) {
+		if (!targetPage) {
 			targetPage = plus.webview.getWebviewById(tarPage);
 			//				//console.log(typeof(targetPage))
 		}
@@ -354,7 +356,7 @@ var events = (function(mod) {
 		console.log('tarPage:' + tarPage + ",listener:" + listener);
 		var targetPage = null;
 		//获得目标页面
-		if(!targetPage) {
+		if (!targetPage) {
 			targetPage = plus.webview.getWebviewById(tarPage);
 		}
 		//触发目标页面的listener事件
@@ -370,16 +372,16 @@ var events = (function(mod) {
 	 */
 	mod.fireToPageNone = function(tarPage, listener, datas) {
 		tarPage = tarPage.split('/')[tarPage.split('/').length - 1];
-		if(typeof(datas) === "undefined") {
+		if (typeof(datas) === "undefined") {
 			datas = null;
 		}
 		console.log('tarPage:' + tarPage);
 		var targetPage = null;
 		//获得目标页面
-		if(!targetPage) {
+		if (!targetPage) {
 			targetPage = plus.webview.getWebviewById(tarPage);
 		}
-		if(targetPage) {
+		if (targetPage) {
 			//触发目标页面的listener事件
 			mui.fire(targetPage, listener, {
 				data: datas
@@ -407,7 +409,7 @@ var events = (function(mod) {
 		arrDate.splice(arrDate.length - 1, 1);
 		var noSecond = arrDate.join(':');
 		var arrSecond = noSecond.split('-');
-		if(new Date().getFullYear() == arrSecond[0]) {
+		if (new Date().getFullYear() == arrSecond[0]) {
 			arrSecond.splice(0, 1);
 		}
 		return arrSecond.join('-');
@@ -423,28 +425,33 @@ var events = (function(mod) {
 			oldBack();
 		}
 	}
-	
-	
-	var lastCallTime=0
-	
+
+
+	var lastCallTime = 0
+
 	/**
 	 * 返回一个安卓手机返回键无法关闭的等待框
 	 * @author 莫尚霖
 	 * @param {Object} string 等待框显示的文字，默认'加载中...'
 	 */
 	mod.showWaiting = function(string) {
+		clearTimeout();
+		var times = 30000;
 		var title = '加载中...';
-		if(string) {
+		if (string) {
+			times = 120000;
 			title = string;
 		}
 		showWaiting = plus.nativeUI.showWaiting(title, {
 			back: 'none',
-			modal:true,
+			modal: true,
 		});
-		setTimeout(function(){plus.nativeUI.closeWaiting()},30000)
+		setTimeout(function() {
+			events.closeWaiting();
+		}, times);
 		return showWaiting
 	}
-	
+
 
 	/**
 	 * 关闭一个或所有的等待框
@@ -452,7 +459,8 @@ var events = (function(mod) {
 	 * @param {Object} waiting 等待框对象
 	 */
 	mod.closeWaiting = function(waiting) {
-		if(waiting) {
+		clearTimeout();
+		if (waiting) {
 			waiting.close();
 		} else {
 			plus.nativeUI.closeWaiting();
@@ -488,7 +496,7 @@ var events = (function(mod) {
 	mod.setDialog = function(title, hint, callback, cancelLog) {
 		var btnArray = ['否', '是'];
 		mui.confirm(hint, title, btnArray, function(e) {
-			if(e.index == 1) {
+			if (e.index == 1) {
 				callback();
 			} else {
 				mui.toast(cancelLog)
@@ -506,11 +514,11 @@ var events = (function(mod) {
 			"q+": Math.floor((dateTime.getMonth() + 3) / 3), //quarter
 			"S": dateTime.getMilliseconds() //millisecond
 		};
-		if(/(y+)/.test(format)) {
+		if (/(y+)/.test(format)) {
 			format = format.replace(RegExp.$1, (dateTime.getFullYear() + "").substr(4 - RegExp.$1.length));
 		}
-		for(var k in o) {
-			if(new RegExp("(" + k + ")").test(format)) {
+		for (var k in o) {
+			if (new RegExp("(" + k + ")").test(format)) {
 				format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
 			}
 		}
@@ -522,7 +530,7 @@ var events = (function(mod) {
 	 * @author 莫尚霖
 	 */
 	mod.initHideKeyBoard = function() {
-		if(plus.os.name == 'Android') {
+		if (plus.os.name == 'Android') {
 			var Context = plus.android.importClass("android.content.Context");
 			var InputMethodManager = plus.android.importClass("android.view.inputmethod.InputMethodManager");
 			var main = plus.android.runtimeMainActivity();
@@ -547,7 +555,7 @@ var events = (function(mod) {
 	 */
 	mod.hideKeyBoard = function(hideOption) {
 		document.activeElement.blur();
-		if(plus.os.name == 'Android') {
+		if (plus.os.name == 'Android') {
 			hideOption.manger.hideSoftInputFromWindow(hideOption.token, hideOption.type);
 		}
 	}
@@ -563,17 +571,18 @@ var events = (function(mod) {
 			softinputMode: "adjustResize",
 			hardwareAccelerated: false
 		};
-		if(path) {
+		if (path) {
 			var ids = path.split('/');
 			var id = ids[ids.length - 1];
 			//安卓中video标签播放视频需要开启硬件加速
 			//1.求知问题详情页
 			//2.微课节次详情页
 			//3.微课节次单个详情页
-			if(id == "qiuzhi-question.html" || id == "course_details.html" || id == "course_section.html" || id == 'space-detail.html' || id == 'zone_main.html' || id == "sciedu_show_main.html" || "storage_show_video.html") {
+			if (id == "qiuzhi-question.html" || id == "course_details.html" || id == "course_section.html" || id ==
+				'space-detail.html' || id == 'zone_main.html' || id == "sciedu_show_main.html" || "storage_show_video.html") {
 				styles.hardwareAccelerated = true;
 			}
-			if(id == "show-home1.html") {
+			if (id == "show-home1.html") {
 				styles.hardwareAccelerated = "auto";
 			}
 		}
@@ -586,7 +595,7 @@ var events = (function(mod) {
 	mod.fobidEnter = function(elem) {
 		elem.onkeydown = function(event) {
 			//console.log("键盘输入事件：" + JSON.stringify(event.keyCode))
-			if(event.keyCode == 13) {
+			if (event.keyCode == 13) {
 				return false;
 			}
 		}
@@ -604,8 +613,8 @@ var events = (function(mod) {
 		}, function(e) {
 			var index = e.index;
 			//console.log("点击的index:" + index);
-			if(index > 0) {
-				if(btnArray[index - 1].dia) {
+			if (index > 0) {
+				if (btnArray[index - 1].dia) {
 					mod.setDialog(btnArray[index - 1].title, "确定？", cbArray[index - 1], "已取消删除")
 				} else {
 					cbArray[index - 1]();
@@ -635,7 +644,7 @@ var events = (function(mod) {
 	mod.getAniClose = function(num) {
 		var aniClose = '';
 		var type = num || 2; //默认2
-		switch(type) {
+		switch (type) {
 			case 0:
 				aniClose = 'auto';
 				//自动选择显示窗口相对于的动画效果。
@@ -705,7 +714,7 @@ var events = (function(mod) {
 	 */
 	mod.singleInstanceInPeriod = function(callback) {
 		var secondTime = null;
-		if(!firstTime) {
+		if (!firstTime) {
 			firstTime = "1234";
 			setTimeout(function() {
 				firstTime = null;
@@ -714,7 +723,7 @@ var events = (function(mod) {
 			secondTime = "123";
 		}
 		//console.log("第一次是否存在：" + firstTime + "第二次是否存在：" + secondTime);
-		if(!secondTime) {
+		if (!secondTime) {
 			callback();
 		}
 	}
@@ -726,7 +735,7 @@ var events = (function(mod) {
 	 */
 	mod.singleWebviewInPeriod = function(clickedItem, webviewUrl, data) {
 		var waiting = mod.showWaiting();
-		if(!data) {
+		if (!data) {
 			data = "";
 		}
 		//		//console.log("当前点击控件是否可点击：" + clickedItem.disabled);
@@ -744,10 +753,10 @@ var events = (function(mod) {
 		//		//console.log("当前点击控件是否可点击：" + item.disabled);
 		//console.log("targetWeb是否已显示：" + targetWeb.isVisible());
 		setTimeout(function() {
-			if(targetWeb.isVisible()) {
+			if (targetWeb.isVisible()) {
 				setTimeout(function() {
 					mod.closeWaiting(waiting);
-					if(item) {
+					if (item) {
 						item.disabled = false;
 						jQuery(item).css("pointerEvents", "all");
 					}
@@ -784,7 +793,7 @@ var events = (function(mod) {
 	 */
 	mod.playVideoCheckWeb = function() {
 		var type = plus.networkinfo.getCurrentType();
-		if(type != plus.networkinfo.CONNECTION_WIFI && type != plus.networkinfo.CONNECTION_NONE) {
+		if (type != plus.networkinfo.CONNECTION_WIFI && type != plus.networkinfo.CONNECTION_NONE) {
 			mui.toast("请注意当前不是WIFI环境");
 		}
 	}

@@ -193,7 +193,7 @@
 									<p style="color: #666;font-size: 13px; white-space:pre-wrap;">{{replyModel.ReplyContent}}</p>
 								</div>
 								<template v-for="(extraFile,indexEnc) in replyModel.EncAddr" v-show="replyModel.EncAddr.length!=0">
-									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件{{extraFile}}:
+									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
 										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">附件{{indexEnc+1}}</a>
 									</p>
 								</template>
@@ -378,10 +378,11 @@
 							mui.toast("回复内容不能超过50字", "cancel");
 							return;
 						}
-						var wd =  events.showWaiting();
 						if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+							var wd = events.showWaiting();
 							addNotice(wd, '3', '', '', 0, '');
 						} else {
+							var wd = events.showWaiting('上传中...');
 							uploadFile(wd); //上传文件
 						}
 					}

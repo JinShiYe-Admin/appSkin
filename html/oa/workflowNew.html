@@ -41,7 +41,8 @@
 					</div>
 					<div class="mui-input-row">
 						<span style="float: left;" class="titleTemp">内容</span>
-						<textarea style="width: 83%;margin-left: 8px;" maxlength="300" v-model="content" id="textarea" rows="5" placeholder="请输入内容"></textarea>
+						<textarea style="width: 83%;margin-left: 8px;" maxlength="300" v-model="content" id="textarea" rows="5"
+						 placeholder="请输入内容"></textarea>
 					</div>
 				</div>
 				<div id="MultiMedia">
@@ -53,8 +54,9 @@
 					</div>
 					<div class="mui-input-row" style="height: 50px;">
 						<a href="#selectFlow" style="float: left;margin-top: 15px;width: 250px;" class="titleTemp">审批流程</a>
-						<a href="#selectFlow"  v-if="selectFlowArray.length>0" style="float: right;margin-right: 30px;margin-top: 15px;color: gray;" class="mui-navigate-right">请选择流程</a>
-						<a href="#selectFlow"  v-else style="float: right;margin-right: 30px;margin-top: 15px;color: gray;" class="mui-navigate-right">暂无审批流程</a>
+						<a href="#selectFlow" v-if="selectFlowArray.length>0" style="float: right;margin-right: 30px;margin-top: 15px;color: gray;"
+						 class="mui-navigate-right">请选择流程</a>
+						<a href="#selectFlow" v-else style="float: right;margin-right: 30px;margin-top: 15px;color: gray;" class="mui-navigate-right">暂无</a>
 					</div>
 				</form>
 				<div style="margin: 10px;color: black;">
@@ -62,7 +64,7 @@
 					<div v-for="(selectModel,index) in selectPeople">
 						<div class="mui-input-row" style="height: 50px;">
 							<p v-if="selectModel.flowFlag == 0" style="margin-left: 100px;float: left;margin-top: 5px;">{{selectModel.user_name}}</p>
-							<p v-else-if ="selectModel.flowFlag == 1" style="margin-left: 100px;float: left;margin-top: 5px;">{{selectModel.FlowName}}</p>
+							<p v-else-if="selectModel.flowFlag == 1" style="margin-left: 100px;float: left;margin-top: 5px;">{{selectModel.FlowName}}</p>
 							<button @click="removeSelectModel(index)" type="button" class="mui-btn mui-btn-danger mui-btn-outlined" style="float: left;width: 80px;margin-left: 20px;height: 35px;">
 								<span class="mui-icon mui-icon-trash"></span>
 								删除
@@ -79,7 +81,7 @@
 				</ul>
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
-						<a ><b>取消</b></a>
+						<a><b>取消</b></a>
 					</li>
 				</ul>
 			</div>
@@ -180,10 +182,12 @@
 										return;
 									}
 									sendFlag = 1;
-									var wd =  events.showWaiting();
+
 									if (multiMedia.data.PictureArray.length == 0) { //没有传附件
+										var wd = events.showWaiting();
 										addNotice(wd, '3', '', '', 0, '');
 									} else {
+										var wd = events.showWaiting('上传中...');
 										uploadFile(wd); //上传文件
 									}
 								}
@@ -213,29 +217,29 @@
 					},
 					selectFlowFun: function(model) {
 						console.log('selectFlowFun:' + JSON.stringify(model));
-							mui('#selectFlow').popover('toggle');
-							message.selectPeople.push(model);
-							if (model.list.length==0) {
-								//6.通过ID获取流程审批人
-								var tempData = {
-									workFlowId: model.WorkFlowId, //流程ID
-									index_code: curPage.access.split('#')[1],
-									op_code: 'index'
-								}
-								postDataEncry(window.storageKeyName.INTERFACE_OA + 'flow/getWorkFlowListById', {}, tempData, 2, function(data) {
-									console.log('getWorkFlowListById:' + JSON.stringify(data));
-									events.closeWaiting();
-									if (data.code == 0) {
-										for (var i = 0; i < message.selectFlowArray.length; i++) {
-											var tempM =  message.selectFlowArray[i];
-											if (tempM.WorkFlowId == model.WorkFlowId) {
-												tempM.list = [].concat(data.data.list);
-											}
+						mui('#selectFlow').popover('toggle');
+						message.selectPeople.push(model);
+						if (model.list.length == 0) {
+							//6.通过ID获取流程审批人
+							var tempData = {
+								workFlowId: model.WorkFlowId, //流程ID
+								index_code: curPage.access.split('#')[1],
+								op_code: 'index'
+							}
+							postDataEncry(window.storageKeyName.INTERFACE_OA + 'flow/getWorkFlowListById', {}, tempData, 2, function(data) {
+								console.log('getWorkFlowListById:' + JSON.stringify(data));
+								events.closeWaiting();
+								if (data.code == 0) {
+									for (var i = 0; i < message.selectFlowArray.length; i++) {
+										var tempM = message.selectFlowArray[i];
+										if (tempM.WorkFlowId == model.WorkFlowId) {
+											tempM.list = [].concat(data.data.list);
 										}
-									} else {
-										mui.toast(data.msg);
 									}
-								});
+								} else {
+									mui.toast(data.msg);
+								}
+							});
 						}
 					},
 					removeSelectModel: function(index) {
@@ -268,9 +272,9 @@
 					events.closeWaiting();
 					if (data.code == 0) {
 						for (var i = 0; i < data.data.list.length; i++) {
-							var tempM =  data.data.list[i];
-							tempM.list = [];//流程里面的人员
-							tempM.flowFlag = 1;//1流程，0人员
+							var tempM = data.data.list[i];
+							tempM.list = []; //流程里面的人员
+							tempM.flowFlag = 1; //1流程，0人员
 						}
 						message.selectFlowArray = [].concat(data.data.list);
 					} else {
@@ -364,19 +368,19 @@
 							tempUrl = tempUrl.replace(/\\/g, '/');
 							pics.push(tempUrl);
 						}
-					} else{
+					} else {
 						for (var a = 0; a < model.list.length; a++) {
-							 var tempM = model.list[a];
-							 ids.push(tempM.ManId)
-							 codes.push('');
-							 names.push(tempM.ManName);
-							 if (tempM.ManPic == '' || tempM.ManPic == null) {
-							 	pics.push('');
-							 } else {
-							 	var tempUrl = tempM.ManPic;
-							 	tempUrl = tempUrl.replace(/\\/g, '/');
-							 	pics.push(tempUrl);
-							 }
+							var tempM = model.list[a];
+							ids.push(tempM.ManId)
+							codes.push('');
+							names.push(tempM.ManName);
+							if (tempM.ManPic == '' || tempM.ManPic == null) {
+								pics.push('');
+							} else {
+								var tempUrl = tempM.ManPic;
+								tempUrl = tempUrl.replace(/\\/g, '/');
+								pics.push(tempUrl);
+							}
 						}
 					}
 				}
@@ -423,7 +427,7 @@
 				console.log("data" + JSON.stringify(data.detail));
 				for (var i = 0; i < data.detail.peopleArray.length; i++) {
 					var tempModel = data.detail.peopleArray[i];
-					tempModel.flowFlag = 0;//1流程，0人员
+					tempModel.flowFlag = 0; //1流程，0人员
 				}
 				message.selectPeople = message.selectPeople.concat(data.detail.peopleArray);
 			});
