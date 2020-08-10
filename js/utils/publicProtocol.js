@@ -5,14 +5,47 @@ var setImg = function(imgURL, imgFlag) {
 		if (imgFlag == 1) { //订购默认图
 			tempUrl = '../../img/order.png';
 		} else {
-			tempUrl = '../../img/utils/noImgPerson.jpg';
+			tempUrl = 'http://www.108800.com/user.jpg';
 		}
+	} else if(imgURL.indexOf('suptosub') != -1){
+		tempUrl = 'http://www.108800.com/user.jpg';
 	} else {
 		var myDate = new Date();
 		tempUrl = imgURL + '?' + myDate.getTime();
 	}
 	//	console.log('tempUrl000:'+tempUrl);
 	return tempUrl;
+}
+
+// 3.2:获取指定用户信息
+var getUserInfo = function(dataList,indexCode) {
+	var tempCode = [];
+	for (var i = 0; i < dataList.length; i++) {
+		var tempM = dataList[i];
+		tempCode.push(tempM.user_code);
+	}
+	var codes = tempCode.join(',');
+	var comData = {
+		user_codes: codes,
+		index_code: indexCode //
+	}
+	//3.2:获取指定用户信息
+	postDataEncry(window.storageKeyName.INTERFACE_SSO_SUB + 'user/getUserInfo', {}, comData, 2, function(data) {
+		events.closeWaiting();
+		if (data.code == 0) {
+			// for (var i = 0; i < contentData.peopleArray.length; i++) {
+			// 	var tempPeo = contentData.peopleArray[i];
+			// 	for (var a = 0; a < dataList.length; a++) {
+			// 		var tempUser = dataList[a];
+			// 		if (tempPeo.user_code == tempUser.user_code) {
+			// 			tempPeo.user_img = tempUser.img_url;
+			// 		}
+			// 	}
+			// }
+		} else {
+			mui.toast(data.msg);
+		}
+	});
 }
 
 //将时间转换为显示的格式
@@ -256,7 +289,7 @@ var jQAjaxPost = function(url, data, callback) {
 				var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				var tempToken = {
-					index_code:'',
+					index_code: '',
 					user_code: personal.user_code, //登录名
 					uuid: publicPar.uuid, //设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
 					webid: publicPar.webid, //浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
@@ -291,22 +324,26 @@ var jQAjaxPost = function(url, data, callback) {
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
 				utils.setBadgeNumber(0, 0);
-				
+
 				//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
 				store.remove(window.storageKeyName.PERSONALINFO);
-				plus.webview.open('../../html/login/loginIndex.html','../../html/login/loginIndex.html',{statusbar:{background: "#00CFBD"}});
+				plus.webview.open('../../html/login/loginIndex.html', '../../html/login/loginIndex.html', {
+					statusbar: {
+						background: "#00CFBD"
+					}
+				});
 				// utils.mOpenWithData("../../html/login/loginIndex.html", {});
 				var curr = plus.webview.currentWebview();
 				var wvs = plus.webview.all();
-				try{
-					for(var i = 0, len = wvs.length; i < len; i++) {
+				try {
+					for (var i = 0, len = wvs.length; i < len; i++) {
 						//关闭除login页面外的其他页面
-						if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+						if (wvs[i].getURL().indexOf('loginIndex.html') != -1) {
 							continue;
 						}
 						plus.webview.close(wvs[i]);
 					}
-				}catch(e){
+				} catch (e) {
 					console.log(e)
 				}
 				curr.close();
@@ -317,7 +354,7 @@ var jQAjaxPost = function(url, data, callback) {
 			}
 		},
 		error: function(xhr, type, errorThrown) {
-			console.log('jQAP-Error777:', url, JSON.stringify(xhr), type);
+			console.log('jQAP-Error777:', url, xhr, type);
 			events.closeWaiting();
 			mui.toast('网络连接失败,请重新尝试一下');
 			callback({
