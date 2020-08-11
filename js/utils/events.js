@@ -428,14 +428,14 @@ var events = (function(mod) {
 
 
 	var lastCallTime = 0
-
+var timeOut;
 	/**
 	 * 返回一个安卓手机返回键无法关闭的等待框
 	 * @author 莫尚霖
 	 * @param {Object} string 等待框显示的文字，默认'加载中...'
 	 */
 	mod.showWaiting = function(string) {
-		clearTimeout();
+		clearTimeout(timeOut);
 		var times = 30000;
 		var title = '加载中...';
 		if (string) {
@@ -446,7 +446,7 @@ var events = (function(mod) {
 			back: 'none',
 			modal: true,
 		});
-		setTimeout(function() {
+		timeOut=setTimeout(function() {
 			events.closeWaiting();
 		}, times);
 		return showWaiting
@@ -459,7 +459,7 @@ var events = (function(mod) {
 	 * @param {Object} waiting 等待框对象
 	 */
 	mod.closeWaiting = function(waiting) {
-		clearTimeout();
+		clearTimeout(timeOut);
 		if (waiting) {
 			waiting.close();
 		} else {

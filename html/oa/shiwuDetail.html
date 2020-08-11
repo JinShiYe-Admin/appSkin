@@ -192,7 +192,7 @@
 								<div class="chat_content_left" v-show="replyModel.ReplyContent.length>0">
 									<p style="color: #666;font-size: 13px; white-space:pre-wrap;">{{replyModel.ReplyContent}}</p>
 								</div>
-								<template v-for="(extraFile,indexEnc) in replyModel.EncAddr" v-show="replyModel.EncAddr.length!=0">
+								<template v-for="(extraFile,indexEnc) in replyModel.EncAddr.split('|')" v-show="replyModel.EncAddr.length!=0">
 									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
 										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">附件{{indexEnc+1}}</a>
 									</p>

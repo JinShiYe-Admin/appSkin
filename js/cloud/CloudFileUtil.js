@@ -140,6 +140,12 @@ var CloudFileUtil = (function($, mod) {
 	 * @param {Object} callBack
 	 */
 	mod.getUpLoadTokens = function(data, callBack) {
+		if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+					mui.toast("网络连接失败,请重新尝试一下", "cancel");
+					events.closeWaiting();
+					return;
+				}
+
 //		console.log("getUpLoadTokens " + JSON.stringify(data));
 		var appId = data.appId; //项目id
 		var desKey = getAppKey(appId); //项目名称
