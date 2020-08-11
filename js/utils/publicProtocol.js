@@ -38,7 +38,7 @@ var getUserInfo = function(dataList,indexCode,key,pic_key,callback) {
 				for (var a = 0; a < data.data.list.length; a++) {
 					var tempUser = data.data.list[a];
 					if (tempPeo[key] == tempUser.user_code) {
-						tempPeo[pic_key] = tempUser.img_url;
+						tempPeo[pic_key] = tempUser.img_url+"?"+new Date().getTime();
 					}
 				}
 			}

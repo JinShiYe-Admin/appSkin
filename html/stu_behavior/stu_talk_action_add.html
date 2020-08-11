@@ -558,7 +558,10 @@
 									pathList.push(multiMedia.data.PictureArray[num].domain);
 									var path = multiMedia.data.PictureArray[num].path.split("/");
 									var name = path[path.length - 1];
-									// name = name + '(' + cloudutil.transformSize(upload.totalSize) + ')';
+									// var indexNUM=name.lastIndexOf(".");
+									// var _name=name.substring(0,indexNUM)
+									// var _mart=name.substring(indexNUM);
+									// name = _name + '_(' + cloudutil.transformSize(upload.totalSize) + ')'+_mart;
 									encNameList.push(name);
 								} else if (multiMedia.data.VideoArray.length !== 0) { //视频
 									pathList.push(multiMedia.data.VideoArray[num].domain);

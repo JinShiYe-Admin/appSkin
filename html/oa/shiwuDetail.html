@@ -129,6 +129,10 @@
 			.MultiMediaHidden {
 				display: none;
 			}
+			
+			.mui-table-view-cell>a:not(.mui-btn){
+				    white-space: inherit !important;
+			}
 		</style>
 	</head>
 
@@ -183,7 +187,7 @@
 				<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
 				<p class="titleCSS" style="font-size: 14px;color: #333;margin-top: 10px;margin-left: 10px;">回复列表</p>
 				<ul class="mui-table-view">
-					<li class="mui-table-view-cell" v-for="(replyModel,index) in detailModel.list">
+					<li class="mui-table-view-cell no-bgc" v-for="(replyModel,index) in detailModel.list">
 						<div>
 							<img class="mui-media-object mui-pull-left peopleImg" :src=replyModel.ReceiveManPic>
 							<a class="" style="font-size: 14px;color: #666;">
@@ -193,8 +197,8 @@
 									<p style="color: #666;font-size: 13px; white-space:pre-wrap;">{{replyModel.ReplyContent}}</p>
 								</div>
 								<template v-for="(extraFile,indexEnc) in replyModel.EncAddr.split('|')" v-show="replyModel.EncAddr.length!=0">
-									<p style="font-size: 13px;color: #333;margin-top: 7px;" v-show="extraFile">附件:
-										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr[indexEnc])">附件{{indexEnc+1}}</a>
+									<p style="font-size: 13px;color: #333;margin-top: 10px;" v-show="extraFile">附件:
+										<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(replyModel.EncAddr.split('|')[indexEnc])">附件{{indexEnc+1}}</a>
 									</p>
 								</template>
 							</a>
@@ -786,7 +790,10 @@
 									pathList.push(multiMedia.data.PictureArray[num].domain);
 									var path = multiMedia.data.PictureArray[num].path.split("/");
 									var name = path[path.length - 1];
-									name = name + '(' + cloudutil.transformSize(upload.totalSize) + ')';
+									var indexNUM=name.lastIndexOf(".");
+									var _name=name.substring(0,indexNUM)
+									var _mart=name.substring(indexNUM);
+									name = _name + '_(' + cloudutil.transformSize(upload.totalSize) + ')'+_mart;
 									encNameList.push(name);
 								} else if (multiMedia.data.VideoArray.length !== 0) { //视频
 									pathList.push(multiMedia.data.VideoArray[num].domain);
