@@ -49,6 +49,7 @@
 		</div>
 	</body>
 	<script src="../../js/utils/storageKeyName.js"></script>
+	<script src="../../js/utils/app-update.js"></script>
 	<script src="../../js/utils/vconsole.min.js"></script>
 	<!--加密-->
 	<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
@@ -78,6 +79,13 @@
 		var loginFlag = 0; //0自动登录，1不自动登录
 		
 		mui.plusReady(function() {
+			
+			var ISEXIT = store.get(window.storageKeyName.ISEXIT);
+			if('0'==ISEXIT){
+				store.set(window.storageKeyName.ISEXIT,'1');
+			}else{
+				appUpdate.updateApp();
+			}
 			plus.navigator.setStatusBarBackground("#00CFBD");
 			tempModel = {
 				uuid: '',
