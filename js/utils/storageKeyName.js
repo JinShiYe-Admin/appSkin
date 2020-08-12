@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key =4; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -139,7 +139,7 @@ var storageKeyName = (function(mod) {
 		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
 			console[item]=console[item].bind(console)
 		}else{
-			// console[item]=function(){}
+			console[item]=function(){}
 		}
 	})
 	
