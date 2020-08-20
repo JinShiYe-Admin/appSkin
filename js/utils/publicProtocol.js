@@ -35,10 +35,12 @@ var getUserInfo = function(dataList,indexCode,key,pic_key,callback) {
 		if (data.code == 0) {
 			for (var i = 0; i < dataList.length; i++) {
 				var tempPeo = dataList[i];
-				for (var a = 0; a < data.data.list.length; a++) {
-					var tempUser = data.data.list[a];
-					if (tempPeo[key] == tempUser.user_code) {
-						tempPeo[pic_key] = tempUser.img_url+"?"+new Date().getTime();
+				if(data.data){
+					for (var a = 0; a < data.data.list.length; a++) {
+						var tempUser = data.data.list[a];
+						if (tempPeo[key] == tempUser.user_code) {
+							tempPeo[pic_key] = tempUser.img_url+"?"+new Date().getTime();
+						}
 					}
 				}
 			}
@@ -395,4 +397,23 @@ var extendParameter = function(data0) {
 		token: personal.utoken
 	}
 	return $.extend(data0, tempData);
+}
+
+//1.绑定
+var bindPro = function(data0, callback) {
+	var url = 'http://jbyj.jiaobaowang.net/GeTuiPushServer/bind';
+	postDataEncry(url,{}, data0,0, callback);
+	//	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	//	data0 = extendParameter(data0);
+	//	xhrPost('http://jbyj.jiaobaowang.net/GeTuiPushServer/bind', data0, callback);
+
+}
+
+//1.解绑
+var unbindPro = function(data0, callback) {
+	//	var tempAttendUrl = window.storageKeyName.INTERFACEKONG + 'schoolNotice/';
+	//	data0 = extendParameter(data0);
+	//	xhrPost('http://jbyj.jiaobaowang.net/GeTuiPushServer/unbind', data0, callback);
+	var url = 'http://jbyj.jiaobaowang.net/GeTuiPushServer/unbind';
+	postDataEncry(url,{}, data0,0, callback);
 }
