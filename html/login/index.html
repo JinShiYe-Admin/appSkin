@@ -477,23 +477,78 @@
 				}
 				indexPage.showArray = [].concat(tempA);
 				
-				if(mui.os.android) {
-					var info = plus.push.getClientInfo();
+				if(mui.os.android) {// android  部分代码逻辑------通知
+					//检查是否有通知权限
+					function checkNoticePermission(){ //return true : allowed notice  false: not allowed notice 
+						let main = plus.android.runtimeMainActivity();
+						let NotificationManagerCompat = plus.android.importClass("android.support.v4.app.NotificationManagerCompat");  
+						let packageNames = NotificationManagerCompat.from(main);  
+						console.log(JSON.stringify(packageNames)); 
+						return packageNames.areNotificationsEnabled();
+					}
+					
+					//弹出框，打开设置界面
+					function show_NOTIFICATION_SETTINGS(){
+						let btnArray = ['立即开启', '以后再说'];
+						mui.confirm('开启后可第一时间收到消息通知', '提示', btnArray, function(e) {
+							if (e.index == 0) {
+								let main = plus.android.runtimeMainActivity();
+								let pkName = main.getPackageName();  
+								let uid = main.getApplicationInfo().plusGetAttribute("uid");
+								let Intent = plus.android.importClass('android.content.Intent');
+								let Build = plus.android.importClass("android.os.Build");
+								if (Build.VERSION.SDK_INT >= 26) {
+									let  intent = new Intent('android.settings.APP_NOTIFICATION_SETTINGS');
+								　　intent.putExtra('android.provider.extra.APP_PACKAGE', pkName);
+									main.startActivity(intent);  
+								} else if (Build.VERSION.SDK_INT >= 21) { //android 5.0-7.0  
+								　　let  intent = new Intent('android.settings.APP_NOTIFICATION_SETTINGS');
+								　　intent.putExtra("app_package", pkName);
+								　　intent.putExtra("app_uid", uid);
+									main.startActivity(intent);  
+								// } else { //(<21)其他--跳转到该应用管理的详情页
+								// 　　let  Settings = plus.android.importClass("android.provider.Settings");
+								// 　　let  Uri = plus.android.importClass("android.net.Uri");
+								// 　　let  intent = new Intent();
+								// 　　intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+								// 　　let  uri = Uri.fromParts("package", main.getPackageName(), null);
+								// 　　intent.setData(uri);
+								// 	main.startActivity(intent);  
+								}
+							}
+						}) 
+					}
+					
+					var firstLogin = store.get(window.storageKeyName.ISFIRST);
+					console.log('firstLogin==========================' + firstLogin)
+					if(firstLogin == null && !checkNoticePermission()) {//首次登陆，检测是否有通知权限，如果没有，弹出提示框
+						store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
+						show_NOTIFICATION_SETTINGS();
+					}else if(firstLogin == 'unFirstLogin' && !checkNoticePermission()) {//之后的登录（如果手动从设置页关闭了通知权限），检测是否有通知权限，只提示一次
+						store.set(window.storageKeyName.ISFIRST, 'noAllowedNotice');
+						show_NOTIFICATION_SETTINGS();
+					}else {//首次登录已默认开启通知权限
+						store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
+					}
+					
 					//当设备收到服务器发送的透传消息时，不会触发页面监听的receive事件。当用户点击消息中心消息时会触发监听页面的“click”事件。如果用户点击多个消息时，会多次触发“click”事件。
 					//不符指定合格式的透传消息不会进入系统的消息中心，会在监听“receive”事件的页面触发事件回调。
-					//{title:"通知标题",content:"通知内容",payload:"通知去干嘛这里可以自定义"} 标准格式
+					//{title:"通知标题",content:"通知内容",payload:"通知去干嘛这里可以自定义"} f9ba843c10d8b1b5502b3c7e922adde7 标准格式
 					//{"title":"接收到一条待办","body":"{\"title\":\"通知标题\",\"content\":\"通知内容\",\"payload\":\"通知去干嘛这里可以自定义\"}"}  由于使用标准格式，不会触发receice监听，所以封装了下
+					var info = plus.push.getClientInfo();
+					var cid = info.clientid; 
 					plus.push.addEventListener("receive", function(msg) {
 						//放置安卓角标
-						try {
-							var iconNum = store.get(window.storageKeyName.ICONNUM) * 1 + 1;
-							var ShortcutBadger = plus.android.importClass("me.leolin.shortcutbadger.ShortcutBadger");
-							var context = plus.android.runtimeMainActivity();
-							ShortcutBadger.applyCount(context, iconNum);
-							store.set(window.storageKeyName.ICONNUM, iconNum);
-						} catch(err) {
-							console.log('类加载出错：' + err)
-						}
+						// try {
+						// 	var iconNum = store.get(window.storageKeyName.ICONNUM) * 1 + 1;
+						// 	var ShortcutBadger = plus.android.importClass("me.leolin.shortcutbadger.ShortcutBadger");
+						// 	var context = plus.android.runtimeMainActivity();
+						// 	ShortcutBadger.applyCount(context, iconNum);
+						// 	store.set(window.storageKeyName.ICONNUM, iconNum);
+						// } catch(err) { 
+						// 	console.log('类加载出错：' + err)
+						// }
+						plus.device.vibrate(500);
 						console.log('msg.title========' + JSON.stringify(msg))
 						//设置通知栏消息
 						var options = {
@@ -513,15 +568,16 @@
 					}, false);
 					plus.push.addEventListener("click", function(msg) {
 						// getNoReadCnt();
-						//清空app角标
-						plus.clearIcon.clearIco(function(result) {
-							console.log("result>>>>>>" + result[0]);
-							store.set(window.storageKeyName.ICONNUM, 0);
+						//清空app角标 
+						// plus.clearIcon.clearIco(function(result) {
+						// 	console.log("result>>>>>>" + result[0]);
+						// 	store.set(window.storageKeyName.ICONNUM, 0);
 							plus.push.clear();
-						}, function(result) {
-							console.log('未知错误：' + result);
-						});
-						//					console.log('msg:'+JSON.stringify(msg))
+						// }, function(result) {
+						// 	console.log('未知错误：' + result);
+						// });
+						
+						//						console.log('msg:'+JSON.stringify(msg))
 						//						console.log('appname:'+msg.title)
 						//						console.log('title:'+msg.content)
 						//						console.log('body:'+JSON.stringify(msg.payload))
@@ -529,30 +585,24 @@
 						//						console.log('body.content:'+JSON.parse(msg.payload).content)
 						//						console.log('body.payload:'+JSON.parse(msg.payload).payload)
 					}, false);
-				
-					var isFirst = store.get(window.storageKeyName.ISFIRST);
-					console.log('isFirst==========================' + isFirst)
-					if(isFirst == null) {
-						//检测通知权限是否开启
-						plus.pushPermission.isNotificationEnabled(function(result) {
-							console.log("result>>>>>>" + result[0]);
-							var obj = JSON.parse(result[0]);
-							if(obj.code == 0) {
-								if(!obj.msg) { //通知权限没开启，提示打开
-									store.set(window.storageKeyName.ISFIRST, 'noFirst');
-									var btnArray = ['以后再说', '立即开启'];
-									mui.confirm('开启后可第一时间收到消息通知', '校讯通', btnArray, function(e) {
-										if(e.index == 1) { //立即开启
-											plus.pushPermission.gotoSetting();
-										}
-									})
-								}
-							}
-						}, function(result) {
-							console.log('未知错误：' + result);
-						});
+					
+					//监听收到通知后，没通过标题栏而是点击app图标进入app的事件，官方用语叫：应用切换到前台运行事件
+					document.addEventListener("plusready", onPlusReady, false);
+					function onPlusReady() {
+						document.addEventListener("resume", onAppReume, false);
 					}
-				} else {
+					function onAppReume() {
+						//清空app角标
+						// plus.clearIcon.clearIco(function(result) {
+						// 	console.log("result>>>>>>" + result[0]);
+						// 	store.set(window.storageKeyName.ICONNUM, 0);
+							plus.push.clear();
+						// }, function(result) {
+						// 	console.log('未知错误：' + result);
+						// });
+					}
+					
+				} else {// IOS  部分代码逻辑------通知
 					document.addEventListener("plusready", function() {
 						message = document.getElementById("message");
 						// 监听点击消息事件
@@ -672,24 +722,6 @@
 				}, 1000);
 
 			});
-			if(mui.os.android) {
-				//监听收到通知后，没通过标题栏而是点击app图标进入app的事件，官方用语叫：应用切换到前台运行事件 
-				document.addEventListener("plusready", onPlusReady, false);
-			
-				function onPlusReady() {
-					document.addEventListener("resume", onAppReume, false);
-				}
-			
-				function onAppReume() {
-					plus.clearIcon.clearIco(function(result) {
-						console.log("result>>>>>>" + result[0]);
-						store.set(window.storageKeyName.ICONNUM, 0);
-						plus.push.clear();
-					}, function(result) {
-						console.log('未知错误：' + result);
-					});
-				}
-			}
 		</script>
 	</body>
 
