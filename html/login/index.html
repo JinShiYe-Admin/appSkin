@@ -42,6 +42,7 @@
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/igexinTool.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
@@ -428,6 +429,40 @@
 							},
 						]
 					},
+					{
+						name: "student_performance",
+						href: "../../html/student_performance/index.html",
+						img_href: "../../img/interaction/interaction_tab.png",
+						tempID: 'student_performance',
+						cls: 'mui-icon iconfont icon-jiachanghudong',
+						url: 'schapp_Dorm',//student_Performance
+						childList: [
+							{
+								name:'单科成绩', 
+								icon:'../../img/interaction/school_notice.png',
+								href: "../../html/student_performance/classes_homework_index.html",
+								url:'schapp_Dorm_Info'//schapp_Single_Subject_Score
+							},
+							{
+								name:'全科成绩',
+								icon:'../../img/interaction/grade_notice.png',
+								href: "../../html/student_performance/classes_homework_index.html",
+								url:'schapp_Dorm_Attendance'//schapp_General_Grades
+							},
+							{
+								name:'知识点分析',
+								icon:'../../img/interaction/class_notice.png',
+								href: "../../html/student_performance/classes_homework_index.html",
+								url:'schapp_Dorm_Health'//schapp_Knowledge_Analysis
+							},
+							{
+								name:'错题本',
+								icon:'../../img/interaction/class_homework.png',
+								href: "../../html/student_performance/classes_homework_index.html",
+								url:'schapp_Dorm_Evaluation'//schapp_Wrong_Book
+							},
+						]
+					},
 					]
 				}
 			});
@@ -437,7 +472,7 @@
 				// appUpdate.updateApp();
 				var tempMenu = store.get(window.storageKeyName.MENULIST);
 				console.log('tempMenu:' + JSON.stringify(tempMenu));
-				var tempA = [];
+				var tempA = []; 
 				for (var i = 0; i < tempMenu.list[0].childList.length; i++) {//一级菜单循环
 					var web_first_item = tempMenu.list[0].childList[i];
 					for (var a = 0; a < indexPage.pageArray.length; a++) {
@@ -476,7 +511,11 @@
 					});
 				}
 				indexPage.showArray = [].concat(tempA);
-				
+				var info = plus.push.getClientInfo();
+				var cid = info.clientid;
+				var tool = new igexinTool();
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				tool.bindAlias(personal.user_code);
 				if(mui.os.android) {// android  部分代码逻辑------通知
 					//检查是否有通知权限
 					function checkNoticePermission(){ //return true : allowed notice  false: not allowed notice 
