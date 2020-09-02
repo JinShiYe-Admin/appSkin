@@ -271,16 +271,36 @@ viewport-fit=cover
 	margin-right: 0px;
 }
 
-.divNameCss{
+.divNameCss {
 	font-size: 13px !important;
 	color: #878787 !important;
 }
 
 
-.mui-table-view.no-line:before,.mui-table-view.no-line:after{
+.mui-table-view.no-line:before,
+.mui-table-view.no-line:after {
 	height: 0;
 }
 
-.mui-table-view-cell.no-bgc.mui-active{
+.mui-table-view-cell.no-bgc.mui-active {
 	background-color: #FFFFFF;
+}
+
+.mui-segmented-control {
+	border-color: #00CFBD;
+}
+
+.mui-segmented-control .mui-control-item {
+	color: #666;
+	border-color: #00CFBD;
+}
+
+.mui-segmented-control .mui-control-item.mui-active {
+	background-color: #00CFBD;
+	color: white;
+}
+
+.mui-segmented-control .mui-control-item span {
+	font-size: 12px;
+	padding: 0 0 0 5px;
 }

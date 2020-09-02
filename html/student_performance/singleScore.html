@@ -1,0 +1,296 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<!-- 考试难度 -->
+		<link rel="stylesheet" type="text/css" href="../../js/raty/jquery.raty.css" />
+		<link rel="stylesheet" type="text/css" href="../../js/raty/labs.css" />
+		<style type="text/css">
+			[v-cloak] {
+				display: none !important;
+			}
+
+			.circular-square {
+				border-radius: 10%;
+				width: 30px;
+				height: 30px;
+			}
+
+			.divd {
+				padding-left: 10px;
+				width: 80%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				/* background: #7FFFD4; */
+			}
+
+			.mui-grid-view.mui-grid-9 {
+				margin: 0;
+				padding: 0;
+				border-top: 0px solid #eee;
+				border-left: 0px solid #eee;
+				background-color: white;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				background: white;
+				margin: 0;
+				padding: 11px 15px;
+				vertical-align: top;
+				border-right: 0px solid #eee;
+				border-bottom: 0px solid #eee;
+			}
+
+			.chart {
+				height: 200px;
+				margin: 10px;
+				padding: 0px;
+			}
+		</style>
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+		</header>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">成绩及排名</a>
+					<a class="mui-control-item" href="#item2">我的答卷</a>
+					<a class="mui-control-item" href="#item3">试卷分析</a>
+					<a class="mui-control-item" href="#item4">错题归纳</a>
+				</div>
+			</div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<h4 style="text-align: center;margin-top: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+							<span class="mui-icon" style="width: 60px;height: 60px; border:1px solid;border-radius:50%;font-size: 14px;color: #00CFBD;margin-top: 40px;"><span
+								 style="color: red;height: 60px;line-height: 60px;vertical-align: middle;">112</span></span>
+							<div class="mui-media-body">年级排名</div>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+							<span class="mui-icon" style="width: 100px;height: 100px; border:1px solid;border-radius:50%;color: red;">
+								<div style="color: red;margin-top: 30px;">112</div>
+								<div style="color: gray;font-size: 12px;">满分：120</div>
+							</span>
+							<div class="mui-media-body">我的成绩</div>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+							<span class="mui-icon" style="width: 60px;height: 60px; border:1px solid;border-radius:50%;font-size: 14px;color: #00CFBD;margin-top: 40px;">
+								<span style="color: red;height: 60px;line-height: 60px;vertical-align: middle;">112</span>
+							</span>
+							<div class="mui-media-body">班级排名</div>
+						</li>
+					</ul>
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
+							<div class="mui-media-body">年级最高分：118</div>
+							<div class="mui-media-body">班级最高分：115</div>
+							<div class="mui-media-body">年级参考人数：265</div>
+						</li>
+						<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
+							<div class="mui-media-body">年级均分：63</div>
+							<div class="mui-media-body">班级均分：72</div>
+							<div class="mui-media-body">班级参考人数：52</div>
+						</li>
+					</ul>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">成绩趋势</h4>
+					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试成绩趋势如下：</p>
+					<div class="chart" id="lineChartScore"></div>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">排名趋势</h4>
+					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试排名趋势如下：</p>
+					<div class="chart" id="lineChartRank"></div>
+				</div>
+				<div id="item2" class="mui-control-content">
+					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">答卷图片</h4>
+					<div style="text-align: center;margin-top: 20px;">
+						<img style="width:200px;height: 300px;" src="https://qn-educds.jiaobaowang.net/xiaoxuntong/notice/0_0_123794893633381990415971950015485.png" />
+					</div>
+					<div style="text-align: center;margin-top: 20px;">
+						<img style="width:200px;height: 300px;" src="https://qn-educds.jiaobaowang.net/xiaoxuntong/notice/0_0_123794893633381990415971950015485.png" />
+					</div>
+				</div>
+				<div id="item3" class="mui-control-content">
+					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<div id="readOnly"></div>
+				</div>
+				<div id="item4" class="mui-control-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							第4个选项卡子项-1
+						</li>
+						<li class="mui-table-view-cell">
+							第4个选项卡子项-2
+						</li>
+						<li class="mui-table-view-cell">
+							第4个选项卡子项-3
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<!---->
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/pushPermission.js"></script>
+		<script src="../../js/utils/clearIcon.js"></script>
+		<script src="../../js/utils/echarts-all.js"></script>
+		<script src="../../js/raty/labs.js"></script>
+		<script src="../../js/raty/jquery.raty.js"></script>
+		
+
+		<script type="text/javascript">
+			mui.init();
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {
+					showBack: 0,
+					headTitle: '单科成绩'
+				}
+			});
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					showArray: [],
+					scoreRank: { //成绩及排名
+						echartDetail: {
+							legend: {
+								data: ['我的成绩', '年级平均分','班级平均分']
+							},
+							grid: {
+								x: 45, //到左侧的距离
+								x2: 10, //到右侧的距离
+								y: 30, //到上面的距离
+								y2: 60 //到下面的距离
+							},
+							toolbox: {
+								show: false, //默认值为true，是否显示工具栏组件
+								//各工具配置项。
+								feature: {
+									//辅助线标志 
+									mark: {
+										show: true
+									},
+									//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。show->是否显示该工具，readOnly->是否不可编辑，optionToContent->自定义 dataView 展现函数，用以取代默认的 textarea 使用更丰富的数据编辑。可以返回 dom 对象或者 html 字符串，backgroundColor->数据视图浮层背景色。
+									dataView: {
+										show: true,
+										readOnly: false
+									},
+									//动态类型切换。show->是否显示该工具，type->这是个数组，启用的动态类型，包括'line'（切换为折线图）, 'bar'（切换为柱状图）, 'stack'（切换为堆叠模式）, 'tiled'（切换为平铺模式）。 
+									magicType: {
+										show: true,
+										type: ['line']
+									},
+									//配置项还原。主要属性是show->是否显示该工具。 
+									restore: {
+										show: true
+									},
+									//这个工具可以把图表保存为图片。里面有些常用的参数，type->保存图片的格式，name->保存文件的名字，backgroundColor->保存图片的背景色，show->是否显示该工具 
+									saveAsImage: {
+										show: true
+									}
+								}
+							},
+							//是否启用拖拽重计算特性，默认关闭(即值为false) 
+							calculable: false,
+							//直角坐标系中横轴数组，数组中每一项代表一条横轴坐标轴，仅有一条时可省略数值    
+							//横轴通常为类目型，但条形图时则横轴为数值型，散点图时则横纵均为数值型
+							xAxis: [{
+								axisLabel: {
+									interval: 2,
+									rotate: 50
+								},
+								name: '',
+								type: 'category', //坐标轴类型，横轴默认为类目型'category'
+								data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'] //类目型坐标轴文本标签数组，指定label内容。 数组项通常为文本，'\n'指定换行
+							}],
+							//直角坐标系中纵轴数组，数组中每一项代表一条纵轴坐标轴，仅有一条时可省略数值    
+							//纵轴通常为数值型，但条形图时则纵轴为类目型 
+							yAxis: [{
+								type: 'value', //坐标轴类型，纵轴默认为数值型'value'
+								name: '分数',
+								minInterval: 1,
+								nameLocation: 'middle',
+								nameTextStyle: {
+									color: "black",
+									fontSize: 14,
+									padding: 10
+								},
+								splitArea: { //分隔区域，默认不显示
+									show: true
+								}
+							}],
+							//sereis的数据: 用于设置图表数据之用。series是一个对象嵌套的结构；对象内包含对象
+							series: [{
+								symbol: false,
+								showAllSymbol: false,
+								name: '我的成绩', //系列名称，如果启用legend，该值将被legend.data索引相关
+								type: 'line', //图表类型，必要参数！如为空或不支持类型，则该系列数据不被显示。
+								data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
+							},
+							{
+								symbol: false,
+								showAllSymbol: false,
+								name: '年级平均分', //系列名称，如果启用legend，该值将被legend.data索引相关
+								type: 'line', //图表类型，必要参数！如为空或不支持类型，则该系列数据不被显示。
+								data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
+							},{
+								symbol: false,
+								showAllSymbol: false,
+								name: '班级平均分', //系列名称，如果启用legend，该值将被legend.data索引相关
+								type: 'line', //图表类型，必要参数！如为空或不支持类型，则该系列数据不被显示。
+								data: [2.6, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
+							}]
+						}
+					}
+				},
+				methods: {
+					clickFunction: function(model) {
+						console.log('index:' + JSON.stringify(model));
+						utils.mOpenWithData(model.href, model);
+					}
+				},
+			});
+
+			mui.plusReady(function() {
+				var ws = plus.webview.currentWebview();
+				console.log("当前Webview：" + JSON.stringify(ws.preload));
+				if (ws.preload) {
+					tempHead.headTitle = ws.preload.name;
+					contentData.showArray = ws.preload.childList;
+				} else {
+					tempHead.showBack = 1;
+				}
+				var lineChartScore = echarts.init(document.getElementById('lineChartScore'));
+				// 使用刚指定的配置项和数据显示图表。
+				lineChartScore.setOption(contentData.scoreRank.echartDetail);
+				
+				var lineChartRank = echarts.init(document.getElementById('lineChartRank'));
+				// 使用刚指定的配置项和数据显示图表。
+				lineChartRank.setOption(contentData.scoreRank.echartDetail);
+				// 
+				$('#readOnly').raty({ readOnly: true, score: 3 });
+			});
+		</script>
+	</body>
+
+</html>

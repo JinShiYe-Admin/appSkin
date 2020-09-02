@@ -7,9 +7,11 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../js/swiper/swiper-bundle.min.css">
+		<link rel="stylesheet" href="../../js/timeline/timeline.css">
 		<style type="text/css">
 			[v-cloak] {
-				display:none !important;
+				display: none !important;
 			}
 
 			.circular-square {
@@ -17,23 +19,195 @@
 				width: 30px;
 				height: 30px;
 			}
+
+			.swiper-container {
+				margin-top: 10px;
+				margin-bottom: 15px;
+				width: 100%;
+				height: 100%;
+			}
+
+			.swiper-slide {
+				text-align: center;
+				font-size: 18px;
+				/* background: #fff; */
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+
+			.swiper-button-next:after,
+			.swiper-button-prev:after {
+				font-size: 15px;
+				font-weight: bold;
+				color: #00CFBD;
+			}
+
+			.swiper-slide-span {
+				width: 200px;
+				background: #00CFBD;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				border-radius: 50px;
+				color: white;
+			}
+
+			.timelineDate {
+				width: 30%;
+				font-size: 0.75em;
+				padding-top: 0.40rem;
+				padding-right: 2rem;
+				text-align: left;
+			}
+
+			.timelineDesc {
+				/* width: 50%; */
+				margin: 0;
+				font-size: 14px;
+				font-weight: 400;
+				color: #808080;
+			}
+
+			.diva {
+				color: gray;
+				float: left;
+				width: 45px;
+				height: 50px;
+				font-size: 14px;
+			}
+
+			.divb {
+				margin-left: 20px;
+				float: left;
+				width: 70%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+			}
+
+			.divc {
+				color: white;
+				float: left;
+				width: 40px;
+				height: 40px;
+				font-size: 14px;
+				background: goldenrod;
+				text-align: center;
+				line-height: 40px;
+				vertical-align: middle;
+				border-radius: 5px;
+			}
+
+			.divd {
+				padding-left: 10px;
+				width: 80%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				/* background: #7FFFD4; */
+			}
 		</style>
 	</head>
 
-	<body>
+	<body style="background: white;">
 		<header class="mui-bar mui-bar-nav" id="tempHead">
 			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
-		<div v-cloak class="mui-content" style="margin-top: 0px;" id="contentData">
-			<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
-				<li v-cloak v-cloak v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
-					<a href="#" @click="clickFunction(model)">
-						<img class="circular-square" :src=model.icon />
-						<div class="mui-media-body divNameCss">{{model.name}}</div>
-					</a>
-				</li>
-			</ul>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">单科成绩</a>
+					<a class="mui-control-item" href="#item2">全科成绩</a>
+					<a class="mui-control-item" href="#item3">知识点分析</a>
+					<a class="mui-control-item" href="#item4">错题本</a>
+				</div>
+			</div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<div class="swiper-container">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide"><span class="swiper-slide-span">语文</span></div>
+							<div class="swiper-slide"><span class="swiper-slide-span">数学</span></div>
+							<div class="swiper-slide"><span class="swiper-slide-span">英语</span></div>
+							<div class="swiper-slide"><span class="swiper-slide-span">物理</span></div>
+							<div class="swiper-slide"><span class="swiper-slide-span">化学</span></div>
+							<div class="swiper-slide"><span class="swiper-slide-span">政治</span></div>
+							<div class="swiper-slide"><span class="swiper-slide-span">体育</span></div>
+						</div>
+						<!-- Add Arrows -->
+						<div class="swiper-button-next"></div>
+						<div class="swiper-button-prev"></div>
+					</div>
+						<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
+							<div v-for="(item,index) in singleSubScore.subjectArray" @click="clickSingleScore(item)"  class="cd-timeline-block">
+								<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+								<div class="cd-timeline-content">
+									<div class="diva">{{item.time}}</div>
+									<div class="timelineDesc divb">
+										<div class="">
+											<div class="divc" style="margin-top: -15px;">期中</div>
+											<p class="divd" style="margin-top: -15px;">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+				</div>
+				<div id="item2" class="mui-control-content">
+					<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
+						<div v-for="(item,index) in singleSubScore.subjectArray" class="cd-timeline-block">
+							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+							<div class="cd-timeline-content">
+								<div class="diva">{{item.time}}</div>
+								<div class="timelineDesc divb">
+									<div class="">
+										<div class="divc" style="margin-top: -15px;">期中</div>
+										<p class="divd" style="margin-top: -15px;">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+				<div id="item3" class="mui-control-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							第三个选项卡子项-1
+						</li>
+						<li class="mui-table-view-cell">
+							第三个选项卡子项-2
+						</li>
+						<li class="mui-table-view-cell">
+							第三个选项卡子项-3
+						</li>
+					</ul>
+				</div>
+				<div id="item4" class="mui-control-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							第4个选项卡子项-1
+						</li>
+						<li class="mui-table-view-cell">
+							第4个选项卡子项-2
+						</li>
+						<li class="mui-table-view-cell">
+							第4个选项卡子项-3
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -46,68 +220,77 @@
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/pushPermission.js"></script>
 		<script src="../../js/utils/clearIcon.js"></script>
-		
+		<script src="../../js/swiper/swiper-bundle.min.js"></script>
+
 		<script type="text/javascript">
 			mui.init();
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
 					showBack: 0,
-					headTitle: ''
+					headTitle: '学生成绩'
 				}
 			});
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					showArray:[],
+					showArray: [],
+					singleSubScore: { //单科成绩
+						// isEmptyData:true,
+						subject: [], //科目列表
+						nowSubject: {}, //当前科目信息
+						subjectArray: [{
+								"text": "用户4，工单结束工作人员到场签到工作人员到场签到工作人员到场签到工作人员到场签到",
+								"time": "2018-05-22"
+							}, {
+								"text": "用户4，工作人员到场签到工作人员到场签到工作人员到场签到",
+								"time": "2018-05-22"
+							},
+							{
+								"text": "用户4，分配工作人员",
+								"time": "2018-05-22"
+							}, {
+								"text": "用户4，提交报修单",
+								"time": "2018-05-21"
+							}
+						], //根据当前科目得到的列表
+					}
 				},
 				methods: {
 					clickFunction: function(model) {
 						console.log('index:' + JSON.stringify(model));
 						utils.mOpenWithData(model.href, model);
-					}
+					},
+					clickSingleScore:function(model){
+						utils.mOpenWithData("../../html/student_performance/singleScore.html", model);
+					},
 				},
 			});
-			
-			// // 获取未读数
-			// var getUnReadCntFun = function(){
-			// 	for (var a = 0; a < contentData.showArray.length; a++) {
-			// 		var tempM0 = contentData.showArray[a];
-			// 		if (tempM0.redspot_url!=null) {
-			// 			// 获取未读数
-			// 			getUnReadCut(tempM0.access,tempM0.redspot_url,function(data){
-			// 				console.log('getUnReadCut:'+JSON.stringify(data));
-			// 				if (data.code == 0) {
-			// 					for (var b = 0; b < contentData.showArray.length; b++) {
-			// 						var tempM1 = contentData.showArray[b];
-			// 						if (tempM1.access == data.data.list[0].access) {
-			// 							tempM1.NoReadCnt = data.data.list[0].dotnum;
-			// 						}
-			// 					}
-			// 				}
-			// 			});
-			// 		}
-			// 	}
-			// }
-			
+
 			mui.plusReady(function() {
-				var ws = plus.webview.currentWebview(); 
+				var ws = plus.webview.currentWebview();
 				console.log("当前Webview：" + JSON.stringify(ws.preload));
-				if (ws.preload) { 
+				if (ws.preload) {
 					tempHead.headTitle = ws.preload.name;
-					contentData.showArray=ws.preload.childList;
+					contentData.showArray = ws.preload.childList;
 				} else {
 					tempHead.showBack = 1;
 				}
-				// //获取未读数 TODO 触发条件还没写
-				// window.addEventListener('getKaoqinNoReadCnt', function(data) {
-				// 	//获取未读数
-				// 	getUnReadCntFun();
-				// });
+
+				// 单科成绩左右切换
+				var swiper = new Swiper('.swiper-container', {
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					on: {
+						slideChangeTransitionEnd: function() {
+							console.log('slideChangeTransitionEnd:' + swiper.activeIndex);
+						},
+					},
+				});
 			});
-			
-			
 		</script>
 	</body>
 
