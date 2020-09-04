@@ -8,13 +8,12 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<!-- 考试难度 -->
-		<link rel="stylesheet" type="text/css" href="../../js/raty/jquery.raty.css" />
-		<link rel="stylesheet" type="text/css" href="../../js/raty/labs.css" />
+		<link rel="stylesheet" type="text/css" href="../../js/libs/raty/stylesheets/jquery.raty.css" />
+		<link rel="stylesheet" type="text/css" href="../../js/libs/raty/stylesheets/labs.css" />
 		<style type="text/css">
 			[v-cloak] {
 				display: none !important;
 			}
-
 			.circular-square {
 				border-radius: 10%;
 				width: 30px;
@@ -52,6 +51,26 @@
 				height: 200px;
 				margin: 10px;
 				padding: 0px;
+			}
+			
+			.mui-grid-view.mui-grid-9.table {
+			    border-top: 1px solid #eee !important;
+			    border-left: 1px solid #eee !important;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
+				text-align: left;
+				padding: 0 7px;
+			    border-right: 1px solid #eee !important;
+			    border-bottom: 1px solid #eee !important;
+			}
+			
+			.mui-table-view-cell.beauline:after {
+			    left: 0 !important;
+				height: 0 !important;
+			}
+			.bg-gray{
+				background: #eaeaea !important;
 			}
 		</style>
 	</head>
@@ -124,7 +143,86 @@
 				</div>
 				<div id="item3" class="mui-control-content">
 					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
-					<div id="readOnly"></div>
+					<div class="mui-row">
+						<div class="mui-col-xs-6"  style="text-align: right;"><span style="margin-right: 10px;font-size: 16px;">考试难度：</span></div>
+						<div id="star" class="mui-col-xs-6" style="margin-left: -10px;"></div>
+					</div>
+					<div class="mui-row" style="padding: 10px;">
+						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
+						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						            <div class="mui-media-body">题型</div></a></li>
+						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						            <div class="mui-media-body">数量</div></a></li>
+						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						            <div class="mui-media-body">分值</div></a></li>
+						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						            <div class="mui-media-body">分值占比</div></a></li>
+							<template v-for="item in ttlist">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								        <div class="mui-media-body">{{item.name}}</div></a></li>
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								        <div class="mui-media-body">{{item.num}}</div></a></li>
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								        <div class="mui-media-body">{{item.score}}</div></a></li>
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								        <div class="mui-media-body">{{item.percentage}}</div></a></li>
+							</template>
+						</ul> 
+					</div>
+					<div class="mui-row">
+						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">成绩趋势</h4>
+					</div>
+					<div class="mui-row">
+						<ul class="mui-table-view no-line" style="font-size: 13px;">
+						    <li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;" >
+								<div class="mui-row">
+						            <div class="mui-col-xs-1">题号</div>
+									<div class="mui-col-xs-2">分值</div>
+									<div class="mui-col-xs-3">年级满分人数</div>
+									<div class="mui-col-xs-3">年级平均分</div>
+									<div class="mui-col-xs-2">我的得分</div>
+									<div class="mui-col-xs-1"> </div>
+								</div> 
+							</li>
+							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in cjqs" :class="index%2==0?'':'bg-gray'">
+							       <div class="mui-row">
+							            <div class="mui-col-xs-1">{{item.th}}</div>
+										<div class="mui-col-xs-2">{{item.fz}}</div>
+										<div class="mui-col-xs-3">{{item.mf}}</div>
+										<div class="mui-col-xs-3">{{item.pjf}}</div>
+										<div class="mui-col-xs-2">{{item.wd}}</div>
+										<div class="mui-col-xs-1" @click="toDetailPage(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+							       </div>
+							</li>
+						</ul> 
+					</div>
+					<div class="mui-row">
+						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 15px;">知识点分析</h4>
+					</div>
+					<div class="mui-row">
+						<ul class="mui-table-view no-line" style="font-size: 13px;">
+						    <li class="mui-table-view-cell  no-bgc beauline" style="text-align: center; background: #55ffff;" >
+								<div class="mui-row">
+						            <div class="mui-col-xs-2">知识点</div>
+									<div class="mui-col-xs-3">考察题目</div>
+									<div class="mui-col-xs-1">分值</div>
+									<div class="mui-col-xs-3">年级均分</div>
+									<div class="mui-col-xs-2">我的得分</div>
+									<div class="mui-col-xs-1"> </div>
+								</div> 
+							</li>
+							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in zsdfx" :class="index%2==0?'':'bg-gray'">
+							       <div class="mui-row">
+							            <div class="mui-col-xs-2" style="text-align: left;">{{item.zsd}}</div>
+										<div class="mui-col-xs-3" style="word-break: break-all;text-align: left;padding: 0 5px;">{{item.tm}}</div>
+										<div class="mui-col-xs-1">{{item.fz}}</div>
+										<div class="mui-col-xs-3">{{item.pjf}}</div>
+										<div class="mui-col-xs-2">{{item.wd}}</div>
+										<div class="mui-col-xs-1" @click="toDetailPageZsd(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+							       </div>
+							</li>
+						</ul> 
+					</div>
 				</div>
 				<div id="item4" class="mui-control-content">
 					<ul class="mui-table-view">
@@ -153,9 +251,8 @@
 		<script src="../../js/utils/pushPermission.js"></script>
 		<script src="../../js/utils/clearIcon.js"></script>
 		<script src="../../js/utils/echarts-all.js"></script>
-		<script src="../../js/raty/labs.js"></script>
-		<script src="../../js/raty/jquery.raty.js"></script>
-		
+		<script src="../../js/libs/raty/javascripts/jquery.raty.js"></script>
+		<script src="../../js/libs/raty/javascripts/labs.js"></script>
 
 		<script type="text/javascript">
 			mui.init();
@@ -261,12 +358,34 @@
 								data: [2.6, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
 							}]
 						}
-					}
+					},
+					ttlist:[
+						{name:"主观题",num:10,score:10,percentage:"90.99%"},
+						{name:"主观题",num:10,score:10,percentage:"9.01%"},
+						{name:"合计",num:20,score:20,percentage:"100%"}
+					],
+					cjqs:[
+						{th:1,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:2,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:3,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:4,fz:10,mf:10,pjf:96.39,wd:8},
+					],
+					zsdfx:[
+						{zsd:"噼里啪啦知识点",fz:10,tm:"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",pjf:96.39,wd:8},
+						{zsd:"噼里啪啦噼里啪啦知识点知识点",fz:10,tm:"1,2,3,4,5,6,7,8,9",pjf:96.39,wd:8},
+						{zsd:"噼里啪啦知识点",fz:10,tm:"1,2,3,4,5,6,7,8,9",pjf:96.39,wd:8},
+					]
 				},
 				methods: {
 					clickFunction: function(model) {
 						console.log('index:' + JSON.stringify(model));
 						utils.mOpenWithData(model.href, model);
+					},
+					toDetailPage:function(line){
+						console.log(JSON.stringify(line))
+					},
+					toDetailPageZsd:function(line){
+						console.log(JSON.stringify(line))
 					}
 				},
 			});
@@ -288,7 +407,8 @@
 				// 使用刚指定的配置项和数据显示图表。
 				lineChartRank.setOption(contentData.scoreRank.echartDetail);
 				// 
-				$('#readOnly').raty({ readOnly: true, score: 3 });
+				 $.fn.raty.defaults.path = '../../js/libs/raty/images';
+				$('#star').raty({ readOnly: true, score: 3 });
 			});
 		</script>
 	</body>
