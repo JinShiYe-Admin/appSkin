@@ -9,7 +9,6 @@
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<!-- 考试难度 -->
 		<link rel="stylesheet" type="text/css" href="../../js/libs/raty/stylesheets/jquery.raty.css" />
-		<link rel="stylesheet" type="text/css" href="../../js/libs/raty/stylesheets/labs.css" />
 		<style type="text/css">
 			[v-cloak] {
 				display: none !important;
@@ -71,6 +70,10 @@
 			}
 			.bg-gray{
 				background: #eaeaea !important;
+			}
+			
+			.mui-media-body {
+			    margin: 4px 0;
 			}
 		</style>
 	</head>
@@ -149,28 +152,28 @@
 					</div>
 					<div class="mui-row" style="padding: 10px;">
 						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
-						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						    <li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 						            <div class="mui-media-body">题型</div></a></li>
-						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						    <li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 						            <div class="mui-media-body">数量</div></a></li>
-						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						    <li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 						            <div class="mui-media-body">分值</div></a></li>
-						    <li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+						    <li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 						            <div class="mui-media-body">分值占比</div></a></li>
 							<template v-for="item in ttlist">
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 								        <div class="mui-media-body">{{item.name}}</div></a></li>
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 								        <div class="mui-media-body">{{item.num}}</div></a></li>
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 								        <div class="mui-media-body">{{item.score}}</div></a></li>
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="#">
 								        <div class="mui-media-body">{{item.percentage}}</div></a></li>
 							</template>
 						</ul> 
 					</div>
 					<div class="mui-row">
-						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">成绩趋势</h4>
+						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">试题分析</h4>
 					</div>
 					<div class="mui-row">
 						<ul class="mui-table-view no-line" style="font-size: 13px;">
@@ -184,7 +187,7 @@
 									<div class="mui-col-xs-1"> </div>
 								</div> 
 							</li>
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in cjqs" :class="index%2==0?'':'bg-gray'">
+							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in stfx" :class="index%2==0?'':'bg-gray'">
 							       <div class="mui-row">
 							            <div class="mui-col-xs-1">{{item.th}}</div>
 										<div class="mui-col-xs-2">{{item.fz}}</div>
@@ -225,17 +228,60 @@
 					</div>
 				</div>
 				<div id="item4" class="mui-control-content">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">
-							第4个选项卡子项-1
-						</li>
-						<li class="mui-table-view-cell">
-							第4个选项卡子项-2
-						</li>
-						<li class="mui-table-view-cell">
-							第4个选项卡子项-3
-						</li>
-					</ul>
+					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<div class="mui-row">
+						<div class="mui-col-xs-6"  style="text-align: center;font-size: 12px;">本次考试题量：12道</div>
+						<div class="mui-col-xs-6"  style="text-align: center;font-size: 12px;">本次考试错题数量：6道</div>
+					</div>
+					<div class="mui-row" style="padding: 10px;">
+						 <div>
+							 <div style="height: 22px;width: 2px;background: #55ffff;float: left;margin-right: 5px;"></div>
+							 <div>高于年级平均分的错题</div>
+						 </div>
+						 <div class="mui-row" style="margin-top: 15px;">
+							 <p v-for="item in ct" class="mui-col-xs-1" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">{{item.th}}</p>
+						 </div>
+					</div>
+					<div class="mui-row" style="padding: 10px;">
+						 <div>
+							 <div style="height: 22px;width: 2px;background: #55ffff;float: left;margin-right: 5px;"></div>
+							 <div>低于年级平均分的错题</div>
+						 </div>
+						 <div class="mui-row" style="margin-top: 15px;">
+							 <p class="mui-col-xs-1" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">6</p>
+							 <p class="mui-col-xs-1" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">36</p>
+							 <p class="mui-col-xs-1" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">46</p>
+							 <p class="mui-col-xs-1" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">96</p>
+							 <p class="mui-col-xs-1" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">999</p>
+						 </div>
+					</div>
+					<div class="mui-row">
+						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">错题详情</h4>
+					</div>
+					<div class="mui-row">
+						<ul class="mui-table-view no-line" style="font-size: 13px;">
+						    <li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;" >
+								<div class="mui-row">
+						            <div class="mui-col-xs-1">题号</div>
+									<div class="mui-col-xs-2">分值</div>
+									<div class="mui-col-xs-3">年级满分人数</div>
+									<div class="mui-col-xs-3">年级平均分</div>
+									<div class="mui-col-xs-2">我的得分</div>
+									<div class="mui-col-xs-1"> </div>
+								</div> 
+							</li>
+							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in ct" :class="index%2==0?'':'bg-gray'">
+							       <div class="mui-row">
+							            <div class="mui-col-xs-1">{{item.th}}</div>
+										<div class="mui-col-xs-2">{{item.fz}}</div>
+										<div class="mui-col-xs-3">{{item.mf}}</div>
+										<div class="mui-col-xs-3">{{item.pjf}}</div>
+										<div class="mui-col-xs-2">{{item.wd}}</div>
+										<div class="mui-col-xs-1" @click="toDetailPageCT(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+							       </div>
+							</li>
+						</ul> 
+					</div>
 				</div>
 			</div>
 		</div>
@@ -364,28 +410,57 @@
 						{name:"主观题",num:10,score:10,percentage:"9.01%"},
 						{name:"合计",num:20,score:20,percentage:"100%"}
 					],
-					cjqs:[
+					stfx:[
+						{th:1,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:2,fz:11,mf:10,pjf:96.39,wd:8},
+						{th:3,fz:12,mf:10,pjf:96.39,wd:8},
+						{th:4,fz:13,mf:10,pjf:96.39,wd:8}, 
+						{th:5,fz:14,mf:10,pjf:96.39,wd:8},
+						{th:6,fz:15,mf:10,pjf:96.39,wd:8},
+						{th:7,fz:16,mf:10,pjf:96.39,wd:8},
+						{th:8,fz:17,mf:10,pjf:96.39,wd:8},
+					],
+					zsdfx:[
+						{zsd:"文言文阅读",fz:10,tm:"1",pjf:96.39,wd:8,mfrs:666},
+						{zsd:"不算长也不算短的知识点",fz:10,tm:"1,2,3",pjf:96.39,wd:8,mfrs:666},
+						{zsd:"大作文阅读",fz:10,tm:"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",pjf:96.39,wd:8,mfrs:666},
+					],
+					ct:[
 						{th:1,fz:10,mf:10,pjf:96.39,wd:8},
 						{th:2,fz:10,mf:10,pjf:96.39,wd:8},
 						{th:3,fz:10,mf:10,pjf:96.39,wd:8},
 						{th:4,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:5,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:6,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:7,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:8,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:9,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:10,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:11,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:12,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:13,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:14,fz:10,mf:10,pjf:96.39,wd:8},
+						{th:15,fz:10,mf:10,pjf:96.39,wd:8}, 
 					],
-					zsdfx:[
-						{zsd:"噼里啪啦知识点",fz:10,tm:"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",pjf:96.39,wd:8},
-						{zsd:"噼里啪啦噼里啪啦知识点知识点",fz:10,tm:"1,2,3,4,5,6,7,8,9",pjf:96.39,wd:8},
-						{zsd:"噼里啪啦知识点",fz:10,tm:"1,2,3,4,5,6,7,8,9",pjf:96.39,wd:8},
-					]
 				},
 				methods: {
-					clickFunction: function(model) {
-						console.log('index:' + JSON.stringify(model));
-						utils.mOpenWithData(model.href, model);
-					},
 					toDetailPage:function(line){
-						console.log(JSON.stringify(line))
+						console.log(JSON.stringify(contentData.stfx))
+						console.log(JSON.stringify(line)) 
+						let model ={}
+						model.list=contentData.stfx
+						model.child=line
+						utils.mOpenWithData("shijuan_shiti.html", [contentData.stfx,line]);
 					},
 					toDetailPageZsd:function(line){
-						console.log(JSON.stringify(line))
+						console.log(JSON.stringify(contentData.zsdfx))
+						console.log(JSON.stringify(line)) 
+						utils.mOpenWithData("shijuan_zhishidian.html", [contentData.zsdfx,line]);
+					},
+					toDetailPageCT:function(line){
+						console.log(JSON.stringify(contentData.ct))
+						console.log(JSON.stringify(line)) 
+						utils.mOpenWithData("cuoti_xiangqing.html", [contentData.ct,line]);
 					}
 				},
 			});

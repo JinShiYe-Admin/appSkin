@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" href="../../js/swiper/swiper-bundle.min.css">
+		<style type="text/css">
+			[v-cloak] {
+				display: none !important;
+			}
+			.circular-square {
+				border-radius: 10%;
+				width: 30px;
+				height: 30px;
+			}
+
+			.divd {
+				padding-left: 10px;
+				width: 80%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				/* background: #7FFFD4; */
+			}
+
+			.mui-grid-view.mui-grid-9 {
+				margin: 0;
+				padding: 0;
+				border-top: 0px solid #eee;
+				border-left: 0px solid #eee;
+				background-color: white;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				background: white;
+				margin: 0;
+				padding: 11px 15px;
+				vertical-align: top;
+				border-right: 0px solid #eee;
+				border-bottom: 0px solid #eee;
+			}
+
+			.chart {
+				height: 200px;
+				margin: 10px;
+				padding: 0px;
+			}
+			
+			.mui-grid-view.mui-grid-9.table {
+			    border-top: 1px solid #eee !important;
+			    border-left: 1px solid #eee !important;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
+				text-align: left;
+				padding: 0 7px;
+			    border-right: 1px solid #eee !important;
+			    border-bottom: 1px solid #eee !important;
+			}
+			
+			.mui-table-view-cell.beauline:after {
+			    left: 0 !important;
+				height: 0 !important;
+			}
+			.bg-gray{
+				background: #eaeaea !important;
+			}
+			
+			.swiper-container {
+				margin-top: 10px;
+				margin-bottom: 15px;
+				width: 100%;
+				height: 100%;
+			}
+			
+			.swiper-slide {
+				text-align: center;
+				font-size: 18px;
+				/* background: #fff; */
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			
+			.swiper-button-next:after,
+			.swiper-button-prev:after {
+				font-size: 15px;
+				font-weight: bold;
+				color: #00CFBD;
+			}
+			.swiper-button-prev {
+				width: 50px;
+				background: #FFFFFF;
+				left: 0 !important;
+			}
+			.swiper-button-next {
+				width: 50px;
+				background: #FFFFFF;
+				right: 0 !important;
+			}
+			.swiper-slide{
+				width: 50px;
+			}
+		</style>
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+		</header>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div class="mui-row">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="item in stList">
+						 <p @click="stItemClick(item)" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">{{item.th}}</p>
+						</div>
+					</div>
+					<!-- Add Arrows -->
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
+			</div>
+			<div class="mui-row">
+				<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;">题号：{{stItem.th}}</h5>
+			</div>
+			<div class="mui-row" style="padding: 0 10px;">
+				<div style="margin-top: 15px;">
+						<p>当前题目的得分信息：</p>
+						<div class="mui-row" >
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>分值：{{stItem.fz}}分</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>我的得分：{{stItem.wd}}分</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级满分人数：{{stItem.mf}}人</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级均分：{{stItem.pjf}}分</p></div>
+						</div>
+				</div>
+			</div>
+			<div class="mui-row" style="padding: 0 10px;">
+				<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">题目：</h4>
+				<p style="font-size: 14px;color: #666;" v-html=stDetail.tm></p>
+			</div>
+			<div class="mui-row" style="padding: 0 10px;">
+				<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">我的答案：</h4>
+				<img src="http://www.ruiwen.com/pic/copyright/img/d6d0bfbc5_2.jpg" width="100%" >
+			</div>
+			<div class="mui-row" style="padding: 0 10px;">
+				<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">标准答案：</h4>
+				<p style="font-size: 14px;color: #666;" v-html=stDetail.bz></p>
+			</div>
+		</div> 
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/swiper/swiper-bundle.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {
+					showBack: 1,
+					headTitle: '错题归纳',
+				}
+			});
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					stList:[],
+					stItem:{},
+					stDetail:{
+						bz:"<div>(1)(2分)示例：捕捉刻画典型细节“红领巾” 准确定格专注伏案写作场景<br/>(2)(2分)只有读书才能引领我们抵达远处，想要幸福，就做一个读书人。<br/>(3)(4分)高度赞誉和肯定陈 忠实的忠诚品德和作品高度。“原上鹿”暗指他的代表作长篇小说《白鹿原》采用嵌名联的形式，且一再反复，强化表达效果。</div>",
+						wd:"http://www.ruiwen.com/pic/copyright/img/d6d0bfbc5_2.jpg",
+						tm:"<div>历史文化名城泉州，各种艺术形式异彩纷呈。梨园剧种是现宋元南戏的活文物。南音溯源晋唐，是我国中原的古乐遗响。提线木偶则举世闻名的优秀艺术形式。民间花灯、剪纸等________________,美不胜收。而泉州石雕技术之高，艺术之妙，在国内另辟蹊径，独树一帜，泉州的土木建筑________________有其浓郁而独特的地方风格。</div><br/>"
+						　　+"<div>(1)请用正楷字把“古乐遗响”抄在四字格里。(2分)</div><br/>"
+						　　+"<div>(2)加点字“溯”、“辟”读音正确的一项是( )。(2分)</div><br/>"
+						　　+"<div>A. shuò pì &emsp;&emsp;  B.sù pì &emsp;&emsp;  C.sù bì</div><br/>"
+						　　+"<div>(3)在文段两处横线处应填写的词语是( )。(2分)</div><br/>"
+						　　+"<div>A.争妍斗艳 还 B.林林总总 更 C.琳琅满目 也</div><br/>"
+						　　+"<div>(4)文段划线句子有语病，请写出修改意见。(2分)</div><br/>"
+					}
+				},
+				methods: {
+					stItemClick:function(item){
+						contentData.stItem=item
+					}
+				},
+			});
+
+			mui.plusReady(function() {
+				let	curPage = utils.getDataFromUrl(window.location.href);
+				let currStIndex=0
+				contentData.stList=curPage[0]
+				contentData.stItem=curPage[1]
+				contentData.stList.map((item,index)=>{
+					if(item.th==contentData.stItem.th){
+						currStIndex=index
+					}
+				})
+				setTimeout(function(){
+					var swiper = new Swiper('.swiper-container', {
+					  slidesPerView: 'auto',
+					  direction: 'horizontal',
+					  slidesOffsetAfter : 50,
+					  initialSlide:currStIndex,
+					  slideToClickedSlide: true,
+					  centeredSlides : true, 
+					  navigation: {
+					    nextEl: '.swiper-button-next',
+					    prevEl: '.swiper-button-prev',
+					  },
+					});
+				},100)
+			});
+		</script>
+	</body>
+
+</html>
