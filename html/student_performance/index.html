@@ -167,7 +167,7 @@
 				</div>
 				<div id="item2" class="mui-control-content">
 					<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
-						<div v-for="(item,index) in singleSubScore.subjectArray" class="cd-timeline-block">
+						<div v-for="(item,index) in singleSubScore.subjectArray" @click="clickSumScore(item)" class="cd-timeline-block">
 							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 							<div class="cd-timeline-content">
 								<div class="diva">{{item.time}}</div>
@@ -264,6 +264,9 @@
 					},
 					clickSingleScore:function(model){
 						utils.mOpenWithData("../../html/student_performance/singleScore.html", model);
+					},
+					clickSumScore:function(model){
+						utils.mOpenWithData("../../html/student_performance/sumScore.html", model);
 					},
 				},
 			});

@@ -1,0 +1,582 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			[v-cloak] {
+				display: none !important;
+			}
+
+			.circular-square {
+				border-radius: 10%;
+				width: 30px;
+				height: 30px;
+			}
+
+			.divd {
+				padding-left: 10px;
+				width: 80%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				/* background: #7FFFD4; */
+			}
+
+			.mui-grid-view.mui-grid-9 {
+				margin: 0;
+				padding: 0;
+				border-top: 0px solid #eee;
+				border-left: 0px solid #eee;
+				background-color: white;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				background: white;
+				margin: 0;
+				padding: 11px 15px;
+				vertical-align: top;
+				border-right: 0px solid #eee;
+				border-bottom: 0px solid #eee;
+			}
+
+			.chart {
+				height: 220px;
+				margin: 10px;
+				padding: 0px;
+			}
+
+			.pieChart {
+				height: 120px;
+				margin: 10px;
+				padding: 0px;
+			}
+
+			.mui-grid-view.mui-grid-9.table {
+				border-top: 1px solid #eee !important;
+				border-left: 1px solid #eee !important;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
+				text-align: left;
+				padding: 0 7px;
+				border-right: 1px solid #eee !important;
+				border-bottom: 1px solid #eee !important;
+			}
+
+			.mui-table-view-cell.beauline:after {
+				left: 0 !important;
+				height: 0 !important;
+			}
+
+			.bg-gray {
+				background: #eaeaea !important;
+			}
+		</style>
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+		</header>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a @tap="clickSegControl(0)" class="mui-control-item mui-active" href="#item1">总分及排名</a>
+					<a @tap="clickSegControl(1)" class="mui-control-item" href="#item2">优劣学科</a>
+					<a @tap="clickSegControl(2)" class="mui-control-item" href="#item3">成绩pk</a>
+				</div>
+			</div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<h4 style="text-align: center;margin-top: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-3" style="padding-left: 32px;">
+							<span class="mui-icon" style="width: 60px;height: 60px; border:1px solid;border-radius:50%;font-size: 14px;color: #00CFBD;margin-top: 40px;"><span
+								 style="color: red;height: 60px;line-height: 60px;vertical-align: middle;">112</span></span>
+							<div class="mui-media-body">年级排名</div>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-6">
+							<div class="pieChart" id="pieChartScore"></div>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-3" style="margin-left: -20px;">
+							<span class="mui-icon" style="width: 60px;height: 60px; border:1px solid;border-radius:50%;font-size: 14px;color: #00CFBD;margin-top: 40px;">
+								<span style="color: red;height: 60px;line-height: 60px;vertical-align: middle;">112</span>
+							</span>
+							<div class="mui-media-body">班级排名</div>
+						</li>
+					</ul>
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
+							<div class="mui-media-body">年级最高分：118</div>
+							<div class="mui-media-body">班级最高分：115</div>
+						</li>
+						<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
+							<div class="mui-media-body">年级均分：63</div>
+							<div class="mui-media-body">班级均分：72</div>
+						</li>
+					</ul>
+					<div class="mui-row" style="padding: 10px;">
+						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
+							<template v-for="item in ttlist">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-6 mui-col-sm-3">
+									<a style="margin-top: 5px;"><span>{{item.name}}：</span><span style="color: red;">{{item.num}} </span><span>/{{item.score}}</span></a>
+								</li>
+							</template>
+						</ul>
+					</div>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">成绩趋势</h4>
+					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试成绩趋势如下：</p>
+					<div class="chart" id="lineChartScore"></div>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">排名趋势</h4>
+					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试排名趋势如下：</p>
+					<div class="chart" id="lineChartRank"></div>
+				</div>
+				<div id="item2" class="mui-control-content">
+					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<div style="margin-top: 20px;">
+						<span style="margin-left: 20px;background:  #00CFBD;padding: 3px 10px 3px 10px;border-radius: 10px;">优势学科</span>
+						<span style="margin-left: 10px;">物理、英语</span>
+					</div>
+					<div style="margin-top: 20px;">
+						<span style="margin-left: 20px;background: orange;padding: 3px 10px 3px 10px;border-radius: 10px;">劣势学科</span>
+						<span style="margin-left: 10px;">物理、英语、数学</span>
+					</div>
+					<div class="chart" id="radarChart"></div>
+					<div style="margin-left: 20px;">各科标准分：</div>
+					<div class="mui-row" style="padding: 10px;">
+						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
+							<template v-for="item in ttlist">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-6 mui-col-sm-3">
+									<a style="margin-top: 5px;"><span>{{item.name}}：<span>{{item.score}}</span></a>
+								</li>
+							</template>
+						</ul>
+					</div>
+					<div style="margin-left: 20px;font-size: 13px;padding-bottom: 20px;">注：优劣学科将各科分值转化为标准分后再进行比较。</div>
+				</div>
+				<div id="item3" class="mui-control-content">
+					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<button style="float: right;margin-right: 20px;" type="button" class="mui-btn">邀请</button>
+					<button style="float: right;margin-right: 20px;background: #00CFBD;border-color: #00CFBD;color: white;" type="button" class="mui-btn">挑战者<span class="mui-badge" style="background: red;color: white;">1</span></button>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 70px;">成绩趋势</h4>
+					<div class="mui-row">
+						<ul class="mui-table-view no-line" style="font-size: 13px;">
+						    <li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;" >
+								<div class="mui-row">
+						            <div class="mui-col-xs-1">次序</div>
+									<div class="mui-col-xs-2">对手</div>
+									<div class="mui-col-xs-3">总分</div>
+									<div class="mui-col-xs-5">各科</div>
+									<div class="mui-col-xs-1"> </div>
+								</div> 
+							</li>
+							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in cjqs" :class="index%2==0?'':'bg-gray'">
+							       <div class="mui-row">
+							            <div class="mui-col-xs-1">{{item.num}}</div>
+										<div class="mui-col-xs-2">{{item.name}}</div>
+										<div v-if="item.sumScore==0" class="mui-col-xs-3" style="color: #008080;font-size: 20px;font-weight: 900;">败</div>
+										<div v-if="item.sumScore==1" class="mui-col-xs-3" style="color: red;font-size: 20px;font-weight: 900;">胜</div>
+										<div class="mui-col-xs-5">
+											<span style="color: red;font-size: 20px;font-weight: 900;">{{item.win}}胜</span>
+											<span style="color: #008080;font-size: 20px;font-weight: 900;">{{item.lost}}败</span>
+										</div>
+										<div class="mui-col-xs-1" @click="toDetailPage(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+							       </div>
+							</li>
+						</ul> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<!---->
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/pushPermission.js"></script>
+		<script src="../../js/utils/clearIcon.js"></script>
+		<script src="../../js/echarts/echarts-en.min.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {
+					showBack: 0,
+					headTitle: '全科成绩'
+				}
+			});
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					showArray: [],
+					scoreRank: { //成绩及排名
+						pieChatDetail: {
+							legend: {
+								orient: "vertical",
+								left: "left",
+							},
+							graphic: [{
+								type: "text",
+								left: "center",
+								top: "20%",
+								style: {
+									text: "我的成绩",
+									textAlign: "center",
+									fill: "#000",
+									fontSize: 12,
+								}
+							}, {
+								type: "text",
+								left: "center",
+								top: "35%",
+								style: {
+									text: "620",
+									textAlign: "center",
+									fill: "red",
+									fontSize: 35,
+									fontWeight: 700
+								}
+							}, {
+								type: "text",
+								left: "72%",
+								top: "48%",
+								style: {
+									text: "分",
+									fill: "#000",
+									fontSize: 15,
+								}
+							}, {
+								type: "text",
+								left: "center",
+								top: "70%",
+								style: {
+									text: "满分：750",
+									textAlign: "center",
+									fill: "#000",
+									fontSize: 12,
+								}
+							}],
+							series: [{
+								radius: ['80%', '100%'],
+								type: "pie",
+								data: [{
+									value: 620,
+								}, {
+									value: 130,
+								}],
+								labelLine: {
+									show: false
+								}
+							}]
+						},
+						echartDetail: {
+							legend: {
+								data: ['我的成绩', '年级平均分', '班级平均分']
+							},
+							grid: {
+								x: 45, //到左侧的距离
+								x2: 10, //到右侧的距离
+								y: 30, //到上面的距离
+								y2: 60 //到下面的距离
+							},
+							toolbox: {
+								show: false, //默认值为true，是否显示工具栏组件
+								//各工具配置项。
+								feature: {
+									//辅助线标志 
+									mark: {
+										show: true
+									},
+									//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。show->是否显示该工具，readOnly->是否不可编辑，optionToContent->自定义 dataView 展现函数，用以取代默认的 textarea 使用更丰富的数据编辑。可以返回 dom 对象或者 html 字符串，backgroundColor->数据视图浮层背景色。
+									dataView: {
+										show: true,
+										readOnly: false
+									},
+									//动态类型切换。show->是否显示该工具，type->这是个数组，启用的动态类型，包括'line'（切换为折线图）, 'bar'（切换为柱状图）, 'stack'（切换为堆叠模式）, 'tiled'（切换为平铺模式）。 
+									magicType: {
+										show: true,
+										type: ['line']
+									},
+									//配置项还原。主要属性是show->是否显示该工具。 
+									restore: {
+										show: true
+									},
+									//这个工具可以把图表保存为图片。里面有些常用的参数，type->保存图片的格式，name->保存文件的名字，backgroundColor->保存图片的背景色，show->是否显示该工具 
+									saveAsImage: {
+										show: true
+									}
+								}
+							},
+							//是否启用拖拽重计算特性，默认关闭(即值为false) 
+							calculable: false,
+							//直角坐标系中横轴数组，数组中每一项代表一条横轴坐标轴，仅有一条时可省略数值    
+							//横轴通常为类目型，但条形图时则横轴为数值型，散点图时则横纵均为数值型
+							xAxis: [{
+								axisLabel: {
+									interval: 2,
+									rotate: 50
+								},
+								name: '',
+								type: 'category', //坐标轴类型，横轴默认为类目型'category'
+								data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'] //类目型坐标轴文本标签数组，指定label内容。 数组项通常为文本，'\n'指定换行
+							}],
+							//直角坐标系中纵轴数组，数组中每一项代表一条纵轴坐标轴，仅有一条时可省略数值    
+							//纵轴通常为数值型，但条形图时则纵轴为类目型 
+							yAxis: [{
+								type: 'value', //坐标轴类型，纵轴默认为数值型'value'
+								name: '分数',
+								minInterval: 1,
+								nameLocation: 'middle',
+								nameTextStyle: {
+									color: "black",
+									fontSize: 14,
+									padding: 10
+								},
+								splitArea: { //分隔区域，默认不显示
+									show: true
+								}
+							}],
+							//sereis的数据: 用于设置图表数据之用。series是一个对象嵌套的结构；对象内包含对象
+							series: [{
+									symbol: false,
+									showAllSymbol: false,
+									name: '我的成绩', //系列名称，如果启用legend，该值将被legend.data索引相关
+									type: 'line', //图表类型，必要参数！如为空或不支持类型，则该系列数据不被显示。
+									data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
+								},
+								{
+									symbol: false,
+									showAllSymbol: false,
+									name: '年级平均分', //系列名称，如果启用legend，该值将被legend.data索引相关
+									type: 'line', //图表类型，必要参数！如为空或不支持类型，则该系列数据不被显示。
+									data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
+								}, {
+									symbol: false,
+									showAllSymbol: false,
+									name: '班级平均分', //系列名称，如果启用legend，该值将被legend.data索引相关
+									type: 'line', //图表类型，必要参数！如为空或不支持类型，则该系列数据不被显示。
+									data: [2.6, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0] //系列中的数据内容数组，折线图以及柱状图时数组长度等于所使用类目轴文本标签数组axis.data的长度，并且他们间是一一对应的。数组项通常为数值 
+								}
+							]
+						}
+					},
+					goodBadSub: {
+						radarChartDetail: {
+							// title: {
+							// 	text: '基础雷达图'
+							// },
+							// tooltip: {},
+							// legend: {
+							// 	data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+							// },
+							radar: {
+								// shape: 'circle',
+								name: {
+									textStyle: {
+										color: '#000',
+										// backgroundColor: '#999',
+										borderRadius: 3,
+										padding: [0, 0]
+									}
+								},
+								indicator: [{
+										name: '语文',
+										max: 120
+									},
+									{
+										name: '数学',
+										max: 150
+									},
+									{
+										name: '英语',
+										max: 150
+									},
+									{
+										name: '化学',
+										max: 100
+									},
+									{
+										name: '物理',
+										max: 100
+									},
+									{
+										name: '政治',
+										max: 80
+									}
+								]
+							},
+							series: [{
+								// name: '预算 vs 开销（Budget vs spending）',
+								type: 'radar',
+								// areaStyle: {normal: {}},
+								data: [{
+									value: [100, 70, 80, 90, 100, 50],
+									label: {
+										show: true,
+										formatter: function(params) {
+											return params.value;
+										}
+									}
+								}]
+							}]
+						}
+					},
+					ttlist: [{
+							name: "语文",
+							num: 60,
+							score: 100,
+						},
+						{
+							name: "数学",
+							num: 60,
+							score: 100,
+						},
+						{
+							name: "英语",
+							num: 60,
+							score: 100,
+						}, {
+							name: "语文",
+							num: 60,
+							score: 100,
+						},
+						{
+							name: "数学",
+							num: 60,
+							score: 100,
+						},
+						{
+							name: "英语",
+							num: 60,
+							score: 100,
+						}, {
+							name: "语文",
+							num: 60,
+							score: 100,
+						},
+						{
+							name: "数学",
+							num: 60,
+							score: 100,
+						},
+						{
+							name: "英语",
+							num: 60,
+							score: 100,
+						}
+					],
+					cjqs: [{
+							num: 1,
+							name: '张三',
+							sumScore: 1,
+							win: 5,
+							lost: 3
+						},
+						{
+							num: 1,
+							name: '张三',
+							sumScore: 1,
+							win: 5,
+							lost: 3
+						},
+						{
+							num: 1,
+							name: '张三',
+							sumScore: 1,
+							win: 5,
+							lost: 3
+						},
+						{
+							num: 1,
+							name: '张三',
+							sumScore: 0,
+							win: 3,
+							lost: 5
+						},
+					],
+					zsdfx: [{
+							zsd: "噼里啪啦知识点",
+							fz: 10,
+							tm: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+							pjf: 96.39,
+							wd: 8
+						},
+						{
+							zsd: "噼里啪啦噼里啪啦知识点知识点",
+							fz: 10,
+							tm: "1,2,3,4,5,6,7,8,9",
+							pjf: 96.39,
+							wd: 8
+						},
+						{
+							zsd: "噼里啪啦知识点",
+							fz: 10,
+							tm: "1,2,3,4,5,6,7,8,9",
+							pjf: 96.39,
+							wd: 8
+						},
+					]
+				},
+				methods: {
+					clickSegControl: function(index) {
+						console.log('clickSegControl:' + index);
+						setTimeout(function() {
+							var radarChart = echarts.init(document.getElementById('radarChart'));
+							radarChart.setOption(contentData.goodBadSub.radarChartDetail);
+						}, 200)
+
+					},
+					clickFunction: function(model) {
+						console.log('index:' + JSON.stringify(model));
+						utils.mOpenWithData(model.href, model);
+					},
+					toDetailPage: function(line) {
+						console.log(JSON.stringify(line))
+					},
+					toDetailPageZsd: function(line) {
+						console.log(JSON.stringify(line))
+					}
+				},
+			});
+
+			mui.plusReady(function() {
+				var ws = plus.webview.currentWebview();
+				console.log("当前Webview：" + JSON.stringify(ws.preload));
+				if (ws.preload) {
+					tempHead.headTitle = ws.preload.name;
+					contentData.showArray = ws.preload.childList;
+				} else {
+					tempHead.showBack = 1;
+				}
+				// 我的成绩饼图
+				var pieChartScore = echarts.init(document.getElementById('pieChartScore'));
+				pieChartScore.setOption(contentData.scoreRank.pieChatDetail);
+				// 成绩趋势
+				var lineChartScore = echarts.init(document.getElementById('lineChartScore'));
+				lineChartScore.setOption(contentData.scoreRank.echartDetail);
+
+				// 排名趋势
+				var lineChartRank = echarts.init(document.getElementById('lineChartRank'));
+				lineChartRank.setOption(contentData.scoreRank.echartDetail);
+
+				// 优劣学科雷达图
+				// var radarChart = echarts.init(document.getElementById('radarChart'));
+				// radarChart.setOption(contentData.goodBadSub.radarChartDetail);
+			});
+		</script>
+	</body>
+
+</html>
