@@ -313,6 +313,7 @@
 					index_code:curPage.access.split('#')[1],
 					op_code:'add'
 				}
+				console.log("tempData: " + JSON.stringify(tempData));
 				postDataEncry(window.storageKeyName.INTERFACE_OA + 'cooperateNotice/addNotice', {}, tempData, 2,function(data) {
 					console.log('addNoticePro:' + JSON.stringify(data));
 					events.closeWaiting();
@@ -330,12 +331,27 @@
 			}
 			window.addEventListener('selectPeople', function(data) {
 				console.log("data" + JSON.stringify(data.detail))
-				message.selectPeople = data.detail.peopleArray;
-				var tempPeople = [];
-				for (var i = 0; i < message.selectPeople.length; i++) {
-					var tempModel = message.selectPeople[i];
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
+				let selectPeople=data.detail.peopleArray
+				let tempPeople = [];
+				let incloudMe =false
+				selectPeople.map(user => {
+				  if(user.user_code == personal.user_code) {
+					incloudMe=true
+				  }
+				})
+				if(!incloudMe){
+				  let obj={}
+				  obj.user_code=personal.user_code
+				  obj.user_name=personal.user_name
+				  obj.user_img=personal.img_url?personal.img_url:''
+				  selectPeople.splice(0,0,obj);
+				}
+				for (var i = 0; i < selectPeople.length; i++) {
+					var tempModel = selectPeople[i];
 					tempPeople.push(tempModel.user_name);
 				}
+				message.selectPeople = selectPeople;
 				message.showSelectPeople = tempPeople.join(',');
 			});
 			//判断是否输入了值

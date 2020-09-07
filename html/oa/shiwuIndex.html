@@ -126,16 +126,16 @@
 				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 					<div class="mui-scroll">
 						<a @tap="clickSlider(0)" class="mui-control-item mui-active" href="#item1mobile">
-							全部
-						</a>
-						<a @tap="clickSlider(1)" class="mui-control-item" href="#item2mobile">
 							未处理
 						</a>
+						<a @tap="clickSlider(1)" class="mui-control-item" href="#item2mobile">
+							未结束
+						</a>
 						<a @tap="clickSlider(2)" class="mui-control-item" href="#item3mobile">
-							已处理
+							已结束
 						</a>
 						<a @tap="clickSlider(3)" class="mui-control-item" href="#item5mobile">
-							我发出的
+							我的发起
 						</a>
 					</div>
 				</div>
@@ -351,11 +351,13 @@
 						console.log('clickLi.model:' + JSON.stringify(model));
 						if (datasource.sliderFlag == 3) {
 							model.flag = 1;
+							model.access = curPage.access;
+							utils.mOpenWithData("../../html/oa/shiwuDetailCreateUser.html", model);
 						} else {
 							model.flag = 0;
+							model.access = curPage.access;
+							utils.mOpenWithData("../../html/oa/shiwuDetail.html", model);
 						}
-						model.access = curPage.access;
-						utils.mOpenWithData("../../html/oa/shiwuDetail.html", model);
 					}
 				}
 			});
@@ -402,13 +404,13 @@
 					url = window.storageKeyName.INTERFACE_OA + 'cooperateNotice/getReceiveNotice';
 				}
 				if (datasource.sliderFlag == 0) {
-					comData0.status = '0'; //状态,0 全部1 已处理2 未处理
+					comData0.status = '2'; //状态,1未结束 2未处理 3已结束
 					comData0.page_number = datasource.receive0.pageIndex; //当前页数
 				} else if (datasource.sliderFlag == 1) {
-					comData0.status = '2'; //状态,0 全部1 已处理2 未处理
+					comData0.status = '1'; //状态,1未结束 2未处理 3已结束
 					comData0.page_number = datasource.receive1.pageIndex; //当前页数
 				} else if (datasource.sliderFlag == 2) {
-					comData0.status = '1'; //状态,0 全部1 已处理2 未处理
+					comData0.status = '3'; //状态,1未结束 2未处理 3已结束
 					comData0.page_number = datasource.receive2.pageIndex; //当前页数
 				}
 				// 获取收到的协同事务列表（接收人为单人）
