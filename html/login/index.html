@@ -36,7 +36,6 @@
 		</nav>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
-		<!-- <script src="../../js/utils/app-update.js"></script> -->
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/store.js"></script>
@@ -445,7 +444,6 @@
 
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
-				// appUpdate.updateApp();
 				var tempMenu = store.get(window.storageKeyName.MENULIST);
 				console.log('tempMenu:' + JSON.stringify(tempMenu));
 				var tempA = []; 

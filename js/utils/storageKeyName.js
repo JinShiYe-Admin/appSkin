@@ -180,7 +180,7 @@ var storageKeyName = (function(mod) {
 	//	---七牛空间和接口---开发---end---
 	mod.MENULIST = 'menuList'; //获取菜单列表
 	mod.MOREMENU = 'moremenu'; //更多菜单列表
-	mod.ISEXIT = 'ISEXIT'; //是否是退出
+	mod.CHECKUPDATE = 'CHECK'; //是否检查更新
 	
 	mod.BADGENUMBER = 'badgeNumber'//app角标
 	mod.PUBLICPARAMETER = 'publicParameter'//共用参数

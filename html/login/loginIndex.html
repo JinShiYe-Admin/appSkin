@@ -79,19 +79,29 @@
 		var loginFlag = 0; //0自动登录，1不自动登录
 		
 		mui.plusReady(function() {
-			
-			var ISEXIT = store.get(window.storageKeyName.ISEXIT);
-			if('0'==ISEXIT){
-				store.set(window.storageKeyName.ISEXIT,'1');
-			}else{
-				appUpdate.updateApp();
+			// store.set(window.storageKeyName.CHECKUPDATE,'CHECK');
+			var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
+			if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
+				appUpdate.updateApp(function(){
+					mui.toast("APP正在下载，稍后将开始安装")
+				},function(){
+					store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
+					getInfo()
+				});
+			}else if('UNCHECK'==CHECKUPDATE){
+				getInfo()
 			}
+			
 			plus.navigator.setStatusBarBackground("#00CFBD");
 			tempModel = {
 				uuid: '',
 				appid: ''
 			}
 			console.log('11111:'+plus.os.name);
+			
+		});
+		
+		function getInfo() {
 			plus.device.getInfo({
 				success:function(info){
 					let id=''
@@ -110,7 +120,8 @@
 					setUUID();
 				}
 			});
-		});
+		}
+		
 		document.getElementById("login").addEventListener('tap', function(event) {
 			console.log("登录");
 			var tempName = document.getElementById("account").value;
@@ -122,10 +133,10 @@
 					//login登录
 					getEncryptKeyLogin(tempName, tempPW);
 				} else {
-
+		
 				}
 			} else {
-
+		
 			}
 		});
 
