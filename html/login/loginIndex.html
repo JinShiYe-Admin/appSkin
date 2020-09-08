@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<script type="text/javascript" src="../../js/utils/mui.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<style type="text/css">
 			.regisgerColo {
 				border-color: #00CFBD;
@@ -24,30 +24,41 @@
 			<h1 class="mui-title">登录</h1>
 			<a id="zhuce" class="mui-icon  mui-pull-right" style="color: white;font-size: 16px;padding-top: 20px;">注册</a>
 		</header>
-		<div class="mui-content" style="background-color: white;">
+		<div class="mui-content" style="background-color: white;" id="contentData">
 			<div style="height: 200px;font-size: 18px;color: #00cfbd;;padding: 100px 0px;text-align: center;">欢迎登录</div>
 			<div class="mui-input-row">
 				<label style="margin-top: -5px;">
-                <image src="../../img/login/username.png" style="width: 25px;height: 25px;" />
-            </label>
+					<image src="../../img/login/username.png" style="width: 25px;height: 25px;" />
+				</label>
 				<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入用户名">
 			</div>
 			<hr style=" height:1px;border:none;border-top:1px solid #aeaeae;;margin: -12px 20px 5px 60px ;" />
 
 			<div class="mui-input-row ">
 				<label>
-                <image src="../../img/login/password.png" style="width: 27px;height: 27px;" />
-            </label>
+					<image src="../../img/login/password.png" style="width: 27px;height: 27px;" />
+				</label>
 				<input id='password' type="password" class="mui-input-clear mui-input " placeholder="请输入密码" style="margin-top: 5px;">
 			</div>
 			<hr style=" height:1px;border:none;border-top:1px solid #aeaeae;;margin: -12px 20px 0px 60px ;" />
-
-			<div style="padding: 0px 20px;">
+			<div style="margin-top: 10px;">
+				<div @click="clickPrivace()" style="float: right;margin-right: 20px;margin-top: 10px;color: #00CFBD;text-decoration: underline;">《隐私政策》</div>
+				<div v-if="privaceFlag == 0" @click="clickFlag(0)" style="float: right;" class="mui-input-row mui-checkbox mui-left">
+					<label>同意</label>
+					<input name="checkbox1" value="Item 1" type="checkbox">
+				</div>
+				<div v-else-if="privaceFlag == 1" @click="clickFlag(1)" style="float: right;" class="mui-input-row mui-checkbox mui-left">
+					<label>同意</label>
+					<input name="checkbox1" value="Item 1" type="checkbox" checked>
+				</div>
+			</div>
+			<div style="padding-top: 20px;padding-left: 20px;padding-right: 20px;">
 				<button id='login' type="button" class="mui-btn mui-btn-block mui-btn-primary" style="background: #00cfbd; border:none; margin-top: 30px;height: 40px;padding-top: 8px;border-radius: 20px;">登录</button>
 				<!--<button id='register' type="button" class="mui-btn mui-btn-block mui-btn-outlined regisgerColo" style=" margin-top: 30px;height: 40px;padding-top: 8px;">注册</button>-->
 			</div>
 		</div>
 	</body>
+	<script src="../../js/utils/vue.js"></script>
 	<script src="../../js/utils/storageKeyName.js"></script>
 	<script src="../../js/utils/app-update.js"></script>
 	<script src="../../js/utils/vconsole.min.js"></script>
@@ -61,13 +72,14 @@
 	<script src="../../js/libs/jquery.js"></script>
 	<script src="../../js/libs/encryption/sortSign.js"></script>
 	<!---->
-	
+
 	<script src="../../js/utils/publicProtocol.js"></script>
 	<script src="../../js/utils/store.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../js/utils/events.js"></script>
 	<script src="../../js/utils/md5.js"></script>
 	
+
 	<script type="text/javascript">
 		//		$(function() {
 		//			
@@ -77,13 +89,33 @@
 		});
 		var tempModel = {};
 		var loginFlag = 0; //0自动登录，1不自动登录
-		
+
+		var contentData = new Vue({
+			el: "#contentData",
+			data: {
+				privaceFlag: 0,
+			},
+			methods: {
+				clickPrivace: function() {
+					console.log('clickPrivace')
+					utils.mOpenWithData("../../html/login/privace.html", {});
+				},
+				clickFlag: function(flag) {
+					if(flag == 0){
+						contentData.privaceFlag = 1;
+					}else{
+						contentData.privaceFlag = 0;
+					}
+				},
+			},
+		});
+
 		mui.plusReady(function() {
-			
+
 			var ISEXIT = store.get(window.storageKeyName.ISEXIT);
-			if('0'==ISEXIT){
-				store.set(window.storageKeyName.ISEXIT,'1');
-			}else{
+			if ('0' == ISEXIT) {
+				store.set(window.storageKeyName.ISEXIT, '1');
+			} else {
 				appUpdate.updateApp();
 			}
 			plus.navigator.setStatusBarBackground("#00CFBD");
@@ -91,20 +123,20 @@
 				uuid: '',
 				appid: ''
 			}
-			console.log('11111:'+plus.os.name);
+			console.log('11111:' + plus.os.name);
 			plus.device.getInfo({
-				success:function(info){
-					let id=''
-					if(info.uuid){
-						id=info.uuid.split(",")[0]
+				success: function(info) {
+					let id = ''
+					if (info.uuid) {
+						id = info.uuid.split(",")[0]
 					}
-					if(id){
-						tempModel.uuid=id
-						tempModel.appid=id
+					if (id) {
+						tempModel.uuid = id
+						tempModel.appid = id
 					}
-					console.log('getDeviceInfo success: '+JSON.stringify(info));
-					tempModel.webid = plus.os.name+plus.os.version;
-					console.log('tempModel: '+JSON.stringify(tempModel));
+					console.log('getDeviceInfo success: ' + JSON.stringify(info));
+					tempModel.webid = plus.os.name + plus.os.version;
+					console.log('tempModel: ' + JSON.stringify(tempModel));
 					store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
 					var backButtonPress = 0;
 					setUUID();
@@ -113,13 +145,16 @@
 		});
 		document.getElementById("login").addEventListener('tap', function(event) {
 			console.log("登录");
+			if(contentData.privaceFlag == 0){
+				mui.toast('请先同意隐私政策');
+				return;
+			}
 			var tempName = document.getElementById("account").value;
 			var tempPW = document.getElementById("password").value;
 			console.log('tempName111:' + tempName + ',tempPW' + tempPW);
 			//判断输入是否符合要求
-			if(checkInput(tempName)) {
-				if(checkInput(tempPW)) {
-					//login登录
+			if (checkInput(tempName)) {
+				if (checkInput(tempPW)) {
 					getEncryptKeyLogin(tempName, tempPW);
 				} else {
 
@@ -155,7 +190,7 @@
 
 		//获取秘钥
 		var getEncryptKeyLogin = function(tempName, tempPW) {
-			console.log('tempName:'+tempName+',tempPW:'+tempPW);
+			console.log('tempName:' + tempName + ',tempPW:' + tempPW);
 			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
 			//握手
 			var enData0 = {};
@@ -164,19 +199,19 @@
 				platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 				app_code: window.storageKeyName.APPCODE, //应用系统代码
 				unit_code: '-1', //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
-				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
-				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
-				shaketype:'1',//
+				uuid: publicPar.uuid, //设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+				webid: publicPar.webid, //浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+				shaketype: '1', //
 			};
 			events.showWaiting();
 			//发送网络请求，data为网络返回值
-			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login/getEncryptKey', enData0, comData0, 0, function(data) {
+			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login/getEncryptKey', enData0, comData0, 0, function(data) {
 				events.closeWaiting();
-				if(data.code == '0000') {
+				if (data.code == '0000') {
 					store.set(window.storageKeyName.SHAKEHAND, data.data);
 					loginPro(tempName, tempPW, data.data);
 				} else {
-					if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+					if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
 						mui.toast('网络异常，请检查网络设置！');
 					} else {
 						mui.toast(data.msg);
@@ -188,26 +223,25 @@
 		//login登录
 		var loginPro = function(tempName, tempPW, key) {
 			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
-			var enData1 = {
-			};
+			var enData1 = {};
 			//不需要加密的数据
 			var comData1 = {
-				uuid:publicPar.uuid,//设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
-				webid:publicPar.webid,//浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
-				shaketype:'1',//
+				uuid: publicPar.uuid, //设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+				webid: publicPar.webid, //浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+				shaketype: '1', //
 				login_name: RSAEncrypt.enctype(tempName), //登录名
 				password: RSAEncrypt.enctype(tempPW), //
-				device_type:'1',//登录设备类型，0：WEB、1：APP、2：客户端
+				device_type: '1', //登录设备类型，0：WEB、1：APP、2：客户端
 				platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 				app_code: window.storageKeyName.APPCODE, //应用系统代码
 				unit_code: '-1', //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
-				verify_code:''
+				verify_code: ''
 			};
 			events.showWaiting();
 			//登录
-			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'login', enData1, comData1, 0, function(data1) {
+			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login', enData1, comData1, 0, function(data1) {
 				events.closeWaiting();
-				if(data1.code == 0) {
+				if (data1.code == 0) {
 					store.set(window.storageKeyName.ICONNUM, 0);
 					loginFlag = 1;
 					data1.data.userName0 = tempName;
@@ -219,23 +253,23 @@
 					var comData3 = {
 						platform_code: data1.data.user.platform_code, //平台代码
 						app_code: data1.data.user.app_code, //应用系统代码
-						index_code: '' ,//页面权限符,必传,从登录皮肤处获得
-						unit_code: data1.data.user.unit_code,//学校代码,必传
-						user_code: data1.data.user.user_code,//用户代码,必传
+						index_code: '', //页面权限符,必传,从登录皮肤处获得
+						unit_code: data1.data.user.unit_code, //学校代码,必传
+						user_code: data1.data.user.user_code, //用户代码,必传
 						access_token: data1.data.access_token //用户令牌
 					};
 					events.showWaiting();
 					//登录用户岗位信息
-					postDataEncry(window.storageKeyName.INTERFACE_HR_SUB+ 'user/getUserImg', {}, comData3, 0, function(data3) {
+					postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'user/getUserImg', {}, comData3, 0, function(data3) {
 						events.closeWaiting();
-						if(data3.code == 0) {
+						if (data3.code == 0) {
 							var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
 							tempPerInfo.hrImg_url = data3.data.user_img;
 
 							store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
 							tempFlag++;
 							console.log('tempFlag01:' + tempFlag);
-							if(tempFlag == 2) {
+							if (tempFlag == 2) {
 								//跳转界面
 								gotoPage(tempPW);
 							}
@@ -243,36 +277,36 @@
 							mui.toast(data3.msg);
 						}
 					});
-					
+
 					//1.4获取菜单
 					//不需要加密的数据
 					var comData4 = {
 						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 						app_code: window.storageKeyName.APPCODE, //应用系统代码
-						unit_code: data1.data.user.unit_code ,
+						unit_code: data1.data.user.unit_code,
 						access_token: data1.data.access_token //用户令牌
 					};
 					events.showWaiting();
 					//登录用户岗位信息
-					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN+'acl/menu', {}, comData4, 0, function(data4) {
+					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'acl/menu', {}, comData4, 0, function(data4) {
 						events.closeWaiting();
-						if(data4.code == '0000') {
-							if (data4.data.list.length>0) {
+						if (data4.code == '0000') {
+							if (data4.data.list.length > 0) {
 								store.set(window.storageKeyName.MENULIST, data4.data);
 								tempFlag++;
 								console.log('tempFlag02:' + tempFlag);
-								if(tempFlag == 2) {
+								if (tempFlag == 2) {
 									//跳转界面
 									gotoPage(tempPW);
 								}
-							} else{
+							} else {
 								mui.toast('应用系统无权限，请联系管理员');
 							}
 						} else {
 							mui.toast(data4.msg);
 						}
 					});
-				}  else {
+				} else {
 					mui.toast(data1.msg);
 				}
 			});
@@ -291,27 +325,27 @@
 		Array.prototype.unique = function(key) {
 			var arr = this;
 			var n = [arr[0]];
-			for(var i = 1; i < arr.length; i++) {
-				if(key === undefined) {
-					if(n.indexOf(arr[i]) == -1) n.push(arr[i]);
+			for (var i = 1; i < arr.length; i++) {
+				if (key === undefined) {
+					if (n.indexOf(arr[i]) == -1) n.push(arr[i]);
 				} else {
 					inner: {
 						var has = false;
-						for(var j = 0; j < n.length; j++) {
-							if(arr[i][key] == n[j][key]) {
+						for (var j = 0; j < n.length; j++) {
+							if (arr[i][key] == n[j][key]) {
 								has = true;
 								break inner;
 							}
 						}
 					}
-					if(!has) {
+					if (!has) {
 						n.push(arr[i]);
 					}
 				}
 			}
 			return n;
 		}
-		
+
 		var gotoPage = function(tempPW) {
 			var tempData = store.get(window.storageKeyName.PERSONALINFO);
 			//将personal 中的key更改为指定的值
@@ -331,28 +365,28 @@
 			delete tempData['user'];
 			console.log('new tempData:' + JSON.stringify(tempData));
 			store.set(window.storageKeyName.PERSONALINFO, tempData);
-			if(tempPW == '123456') {
+			if (tempPW == '123456') {
 				var tempModel = {
 					flag: 1 //0是主动修改密码，1是判断是默认密码，自动让修改
 				}
 				utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
 			} else {
-				if(tempData.user_code == '0') { //无权限
+				if (tempData.user_code == '0') { //无权限
 					utils.hrefSessionStorage('../../html/login/index2.html', {});
 				} else {
 					utils.hrefSessionStorage('../../html/login/index.html', {});
 				}
 			}
 		}
-		
+
 		//数组去重
-			function arrayUnique2(arr, name) {
-				var hash = {};
-				return arr.reduce(function(item, next) {
-					hash[next[name]] ? '' : hash[next[name]] = true && item.push(next);
-					return item;
-				}, []);
-			}
+		function arrayUnique2(arr, name) {
+			var hash = {};
+			return arr.reduce(function(item, next) {
+				hash[next[name]] ? '' : hash[next[name]] = true && item.push(next);
+				return item;
+			}, []);
+		}
 
 		var gotoIndex = function() {
 			var tempData = store.get(window.storageKeyName.PERSONALINFO);
@@ -364,39 +398,43 @@
 			tempData.user_code = tempData.user.id;
 			tempData.login_name = tempData.user.login_name;
 			tempData.app_code = tempData.user.app_code;
-			if(tempData.masterclss == null) {
+			if (tempData.masterclss == null) {
 				tempData.masterclss = [];
 			}
-			if(tempData.dpts == null) {
+			if (tempData.dpts == null) {
 				tempData.dpts = [];
 			}
-			if(tempData.subs == null) {
+			if (tempData.subs == null) {
 				tempData.subs = [];
 			}
-			if(tempData.clss == null) {
+			if (tempData.clss == null) {
 				tempData.clss = [];
 			}
-			if(tempData.grds == null) {
+			if (tempData.grds == null) {
 				tempData.grds = [];
 			}
-//			tempData.clss = tempData.clss.concat(tempData.masterclss);
+			//			tempData.clss = tempData.clss.concat(tempData.masterclss);
 			delete tempData['user'];
 			console.log('new tempData:' + JSON.stringify(tempData));
 			store.set(window.storageKeyName.PERSONALINFO, tempData);
-			if(tempPW == '123456') {
+			if (tempPW == '123456') {
 				var tempModel = {
 					flag: 1 //0是主动修改密码，1是判断是默认密码，自动让修改
 				}
 				utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
 			} else {
-				plus.webview.open('../../html/login/index.html','../../html/login/login.html',{statusbar:{background: "#00CFBD"}});
+				plus.webview.open('../../html/login/index.html', '../../html/login/login.html', {
+					statusbar: {
+						background: "#00CFBD"
+					}
+				});
 				var wvs = plus.webview.all();
-				for(var i = 0, len = wvs.length; i < len; i++) {
-//					if(wvs[i].getURL().indexOf('homeSchoolIndex.html') != -1 ||
-//						wvs[i].getURL().indexOf('sciedu_home.html') != -1 ||
-//						wvs[i].getURL().indexOf('courseIndex.html') != -1) {
-//						continue;
-//					}
+				for (var i = 0, len = wvs.length; i < len; i++) {
+					//					if(wvs[i].getURL().indexOf('homeSchoolIndex.html') != -1 ||
+					//						wvs[i].getURL().indexOf('sciedu_home.html') != -1 ||
+					//						wvs[i].getURL().indexOf('courseIndex.html') != -1) {
+					//						continue;
+					//					}
 					plus.webview.close(wvs[i]);
 				}
 				var curr = plus.webview.currentWebview();
@@ -406,8 +444,8 @@
 
 		//更换personal 对象的key 值
 		var repalceKey = function(obj, oldKey, newKey) {
-			if(obj instanceof Array) {
-				for(var i in obj) {
+			if (obj instanceof Array) {
+				for (var i in obj) {
 					obj[i][newKey] = obj[i][oldKey];
 					delete obj[i][oldKey];
 				}
@@ -419,17 +457,17 @@
 
 		//从ios原生得到信息
 		var setUUID = function(tempStr) {
-			if(loginFlag == 0) {
+			if (loginFlag == 0) {
 				//			var tempModel0 = $.parseJSON(tempStr);
 				//				store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
-				
+
 				//判断上次是否登录过，自动登录
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				console.log('personal:' + JSON.stringify(personal));
-				if(personal) {
-					if(personal.unit_code == 'undefined' || personal.unit_code == null || personal.userName0 == null) {
+				if (personal) {
+					if (personal.unit_code == 'undefined' || personal.unit_code == null || personal.userName0 == null) {
 						//login登录
-//						loginPro('00000000000', '123');
+						//						loginPro('00000000000', '123');
 					} else {
 						document.getElementById("account").value = personal.userName0;
 						document.getElementById("password").value = personal.passWord0;
@@ -437,7 +475,7 @@
 						getEncryptKeyLogin(personal.userName0, personal.passWord0);
 					}
 				} else {
-//					loginPro('00000000000', '000000');
+					//					loginPro('00000000000', '000000');
 				}
 			} else {
 
@@ -446,11 +484,11 @@
 
 		//判断是否输入了值
 		var checkInput = function(text) {
-			if(text.trim().length == 0) {
+			if (text.trim().length == 0) {
 				mui.toast('请输入账号密码');
 				return false;
 			}
-			if(isNull(text)) {
+			if (isNull(text)) {
 				mui.toast('请输入账号密码');
 				return false;
 			}
@@ -459,7 +497,7 @@
 
 		//判断输入字符串是否为空或者全部都是空格
 		function isNull(str) {
-			if(str == "") return true;
+			if (str == "") return true;
 			var regu = "^[ ]+$";
 			var re = new RegExp(regu);
 			return re.test(str);
