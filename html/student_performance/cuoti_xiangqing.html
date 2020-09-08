@@ -127,8 +127,8 @@
 			<div class="mui-row">
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="item in stList">
-						 <p @click="stItemClick(item)" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">{{item.th}}</p>
+						<div class="swiper-slide" v-for="(item,index) in stList">
+						 <p style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">{{item.th}}</p>
 						</div>
 					</div>
 					<!-- Add Arrows -->
@@ -200,9 +200,6 @@
 					}
 				},
 				methods: {
-					stItemClick:function(item){
-						contentData.stItem=item
-					}
 				},
 			});
 
@@ -217,6 +214,7 @@
 					}
 				})
 				setTimeout(function(){
+					console.log("currStIndex:"+currStIndex)
 					var swiper = new Swiper('.swiper-container', {
 					  slidesPerView: 'auto',
 					  direction: 'horizontal',
@@ -227,6 +225,14 @@
 					  navigation: {
 					    nextEl: '.swiper-button-next',
 					    prevEl: '.swiper-button-prev',
+					  },
+					  on: {
+					  	slideChangeTransitionEnd: function() {
+					  		setTimeout(()=>{ //去掉就报错
+					  			console.log('slideChangeTransitionEnd:' + swiper.activeIndex);
+								contentData.stItem=contentData.stList[swiper.activeIndex]
+					  		},50)
+					  	},
 					  },
 					});
 				},100)

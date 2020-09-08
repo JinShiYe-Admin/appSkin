@@ -111,19 +111,26 @@
 		});
 
 		mui.plusReady(function() {
-
-			var ISEXIT = store.get(window.storageKeyName.ISEXIT);
-			if ('0' == ISEXIT) {
-				store.set(window.storageKeyName.ISEXIT, '1');
-			} else {
-				appUpdate.updateApp();
+			var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
+			if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
+				appUpdate.updateApp(function(){
+					mui.toast("APP正在下载，稍后将开始安装")
+				},function(){
+					store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
+					getInfo()
+				});
+			}else if('UNCHECK'==CHECKUPDATE){
+				getInfo()
 			}
+			
 			plus.navigator.setStatusBarBackground("#00CFBD");
 			tempModel = {
 				uuid: '',
 				appid: ''
 			}
-			console.log('11111:' + plus.os.name);
+		});
+		
+		function getInfo() {
 			plus.device.getInfo({
 				success: function(info) {
 					let id = ''
@@ -134,15 +141,14 @@
 						tempModel.uuid = id
 						tempModel.appid = id
 					}
-					console.log('getDeviceInfo success: ' + JSON.stringify(info));
 					tempModel.webid = plus.os.name + plus.os.version;
-					console.log('tempModel: ' + JSON.stringify(tempModel));
 					store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
 					var backButtonPress = 0;
 					setUUID();
 				}
 			});
-		});
+		}
+		
 		document.getElementById("login").addEventListener('tap', function(event) {
 			console.log("登录");
 			if(contentData.privaceFlag == 0){
@@ -157,10 +163,10 @@
 				if (checkInput(tempPW)) {
 					getEncryptKeyLogin(tempName, tempPW);
 				} else {
-
+		
 				}
 			} else {
-
+		
 			}
 		});
 

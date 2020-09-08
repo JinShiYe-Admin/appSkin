@@ -9,7 +9,7 @@ var appUpdate = (function(mod) {
 	mod.fileSize;
 	mod.updateFlag = 0; //1确认升级2取消升级
 	mod.installFlag = 0; //1确认安装 2取消安装
-	mod.updateApp = function() {
+	mod.updateApp = function(yesCallback,noCallback) {
 		plus.webview.currentWebview().canJump = false;
 		//版本升级模块
 		//47.获取APP版本号
@@ -30,7 +30,7 @@ var appUpdate = (function(mod) {
 			return;
 		}else{
 			//android 更新逻辑
-			getXml();
+			getXml(yesCallback,noCallback);
 		}
 		
 		
@@ -57,7 +57,7 @@ var appUpdate = (function(mod) {
 	}
 	
 	//获取android 更新信息
-	function getXml(){
+	function getXml(yesCallback,noCallback){
 		$.ajax({
 		    url:mod.androidUpdateUrl,
 		    type: 'GET',
@@ -66,6 +66,7 @@ var appUpdate = (function(mod) {
 		    cache:false,
 		    error: function(xml){
 		        console.log('APP更新：连接超时,加载XML文档出错'); 
+				noCallback()
 		    },
 	        success: function(xml){ 
 				var update_info=$(xml).find("update_info");
@@ -73,7 +74,7 @@ var appUpdate = (function(mod) {
 					version:update_info.children("new_version").text()
 					,download_url:update_info.children("download_url").text()
 				}
-				mod.getAppVersion(info);
+				mod.getAppVersion(info,yesCallback,noCallback);
 	        } 
 	    });
 	}
@@ -82,13 +83,13 @@ var appUpdate = (function(mod) {
 	 * 获取版本信息后，判断是否更新
 	 * @param {Object} versionInfo 服务器返回的版本信息
 	 */
-	mod.getAppVersion = function(versionInfo) {
+	mod.getAppVersion = function(versionInfo,yesCallback,noCallback) {
 		plus.runtime.getProperty(plus.runtime.appid, function(inf) {
 			mod.appVersion = getBigVersion(inf.version, plus.runtime.version);
 			console.log('应用版本号:' + plus.runtime.version + ',资源升级版本号:' + inf.version)
 			console.log("当前应用版本：" + mod.appVersion);
 			console.log("服务端应用版本：" + JSON.stringify(versionInfo))
-			getUpCondition(versionInfo); //判断是否更新
+			getUpCondition(versionInfo,yesCallback,noCallback); //判断是否更新
 		});
 	}
 	/**
@@ -123,7 +124,7 @@ var appUpdate = (function(mod) {
 	 * 判断是否更新
 	 * @param {Object} versionInfo
 	 */
-	var getUpCondition = function(versionInfo) {
+	var getUpCondition = function(versionInfo,yesCallback,noCallback) {
 //		console.log("服务器版本信息：" + JSON.stringify(versionInfo))
 		var appVersions = mod.appVersion.split('.');
 		var newestVersions;
@@ -134,20 +135,27 @@ var appUpdate = (function(mod) {
 			if(appVersionMinMax.max < newestVersionMinMax.max) { //整包更新
 				if(mod.updateFlag == 0) {
 					//询问是否更新
-					    setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
+					setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
 						mod.updateFlag = 1;
 						console.log("下载APK路径：" + versionInfo.download_url)
-						resolveFile(versionInfo.download_url, 1);
+						resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
 					}, function() {
 						mod.updateFlag = 2;
-					})
+					},yesCallback,noCallback)
 				} else if(mod.updateFlag == 1) {
-					resolveFile(versionInfo.download_url, 1);
+					resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
 				} 
 
 			} else if(appVersionMinMax.max == newestVersionMinMax.max) {
 				if(appVersionMinMax.min < newestVersionMinMax.min) { //在线更新
-					resolveFile(versionInfo.download_url, 0);
+					// resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);
+					setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
+						mod.updateFlag = 1;
+						console.log("下载APK路径：" + versionInfo.download_url)
+						resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
+					}, function() {
+						mod.updateFlag = 2;
+					},yesCallback,noCallback)
 				}
 			}
 		} else { //ios
@@ -163,7 +171,7 @@ var appUpdate = (function(mod) {
 						plus.runtime.openURL('https://itunes.apple.com/us/app/%E6%95%99%E5%AE%9D%E4%BA%91/id1281905607?l=zh&ls=1&mt=8');
 					}, function() {
 						mod.updateFlag = 2;
-					})
+					},yesCallback,noCallback)
 				}
 			}
 		}
@@ -173,19 +181,22 @@ var appUpdate = (function(mod) {
 	 * @param {Object} hint 提示语
 	 * @param {Object} callback 确认后的回调函数
 	 */
-	var setDialog = function(hint, cancelToast, callback, cancelCallback) {
-		var btnArray = ['是', '否'];
-		mui.confirm(hint, '校讯通', btnArray, function(e) {
-			//console.log("当前点击的东东：" + JSON.stringify(e));
-			if(e.index == 0) {
-				callback();
-			} else {
-				mui.toast(cancelToast);
-				if(cancelCallback) {
-					cancelCallback();
+	var setDialog = function(hint, cancelToast, callback, cancelCallback,yesCallback,noCallback) {
+			mui.closePopups();
+			var btnArray = ['是', '否'];
+			mui.confirm(hint, '校讯通', btnArray, function(e) {
+				//console.log("当前点击的东东：" + JSON.stringify(e));
+				if(e.index == 0) {
+					callback();
+					yesCallback();
+				} else {
+					mui.toast(cancelToast);
+					if(cancelCallback) {
+						cancelCallback();
+						noCallback();
+					}
 				}
-			}
-		});
+			},'div');
 	}
 	/**
 	 * 获取大版本号和小版本号
@@ -211,7 +222,7 @@ var appUpdate = (function(mod) {
 	 * 下载整包
 	 * @param {Object} ApkUrl 整包地址
 	 */
-	function downApk(ApkUrl) {
+	function downApk(ApkUrl,yesCallback,noCallback) {
 //		console.log(plus.os.name);
 		if(plus.os.name == "Android") {
 //			console.log("下载APK路径：" + ApkUrl)
@@ -224,12 +235,12 @@ var appUpdate = (function(mod) {
 					var path = d.filename;
 					console.log(d.filename);
 					if(mod.installFlag == 0) {
-						setDialog("新版app文件已下载，是否安装？", "您已取消安装", function() {
+					setDialog("新版app文件已下载，是否安装？", "您已取消安装", function() {
 							installApk(path);
 							mod.installFlag = 1;
 						}, function() {
 							mod.installFlag = 2;
-						})
+						},yesCallback,noCallback)
 					} else if(mod.installFlag == 1) {
 						installApk(path);
 					}
@@ -304,7 +315,7 @@ var appUpdate = (function(mod) {
 	 * @param {Object} fileUrl
 	 * @param {Object} type 0升级包 1apk整包
 	 */
-	var resolveFile = function(fileUrl, type) {
+	var resolveFile = function(fileUrl, type,yesCallback,noCallback) {
 		console.log("文件路径：" + fileUrl + ";type:" + type);
 		var filePath = "_doc/update/" + fileUrl.split('/')[fileUrl.split('/').length - 1]
 		plus.io.resolveLocalFileSystemURL(filePath, function(entry) {
@@ -330,7 +341,7 @@ var appUpdate = (function(mod) {
 //				} else {
 					entry.remove(function(entry) {
 						if(type) {
-							downApk(fileUrl);
+							downApk(fileUrl,yesCallback,noCallback);
 						} else {
 							downWgt(fileUrl);
 						}
@@ -344,7 +355,7 @@ var appUpdate = (function(mod) {
 			});
 		}, function(e) {
 			if(type) {
-				downApk(fileUrl);
+				downApk(fileUrl,yesCallback,noCallback);
 			} else {
 				downWgt(fileUrl)
 			}
