@@ -21,7 +21,11 @@ var appUpdate = (function(mod) {
 				console.log("****************request的状态信息：" + request.readyState + ';' + request.status);
 				if(request.readyState == 4 && request.status == 200) {
 					console.log("请求回来的信息：" + JSON.stringify(request.response));
-					mod.getAppVersion(request.response.results[0]);
+					if (request.response.results.length == 0) {
+						noCallback();
+					} else{
+						mod.getAppVersion(request.response.results[0]);
+					}
 				}
 			}
 			request.open("post", mod.iosUpdateUrl, true);
@@ -170,7 +174,7 @@ var appUpdate = (function(mod) {
 					setDialog('校讯通有新版本，是否下载？', "您已取消下载", function() {
 						mod.updateFlag = 1;
 						console.log("下载APK路径：")
-						plus.runtime.openURL('https://itunes.apple.com/us/app/%E6%95%99%E5%AE%9D%E4%BA%91/id1281905607?l=zh&ls=1&mt=8');
+						plus.runtime.openURL('https://itunes.apple.com/us/app/%E6%95%99%E5%AE%9D%E4%BA%91/id1503612695?l=zh&ls=1&mt=8');
 					}, function() {
 						mod.updateFlag = 2;
 					},yesCallback,noCallback)

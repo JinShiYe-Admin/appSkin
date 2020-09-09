@@ -113,13 +113,16 @@
 		mui.plusReady(function() {
 			var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
 			if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
+				console.log('111111');
 				appUpdate.updateApp(function(){
 					mui.toast("APP正在下载，稍后将开始安装")
 				},function(){
+					console.log('9999999');
 					store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
 					getInfo()
 				});
 			}else if('UNCHECK'==CHECKUPDATE){
+				console.log('2222222');
 				getInfo()
 			}
 			
@@ -131,8 +134,10 @@
 		});
 		
 		function getInfo() {
+			console.log('333333');
 			plus.device.getInfo({
 				success: function(info) {
+					console.log('44444444');
 					let id = ''
 					if (info.uuid) {
 						id = info.uuid.split(",")[0]
@@ -464,7 +469,9 @@
 
 		//从ios原生得到信息
 		var setUUID = function(tempStr) {
+			console.log('55555');
 			if (loginFlag == 0) {
+				console.log('666666');
 				//			var tempModel0 = $.parseJSON(tempStr);
 				//				store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
 

@@ -122,6 +122,9 @@
 
 	<body style="background: white;">
 		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
+				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
+			</a>
 			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
@@ -150,20 +153,20 @@
 						<div class="swiper-button-next"></div>
 						<div class="swiper-button-prev"></div>
 					</div>
-						<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
-							<div v-for="(item,index) in singleSubScore.subjectArray" @click="clickSingleScore(item)"  class="cd-timeline-block">
-								<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
-								<div class="cd-timeline-content">
-									<div class="diva">{{item.time}}</div>
-									<div class="timelineDesc divb">
-										<div class="">
-											<div class="divc" style="margin-top: -15px;">期中</div>
-											<p class="divd" style="margin-top: -15px;">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
-										</div>
+					<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
+						<div v-for="(item,index) in singleSubScore.subjectArray" @click="clickSingleScore(item)" class="cd-timeline-block">
+							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+							<div class="cd-timeline-content">
+								<div class="diva">{{item.time}}</div>
+								<div class="timelineDesc divb">
+									<div class="">
+										<div class="divc" style="margin-top: -15px;">期中</div>
+										<p class="divd" style="margin-top: -15px;">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
 									</div>
 								</div>
 							</div>
-						</section>
+						</div>
+					</section>
 				</div>
 				<div id="item2" class="mui-control-content">
 					<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
@@ -221,14 +224,25 @@
 		<script src="../../js/utils/pushPermission.js"></script>
 		<script src="../../js/utils/clearIcon.js"></script>
 		<script src="../../js/swiper/swiper-bundle.min.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
 
 		<script type="text/javascript">
 			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
 					showBack: 0,
-					headTitle: '学生成绩'
+					headTitle: '',
+					headImg: setImg(personal.img_url)
+				},
+				methods: {
+					clickLeftImg: function() {
+						appPay.openMenu();
+					}
 				}
 			});
 			//vue数据
@@ -262,23 +276,31 @@
 						console.log('index:' + JSON.stringify(model));
 						utils.mOpenWithData(model.href, model);
 					},
-					clickSingleScore:function(model){
+					clickSingleScore: function(model) {
 						utils.mOpenWithData("../../html/student_performance/singleScore.html", model);
 					},
-					clickSumScore:function(model){
+					clickSumScore: function(model) {
 						utils.mOpenWithData("../../html/student_performance/sumScore.html", model);
 					},
 				},
 			});
 
 			mui.plusReady(function() {
-				var ws = plus.webview.currentWebview();
-				console.log("当前Webview：" + JSON.stringify(ws.preload));
-				if (ws.preload) {
-					tempHead.headTitle = ws.preload.name;
-					contentData.showArray = ws.preload.childList;
-				} else {
-					tempHead.showBack = 1;
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				tempHead.headTitle = curPage.name;
+				if(curPage&&JSON.stringify(curPage)=='{}'){//前四个页面时，不显示返回按钮
+					var ws = plus.webview.currentWebview();
+					console.log("当前Webview：" + JSON.stringify(ws.preload));
+					if (ws.preload) {
+						curPage = ws.preload;
+						tempHead.headTitle = ws.preload.name;
+					}
+					if (ws.preload.index == 0) {
+						tempHead.showBack = 2;
+					}
+				}else{
+					tempHead.showBack = 1;//更多页面打开时，显示返回按钮
 				}
 
 				// 单科成绩左右切换
