@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key =6; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =2; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	
 	switch(mod.key) {
 		case 1: //山东开发
@@ -27,11 +27,11 @@ var storageKeyName = (function(mod) {
 			break;
 		case 2: //广西开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
-			mod.APPCODE = 'schapp#'; //应用系统代码
-			mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49:8080/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			mod.INTERFACE_SSO_HR = 'http://139.129.252.49:8080/suptohr/api/hr/'; //单点登录,供人事系统使用
-			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
-			mod.INTERFACE_SSO_SUB = 'http://139.129.252.49:8080/suptosub/api/sub/'; //单点登录,供各子系统用
+			mod.APPCODE = 'stuapp#'; //应用系统代码
+			mod.INTERFACE_SSO_SKIN = 'http://139.129.252.49/suptohrsso/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			mod.INTERFACE_SSO_HR = 'http://139.129.252.49/suptohrsso/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SUP_HR = 'http://139.129.252.49:8080/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SSO_SUB = 'http://139.129.252.49/suptosubsso/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://139.129.252.49:8080/hrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://139.129.252.49:8080/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
 			mod.INTERFACE_OA = '? 需连山东开发环境';//oa接口(孔)
@@ -132,7 +132,7 @@ var storageKeyName = (function(mod) {
 	mod.PWD_ENCRYPTION = '#@_JFnice_@#';//修改密码时，加密密钥
 	mod.SCHOOLID = 100005;//学校ID
 	mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
-	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1281905607';//IOS升级地址
+	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1503612695';//IOS升级地址
 	mod.ICONNUM = 'iconNum'; //角标数量
 	
 	//正式包 屏蔽控制台打印

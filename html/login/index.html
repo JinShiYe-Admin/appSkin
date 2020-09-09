@@ -26,7 +26,7 @@
 
 
 	<body>
-		<nav v-cloak class="mui-bar mui-bar-tab" id="indexPage">
+		<nav v-show="showArray.length>1" v-cloak class="mui-bar mui-bar-tab" id="indexPage">
 			<template v-cloak v-for="(model,index) in showArray">
 				<a v-cloak :id=model.tempID :class='index==0?"mui-tab-item mui-active":"mui-tab-item"' :href=model.href>
 					<span v-cloak :class=model.cls><span class="mui-badge" v-if="model.NoReadCnt>0">{{model.NoReadCnt}}</span></span>
@@ -471,6 +471,10 @@
 							tempA.push(local_first_item);
 						} 
 					}
+				}
+				for (var i = 0; i < tempA.length; i++) {
+					var tempP = tempA[i];
+					tempP.index = i;
 				}
 				if (tempA.length > 5) {
 					var tempArrayM = tempA.slice(4);
