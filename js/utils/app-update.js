@@ -157,6 +157,8 @@ var appUpdate = (function(mod) {
 						mod.updateFlag = 2;
 					},yesCallback,noCallback)
 				}
+			}else{
+				noCallback()
 			}
 		} else { //ios
 			if(versionInfo) {
@@ -172,6 +174,8 @@ var appUpdate = (function(mod) {
 					}, function() {
 						mod.updateFlag = 2;
 					},yesCallback,noCallback)
+				}else{
+					noCallback()
 				}
 			}
 		}

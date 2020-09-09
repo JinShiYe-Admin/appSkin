@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<style type="text/css">
+			[v-cloak] {
+				display: none !important;
+			}
+			.circular-square {
+				border-radius: 10%;
+				width: 30px;
+				height: 30px;
+			}
+
+			.divd {
+				padding-left: 10px;
+				width: 80%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				/* background: #7FFFD4; */
+			}
+
+			.mui-grid-view.mui-grid-9 {
+				margin: 0;
+				padding: 0;
+				border-top: 0px solid #eee;
+				border-left: 0px solid #eee;
+				background-color: white;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				background: white;
+				margin: 0;
+				padding: 11px 15px;
+				vertical-align: top;
+				border-right: 0px solid #eee;
+				border-bottom: 0px solid #eee;
+			}
+
+			.chart {
+				height: 200px;
+				margin: 10px;
+				padding: 0px;
+			}
+			
+			.mui-grid-view.mui-grid-9.table {
+			    border-top: 1px solid #eee !important;
+			    border-left: 1px solid #eee !important;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
+				text-align: left;
+				padding: 0 7px;
+			    border-right: 1px solid #eee !important;
+			    border-bottom: 1px solid #eee !important;
+			}
+			
+			.mui-table-view-cell.beauline:after {
+			    left: 0 !important;
+				height: 0 !important;
+			}
+			.bg-gray{
+				background: #eaeaea !important;
+			}
+			
+			.mui-table-view-cell:after {
+			    left: 0px;
+			}
+		</style>
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+		</header>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div style="margin:15px 10px 60px;" v-for="item in stuList">
+				 <div style="height: 22px;width: 4px;background: #55ffff;float: left;margin-right: 5px;"></div>
+				 <div>{{item.cls}}</div>
+				 <div style="height: 3px;width: 100%;background: #B5E9E5;margin-top: 8px;"></div>
+				 <div class="mui-row">
+					<div v-for="(stuItem,index) in item.stu" class="mui-col-xs-3" style="height: 50px;" :style="{'margin-top':index<4?'15px':'0','text-align':stuItem.name&&stuItem.name.length>4?'left':'center'}" @click="clickMe(item.cls_code,stuItem)">
+						<p 
+							style="padding:5px 10px;margin: 0 3px;"
+							:style="{
+							'background':stuItem.isCheck?'#43CF7C':'',
+							'border-radius':stuItem.isCheck?'15px':'0',
+							'color':stuItem.isCheck?'#FFFFFF':''
+							}" 
+					    >{{stuItem.name}}</p>
+					</div>
+				 </div> 
+			</div>
+			<div class="mui-row" style="position: fixed;bottom: 0px;padding: 10px;text-align: center;width: 100%;background-color: #FFFFFF;border-top: 1px solid rgba(234, 234, 234, 0.5)">
+				<button type="button" style="background: #43CF7C;border: #43CF7C;color: #FFFFFF; border-radius: 13px;width: 120px;height: 50px;margin-right: 10px;" class="mui-btn" @click="pk()">邀请</button>
+				<button type="button" style="background: #999999;border: #999999;color: #FFFFFF; border-radius: 13px;width: 120px;height: 50px;margin-left: 10px;" class="mui-btn" @click="cancel()">取消</button>
+			</div>
+		</div> 
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {
+					showBack: 1,
+					headTitle: 'PK邀请',
+				}
+			});
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					checkModel:2,//选择模式 1单选 2多选
+					stuList:[ 
+						{cls_code:1,cls:"1701班",stu:[{stu_code:1,name:"张三",isCheck:false},{stu_code:2,name:"李四",isCheck:false},{stu_code:3,name:"哈士奇",isCheck:false},{stu_code:4,name:"泰迪",isCheck:false},{stu_code:5,name:"拉布拉多",isCheck:false},{stu_code:6,name:"巴黎",isCheck:false}]},
+						{cls_code:2,cls:"1702班",stu:[{stu_code:1,name:"张三",isCheck:false},{stu_code:2,name:"李四",isCheck:false},{stu_code:3,name:"哈士奇",isCheck:false},{stu_code:4,name:"泰迪",isCheck:false},{stu_code:5,name:"拉布拉多",isCheck:false},{stu_code:6,name:"巴黎",isCheck:false},{stu_code:7,name:"尼格买提",isCheck:false},{stu_code:8,name:"尼古拉斯·赵四",isCheck:false},{stu_code:9,name:"尼古拉斯·赵四",isCheck:false},{stu_code:10,name:"尼古拉斯·赵四",isCheck:false}]},
+					]
+				},
+				methods: {
+					pk:function(){
+						let student=[]
+						this.stuList.map(clsItem=>{
+							let cls={}
+							let checkedStu=[]
+							clsItem.stu.map(stuItem=>{
+								if(stuItem.isCheck){
+									checkedStu.push(stuItem)
+								}
+							})
+							cls.cls_code=clsItem.cls_code
+							cls.stu=[].concat(checkedStu)
+							if(checkedStu.length>0){
+								student.push(cls)
+							}
+						})
+						console.log("student: " + JSON.stringify(student));
+						if(student.length>0){
+							mui.toast("你选择的学生为:"+JSON.stringify(this.checkModel==1?student[0]:student))
+						}else{ 
+							mui.toast("你没有选择任何学生")
+						}
+					},
+					cancel:function(){
+						mui.back();
+					},
+					clickMe:function(cls_code,item){
+						let isCheck=item.isCheck
+						this.stuList.map(clsItem=>{
+							clsItem.stu.map(stuItem=>{
+								if(this.checkModel==1){
+									stuItem.isCheck=false
+								}
+								if(clsItem.cls_code==cls_code && stuItem.stu_code == item.stu_code){
+									if(isCheck){
+										stuItem.isCheck=false
+									} else{
+										stuItem.isCheck=true
+									}
+								}
+							})
+						})
+					}
+				},
+			});
+
+			mui.plusReady(function() {
+				let	curPage = utils.getDataFromUrl(window.location.href);
+			});
+		</script>
+	</body>
+
+</html>

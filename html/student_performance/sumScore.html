@@ -163,8 +163,8 @@
 				</div>
 				<div id="item3" class="mui-control-content">
 					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
-					<button style="float: right;margin-right: 20px;" type="button" class="mui-btn">邀请</button>
-					<button style="float: right;margin-right: 20px;background: #00CFBD;border-color: #00CFBD;color: white;" type="button" class="mui-btn">挑战者<span class="mui-badge" style="background: red;color: white;">1</span></button>
+					<button style="float: right;margin-right: 20px;" type="button" class="mui-btn" @click="yaoqing()">邀请</button>
+					<button style="float: right;margin-right: 20px;background: #00CFBD;border-color: #00CFBD;color: white;" type="button" class="mui-btn" @click="tiaozhanzhe()">挑战者<span class="mui-badge" style="background: red;color: white;">1</span></button>
 					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 70px;">成绩趋势</h4>
 					<div class="mui-row">
 						<ul class="mui-table-view no-line" style="font-size: 13px;">
@@ -539,15 +539,21 @@
 						}, 200)
 
 					},
-					clickFunction: function(model) {
-						console.log('index:' + JSON.stringify(model));
-						utils.mOpenWithData(model.href, model);
-					},
 					toDetailPage: function(line) {
 						console.log(JSON.stringify(line))
+						utils.mOpenWithData("pk_xiangqing.html",line);
 					},
-					toDetailPageZsd: function(line) {
-						console.log(JSON.stringify(line))
+					tiaozhanzhe:function(){
+						let model=[
+							{cls:'1808班',stu:'张三'},
+							{cls:'1809班',stu:'张四'},
+							{cls:'1810班',stu:'张五'},
+							{cls:'1811班',stu:'张六'},
+						]
+						utils.mOpenWithData("tiaozhanzhe.html",model);
+					},
+					yaoqing:function(){
+						utils.mOpenWithData("yaoqing.html",{});
 					}
 				},
 			});

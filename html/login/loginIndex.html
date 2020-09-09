@@ -198,6 +198,7 @@
 		var getEncryptKeyLogin = function(tempName, tempPW) {
 			console.log('tempName:' + tempName + ',tempPW:' + tempPW);
 			var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+			console.log("publicPar: " + JSON.stringify(publicPar));
 			//握手
 			var enData0 = {};
 			//不需要加密的数据
