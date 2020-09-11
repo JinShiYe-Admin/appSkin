@@ -105,6 +105,87 @@
 				overflow: hidden;
 				/* background: #7FFFD4; */
 			}
+			
+			.mui-bar~.mui-content .mui-fullscreen {
+				top: 44px;
+				height: auto;
+			}
+			
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1;
+			}
+			
+			.mui-bar~.mui-pull-top-tips {
+				top: 24px;
+			}
+			
+			.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}
+			
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			
+			.mui-pull-top-tips .mui-pull-loading {
+				margin: 0;
+			}
+			
+			.mui-pull-top-wrapper .mui-icon,
+			.mui-pull-top-wrapper .mui-spinner {
+				margin-top: 7px;
+			}
+			
+			.mui-pull-top-wrapper .mui-icon.mui-reverse {
+				/*-webkit-transform: rotate(180deg) translateZ(0);*/
+			}
+			
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+			
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+			
+			.mui-slider-indicator.mui-segmented-control {
+				background-color: #efeff4;
+			}
+			
+			.mui-scroll-wrapper{
+				position: initial;
+			}
 		</style>
 	</head>
 
@@ -125,7 +206,7 @@
 					<a @tap="clickSeg(3)" class="mui-control-item" href="#item4">错题本</a>
 				</div>
 			</div>
-			<div>
+			<div class="mui-slider-group"> 
 				<div id="item1" class="mui-control-content mui-active">
 					<div class="swiper-container">
 						<div class="swiper-wrapper">
@@ -199,44 +280,52 @@
 					</section>
 				</div>
 				<div id="item3" class="mui-control-content">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">
-							第三个选项卡子项-1
-						</li>
-						<li class="mui-table-view-cell">
-							第三个选项卡子项-2
-						</li>
-						<li class="mui-table-view-cell">
-							第三个选项卡子项-3
-						</li>
-					</ul>
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell">
+									第三个选项卡子项-1
+								</li>
+								<li class="mui-table-view-cell">
+									第三个选项卡子项-2
+								</li>
+								<li class="mui-table-view-cell">
+									第三个选项卡子项-3
+								</li>
+							</ul>
+						</div>
+					</div>
 				</div>
 				<div id="item4" class="mui-control-content">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">
-							第4个选项卡子项-1
-						</li>
-						<li class="mui-table-view-cell">
-							第4个选项卡子项-2
-						</li>
-						<li class="mui-table-view-cell">
-							第4个选项卡子项-3
-						</li>
-					</ul>
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell">
+									第4个选项卡子项-1
+								</li>
+								<li class="mui-table-view-cell">
+									第4个选项卡子项-2
+								</li>
+								<li class="mui-table-view-cell">
+									第4个选项卡子项-3
+								</li>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<script src="../../js/utils/storageKeyName.js"></script>
-		<script src="../../js/utils/mui.min.js"></script>
-		<script src="../../js/utils/vconsole.min.js"></script>
-		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
+		<script src="../../js/utils/vue.js"></script>
 		<!---->
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
-		<script src="../../js/utils/pushPermission.js"></script>
-		<script src="../../js/utils/clearIcon.js"></script>
 		<script src="../../js/swiper/swiper-bundle.min.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/showMenu.js"></script>
@@ -310,8 +399,40 @@
 					},
 				},
 			});
-
 			mui.plusReady(function() {
+				(function($) {
+					var deceleration = mui.os.ios?0.003:0.0009;
+					$('.mui-scroll-wrapper').scroll({
+						bounce: false,
+						indicators: true, //是否显示滚动条
+						deceleration:deceleration
+					});
+					$.ready(function() {
+						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										var self = this;
+										setTimeout(function() {
+											self.endPullDownToRefresh();
+										}, 1000);
+									}
+								},
+								up: {
+									callback: function() {
+										var self = this;
+										setTimeout(function() {
+											self.endPullUpToRefresh();
+										}, 1000);
+									}
+								}
+							});
+						});
+					});
+				})(mui);
+				
+				
+				
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempHead.headTitle = curPage.name;

@@ -49,7 +49,7 @@ var storageKeyName = (function(mod) {
 			break;
 		case 3: //联测
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
-			mod.APPCODE = mod.identity==1? 'stuapp#':mod.identity==2?'schapp#':'';; //应用系统代码
+			mod.APPCODE = mod.identity==1? 'stuapp#':mod.identity==3?'schapp#':'';; //应用系统代码
 			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/ssotoskin/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/ssotohr/api/hr/'; //单点登录,供人事系统使用
 			mod.INTERFACE_SUP_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
@@ -146,7 +146,7 @@ var storageKeyName = (function(mod) {
 		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
 			console[item]=console[item].bind(console)
 		}else{
-			console[item]=function(){}
+			// console[item]=function(){}
 		}
 	})
 	
