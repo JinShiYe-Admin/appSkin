@@ -189,6 +189,8 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
+					examId: 0, //试卷id
+					access:'',
 					zsdList:[],
 					zsdItem:{},
 					stDetail:{
@@ -211,6 +213,10 @@
 				let currStIndex=0
 				contentData.zsdList=curPage[0]
 				contentData.zsdItem=curPage[1]
+				contentData.examId = curPage[2]
+				contentData.access = curPage[3]
+				// 1.7.单科题目详情
+				getQueDetail();
 				contentData.zsdList.map((item,index)=>{
 					if(item.zsd==contentData.zsdItem.zsd){
 						currStIndex=index
@@ -234,6 +240,24 @@
 					});
 				},100)
 			});
+			// 1.7.单科题目详情
+			var getQueDetail = function() {
+				comData = {
+					user_code: personal.user_code,
+					id: contentData.examId, //试卷id
+					que_numbers: contentData.stItem.question_number, //题号
+					index_code: contentData.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/queDetail', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						// contentData.stDetail = data.data;
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
 		</script>
 	</body>
 

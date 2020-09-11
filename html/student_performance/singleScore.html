@@ -623,23 +623,25 @@
 							}
 						}
 					},
-					toDetailPage: function(line) {
+					toDetailPage: function(line) { //试题分析
 						console.log(JSON.stringify(contentData.examAnalysis.que_score_list))
 						console.log(JSON.stringify(line))
 						let model = {}
 						model.list = contentData.examAnalysis.que_score_list
 						model.child = line
-						utils.mOpenWithData("shijuan_shiti.html", [contentData.examAnalysis.que_score_list, line]);
+						utils.mOpenWithData("shijuan_shiti.html", [contentData.examAnalysis.que_score_list, line, curPage.id, curPage.access]);
 					},
-					toDetailPageZsd: function(line) {
+					toDetailPageZsd: function(line) { //知识点分析
 						console.log(JSON.stringify(contentData.examAnalysis.knowledge_list))
 						console.log(JSON.stringify(line))
-						utils.mOpenWithData("shijuan_zhishidian.html", [contentData.examAnalysis.knowledge_list, line]);
+						utils.mOpenWithData("shijuan_zhishidian.html", [contentData.examAnalysis.knowledge_list, line, curPage.id,
+							curPage.access
+						]);
 					},
-					toDetailPageCT: function(line) {
+					toDetailPageCT: function(line) { //错题详情
 						console.log(JSON.stringify(contentData.ct))
 						console.log(JSON.stringify(line))
-						utils.mOpenWithData("cuoti_xiangqing.html", [contentData.ct, line]);
+						utils.mOpenWithData("cuoti_xiangqing.html", [contentData.ct, line, curPage.id, curPage.access]);
 					}
 				},
 			});
