@@ -660,6 +660,9 @@
 						curr.close();
 					}, 1000);
 				}
+				if (indexPage.showArray.length == 1) {
+					subpage_style.bottom = '0px';
+				}
 				var defaultUrl = indexPage.showArray[0].href;
 				var self = plus.webview.currentWebview();
 				var tempM = indexPage.showArray[0];

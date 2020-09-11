@@ -24,7 +24,7 @@
 			<h1 class="mui-title">登录</h1>
 			<a id="zhuce" class="mui-icon  mui-pull-right" style="color: white;font-size: 16px;padding-top: 20px;">注册</a>
 		</header>
-		<div class="mui-content" style="background-color: white;" id="contentData">
+		<div class="mui-content" style="background-color: white;">
 			<div style="height: 200px;font-size: 18px;color: #00cfbd;;padding: 100px 0px;text-align: center;">欢迎登录</div>
 			<div class="mui-input-row">
 				<label style="margin-top: -5px;">
@@ -41,17 +41,7 @@
 				<input id='password' type="password" class="mui-input-clear mui-input " placeholder="请输入密码" style="margin-top: 5px;">
 			</div>
 			<hr style=" height:1px;border:none;border-top:1px solid #aeaeae;;margin: -12px 20px 0px 60px ;" />
-			<div style="margin-top: 10px;">
-				<div @click="clickPrivace()" style="float: right;margin-right: 20px;margin-top: 10px;color: #00CFBD;text-decoration: underline;">《隐私政策》</div>
-				<div v-if="privaceFlag == 0" @click="clickFlag(0)" style="float: right;" class="mui-input-row mui-checkbox mui-left">
-					<label>同意</label>
-					<input name="checkbox1" value="Item 1" type="checkbox">
-				</div>
-				<div v-else-if="privaceFlag == 1" @click="clickFlag(1)" style="float: right;" class="mui-input-row mui-checkbox mui-left">
-					<label>同意</label>
-					<input name="checkbox1" value="Item 1" type="checkbox" checked>
-				</div>
-			</div>
+			
 			<div style="padding-top: 20px;padding-left: 20px;padding-right: 20px;">
 				<button id='login' type="button" class="mui-btn mui-btn-block mui-btn-primary" style="background: #00cfbd; border:none; margin-top: 30px;height: 40px;padding-top: 8px;border-radius: 20px;">登录</button>
 				<!--<button id='register' type="button" class="mui-btn mui-btn-block mui-btn-outlined regisgerColo" style=" margin-top: 30px;height: 40px;padding-top: 8px;">注册</button>-->
@@ -89,26 +79,6 @@
 		});
 		var tempModel = {};
 		var loginFlag = 0; //0自动登录，1不自动登录
-
-		var contentData = new Vue({
-			el: "#contentData",
-			data: {
-				privaceFlag: 0,
-			},
-			methods: {
-				clickPrivace: function() {
-					console.log('clickPrivace')
-					utils.mOpenWithData("../../html/login/privace.html", {});
-				},
-				clickFlag: function(flag) {
-					if(flag == 0){
-						contentData.privaceFlag = 1;
-					}else{
-						contentData.privaceFlag = 0;
-					}
-				},
-			},
-		});
 
 		mui.plusReady(function() {
 			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
@@ -153,10 +123,6 @@
 		
 		document.getElementById("login").addEventListener('tap', function(event) {
 			console.log("登录");
-			if(contentData.privaceFlag == 0){
-				mui.toast('请先同意隐私政策');
-				return;
-			}
 			var tempName = document.getElementById("account").value;
 			var tempPW = document.getElementById("password").value;
 			console.log('tempName111:' + tempName + ',tempPW' + tempPW);

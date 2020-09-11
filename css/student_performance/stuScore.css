@@ -1,0 +1,53 @@
+/* 暂无数据 */
+.noData {
+	margin-left: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/* 试卷名称 */
+.examName {
+	text-align: center;
+	margin-top: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+/* 考试类型对应的图片 */
+.examType {
+	color: white;
+	float: left;
+	width: 40px;
+	height: 40px;
+	font-size: 14px;
+	text-align: center;
+	line-height: 40px;
+	vertical-align: middle;
+	border-radius: 5px;
+	margin-top: -15px !important;
+}
+
+/* 班级、年级排名边框 */
+.scoreOrderBorder {
+	width: 60px;
+	height: 60px;
+	border: 1px solid;
+	border-radius: 50%;
+	color: #00CFBD;
+	margin-top: 40px;
+}
+
+/* 班级、年级排名 */
+.scoreOrder {
+	color: red;
+	height: 60px;
+	line-height: 60px;
+	vertical-align: middle;
+	font-size: 16px;
+}
+
+/* 班级、年级排名名字 */
+.scoreOrderName {
+	font-size: 12px !important;
+	width: 60px !important;
+}
