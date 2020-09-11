@@ -151,8 +151,8 @@ var appUpdate = (function(mod) {
 				} 
 
 			} else if(appVersionMinMax.max == newestVersionMinMax.max) {
-				if(appVersionMinMax.min < newestVersionMinMax.min) { //在线更新
-					// resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);
+				if(appVersionMinMax.min < newestVersionMinMax.min) { 
+					// resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);//在线更新
 					setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
 						mod.updateFlag = 1;
 						console.log("下载APK路径：" + versionInfo.download_url)
@@ -160,6 +160,8 @@ var appUpdate = (function(mod) {
 					}, function() {
 						mod.updateFlag = 2;
 					},yesCallback,noCallback)
+				}else{
+					noCallback()
 				}
 			}else{
 				noCallback()
@@ -171,7 +173,7 @@ var appUpdate = (function(mod) {
 					return parseInt(verNo) > parseInt(appVersions[index]);
 				})
 				if(hasNewerVersion && mod.updateFlag == 0) { //如果有新版本
-					setDialog('校讯通有新版本，是否下载？', "您已取消下载", function() {
+					setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
 						mod.updateFlag = 1;
 						console.log("下载APK路径：")
 						plus.runtime.openURL('https://itunes.apple.com/us/app/%E6%95%99%E5%AE%9D%E4%BA%91/id1503612695?l=zh&ls=1&mt=8');
@@ -181,6 +183,8 @@ var appUpdate = (function(mod) {
 				}else{
 					noCallback()
 				}
+			}else{
+				noCallback()
 			}
 		}
 	}
@@ -192,7 +196,7 @@ var appUpdate = (function(mod) {
 	var setDialog = function(hint, cancelToast, callback, cancelCallback,yesCallback,noCallback) {
 			mui.closePopups();
 			var btnArray = ['是', '否'];
-			mui.confirm(hint, '校讯通', btnArray, function(e) {
+			mui.confirm(hint, '教宝校园', btnArray, function(e) {
 				//console.log("当前点击的东东：" + JSON.stringify(e));
 				if(e.index == 0) {
 					callback();

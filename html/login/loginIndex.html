@@ -111,20 +111,17 @@
 		});
 
 		mui.plusReady(function() {
-			var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
-			if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
-				console.log('111111');
+			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
+			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
 				appUpdate.updateApp(function(){
 					mui.toast("APP正在下载，稍后将开始安装")
 				},function(){
-					console.log('9999999');
-					store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
+					// store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
 					getInfo()
 				});
-			}else if('UNCHECK'==CHECKUPDATE){
-				console.log('2222222');
-				getInfo()
-			}
+			// }else if('UNCHECK'==CHECKUPDATE){
+			// 	getInfo()
+			// }
 			
 			plus.navigator.setStatusBarBackground("#00CFBD");
 			tempModel = {

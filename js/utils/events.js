@@ -180,7 +180,7 @@ var events = (function(mod) {
 							msglv: 1, //信息级别，1-9的数字,数字越小,紧急度越高,排队越靠前
 							senduser: personal.login_name, //信息发送者，发送人的账号
 							sendschid: personal.unit_code, //信息发送者学校ID，发送人所在的SCHID
-							frmsys: '校讯通APP', //来自平台，填写来自平台,如校讯通PC,校讯通APP,智慧校园APP
+							frmsys: '教宝校园APP', //来自平台，填写来自平台,如校讯通PC,校讯通APP,智慧校园APP
 							isdelay: 0, //是否为延时短信，0为正常短信,1为延时短信
 							delaytime: '', //延时时间，Isdelay为0时,可不填写,1时填写延时发送的时间
 							grouptype: grouptype, //群发类型，0:选择人员发送,1:整个学校群发,2:年级群发,3:班级群发

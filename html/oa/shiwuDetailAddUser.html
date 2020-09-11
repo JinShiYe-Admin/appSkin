@@ -277,7 +277,7 @@
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					moreFlag: 0, //右上角是否显示，0不显示，1撤销，2关闭
+					moreFlag: 0, //右上角是否显示，0不显示，1撤销，2结束
 					moreName: '' ,//右上角显示名称
 					addUser: 0,//是否显示添加人员图标 0 不显示  1 显示
 				},
@@ -304,7 +304,7 @@
 								}
 							});
 						} else {
-							mui.confirm('确定关闭吗？', '提醒', btnArray, function(e) {
+							mui.confirm('确定结束吗？', '提醒', btnArray, function(e) {
 								if (e.index == 1) {
 									events.showWaiting();
 									var comData = {
@@ -433,9 +433,9 @@
 								if (data.data.NoticeProgress == 1 && data.data.NoticeStatus == 1) {
 									tempVue.moreFlag = 1;
 									tempVue.moreName = '撤销';
-								} else if ((data.data.NoticeProgress == 2 || data.data.NoticeProgress == 3) && data.data.NoticeStatus == 1) { // 进程处于 “处理中”或“完毕”  且 状态处于 “发出”  显示关闭按钮
+								} else if ((data.data.NoticeProgress == 2 || data.data.NoticeProgress == 3) && data.data.NoticeStatus == 1) { // 进程处于 “处理中”或“完毕”  且 状态处于 “发出”  显示结束按钮
 									tempVue.moreFlag = 2;
-									tempVue.moreName = '关闭';
+									tempVue.moreName = '结束';
 								}
 								
 								 if ( data.data.NoticeStatus==1 ) {//状态处于 “发出”  与进程无关 显示新增人员按钮

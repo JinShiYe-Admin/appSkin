@@ -148,6 +148,7 @@
 										<div class="mui-table">
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
+												<div v-if="model.IsNew" style="width: 8px;height: 8px;border-radius: 50%;background: red;margin-left: 45px;position: fixed;"></div>
 												<div>
 													<a class="tempCss">[{{model.DoneStatusName}}]</a><a class="biaoti nvtt">{{model.NoticeTitle}}</a>
 												</div>
@@ -177,6 +178,7 @@
 										<div class="mui-table">
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
+												<div v-if="model.IsNew" style="width: 8px;height: 8px;border-radius: 50%;background: red;margin-left: 45px;position: fixed;"></div>
 												<div>
 													<a class="biaoti nvtt" style="width: 80%;">{{model.NoticeTitle}}</a>
 												</div>
@@ -283,6 +285,7 @@
 		<script src="../../js/utils/events.js"></script>
 		<script src='../../js/utils/md5.js'></script>
 		<script>
+			
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var tempVue = new Vue({
@@ -374,6 +377,27 @@
 					getData(null, 0);
 				}
 			});
+			
+			window.addEventListener('clearRedPoint', function(data) {
+				try{
+					let obj =data.detail
+					if(datasource.sliderFlag==0){ 
+						datasource.receive0.data.map(item=>{
+							if(obj.NoticeManId==item.NoticeManId){
+								item.IsNew=0
+							}
+						})
+					}else if(datasource.sliderFlag==1){
+						 datasource.receive1.data.map(item=>{
+							if(obj.NoticeManId==item.NoticeManId){
+								item.IsNew=0
+							}
+						 })
+					}
+				}catch(e){
+					console.log(e)
+				}
+			});
 
 			mui.init();
 			var curPage = {};
@@ -396,7 +420,7 @@
 				}
 				if (datasource.sliderFlag == 3) {
 					comData0.sendManId = personal.user_code; //发送人ID
-					comData0.status = '0'; //状态,0 全部1 发出2 撤回3 关闭
+					comData0.status = '0'; //状态,0 全部1 发出2 撤回3 结束
 					comData0.page_number = datasource.send.pageIndex; //当前页数
 					url = window.storageKeyName.INTERFACE_OA + 'cooperateNotice/getSendNotice';
 				} else {
@@ -488,7 +512,7 @@
 								} else if (tempM.NoticeStatus == 2) {
 									tempM.NoticeStatusName = '撤回';
 								} else if (tempM.NoticeStatus == 3) {
-									tempM.NoticeStatusName = '关闭';
+									tempM.NoticeStatusName = '结束';
 								}
 							}
 							datasource.send.data = datasource.send.data.concat(data.data.list);

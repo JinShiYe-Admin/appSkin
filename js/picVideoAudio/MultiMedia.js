@@ -281,7 +281,7 @@ var MultiMedia = (function($, mod) {
 										} else {
 											wd.close();
 											//												mui.toast(obj.msg)
-											mui.alert(obj.msg, '校讯通', function() {});
+											mui.alert(obj.msg, '教宝校园', function() {});
 										}
 									}, function(result) {
 										console.log("result" + result[0]);
@@ -395,7 +395,7 @@ var MultiMedia = (function($, mod) {
 										} else {
 											wd.close();
 											//											data.wd.close();
-											mui.alert(obj.msg, '校讯通', function() {});
+											mui.alert(obj.msg, '教宝校园', function() {});
 										}
 									}, function(result) {
 										console.log("result" + result[0]);
