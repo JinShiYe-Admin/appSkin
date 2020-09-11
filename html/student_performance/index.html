@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/student_performance/stuScore.css" />
 		<link rel="stylesheet" href="../../js/swiper/swiper-bundle.min.css">
 		<link rel="stylesheet" href="../../js/timeline/timeline.css">
 		<style type="text/css">
@@ -94,20 +95,7 @@
 				-webkit-line-clamp: 2;
 				overflow: hidden;
 			}
-
-			.divc {
-				color: white;
-				float: left;
-				width: 40px;
-				height: 40px;
-				font-size: 14px;
-				background: goldenrod;
-				text-align: center;
-				line-height: 40px;
-				vertical-align: middle;
-				border-radius: 5px;
-			}
-
+			
 			.divd {
 				padding-left: 10px;
 				width: 80%;
@@ -131,37 +119,48 @@
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div style="padding: 10px 10px;">
 				<div id="segmentedControl" class="mui-segmented-control">
-					<a class="mui-control-item mui-active" href="#item1">单科成绩</a>
-					<a class="mui-control-item" href="#item2">全科成绩</a>
-					<a class="mui-control-item" href="#item3">知识点分析</a>
-					<a class="mui-control-item" href="#item4">错题本</a>
+					<a @tap="clickSeg(0)" class="mui-control-item mui-active" href="#item1">单科成绩</a>
+					<a @tap="clickSeg(1)" class="mui-control-item" href="#item2">全科成绩</a>
+					<a @tap="clickSeg(2)" class="mui-control-item" href="#item3">知识点分析</a>
+					<a @tap="clickSeg(3)" class="mui-control-item" href="#item4">错题本</a>
 				</div>
 			</div>
 			<div>
 				<div id="item1" class="mui-control-content mui-active">
 					<div class="swiper-container">
 						<div class="swiper-wrapper">
-							<div class="swiper-slide"><span class="swiper-slide-span">语文</span></div>
-							<div class="swiper-slide"><span class="swiper-slide-span">数学</span></div>
-							<div class="swiper-slide"><span class="swiper-slide-span">英语</span></div>
-							<div class="swiper-slide"><span class="swiper-slide-span">物理</span></div>
-							<div class="swiper-slide"><span class="swiper-slide-span">化学</span></div>
-							<div class="swiper-slide"><span class="swiper-slide-span">政治</span></div>
-							<div class="swiper-slide"><span class="swiper-slide-span">体育</span></div>
+							<div v-for="(subModel,index) in singleSubScore.subList" class="swiper-slide">
+								<span class="swiper-slide-span">{{subModel.sub_name}}</span>
+							</div>
 						</div>
 						<!-- Add Arrows -->
 						<div class="swiper-button-next"></div>
 						<div class="swiper-button-prev"></div>
 					</div>
-					<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
-						<div v-for="(item,index) in singleSubScore.subjectArray" @click="clickSingleScore(item)" class="cd-timeline-block">
+					<section v-show="singleSubScore.singleScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
+						<div v-for="(item,index) in singleSubScore.singleScoreList" @click="clickSingleScore(item)" class="cd-timeline-block">
 							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 							<div class="cd-timeline-content">
-								<div class="diva">{{item.time}}</div>
+								<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
 								<div class="timelineDesc divb">
-									<div class="">
-										<div class="divc" style="margin-top: -15px;">期中</div>
-										<p class="divd" style="margin-top: -15px;">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+									<div v-if="item.type == 1" class="">
+										<template v-if="item.exam_type == 1">
+											<div class="examType" style="background: #f88c54;">期中</div>
+										</template>
+										<template v-else-if="item.exam_type == 2">
+											<div class="examType" style="background: orange;">月考</div>
+										</template>
+										<template v-else-if="item.exam_type == 3">
+											<div class="examType" style="background: #f56c6c;">期末</div>
+										</template>
+										<template v-else-if="item.exam_type == 4">
+											<div class="examType" style="background: #80b9ec;">周测</div>
+										</template>
+										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+									</div>
+									<div v-else-if="item.type == 2" class="">
+										<div class="examType" style="background: #67d293;">作业</div>
+										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
 									</div>
 								</div>
 							</div>
@@ -169,15 +168,30 @@
 					</section>
 				</div>
 				<div id="item2" class="mui-control-content">
-					<section v-show="singleSubScore.subjectArray.length>0" id="cd-timeline" class="cd-container" v-cloak>
-						<div v-for="(item,index) in singleSubScore.subjectArray" @click="clickSumScore(item)" class="cd-timeline-block">
+					<section v-show="sumSubScore.sumScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
+						<div v-for="(item,index) in sumSubScore.sumScoreList" @click="clickSumScore(item)" class="cd-timeline-block">
 							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 							<div class="cd-timeline-content">
-								<div class="diva">{{item.time}}</div>
+								<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
 								<div class="timelineDesc divb">
-									<div class="">
-										<div class="divc" style="margin-top: -15px;">期中</div>
-										<p class="divd" style="margin-top: -15px;">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+									<div v-if="item.type == 1" class="">
+										<template v-if="item.exam_type == 1">
+											<div class="examType" style="background: #f88c54;">期中</div>
+										</template>
+										<template v-else-if="item.exam_type == 2">
+											<div class="examType" style="background: orange;">月考</div>
+										</template>
+										<template v-else-if="item.exam_type == 3">
+											<div class="examType" style="background: #f56c6c;">期末</div>
+										</template>
+										<template v-else-if="item.exam_type == 4">
+											<div class="examType" style="background: #80b9ec;">周测</div>
+										</template>
+										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+									</div>
+									<div v-else-if="item.type == 2" class="">
+										<div class="examType" style="background: #67d293;">作业</div>
+										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
 									</div>
 								</div>
 							</div>
@@ -226,6 +240,14 @@
 		<script src="../../js/swiper/swiper-bundle.min.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/showMenu.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 
 		<script type="text/javascript">
 			mui.init();
@@ -249,37 +271,41 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					showArray: [],
+					semFlag:0,//点击的seg索引
 					singleSubScore: { //单科成绩
 						// isEmptyData:true,
-						subject: [], //科目列表
+						subList: [], //科目列表
 						nowSubject: {}, //当前科目信息
-						subjectArray: [{
-								"text": "用户4，工单结束工作人员到场签到工作人员到场签到工作人员到场签到工作人员到场签到",
-								"time": "2018-05-22"
-							}, {
-								"text": "用户4，工作人员到场签到工作人员到场签到工作人员到场签到",
-								"time": "2018-05-22"
-							},
-							{
-								"text": "用户4，分配工作人员",
-								"time": "2018-05-22"
-							}, {
-								"text": "用户4，提交报修单",
-								"time": "2018-05-21"
-							}
-						], //根据当前科目得到的列表
+						pageNumber: 1,
+						pageSize: 10,
+						singleScoreList: [], //根据当前科目得到的列表
+					},
+					sumSubScore:{
+						pageNumber: 1,
+						pageSize: 10,
+						sumScoreList: []
 					}
 				},
 				methods: {
-					clickFunction: function(model) {
-						console.log('index:' + JSON.stringify(model));
-						utils.mOpenWithData(model.href, model);
+					clickSeg:function(flag){
+						if(contentData.semFlag!=flag){
+							console.log('clickSeg:'+flag);
+							contentData.semFlag = flag;
+							if(flag == 0&&contentData.singleSubScore.subList.length == 0){
+								// 获取单科科目列表
+								getSubList();
+							} else if(flag == 1&&contentData.sumSubScore.sumScoreList.length == 0){
+								// 获取全科成绩列表
+								getSumSubScore();
+							}
+						}
 					},
 					clickSingleScore: function(model) {
+						model.access = curPage.access.split('#')[1];
 						utils.mOpenWithData("../../html/student_performance/singleScore.html", model);
 					},
 					clickSumScore: function(model) {
+						model.access = curPage.access.split('#')[1];
 						utils.mOpenWithData("../../html/student_performance/sumScore.html", model);
 					},
 				},
@@ -289,7 +315,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempHead.headTitle = curPage.name;
-				if(curPage&&JSON.stringify(curPage)=='{}'){//前四个页面时，不显示返回按钮
+				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
 					var ws = plus.webview.currentWebview();
 					console.log("当前Webview：" + JSON.stringify(ws.preload));
 					if (ws.preload) {
@@ -299,23 +325,91 @@
 					if (ws.preload.index == 0) {
 						tempHead.showBack = 2;
 					}
-				}else{
-					tempHead.showBack = 1;//更多页面打开时，显示返回按钮
+				} else {
+					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
 				}
-
-				// 单科成绩左右切换
-				var swiper = new Swiper('.swiper-container', {
-					navigation: {
-						nextEl: '.swiper-button-next',
-						prevEl: '.swiper-button-prev',
-					},
-					on: {
-						slideChangeTransitionEnd: function() {
-							console.log('slideChangeTransitionEnd:' + swiper.activeIndex);
-						},
-					},
-				});
+				// 获取单科科目列表
+				getSubList();
 			});
+			
+			// 获取单科科目列表
+			var getSubList = function(){
+				comData = {
+					user_code: personal.user_code,
+					index_code: curPage.access.split('#')[1],
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/subList', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						contentData.singleSubScore.subList = [].concat(data.data.list);
+						if(data.data.list.length>0){
+							contentData.singleSubScore.nowSubject = data.data.list[0];
+							// 获取单科成绩列表
+							getSingleSubScore();
+						}
+						// 单科成绩左右切换
+						setTimeout(function() {
+							var swiper = new Swiper('.swiper-container', {
+								navigation: {
+									nextEl: '.swiper-button-next',
+									prevEl: '.swiper-button-prev',
+								},
+								on: {
+									slideChangeTransitionEnd: function() {
+										var tempSub = contentData.singleSubScore.subList[swiper.activeIndex];
+										contentData.singleSubScore.nowSubject = tempSub;
+										console.log('tempSub:' + JSON.stringify(tempSub));
+										// 获取单科成绩列表
+										getSingleSubScore();
+									},
+								},
+							});
+						}, 500)
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			// 获取单科成绩列表
+			var getSingleSubScore = function(){
+				comData = {
+					user_code: personal.user_code,
+					sub_code: contentData.singleSubScore.nowSubject.sub_code,
+					page_number: 1,
+					page_size: 10,
+					index_code: curPage.access.split('#')[1],
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/page', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						contentData.singleSubScore.singleScoreList = [].concat(data.data.list);
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			// 获取全科成绩列表
+			var getSumSubScore = function(){
+				comData = {
+					user_code: personal.user_code,
+					page_number: 1,
+					page_size: 10,
+					index_code: curPage.access.split('#')[1],
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/page', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						contentData.sumSubScore.sumScoreList = [].concat(data.data.list);
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
 		</script>
 	</body>
 

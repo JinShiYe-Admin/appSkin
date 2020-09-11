@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key =2; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	mod.identity =1; //1:学生 2:家长 3:老师 ...
 	switch(mod.key) {
 		case 1: //山东开发
@@ -24,6 +24,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUXWSUB = '? 需连广西开发环境';//学生行为（阮)
 			mod.INTERFACE_STUPYSUB = '? 需连广西开发环境';//学生评语（阮)
 			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
+			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			break;
 		case 2: //广西开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -44,13 +45,14 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8080/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8080/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8080/stusssubapi/api/app/';//学生宿舍（阮)
+			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8080/stuzy/api/stuScore/';//学生成绩（蒙)
 			break;
 		case 3: //联测
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
-			mod.APPCODE = 'schapp#'; //应用系统代码
-			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/ssotohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			mod.APPCODE = mod.identity==1? 'stuapp#':mod.identity==2?'schapp#':'';; //应用系统代码
+			mod.INTERFACE_SSO_SKIN = 'http://nwifapp.jiaobaowang.net/ssotoskin/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
 			mod.INTERFACE_SSO_HR = 'http://nwifapp.jiaobaowang.net/ssotohr/api/hr/'; //单点登录,供人事系统使用
-			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
+			mod.INTERFACE_SUP_HR = 'http://nwifapp.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
 			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/ssotosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
@@ -64,6 +66,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
+			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
 			break;
 		case 4: //云测
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -84,6 +87,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUXWSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
+			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			break;
 		case 5://正式
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
@@ -104,6 +108,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUXWSUB = 'http://apps.108800.com/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
+			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			break;
 		case 6://性能测试
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -124,6 +129,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUXWSUB = 'http://cs1.108800.com/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://cs1.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
+			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			break;
 		default:
 			break;
