@@ -291,7 +291,21 @@
 				},
 				methods: {
 					add:function(){
-						utils.mOpenWithData("../../html/oa/noticeNew.html", curPage);
+						// utils.mOpenWithData("../../html/oa/noticeNew.html", curPage);
+						alert("发送咯")
+						var comData = {
+						    appids: "sG75NY5eXM6PRDwo2lk84A",
+						    alias: "1207482100001800192,1207482487194779648",
+						    cids: "",
+						    title: "测试title1",
+						    body: "这是一个通知body2",
+						    index_code: curPage.access.split('#')[1],
+						}
+						var    url = 'http://nwifapp.jiaobaowang.net/ssotosub/api/sub/getui/sendmsg';
+						postDataEncry(url, {}, comData, 2,
+						    function(data) {
+						        console.log('修改标签修改标签修改标签修改标签修改标签修改标签修改标签:' + JSON.stringify(data));
+						});
 					},
 					muiback: function() {
 						if(this.canBack){

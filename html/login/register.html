@@ -117,6 +117,19 @@
 				transform: scaleY(.5);
 				background-color: #e4e4e4;
 			}
+			
+			.mui-input-row.permission:after {
+			    height: 0px;
+			}
+		
+			.mui-input-row.permission label {
+				line-height: 0.9;
+			}
+			
+			.mui-checkbox.mui-left label, .mui-radio.mui-left label {
+			    padding-right: 15px;
+			    padding-left: 58px;
+			}
 		</style>
 	</head>
 
@@ -160,12 +173,12 @@
 				<input type="password" placeholder="确认密码" v-model="confirmpassword">
 			</div>
 			<div style="margin-top: 10px;">
-				<div @click="clickPrivace()" style="float: right;margin-right: 20px;margin-top: 10px;color: #00CFBD;text-decoration: underline;">《隐私政策》</div>
-				<div v-if="privaceFlag == 0" @click="clickFlag(0)" class="mui-input-row mui-checkbox mui-left" style="float: right;">
+				<div @click="clickPrivace()" style="float: right;margin:7px 20px 0 -10px;color: #00CFBD;text-decoration: underline;">《隐私政策》</div>
+				<div v-if="privaceFlag == 0" @click="clickFlag(0)" class="mui-input-row permission mui-checkbox mui-left" style="float: right;">
 					<label>同意</label>
 					<input name="checkbox1" value="Item 1" type="checkbox">
 				</div>
-				<div v-else-if="privaceFlag == 1" @click="clickFlag(1)" class="mui-input-row mui-checkbox mui-left" style="float: right;">
+				<div v-else-if="privaceFlag == 1" @click="clickFlag(1)" class="mui-input-row permission mui-checkbox mui-left" style="float: right;">
 					<label>同意</label>
 					<input name="checkbox1" value="Item 1" type="checkbox" checked>
 				</div>

@@ -83,10 +83,13 @@
 		mui.plusReady(function() {
 			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
 			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
+				events.showWaiting(" ");
 				appUpdate.updateApp(function(){
+					events.closeWaiting();
 					mui.toast("APP正在下载，稍后将开始安装")
 				},function(){
 					// store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
+					events.closeWaiting();
 					getInfo()
 				});
 			// }else if('UNCHECK'==CHECKUPDATE){
@@ -104,7 +107,22 @@
 			console.log('333333');
 			plus.device.getInfo({
 				success: function(info) {
-					console.log('44444444');
+					console.log('getDeviceInfo success: '+JSON.stringify(info));
+					let id = ''
+					if (info.uuid) {
+						id = info.uuid.split(",")[0]
+					}
+					if (id) {
+						tempModel.uuid = id
+						tempModel.appid = id
+					}
+					tempModel.webid = plus.os.name + plus.os.version;
+					store.set(window.storageKeyName.PUBLICPARAMETER, tempModel);
+					var backButtonPress = 0;
+					setUUID();
+				},
+				fail:function(info){
+					console.log('getDeviceInfo failed: '+JSON.stringify(info));
 					let id = ''
 					if (info.uuid) {
 						id = info.uuid.split(",")[0]

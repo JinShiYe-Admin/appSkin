@@ -114,6 +114,7 @@
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/igexinTool.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -162,14 +163,16 @@
 						tempID: 0,
 						cls: 'mui-icon mui-icon-locked',
 						qx:"0,1,2"
-					}, {
-						name: "关于我们",
+					},
+					{
+						name: "关于教宝校园",
 						icon: "",
 						href: "",
 						tempID: 2,
 						cls: 'mui-icon mui-icon-info',
 						qx:"0,1,2"
-					}],
+					},
+					],
 					isMineShow: false,//屏蔽或显示我的界面
 				},
 				methods: {
@@ -181,7 +184,7 @@
 								flag: 0 //0是主动修改密码，1是判断是默认密码，自动让修改
 							}
 							utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
-						} else if(setting.tempID == 2) {//关于我们
+						} else if(setting.tempID == 2) {//关于教宝校园
 							utils.mOpenWithData("../../html/mine/about.html", setting);
 						}
 					},
@@ -212,15 +215,9 @@
 				utils.setBadgeNumber(0, 0);
 				store.set(window.storageKeyName.ICONNUM, 0);
 				//解绑个推
-				var info = plus.push.getClientInfo();
-				var tempBindData = {
-					appId: info.appid,
-					alias: personal.utid,
-					cid: info.clientid
-				}
-				unbindPro(tempBindData, function function_name(data) {
-					if(data.RspCode == 0) {} else {}
-				});
+				var tool = new igexinTool();
+				tool.unbindAlias(personal.user_code);
+				
 				store.remove(window.storageKeyName.PERSONALINFO);
 
 				//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
