@@ -122,7 +122,7 @@
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" v-for="item in zsdList"><span class="swiper-slide-span">{{item.zsd}}</span></div>
+					<div class="swiper-slide" v-for="item in zsdList"><span class="swiper-slide-span">{{item.knowledge_name}}</span></div>
 				</div>
 				<!-- Add Arrows -->
 				<div class="swiper-button-next"></div>
@@ -132,37 +132,50 @@
 				<div style="margin-top: 15px;">
 						<p>当前知识点得分信息：</p>
 						<div class="mui-row" >
-							<div class="mui-col-xs-12" style="padding: 0 0 0 20px;word-break: break-all;"><p>考察本知识点的题目：{{zsdItem.tm}}</p></div>
-							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>本知识点分值：{{zsdItem.fz}}分</p></div>
-							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>我的得分：{{zsdItem.wd}}分</p></div>
-							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级满分人数：{{zsdItem.mfrs}}人</p></div>
-							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级均分：{{zsdItem.pjf}}分</p></div>
+							<div class="mui-col-xs-12" style="padding: 0 0 0 20px;word-break: break-all;"><p>考察本知识点的题目：{{zsdItem.question_numbers}}</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>本知识点分值：{{zsdItem.total_score}}分</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>我的得分：{{zsdItem.score}}分</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级满分人数：{{zsdItem.full_score_stuc}}人</p></div>
+							<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级均分：{{zsdItem.grd_avg_score}}分</p></div>
 						</div>
 				</div>
 			</div>
-			<div class="mui-row" v-for="item in zsdItem.tm?zsdItem.tm.split(','):[]"> 
-				<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;">题号：{{item}}</h5>
+			<div class="mui-row" v-for="currentModel in currentList"> 
+				<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;">题号：{{currentModel.question_number}}</h5>
 				<div class="mui-row" style="padding: 0 10px;">
 					<div style="margin-top: 15px;">
 							<p>当前题目的得分信息：</p>
 							<div class="mui-row" >
-								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>分值：10分</p></div>
-								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>我的得分：10分</p></div>
-								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级满分人数：10人</p></div>
-								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级均分：10分</p></div>
+								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>分值：{{currentModel.detailModel.question_score}}分</p></div>
+								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>我的得分：{{currentModel.detailModel.score}}分</p></div>
+								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级满分人数：{{currentModel.detailModel.full_score_stuc}}人</p></div>
+								<div class="mui-col-xs-6" style="padding: 0 0 0 20px;"><p>年级均分：{{currentModel.detailModel.grd_avg_score}}分</p></div>
 							</div>
 					</div>
 					<div class="mui-row">
 						<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">题目：</h4>
-						<p style="font-size: 14px;color: #666;" v-html=stDetail.tm></p>
+						<p v-if="currentModel.content.length==0&&currentModel.option.length==0" class="noData">暂无数据</p>
+						<p v-if="currentModel.content.length>0" style="font-size: 14px;color: #666;" v-html=currentModel.content></p>
+						<template v-for="(item,index) in currentModel.option">
+							<p style="font-size: 14px;color: #666;margin-left: 15px;" v-html=item></p>
+						</template>
 					</div>
 					<div class="mui-row">
 						<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">我的答案：</h4>
-						<img src="http://www.ruiwen.com/pic/copyright/img/d6d0bfbc5_2.jpg" width="100%" >
+						<p v-if="currentModel.stu_answer.length==0&&currentModel.stu_answer_img_url.length==0" class="noData" style="margin-top: 15px;">暂无数据</p>
+						<template v-for="(item,index) in currentModel.stu_answer">
+							<p style="font-size: 14px;color: #666;margin-left: 15px;">{{item}}</p>
+						</template>
+						<img v-if="currentModel.stu_answer_img_url.length>0" :src=currentModel.stu_answer_img_url width="100%">
 					</div>
 					<div class="mui-row">
 						<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">标准答案：</h4>
-						<p style="font-size: 14px;color: #666;" v-html=stDetail.bz></p>
+						<p v-if="currentModel.answer.length==0" class="noData">暂无数据</p>
+						<template v-for="(item1,index) in currentModel.answer">
+							<template v-for="(item2,index) in item1">
+								<p style="font-size: 14px;color: #666;margin-left: 15px;" v-html=item2></p>
+							</template>
+						</template>
 					</div>
 				</div>
 			</div>
@@ -176,8 +189,20 @@
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/swiper/swiper-bundle.min.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<script type="text/javascript">
 			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
@@ -193,17 +218,8 @@
 					access:'',
 					zsdList:[],
 					zsdItem:{},
-					stDetail:{
-						bz:"<div>(1)(2分)示例：捕捉刻画典型细节“红领巾” 准确定格专注伏案写作场景<br/>(2)(2分)只有读书才能引领我们抵达远处，想要幸福，就做一个读书人。<br/>(3)(4分)高度赞誉和肯定陈 忠实的忠诚品德和作品高度。“原上鹿”暗指他的代表作长篇小说《白鹿原》采用嵌名联的形式，且一再反复，强化表达效果。</div>",
-						wd:"http://www.ruiwen.com/pic/copyright/img/d6d0bfbc5_2.jpg",
-						tm:"<div>历史文化名城泉州，各种艺术形式异彩纷呈。梨园剧种是现宋元南戏的活文物。南音溯源晋唐，是我国中原的古乐遗响。提线木偶则举世闻名的优秀艺术形式。民间花灯、剪纸等________________,美不胜收。而泉州石雕技术之高，艺术之妙，在国内另辟蹊径，独树一帜，泉州的土木建筑________________有其浓郁而独特的地方风格。</div><br/>"
-						　　+"<div>(1)请用正楷字把“古乐遗响”抄在四字格里。(2分)</div><br/>"
-						　　+"<div>(2)加点字“溯”、“辟”读音正确的一项是( )。(2分)</div><br/>"
-						　　+"<div>A. shuò pì &emsp;&emsp;  B.sù pì &emsp;&emsp;  C.sù bì</div><br/>"
-						　　+"<div>(3)在文段两处横线处应填写的词语是( )。(2分)</div><br/>"
-						　　+"<div>A.争妍斗艳 还 B.林林总总 更 C.琳琅满目 也</div><br/>"
-						　　+"<div>(4)文段划线句子有语病，请写出修改意见。(2分)</div><br/>"
-					}
+					stList:[],
+					currentList:[]
 				},
 				methods: {
 				},
@@ -215,10 +231,11 @@
 				contentData.zsdItem=curPage[1]
 				contentData.examId = curPage[2]
 				contentData.access = curPage[3]
+				contentData.stList = curPage[4]
 				// 1.7.单科题目详情
 				getQueDetail();
 				contentData.zsdList.map((item,index)=>{
-					if(item.zsd==contentData.zsdItem.zsd){
+					if(item.knowledge_id==contentData.zsdItem.knowledge_id){
 						currStIndex=index
 					}
 				})
@@ -234,6 +251,8 @@
 								setTimeout(()=>{ //去掉就报错
 									console.log('slideChangeTransitionEnd:' + swiper.activeIndex);
 									contentData.zsdItem=contentData.zsdList[swiper.activeIndex]
+									// 1.7.单科题目详情
+									getQueDetail();
 								},10)
 							},
 						},
@@ -245,14 +264,48 @@
 				comData = {
 					user_code: personal.user_code,
 					id: contentData.examId, //试卷id
-					que_numbers: contentData.stItem.question_number, //题号
+					que_numbers: contentData.zsdItem.question_numbers, //题号
 					index_code: contentData.access,
 				}
 				events.showWaiting();
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/queDetail', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						// contentData.stDetail = data.data;
+						for(var a = 0;a<data.data.list.length;a++){
+							var tempD = data.data.list[a];
+							for(var b = 0;b<contentData.stList.length;b++){
+								var tempA = contentData.stList[b];
+								if(tempD.question_number == tempA.question_number){
+									tempD.detailModel = tempA;
+								}
+							}
+							if(tempD.content){
+								tempD.content = tempD.content;
+							}else{
+								tempD.content = '';
+							}
+							if(tempD.answer){
+								tempD.answer = tempD.answer;
+							}else{
+								tempD.answer = [];
+							}
+							if(tempD.stu_answer_img_url){
+								tempD.stu_answer_img_url = tempD.stu_answer_img_url;
+							}else{
+								tempD.stu_answer_img_url = [];
+							}
+							if(tempD.option){
+								tempD.option = tempD.option;
+							}else{
+								tempD.option = [];
+							}
+							if(tempD.stu_answer){
+								tempD.stu_answer = tempD.stu_answer;
+							}else{
+								tempD.stu_answer = [];
+							}
+						}
+						contentData.currentList = data.data.list;
 					} else {
 						mui.toast(data.msg);
 					}

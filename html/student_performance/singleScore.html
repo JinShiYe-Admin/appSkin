@@ -232,7 +232,7 @@
 								<div class="mui-row">
 									<div class="mui-col-xs-2" style="text-align: left;">{{item.knowledge_name}}</div>
 									<div class="mui-col-xs-1">{{item.total_score}}</div>
-									<div class="mui-col-xs-3" style="word-break: break-all;text-align: left;padding: 0 5px;">{{item.question_numbers}}</div>
+									<div class="mui-col-xs-3" style="word-break: break-all;padding: 0 5px;">{{item.question_numbers}}</div>
 									<div class="mui-col-xs-3">{{item.grd_avg_score}}</div>
 									<div class="mui-col-xs-2">{{item.score}}</div>
 									<div class="mui-col-xs-1" @click="toDetailPageZsd(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;"
@@ -629,19 +629,18 @@
 						let model = {}
 						model.list = contentData.examAnalysis.que_score_list
 						model.child = line
-						utils.mOpenWithData("shijuan_shiti.html", [contentData.examAnalysis.que_score_list, line, curPage.id, curPage.access]);
+						utils.mOpenWithData("shijuan_shiti.html", [contentData.examAnalysis.que_score_list, line, curPage.id, curPage.access,'试卷分析']);
 					},
 					toDetailPageZsd: function(line) { //知识点分析
 						console.log(JSON.stringify(contentData.examAnalysis.knowledge_list))
 						console.log(JSON.stringify(line))
-						utils.mOpenWithData("shijuan_zhishidian.html", [contentData.examAnalysis.knowledge_list, line, curPage.id,
-							curPage.access
-						]);
+						utils.mOpenWithData("shijuan_zhishidian.html", [contentData.examAnalysis.knowledge_list, line, curPage.id,curPage.access,contentData.examAnalysis.que_score_list]);
 					},
 					toDetailPageCT: function(line) { //错题详情
 						console.log(JSON.stringify(contentData.ct))
 						console.log(JSON.stringify(line))
-						utils.mOpenWithData("cuoti_xiangqing.html", [contentData.ct, line, curPage.id, curPage.access]);
+						utils.mOpenWithData("shijuan_shiti.html", [contentData.errorQue.error_que_list, line, curPage.id, curPage.access,'错题归纳']);
+						// utils.mOpenWithData("cuoti_xiangqing.html", [contentData.ct, line, curPage.id, curPage.access]);
 					}
 				},
 			});
