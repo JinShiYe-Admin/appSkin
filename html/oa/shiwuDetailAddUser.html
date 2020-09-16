@@ -140,8 +140,8 @@
 		<header class="mui-bar mui-bar-nav" id="tempVue">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title" style="left: 100px;right: 100px;">事务详情</h1>
-			<a  @click="addUsers()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;margin-left: 15px;"><span class="mui-icon mui-icon-personadd-filled"></span></a>
-			<a  @click="revoke()" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">{{moreName}}</a>
+			<a  @click="addUsers()" v-if="moreFlag>0"  class="mui-pull-right" style="font-size: 14px;margin-top: 0px;margin-left: 15px;"><span class="mui-icon mui-icon-personadd-filled"></span></a>
+			<a  @click="revoke()" v-if="moreFlag>0" class="mui-pull-right" style="font-size: 14px;margin-top: 0px;">{{moreName}}</a>
 		</header>
 		<div class="mui-content" id="noticeDetailData" v-cloak style="background-color: white;">
 			<template v-if="pageFlag==1||detailModel.NoticeStatus==2||detailModel.NoticeStatus==3||detailModel.NoticeProgress==3">

@@ -31,7 +31,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title" style="color: white;">关于我们</h1>
+			<h1 class="mui-title" style="color: white;">关于教宝校园</h1>
 		</header>
 		<div class="mui-content">
 			<div class="mui-row" style="background: #fff;padding: 20px 0;">
@@ -42,14 +42,14 @@
 			</div>
 			<div class="mui-row" style="margin-top: 15px;">
 				<ul class="mui-table-view mui-table-view-chevron">
-					<li class="mui-table-view-cell" id="qqqq">
+					<!-- <li class="mui-table-view-cell" id="qqqq">
 						<a style="font-size: 14px;" href="javaScript:void(0)" class="mui-navigate-right">功能介绍</a>
-					</li>
+					</li> -->
 					<li class="mui-table-view-cell" id="wwww">
 						<a style="font-size: 14px;" href="javaScript:void(0)" class="mui-navigate-right">公司介绍</a>
 					</li>
 					<li class="mui-table-view-cell" id="eeee">
-						<a style="font-size: 14px;" href="javaScript:void(0)" class="mui-navigate-right">帮助</a>
+						<a style="font-size: 14px;" href="javaScript:void(0)" class="mui-navigate-right">隐私政策</a>
 					</li>
 				</ul>
 			</div>
@@ -60,6 +60,7 @@
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/utils.js"></script>
 		<script type="text/javascript">
 			mui.init()
 
@@ -70,14 +71,17 @@
 				});
 			});
 
-			document.getElementById('qqqq').addEventListener('tap', function() {
-				mui.toast('功能暂未开放');
-			});
+			// document.getElementById('qqqq').addEventListener('tap', function() {
+			// 	mui.toast('功能暂未开放');
+			// });
 			document.getElementById('wwww').addEventListener('tap', function() {
-				mui.toast('功能暂未开放');
+				// mui.toast('功能暂未开放');
+				var urlStr = encodeURI("http://www.jsy8800.com")
+				plus.runtime.openURL(urlStr);
 			});
 			document.getElementById('eeee').addEventListener('tap', function() {
-				mui.toast('功能暂未开放');
+				// mui.toast('功能暂未开放');
+				utils.mOpenWithData("../../html/login/privace.html", {});
 			});
 		</script>
 	</body>

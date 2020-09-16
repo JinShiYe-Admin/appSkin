@@ -355,7 +355,11 @@
 						if (datasource.sliderFlag == 3) {
 							model.flag = 1;
 							model.access = curPage.access;
-							utils.mOpenWithData("../../html/oa/shiwuDetailAddUser.html", model);
+							if (model.NoticeStatus == 1) {
+								utils.mOpenWithData("../../html/oa/shiwuDetailAddUser.html", model);
+							} else if (model.NoticeStatus == 2 || model.NoticeStatus == 3) {
+								utils.mOpenWithData("../../html/oa/shiwuDetail.html", model);
+							}
 						} else {
 							model.flag = 0;
 							model.access = curPage.access;
