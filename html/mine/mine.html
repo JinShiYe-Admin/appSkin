@@ -213,7 +213,7 @@
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
 				utils.setBadgeNumber(0, 0);
-				store.set(window.storageKeyName.ICONNUM, 0);
+				store.set(window.storageKeyName.BADGENUMBER, 0);
 				//解绑个推
 				var tool = new igexinTool();
 				tool.unbindAlias(personal.user_code);

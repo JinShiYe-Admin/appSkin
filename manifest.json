@@ -33,9 +33,10 @@
         "Events" : {
             "description" : "应用扩展事件"
         },
-        "UIWebview" : {},
         "Maps" : {},
-        "Push" : {}
+        "Payment" : {},
+        "Push" : {},
+        "UIWebview" : {}
     },
     "fullscreen" : false,
     "plus" : {
@@ -192,14 +193,14 @@
                     "iphone" : {
                         "default" : "",
                         /*iPhone3启动图片选，分辨率：320x480*/
-                        "retina35" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/640x960.png",
+                        "retina35" : "",
                         /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-                        "retina40" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/640x1336.png",
-                        "portrait-896h@3x" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/1242x2688.png",
-                        "portrait-896h@2x" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/828x1792.png",
-                        "iphonex" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/1125x2436.png",
-                        "retina55" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/1242x2208.png",
-                        "retina47" : "G:/back/APP/教宝校园/系统图标/启动图/IOS/750x1334.png"
+                        "retina40" : "",
+                        "portrait-896h@3x" : "",
+                        "portrait-896h@2x" : "",
+                        "iphonex" : "",
+                        "retina55" : "",
+                        "retina47" : ""
                     },
                     "ipad" : {
                         "portrait" : "",
@@ -224,11 +225,11 @@
                     /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "",
                     /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "G:/back/APP/教宝校园/系统图标/启动图/安卓/480x762.png",
+                    "hdpi" : "",
                     /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "G:/back/APP/教宝校园/系统图标/启动图/安卓/720x1242.png",
+                    "xhdpi" : "",
                     /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "G:/back/APP/教宝校园/系统图标/启动图/安卓/1080x1882.png"
+                    "xxhdpi" : ""
                 }
             },
             "plugins" : {
@@ -244,7 +245,8 @@
                 },
                 "push" : {
                     "unipush" : {}
-                }
+                },
+                "payment" : {}
             }
         },
         "screenOrientation" : [ "portrait-primary", "portrait-secondary" ]
