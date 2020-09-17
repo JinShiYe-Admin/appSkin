@@ -756,5 +756,5 @@
             ]
         }
     },
-    "screenOrientation" : [ "portrait-primary", "portrait-secondary" ]
+    "screenOrientation" : [ "portrait-primary" ]
 }
