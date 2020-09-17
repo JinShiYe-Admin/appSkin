@@ -98,6 +98,11 @@
 						return true;
 					}
 				}
+				
+				//获取未读数
+				window.addEventListener('getNoReadCnt', function(data) {
+					getUnReadCntFun();
+				});
 
 				// 获取未读数
 				var getUnReadCntFun = function() {
@@ -117,16 +122,17 @@
 										tempNoRead = tempNoRead + tempM1.NoReadCnt;
 									}
 									console.log('tempNoRead:' + tempNoRead);
+									
+									var badgeNum = store.get(window.storageKeyName.BADGENUMBER) * 1 -contentData.noReadCut + tempNoRead;
+									console.log('badgeNum:' + badgeNum);
+									contentData.noReadCut = badgeNum;
 									mui.fire(plus.webview.currentWebview().opener(), 'showNoReadCnt', {
-										showNoReadCnt: tempNoRead,
+										showNoReadCnt: badgeNum,
 										url: contentData.pageUrl
 									});
-									var iconNum = store.get(window.storageKeyName.ICONNUM) * 1 -contentData.noReadCut + tempNoRead;
-									console.log('iconNum:' + iconNum);
-									contentData.noReadCut = tempNoRead;
-									store.set(window.storageKeyName.ICONNUM, iconNum);
+									store.set(window.storageKeyName.BADGENUMBER, badgeNum);
 									//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
-									utils.setBadgeNumber(0, iconNum);
+									utils.setBadgeNumber(0, badgeNum);
 								}
 							});
 						}

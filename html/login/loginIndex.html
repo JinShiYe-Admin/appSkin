@@ -235,7 +235,7 @@
 			postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login', enData1, comData1, 0, function(data1) {
 				events.closeWaiting();
 				if (data1.code == 0) {
-					store.set(window.storageKeyName.ICONNUM, 0);
+					store.set(window.storageKeyName.BADGENUMBER, 0);
 					loginFlag = 1;
 					data1.data.userName0 = tempName;
 					data1.data.passWord0 = tempPW;

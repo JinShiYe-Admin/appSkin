@@ -555,15 +555,15 @@
 					var cid = info.clientid; 
 					plus.push.addEventListener("receive", function(msg) {
 						//放置安卓角标
-						// try {
-						// 	var iconNum = store.get(window.storageKeyName.ICONNUM) * 1 + 1;
-						// 	var ShortcutBadger = plus.android.importClass("me.leolin.shortcutbadger.ShortcutBadger");
-						// 	var context = plus.android.runtimeMainActivity();
-						// 	ShortcutBadger.applyCount(context, iconNum);
-						// 	store.set(window.storageKeyName.ICONNUM, iconNum);
-						// } catch(err) { 
-						// 	console.log('类加载出错：' + err)
-						// }
+						try {
+							var badgeNum = store.get(window.storageKeyName.BADGENUMBER) * 1 + 1;
+							var ShortcutBadger = plus.android.importClass("me.leolin.shortcutbadger.ShortcutBadger");
+							var context = plus.android.runtimeMainActivity();
+							ShortcutBadger.applyCount(context, badgeNum);
+							store.set(window.storageKeyName.BADGENUMBER, badgeNum);
+						} catch(err) { 
+							console.log('类加载出错：' + err)
+						}
 						plus.device.vibrate(500);
 						console.log('msg.title========' + JSON.stringify(msg))
 						//设置通知栏消息
@@ -601,28 +601,14 @@
 						// 监听点击消息事件
 						plus.push.addEventListener("click", function(msg) {
 							//获取未读数
-							// getNoReadCnt();
+							mui.fire(plus.webview.currentWebview().opener(), 'getNoReadCnt', {});
 							plus.device.vibrate(500);
-							// 判断是从本地创建还是离线推送的消息 
-							switch(msg.payload) {
-								case "LocalMSG":
-									//						outSet("点击本地创建消息启动：");
-									break;
-								default:
-									//						outSet("点击离线推送消息启动：");
-									break;
-							}
 						}, false);
 						// 监听在线消息事件
 						plus.push.addEventListener("receive", function(msg) {
 							//获取未读数
-							// getNoReadCnt();
+							mui.fire(plus.webview.currentWebview().opener(), 'getNoReadCnt', {});
 							plus.device.vibrate(500);
-							if(msg.aps) { // Apple APNS message
-								//					outSet("接收到在线APNS消息：");
-							} else {
-								//					outSet("接收到在线透传消息：");
-							}
 						}, false);
 					}, false);
 				}
