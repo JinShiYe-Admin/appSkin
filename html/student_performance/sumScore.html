@@ -164,33 +164,35 @@
 					<div style="margin-left: 20px;font-size: 13px;padding-bottom: 20px;">注：优劣学科将各科分值转化为标准分后再进行比较。</div>
 				</div>
 				<div id="item3" class="mui-control-content">
-					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">{{fullSubPk.name}}</h4>
 					<button style="float: right;margin-right: 20px;" type="button" class="mui-btn" @click="yaoqing()">邀请</button>
 					<button style="float: right;margin-right: 20px;background: #00CFBD;border-color: #00CFBD;color: white;" type="button"
-					 class="mui-btn" @click="tiaozhanzhe()">挑战者<span class="mui-badge" style="background: red;color: white;">1</span></button>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 70px;">成绩趋势</h4>
+					 class="mui-btn" @click="tiaozhanzhe()">挑战者<span v-if="fullSubPk.challenge_list.length>0" class="mui-badge" style="background: red;color: white;">{{fullSubPk.challenge_list.length}}</span></button>
+					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 70px;">PK榜</h4>
 					<div class="mui-row">
 						<ul class="mui-table-view no-line" style="font-size: 13px;">
 							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">次序</div>
 									<div class="mui-col-xs-2">对手</div>
-									<div class="mui-col-xs-3">总分</div>
+									<div class="mui-col-xs-2">总分</div>
 									<div class="mui-col-xs-5">各科</div>
-									<div class="mui-col-xs-1"> </div>
+									<div class="mui-col-xs-2"> </div>
 								</div>
 							</li>
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in cjqs" :class="index%2==0?'':'bg-gray'">
+							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in fullSubPk.pk_list" :class="index%2==0?'':'bg-gray'">
 								<div class="mui-row">
-									<div class="mui-col-xs-1">{{item.num}}</div>
-									<div class="mui-col-xs-2">{{item.name}}</div>
-									<div v-if="item.sumScore==0" class="mui-col-xs-3" style="color: #008080;font-size: 20px;font-weight: 900;">败</div>
-									<div v-if="item.sumScore==1" class="mui-col-xs-3" style="color: red;font-size: 20px;font-weight: 900;">胜</div>
+									<div class="mui-col-xs-1">{{index}}</div>
+									<div class="mui-col-xs-2">{{item.pk_user_name}}</div>
+									<div v-if="item.my_score==item.pk_user_score" class="mui-col-xs-2" style="color: #008080;font-size: 20px;font-weight: 900;">平</div>
+									<div v-if="item.my_score>item.pk_user_score" class="mui-col-xs-2" style="color: #008080;font-size: 20px;font-weight: 900;">胜</div>
+									<div v-if="item.my_score<item.pk_user_score" class="mui-col-xs-2" style="color: red;font-size: 20px;font-weight: 900;">败</div>
 									<div class="mui-col-xs-5">
-										<span style="color: red;font-size: 20px;font-weight: 900;">{{item.win}}胜</span>
-										<span style="color: #008080;font-size: 20px;font-weight: 900;">{{item.lost}}败</span>
+										<span style="color: red;font-size: 20px;font-weight: 900;">{{item.pkb}}胜</span>
+										<span style="color: #008080;font-size: 20px;font-weight: 900;">{{item.pkc}}败</span>
+										<span style="color: #008080;font-size: 20px;font-weight: 900;">{{item.pka}}平</span>
 									</div>
-									<div class="mui-col-xs-1" @click="toDetailPage(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;"
+									<div class="mui-col-xs-2" @click="toDetailPage(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;"
 										 src="../../img/homeSchool/search.png"></img></div>
 								</div>
 							</li>
@@ -542,27 +544,18 @@
 						utils.mOpenWithData("pk_xiangqing.html", line);
 					},
 					tiaozhanzhe: function() {
-						let model = [{
-								cls: '1808班',
-								stu: '张三'
-							},
-							{
-								cls: '1809班',
-								stu: '张四'
-							},
-							{
-								cls: '1810班',
-								stu: '张五'
-							},
-							{
-								cls: '1811班',
-								stu: '张六'
-							},
-						]
-						utils.mOpenWithData("tiaozhanzhe.html", model);
+						if(contentData.fullSubPk.challenge_list.length==0){
+							mui.toast('暂时没有挑战者');
+						}else{
+							var tempM = {
+								access:curPage.access,
+								list:contentData.fullSubPk.challenge_list
+							}
+							utils.mOpenWithData("tiaozhanzhe.html", tempM);
+						}
 					},
 					yaoqing: function() {
-						utils.mOpenWithData("yaoqing.html", {});
+						utils.mOpenWithData("yaoqing.html", curPage);
 					}
 				},
 			});
@@ -580,6 +573,11 @@
 
 				// 1.9.全科总分及排名趋势
 				getSumScoreOrder();
+			});
+			//获取未读数
+			window.addEventListener('getFullSubPK', function(data) {
+				// 1.11.全科成绩pk
+				getFullSubPK();
 			});
 
 			// 1.9.全科总分及排名趋势
@@ -703,26 +701,25 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/pk', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						// contentData.goodBadSub.name = data.data.name;
-						// contentData.goodBadSub.pros_sub_names = data.data.pros_sub_names;
-						// contentData.goodBadSub.cons_sub_names = data.data.cons_sub_names;
-						// contentData.goodBadSub.list = data.data.list;
-						// var tempArray = [];
-						// var tempArray1 = [];
-						// for (var a = 0; a < data.data.list.length; a++) {
-						// 	var tempM = data.data.list[a];
-						// 	var tempM1 = {
-						// 		name: tempM.sub_name,
-						// 		max: tempM.standard_score
-						// 	}
-						// 	tempArray.push(tempM1);
-						// 	tempArray1.push(tempM.standard_score);
-						// }
-						// contentData.goodBadSub.radarChartDetail.radar.indicator = [].concat(tempArray);
-						// contentData.goodBadSub.radarChartDetail.series[0].data[0].value = [].concat(tempArray1);
-						// // 优劣学科雷达图
-						// var radarChart = echarts.init(document.getElementById('radarChart'));
-						// radarChart.setOption(contentData.goodBadSub.radarChartDetail);
+						contentData.fullSubPk.name = data.data.name;
+						contentData.fullSubPk.challenge_list = [].concat(data.data.challenge_list);
+						contentData.fullSubPk.pk_list = [].concat(data.data.pk_list);
+						for(var a=0;a<data.data.pk_list.length;a++){
+							var tempM = data.data.pk_list[a];
+							tempM.pka = 0;//平
+							tempM.pkb = 0;//胜
+							tempM.pkc = 0;//败
+							for(var b=0;b<tempM.sub_score_list.length;b++){
+								var tempN = tempM.sub_score_list[b];
+								if(tempN.my_score == tempN.pk_user_score){
+									tempM.pka++;
+								}else if(tempN.my_score > tempN.pk_user_score){
+									tempM.pkb++;
+								}else if(tempN.my_score < tempN.pk_user_score){
+									tempM.pkc++;
+								}
+							}
+						}
 					} else {
 						mui.toast(data.msg);
 					}

@@ -11,6 +11,7 @@
 			[v-cloak] {
 				display: none !important;
 			}
+
 			.circular-square {
 				border-radius: 10%;
 				width: 30px;
@@ -49,36 +50,37 @@
 				margin: 10px;
 				padding: 0px;
 			}
-			
+
 			.mui-grid-view.mui-grid-9.table {
-			    border-top: 1px solid #eee !important;
-			    border-left: 1px solid #eee !important;
+				border-top: 1px solid #eee !important;
+				border-left: 1px solid #eee !important;
 			}
-			
+
 			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
 				text-align: left;
 				padding: 0 7px;
-			    border-right: 1px solid #eee !important;
-			    border-bottom: 1px solid #eee !important;
+				border-right: 1px solid #eee !important;
+				border-bottom: 1px solid #eee !important;
 			}
-			
+
 			.mui-table-view-cell.beauline:after {
-			    left: 0 !important;
+				left: 0 !important;
 				height: 0 !important;
 			}
-			.bg-gray{
+
+			.bg-gray {
 				background: #eaeaea !important;
 			}
-			
+
 			.mui-table-view-cell:after {
-			    left: 0px;
+				left: 0px;
 			}
 		</style>
 	</head>
 
 	<body style="background: white;">
 		<header class="mui-bar mui-bar-nav" id="tempHead">
-			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a v-cloak @click="muiback" v-if="showBack==1" class="mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
@@ -86,18 +88,20 @@
 				<ul class="mui-table-view">
 					<li v-for="(item,index) in tiaozhanzhe" class="mui-table-view-cell">
 						<div class="mui-row">
-							<div class="mui-col-xs-1" style="padding-top:7px;text-align: center;"><span >{{++index}}</span></div>
-							<div class="mui-col-xs-3" style="padding-top:7px;text-align: center;"><span >{{item.cls}}</span></div>
-							<div class="mui-col-xs-3" style="padding-top:7px;text-align: center;"><span >{{item.stu}}</span></div>
-							<div class="mui-col-xs-3">
-								<button type="button" style="background: #43CF7C;border: #43CF7C;color: #FFFFFF; border-radius: 13px;padding-top: 8px;" class="mui-btn" @click="pk()">接受挑战</button>
+							<div class="mui-col-xs-1" style="padding-top:7px;text-align: center;"><span>{{++index}}</span></div>
+							<div class="mui-col-xs-3" style="padding-top:7px;text-align: center;"><span>{{item.cls_name}}</span></div>
+							<div class="mui-col-xs-3" style="padding-top:7px;text-align: center;"><span>{{item.user_name}}</span></div>
+							<div v-if="item.status == 0" class="mui-col-xs-3">
+								<button type="button" style="background: #43CF7C;border: #43CF7C;color: #FFFFFF; border-radius: 13px;padding-top: 8px;"
+								 class="mui-btn" @click="pkOrNo(item,1)">接受挑战</button>
 							</div>
-							<div class="mui-col-xs-2"><button type="button" style="background: #FF8D1A;border: #FF8D1A;color: #FFFFFF; border-radius: 13px;padding-top: 8px;" class="mui-btn" @click="unpk()">免战</button></div>
+							<div v-if="item.status == 0" class="mui-col-xs-2"><button type="button" style="background: #FF8D1A;border: #FF8D1A;color: #FFFFFF; border-radius: 13px;padding-top: 8px;"
+								 class="mui-btn" @click="pkOrNo(item,2)">免战</button></div>
 						</div>
 					</li>
 				</ul>
 			</div>
-		</div> 
+		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
@@ -106,35 +110,70 @@
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<script type="text/javascript">
 			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
 					showBack: 1,
 					headTitle: '挑战者',
+				},
+				methods: {
+					muiback: function() {
+						//在主界面重新获取
+						if(contentData.pkFlag>0){
+							mui.fire(plus.webview.currentWebview().opener(), 'getFullSubPK', {});
+						}
+						mui.back();
+					}
 				}
 			});
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					tiaozhanzhe:[],
+					pkFlag:0,
+					tiaozhanzhe: [],
 				},
 				methods: {
-					pk:function(){
-						alert("接受挑战")
-					},
-					unpk:function(){
-						alert("免战")
+					pkOrNo: function(model, flag) {
+						comData = {
+							index_code: curPage.access,
+							id: model.id, //pk id
+							status: flag, //1接受，2免战
+						}
+						events.showWaiting();
+						postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/updatePkStatus', {}, comData, 2, function(
+							data) {
+							events.closeWaiting();
+							if (data.code == 0) {
+								contentData.pkFlag++;
+								model.status = flag;
+								console.log('tiaozhanzhe:' + JSON.stringify(contentData.tiaozhanzhe));
+							} else {
+								mui.toast(data.msg);
+							}
+						});
 					}
 				},
 			});
 
 			mui.plusReady(function() {
-				let	curPage = utils.getDataFromUrl(window.location.href);
-				console.log("curPage: " + JSON.stringify(curPage));
-				contentData.tiaozhanzhe=curPage
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				contentData.tiaozhanzhe = [].concat(curPage.list);
 			});
 		</script>
 	</body>

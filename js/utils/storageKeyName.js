@@ -2,7 +2,7 @@
 
 var storageKeyName = (function(mod) {
 
-	mod.key =5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	mod.identity =1; //1:学生 2:家长 3:老师 ...
 	switch(mod.key) {
 		case 1: //山东开发
@@ -141,13 +141,13 @@ var storageKeyName = (function(mod) {
 	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1503612695';//IOS升级地址
 	
 	//正式包 屏蔽控制台打印
-	// ['log','warn','info','error'].map(function(item){
-	// 	if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
-	// 		console[item]=console[item].bind(console)
-	// 	}else{
-	// 		console[item]=function(){}
-	// 	}
-	// })
+	['log','warn','info','error'].map(function(item){
+		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
+			console[item]=console[item].bind(console)
+		}else{
+			console[item]=function(){}
+		}
+	})
 	
 	
 	
