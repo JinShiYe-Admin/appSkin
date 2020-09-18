@@ -14,12 +14,24 @@ window.onerror = function(errorMessage, scriptURI, lineNumber, columnNumber, err
 var utils = (function(mod) {
 	//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
 	mod.setBadgeNumber = function(flag, count) {
-		var GeTuiSdk = plus.ios.importClass('GeTuiSdk');
+		var isAndorid,PushManager,context;
+		if(plus.os.name == 'Android') {  
+		    isAndorid = true;  
+		} else {  
+		    isAndorid = false;  
+		}   
+		if(isAndorid) {
+		} else {  
+		    GeTuiSdk = plus.ios.importClass("GeTuiSdk");  
+		}  
+		
 		if(flag == 0) {
 			console.log('1234567890')
 			store.set(window.storageKeyName.BADGENUMBER, count);
 			plus.runtime.setBadgeNumber(count);
-			GeTuiSdk.setBadge(count);
+			if(isAndorid) {} else {  
+			  	GeTuiSdk.setBadge(count);
+			}  
 			console.log('1234567890qwertyuiop')
 		} else if(flag == 1) {
 			var badgeNumber = store.get(window.storageKeyName.BADGENUMBER);
@@ -31,13 +43,17 @@ var utils = (function(mod) {
 			}
 			store.set(window.storageKeyName.BADGENUMBER, badgeNumber);
 			plus.runtime.setBadgeNumber(badgeNumber);
-			GeTuiSdk.setBadge(badgeNumber);
+			if(isAndorid) {} else {  
+			  	GeTuiSdk.setBadge(count);
+			}  
 		} else if(flag == 2) {
 			var badgeNumber = store.get(window.storageKeyName.BADGENUMBER);
 			badgeNumber++;
 			store.set(window.storageKeyName.BADGENUMBER, badgeNumber);
 			plus.runtime.setBadgeNumber(badgeNumber);
-			GeTuiSdk.setBadge(badgeNumber);
+			if(isAndorid) {} else {  
+			  	GeTuiSdk.setBadge(count);
+			}  
 		}
 	}
 	

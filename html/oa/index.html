@@ -73,6 +73,15 @@
 		<script src="../../js/libs/jquery.js"></script>
 
 		<script type="text/javascript">
+			var getUnReadCntFun;
+			function getNoReadCnt(){
+				console.log("b啊啊啊啊啊啊：收到一条推送")
+				try{
+					getUnReadCntFun();
+				}catch(e){
+					console.log(e)
+				}						
+			}
 			mui.plusReady(function() {
 				mui.init({
 					statusBarBackground: '#00CFBD',
@@ -98,14 +107,8 @@
 						return true;
 					}
 				}
-				
-				//获取未读数
-				window.addEventListener('getNoReadCnt', function(data) {
-					getUnReadCntFun();
-				});
-
 				// 获取未读数
-				var getUnReadCntFun = function() {
+				getUnReadCntFun = function() {
 					for (var a = 0; a < contentData.showArray.length; a++) {
 						var tempM0 = contentData.showArray[a];
 						if (tempM0.redspot_url != null && tempM0.redspot_url.length > 0) {

@@ -20,7 +20,6 @@
 			.mui-bar-tab .mui-tab-item.mui-active {
 				color: #00CFBD;
 			}
-			
 		</style>
 	</head>
 
@@ -38,6 +37,7 @@
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/igexinTool.js"></script>
@@ -549,41 +549,38 @@
 					
 					//当设备收到服务器发送的透传消息时，不会触发页面监听的receive事件。当用户点击消息中心消息时会触发监听页面的“click”事件。如果用户点击多个消息时，会多次触发“click”事件。
 					//不符指定合格式的透传消息不会进入系统的消息中心，会在监听“receive”事件的页面触发事件回调。
-					//{title:"通知标题",content:"通知内容",payload:"通知去干嘛这里可以自定义"} f9ba843c10d8b1b5502b3c7e922adde7 标准格式
+					//{title:"通知标题",content:"通知内容",payload:"通知去干嘛这里可以自定义"} 标准格式
 					//{"title":"接收到一条待办","body":"{\"title\":\"通知标题\",\"content\":\"通知内容\",\"payload\":\"通知去干嘛这里可以自定义\"}"}  由于使用标准格式，不会触发receice监听，所以封装了下
 					var info = plus.push.getClientInfo();
 					var cid = info.clientid; 
+					plus.push.setAutoNotification( true );
 					plus.push.addEventListener("receive", function(msg) {
-						//放置安卓角标
-						try {
-							var badgeNum = store.get(window.storageKeyName.BADGENUMBER) * 1 + 1;
-							var ShortcutBadger = plus.android.importClass("me.leolin.shortcutbadger.ShortcutBadger");
-							var context = plus.android.runtimeMainActivity();
-							ShortcutBadger.applyCount(context, badgeNum);
-							store.set(window.storageKeyName.BADGENUMBER, badgeNum);
-						} catch(err) { 
-							console.log('类加载出错：' + err)
-						}
+						console.log("接收到了通知推送"+ JSON.stringify(msg))
+						let obj =plus.webview.getWebviewById("../../html/oa/index.html");
+						obj.evalJS('getNoReadCnt()')   
 						plus.device.vibrate(500);
-						console.log('msg.title========' + JSON.stringify(msg))
-						//设置通知栏消息
-						var options = {
-							cover: false,
-							sound: 'system'
-						};
-						try {
-							if(JSON.parse(msg.content).body == undefined) {
-								plus.push.createMessage(msg.content, msg.content, options);
-							} else {
-								plus.push.createMessage(msg.title, JSON.parse(msg.content).body, options);
-							}
-						} catch(err) {
-							plus.push.createMessage(msg.content, msg.content, options);
-						}
+						// console.log('msg.title========' + JSON.stringify(msg))
+						// //设置通知栏消息
+						// var options = {
+						// 	cover: false,
+						// 	sound: 'system'
+						// };
+						// try {
+						// 	if(JSON.parse(msg.content).body == undefined) {
+						// 		plus.push.createMessage(msg.content, msg.content, options);
+						// 	} else {
+						// 		plus.push.createMessage(msg.title, JSON.parse(msg.content).body, options);
+						// 	}
+						// } catch(err) {
+						// 	plus.push.createMessage("有一条新的通知", "有一条新的通知", options);
+						// }
 				
-					}, false);
+					}, true);
 					plus.push.addEventListener("click", function(msg) {
-							plus.push.clear();
+						console.log("点击了通知栏消息")
+						let obj =plus.webview.getWebviewById("../../html/oa/index.html");
+						obj.evalJS('getNoReadCnt()')   
+						plus.push.clear();
 					}, false);
 					
 					//监听收到通知后，没通过标题栏而是点击app图标进入app的事件，官方用语叫：应用切换到前台运行事件
@@ -600,14 +597,18 @@
 						message = document.getElementById("message");
 						// 监听点击消息事件
 						plus.push.addEventListener("click", function(msg) {
+							console.log("点击了通知栏消息")
 							//获取未读数
-							mui.fire(plus.webview.currentWebview().opener(), 'getNoReadCnt', {});
+							let obj =plus.webview.getWebviewById("../../html/oa/index.html");
+							obj.evalJS('getNoReadCnt()')   
 							plus.device.vibrate(500);
 						}, false);
 						// 监听在线消息事件
 						plus.push.addEventListener("receive", function(msg) {
+							console.log("接收到了通知推送")
 							//获取未读数
-							mui.fire(plus.webview.currentWebview().opener(), 'getNoReadCnt', {});
+							let obj =plus.webview.getWebviewById("../../html/oa/index.html");
+							obj.evalJS('getNoReadCnt()')   
 							plus.device.vibrate(500);
 						}, false);
 					}, false);
