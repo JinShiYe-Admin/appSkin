@@ -9,5 +9,6 @@ schapp_work|学生考勤|Liu|Ruan(广西)|正式
 stu_behavior|学生行为|Liu|Ruan(广西)|正式
 teachercAttendance|教师考勤|Zhao|Kong|正式
 stu_comment|学生评语|Liu|Ruan(广西)|正式
-stu_dorm|学生宿舍|Liu,Zhao|Ruan(广西)|开发
+stu_dorm|学生宿舍|Liu,Zhao|Ruan(广西)|正式
 interaction|家校互动|No!!!|Gu(广西)|开发
+student_performance|学生成绩|Zhao|Meng(广西)|开发 <!-- 有滑动列表切换丢失的解决方法 index.html--> 
