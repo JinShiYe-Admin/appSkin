@@ -119,7 +119,7 @@
 				width: 40px;
 				height: 40px;
 				border-radius: 100%;
-				z-index: 1;
+				z-index: 2; /* 仅为适配swiper而改动，原值：1 */
 			}
 			
 			.mui-bar~.mui-pull-top-tips {
@@ -184,7 +184,7 @@
 			}
 			
 			.mui-scroll-wrapper{
-				position: initial;
+				position: fixed; /* 仅为适配swiper而改动，原值：absolute */
 			}
 		</style>
 	</head>
@@ -208,7 +208,7 @@
 			</div>
 			<div class="mui-slider-group"> 
 				<div id="item1" class="mui-control-content mui-active">
-					<div class="swiper-container">
+					<div class="swiper-container" >
 						<div class="swiper-wrapper">
 							<div v-for="(subModel,index) in singleSubScore.subList" class="swiper-slide">
 								<span class="swiper-slide-span">{{subModel.sub_name}}</span>
@@ -218,69 +218,79 @@
 						<div class="swiper-button-next"></div>
 						<div class="swiper-button-prev"></div>
 					</div>
-					<section v-show="singleSubScore.singleScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
-						<div v-for="(item,index) in singleSubScore.singleScoreList" @click="clickSingleScore(item)" class="cd-timeline-block">
-							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
-							<div class="cd-timeline-content">
-								<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
-								<div class="timelineDesc divb">
-									<div v-if="item.type == 1" class="">
-										<template v-if="item.exam_type == 1">
-											<div class="examType" style="background: #f88c54;">期中</div>
-										</template>
-										<template v-else-if="item.exam_type == 2">
-											<div class="examType" style="background: orange;">月考</div>
-										</template>
-										<template v-else-if="item.exam_type == 3">
-											<div class="examType" style="background: #f56c6c;">期末</div>
-										</template>
-										<template v-else-if="item.exam_type == 4">
-											<div class="examType" style="background: #80b9ec;">周测</div>
-										</template>
-										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
-									</div>
-									<div v-else-if="item.type == 2" class="">
-										<div class="examType" style="background: #67d293;">作业</div>
-										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
-									</div>
+					<div class="mui-scroll-wrapper" style="margin-top: 160px;">
+						<div class="mui-scroll" style="margin-top: -15px">
+							<section  id="cd-timeline" class="cd-container" v-cloak >
+								<div v-for="(item,index) in singleSubScore.singleScoreList" @click="clickSingleScore(item)" class="cd-timeline-block">
+									<template v-for="test in 15">
+										<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+										<div class="cd-timeline-content">
+											<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
+											<div class="timelineDesc divb">
+												<div v-if="item.type == 1" class="">
+													<template v-if="item.exam_type == 1">
+														<div class="examType" style="background: #f88c54;">期中</div>
+													</template>
+													<template v-else-if="item.exam_type == 2">
+														<div class="examType" style="background: orange;">月考</div>
+													</template>
+													<template v-else-if="item.exam_type == 3">
+														<div class="examType" style="background: #f56c6c;">期末</div>
+													</template>
+													<template v-else-if="item.exam_type == 4">
+														<div class="examType" style="background: #80b9ec;">周测</div>
+													</template>
+													<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+												</div>
+												<div v-else-if="item.type == 2" class="">
+													<div class="examType" style="background: #67d293;">作业</div>
+													<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+												</div>
+											</div>
+										</div>
+									</template>
 								</div>
-							</div>
+							</section>
 						</div>
-					</section>
+					</div>
 				</div>
 				<div id="item2" class="mui-control-content">
-					<section v-show="sumSubScore.sumScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
-						<div v-for="(item,index) in sumSubScore.sumScoreList" @click="clickSumScore(item)" class="cd-timeline-block">
-							<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
-							<div class="cd-timeline-content">
-								<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
-								<div class="timelineDesc divb">
-									<div v-if="item.type == 1" class="">
-										<template v-if="item.exam_type == 1">
-											<div class="examType" style="background: #f88c54;">期中</div>
-										</template>
-										<template v-else-if="item.exam_type == 2">
-											<div class="examType" style="background: orange;">月考</div>
-										</template>
-										<template v-else-if="item.exam_type == 3">
-											<div class="examType" style="background: #f56c6c;">期末</div>
-										</template>
-										<template v-else-if="item.exam_type == 4">
-											<div class="examType" style="background: #80b9ec;">周测</div>
-										</template>
-										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
-									</div>
-									<div v-else-if="item.type == 2" class="">
-										<div class="examType" style="background: #67d293;">作业</div>
-										<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
+						<div class="mui-scroll" style="margin-top: -15px">
+							<section v-show="sumSubScore.sumScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
+								<div v-for="(item,index) in sumSubScore.sumScoreList" @click="clickSumScore(item)" class="cd-timeline-block">
+									<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+									<div class="cd-timeline-content">
+										<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
+										<div class="timelineDesc divb">
+											<div v-if="item.type == 1" class="">
+												<template v-if="item.exam_type == 1">
+													<div class="examType" style="background: #f88c54;">期中</div>
+												</template>
+												<template v-else-if="item.exam_type == 2">
+													<div class="examType" style="background: orange;">月考</div>
+												</template>
+												<template v-else-if="item.exam_type == 3">
+													<div class="examType" style="background: #f56c6c;">期末</div>
+												</template>
+												<template v-else-if="item.exam_type == 4">
+													<div class="examType" style="background: #80b9ec;">周测</div>
+												</template>
+												<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+											</div>
+											<div v-else-if="item.type == 2" class="">
+												<div class="examType" style="background: #67d293;">作业</div>
+												<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
+							</section>
 						</div>
-					</section>
+					</div>
 				</div>
 				<div id="item3" class="mui-control-content">
-					<div class="mui-scroll-wrapper">
+					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
 						<div class="mui-scroll">
 							<ul class="mui-table-view">
 								<li class="mui-table-view-cell">
@@ -297,7 +307,7 @@
 					</div>
 				</div>
 				<div id="item4" class="mui-control-content">
-					<div class="mui-scroll-wrapper">
+					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
 						<div class="mui-scroll">
 							<ul class="mui-table-view">
 								<li class="mui-table-view-cell">
@@ -348,7 +358,7 @@
 				data: {
 					showBack: 0,
 					headTitle: '',
-					headImg: setImg(personal.img_url)
+					headImg: ""
 				},
 				methods: {
 					clickLeftImg: function() {
@@ -356,6 +366,7 @@
 					}
 				}
 			});
+			
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",

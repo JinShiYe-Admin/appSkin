@@ -553,20 +553,6 @@
 					//{"title":"接收到一条待办","body":"{\"title\":\"通知标题\",\"content\":\"通知内容\",\"payload\":\"通知去干嘛这里可以自定义\"}"}  由于使用标准格式，不会触发receice监听，所以封装了下
 					var info = plus.push.getClientInfo();
 					var cid = info.clientid; 
-					
-					
-					
-					var  CallBack, context;
-					context = plus.android.runtimeMainActivity().getContext();  
-					CallBack = plus.android.importClass("com.igexin.sdk.GTIntentService",{
-						onNotificationMessageArrived:function(context,message){
-							console.log(JSON.stringify(message))
-							console.log("onNotificationMessageArrived -> "+ "appid = " + message.getAppid()+ "\ntaskid = " + message.getTaskId() + "\nmessageid = " + message.getMessageId()+ "\npkg = " + message.getPkgName()+ "\ncid = " + message.getClientId()+ "\ncontent = " + message.getContent()+ "\ntitle = "+message.getTitle())
-						}
-					});  
-					console.log(JSON.stringify(CallBack))
-						
-						
 					// plus.push.setAutoNotification( true );
 					plus.push.addEventListener("receive", function(msg) {
 						console.log("接收到了通知推送"+ JSON.stringify(msg))
