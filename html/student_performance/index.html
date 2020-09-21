@@ -95,7 +95,7 @@
 				-webkit-line-clamp: 2;
 				overflow: hidden;
 			}
-			
+
 			.divd {
 				padding-left: 10px;
 				width: 80%;
@@ -105,12 +105,12 @@
 				overflow: hidden;
 				/* background: #7FFFD4; */
 			}
-			
+
 			.mui-bar~.mui-content .mui-fullscreen {
 				top: 44px;
 				height: auto;
 			}
-			
+
 			.mui-pull-top-tips {
 				position: absolute;
 				top: -20px;
@@ -119,13 +119,14 @@
 				width: 40px;
 				height: 40px;
 				border-radius: 100%;
-				z-index: 2; /* 仅为适配swiper而改动，原值：1 */
+				z-index: 2;
+				/* 仅为适配swiper而改动，原值：1 */
 			}
-			
+
 			.mui-bar~.mui-pull-top-tips {
 				top: 24px;
 			}
-			
+
 			.mui-pull-top-wrapper {
 				width: 42px;
 				height: 42px;
@@ -138,25 +139,25 @@
 				box-shadow: 0 4px 10px #bbb;
 				overflow: hidden;
 			}
-			
+
 			.mui-pull-top-tips.mui-transitioning {
 				-webkit-transition-duration: 200ms;
 				transition-duration: 200ms;
 			}
-			
+
 			.mui-pull-top-tips .mui-pull-loading {
 				margin: 0;
 			}
-			
+
 			.mui-pull-top-wrapper .mui-icon,
 			.mui-pull-top-wrapper .mui-spinner {
 				margin-top: 7px;
 			}
-			
+
 			.mui-pull-top-wrapper .mui-icon.mui-reverse {
 				/*-webkit-transform: rotate(180deg) translateZ(0);*/
 			}
-			
+
 			.mui-pull-bottom-tips {
 				text-align: center;
 				background-color: #efeff4;
@@ -164,7 +165,7 @@
 				line-height: 40px;
 				color: #777;
 			}
-			
+
 			.mui-pull-top-canvas {
 				overflow: hidden;
 				background-color: #fafafa;
@@ -174,17 +175,18 @@
 				height: 40px;
 				margin: 0 auto;
 			}
-			
+
 			.mui-pull-top-canvas canvas {
 				width: 40px;
 			}
-			
+
 			.mui-slider-indicator.mui-segmented-control {
 				background-color: #efeff4;
 			}
-			
-			.mui-scroll-wrapper{
-				position: fixed; /* 仅为适配swiper而改动，原值：absolute */
+
+			.mui-scroll-wrapper {
+				position: fixed;
+				/* 仅为适配swiper而改动，原值：absolute */
 			}
 		</style>
 	</head>
@@ -206,9 +208,9 @@
 					<a @tap="clickSeg(3)" class="mui-control-item" href="#item4">错题本</a>
 				</div>
 			</div>
-			<div class="mui-slider-group"> 
+			<div class="mui-slider-group">
 				<div id="item1" class="mui-control-content mui-active">
-					<div class="swiper-container" >
+					<div class="swiper-container">
 						<div class="swiper-wrapper">
 							<div v-for="(subModel,index) in singleSubScore.subList" class="swiper-slide">
 								<span class="swiper-slide-span">{{subModel.sub_name}}</span>
@@ -220,35 +222,33 @@
 					</div>
 					<div class="mui-scroll-wrapper" style="margin-top: 160px;">
 						<div class="mui-scroll" style="margin-top: -15px">
-							<section  id="cd-timeline" class="cd-container" v-cloak >
+							<section id="cd-timeline" class="cd-container" v-cloak>
 								<div v-for="(item,index) in singleSubScore.singleScoreList" @click="clickSingleScore(item)" class="cd-timeline-block">
-									<template v-for="test in 15">
-										<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
-										<div class="cd-timeline-content">
-											<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
-											<div class="timelineDesc divb">
-												<div v-if="item.type == 1" class="">
-													<template v-if="item.exam_type == 1">
-														<div class="examType" style="background: #f88c54;">期中</div>
-													</template>
-													<template v-else-if="item.exam_type == 2">
-														<div class="examType" style="background: orange;">月考</div>
-													</template>
-													<template v-else-if="item.exam_type == 3">
-														<div class="examType" style="background: #f56c6c;">期末</div>
-													</template>
-													<template v-else-if="item.exam_type == 4">
-														<div class="examType" style="background: #80b9ec;">周测</div>
-													</template>
-													<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
-												</div>
-												<div v-else-if="item.type == 2" class="">
-													<div class="examType" style="background: #67d293;">作业</div>
-													<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
-												</div>
+									<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+									<div class="cd-timeline-content">
+										<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
+										<div class="timelineDesc divb">
+											<div v-if="item.type == 1" class="">
+												<template v-if="item.exam_type == 1">
+													<div class="examType" style="background: #f88c54;">期中</div>
+												</template>
+												<template v-else-if="item.exam_type == 2">
+													<div class="examType" style="background: orange;">月考</div>
+												</template>
+												<template v-else-if="item.exam_type == 3">
+													<div class="examType" style="background: #f56c6c;">期末</div>
+												</template>
+												<template v-else-if="item.exam_type == 4">
+													<div class="examType" style="background: #80b9ec;">周测</div>
+												</template>
+												<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
+											</div>
+											<div v-else-if="item.type == 2" class="">
+												<div class="examType" style="background: #67d293;">作业</div>
+												<p class="divd" style="margin-top: -15px;">{{item.name}}</p>
 											</div>
 										</div>
-									</template>
+									</div>
 								</div>
 							</section>
 						</div>
@@ -366,35 +366,36 @@
 					}
 				}
 			});
-			
+
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					semFlag:0,//点击的seg索引
+					semFlag: 0, //点击的seg索引
 					singleSubScore: { //单科成绩
-						// isEmptyData:true,
+						refrushFlag:0,//0刷新1加载更多
 						subList: [], //科目列表
 						nowSubject: {}, //当前科目信息
 						pageNumber: 1,
 						pageSize: 10,
 						singleScoreList: [], //根据当前科目得到的列表
 					},
-					sumSubScore:{
+					sumSubScore: {
+						refrushFlag:0,//0刷新1加载更多
 						pageNumber: 1,
 						pageSize: 10,
 						sumScoreList: []
 					}
 				},
 				methods: {
-					clickSeg:function(flag){
-						if(contentData.semFlag!=flag){
-							console.log('clickSeg:'+flag);
+					clickSeg: function(flag) {
+						if (contentData.semFlag != flag) {
+							console.log('clickSeg:' + flag);
 							contentData.semFlag = flag;
-							if(flag == 0&&contentData.singleSubScore.subList.length == 0){
+							if (flag == 0 && contentData.singleSubScore.subList.length == 0) {
 								// 获取单科科目列表
 								getSubList();
-							} else if(flag == 1&&contentData.sumSubScore.sumScoreList.length == 0){
+							} else if (flag == 1 && contentData.sumSubScore.sumScoreList.length == 0) {
 								// 获取全科成绩列表
 								getSumSubScore();
 							}
@@ -412,17 +413,33 @@
 			});
 			mui.plusReady(function() {
 				(function($) {
-					var deceleration = mui.os.ios?0.003:0.0009;
+					var deceleration = mui.os.ios ? 0.003 : 0.0009;
 					$('.mui-scroll-wrapper').scroll({
 						bounce: false,
 						indicators: true, //是否显示滚动条
-						deceleration:deceleration
+						deceleration: deceleration
 					});
 					$.ready(function() {
 						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
 							$(pullRefreshEl).pullToRefresh({
 								down: {
 									callback: function() {
+										if(contentData.semFlag == 0){
+											contentData.singleSubScore.refrushFlag = 0,//0刷新1加载更多
+											contentData.singleSubScore.pageNumber = 1,//
+											// 获取单科成绩列表
+											getSingleSubScore();
+										}else if(contentData.semFlag == 1){
+											contentData.sumSubScore.refrushFlag = 0,//0刷新1加载更多
+											contentData.sumSubScore.pageNumber = 1,//
+											// 获取全科成绩列表
+											getSumSubScore();
+										}else if(contentData.semFlag == 2){
+											
+										}else if(contentData.semFlag == 3){
+											
+										}
+										
 										var self = this;
 										setTimeout(function() {
 											self.endPullDownToRefresh();
@@ -431,6 +448,19 @@
 								},
 								up: {
 									callback: function() {
+										if(contentData.semFlag == 0){
+											contentData.singleSubScore.refrushFlag = 1,//0刷新1加载更多
+											// 获取单科成绩列表
+											getSingleSubScore();
+										}else if(contentData.semFlag == 1){
+											contentData.sumSubScore.refrushFlag = 1,//0刷新1加载更多
+											// 获取全科成绩列表
+											getSumSubScore();
+										}else if(contentData.semFlag == 2){
+											
+										}else if(contentData.semFlag == 3){
+											
+										}
 										var self = this;
 										setTimeout(function() {
 											self.endPullUpToRefresh();
@@ -441,9 +471,9 @@
 						});
 					});
 				})(mui);
-				
-				
-				
+
+
+
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempHead.headTitle = curPage.name;
@@ -463,9 +493,9 @@
 				// 获取单科科目列表
 				getSubList();
 			});
-			
+
 			// 获取单科科目列表
-			var getSubList = function(){
+			var getSubList = function() {
 				comData = {
 					user_code: personal.user_code,
 					index_code: curPage.access.split('#')[1],
@@ -475,7 +505,7 @@
 					events.closeWaiting();
 					if (data.code == 0) {
 						contentData.singleSubScore.subList = [].concat(data.data.list);
-						if(data.data.list.length>0){
+						if (data.data.list.length > 0) {
 							contentData.singleSubScore.nowSubject = data.data.list[0];
 							// 获取单科成绩列表
 							getSingleSubScore();
@@ -492,6 +522,8 @@
 										var tempSub = contentData.singleSubScore.subList[swiper.activeIndex];
 										contentData.singleSubScore.nowSubject = tempSub;
 										console.log('tempSub:' + JSON.stringify(tempSub));
+										contentData.singleSubScore.refrushFlag = 0,//0刷新1加载更多
+										contentData.singleSubScore.pageNumber = 1,//
 										// 获取单科成绩列表
 										getSingleSubScore();
 									},
@@ -505,38 +537,55 @@
 			}
 			
 			// 获取单科成绩列表
-			var getSingleSubScore = function(){
+			var getSingleSubScore = function() {
 				comData = {
 					user_code: personal.user_code,
 					sub_code: contentData.singleSubScore.nowSubject.sub_code,
-					page_number: 1,
-					page_size: 10,
+					page_number: contentData.singleSubScore.pageNumber,
+					page_size: contentData.singleSubScore.pageSize,
 					index_code: curPage.access.split('#')[1],
 				}
 				events.showWaiting();
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						contentData.singleSubScore.singleScoreList = [].concat(data.data.list);
+						if(contentData.singleSubScore.refrushFlag == 0){
+							contentData.singleSubScore.singleScoreList = [].concat(data.data.list);
+						}else{
+							contentData.singleSubScore.singleScoreList = contentData.singleSubScore.singleScoreList.concat(data.data.list);
+							if(data.data.list.length==0){
+								mui.toast('暂无更多数据');
+							}
+						}
+						contentData.singleSubScore.pageNumber++;
 					} else {
 						mui.toast(data.msg);
 					}
 				});
 			}
-			
+
 			// 获取全科成绩列表
-			var getSumSubScore = function(){
+			var getSumSubScore = function() {
 				comData = {
 					user_code: personal.user_code,
-					page_number: 1,
-					page_size: 10,
+					page_number: contentData.sumSubScore.pageNumber,
+					page_size: contentData.sumSubScore.pageSize,
 					index_code: curPage.access.split('#')[1],
 				}
 				events.showWaiting();
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						contentData.sumSubScore.sumScoreList = [].concat(data.data.list);
+						if(contentData.singleSubScore.refrushFlag == 0){
+							contentData.sumSubScore.sumScoreList = [].concat(data.data.list);
+						}else{
+							contentData.sumSubScore.sumScoreList = contentData.sumSubScore.sumScoreList.concat(data.data.list);
+							if(data.data.list.length==0){
+								mui.toast('暂无更多数据');
+							}
+						}
+						
+						contentData.sumSubScore.pageNumber++;
 					} else {
 						mui.toast(data.msg);
 					}
