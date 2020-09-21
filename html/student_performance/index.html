@@ -220,8 +220,8 @@
 						<div class="swiper-button-next"></div>
 						<div class="swiper-button-prev"></div>
 					</div>
-					<div class="mui-scroll-wrapper" style="margin-top: 160px;">
-						<div class="mui-scroll" style="margin-top: -15px">
+					<div id='refrushSingleScore' class="mui-scroll-wrapper" style="margin-top: 160px;">
+						<div class="mui-scroll">
 							<section id="cd-timeline" class="cd-container" v-cloak>
 								<div v-for="(item,index) in singleSubScore.singleScoreList" @click="clickSingleScore(item)" class="cd-timeline-block">
 									<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
@@ -256,7 +256,7 @@
 				</div>
 				<div id="item2" class="mui-control-content">
 					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
-						<div class="mui-scroll" style="margin-top: -15px">
+						<div class="mui-scroll">
 							<section v-show="sumSubScore.sumScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
 								<div v-for="(item,index) in sumSubScore.sumScoreList" @click="clickSumScore(item)" class="cd-timeline-block">
 									<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
@@ -454,6 +454,7 @@
 											getSingleSubScore();
 										}else if(contentData.semFlag == 1){
 											contentData.sumSubScore.refrushFlag = 1,//0刷新1加载更多
+											contentData.sumSubScore.pageNumber++,//
 											// 获取全科成绩列表
 											getSumSubScore();
 										}else if(contentData.semFlag == 2){
@@ -519,6 +520,7 @@
 								},
 								on: {
 									slideChangeTransitionEnd: function() {
+										mui('#refrushSingleScore').scroll().scrollTo(0, 0)
 										var tempSub = contentData.singleSubScore.subList[swiper.activeIndex];
 										contentData.singleSubScore.nowSubject = tempSub;
 										console.log('tempSub:' + JSON.stringify(tempSub));
