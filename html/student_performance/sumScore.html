@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/student_performance/stuScore.css" />
 		<style type="text/css">
 			[v-cloak] {
 				display: none !important;
@@ -16,16 +17,6 @@
 				border-radius: 10%;
 				width: 30px;
 				height: 30px;
-			}
-
-			.divd {
-				padding-left: 10px;
-				width: 80%;
-				display: -webkit-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 2;
-				overflow: hidden;
-				/* background: #7FFFD4; */
 			}
 
 			.mui-grid-view.mui-grid-9 {
@@ -45,37 +36,10 @@
 				border-bottom: 0px solid #eee;
 			}
 
-			.chart {
-				height: 220px;
-				margin: 10px;
-				padding: 0px;
-			}
-
 			.pieChart {
 				height: 120px;
 				margin: 10px;
 				padding: 0px;
-			}
-
-			.mui-grid-view.mui-grid-9.table {
-				border-top: 1px solid #eee !important;
-				border-left: 1px solid #eee !important;
-			}
-
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
-				text-align: left;
-				padding: 0 7px;
-				border-right: 1px solid #eee !important;
-				border-bottom: 1px solid #eee !important;
-			}
-
-			.mui-table-view-cell.beauline:after {
-				left: 0 !important;
-				height: 0 !important;
-			}
-
-			.bg-gray {
-				background: #eaeaea !important;
 			}
 		</style>
 	</head>
@@ -95,31 +59,32 @@
 			</div>
 			<div>
 				<div id="item1" class="mui-control-content mui-active">
-					<h4 style="text-align: center;margin-top: 20px;">{{scoreRank.name}}</h4>
+					<h4 class="examName">{{scoreRank.name}}</h4>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
 						<li class="mui-table-view-cell mui-media mui-col-xs-3" style="padding-left: 32px;">
-							<span class="mui-icon" style="width: 60px;height: 60px; border:1px solid;border-radius:50%;font-size: 14px;color: #00CFBD;margin-top: 40px;"><span
-								 style="color: red;height: 60px;line-height: 60px;vertical-align: middle;">{{scoreRank.grd_order}}</span></span>
-							<div class="mui-media-body">年级排名</div>
+							<span class="mui-icon scoreOrderBorder">
+								<span class="scoreOrder">{{scoreRank.grd_order}}</span>
+							</span>
+							<div class="mui-media-body scoreOrderName">年级排名</div>
 						</li>
 						<li class="mui-table-view-cell mui-media mui-col-xs-6">
 							<div class="pieChart" id="pieChartScore"></div>
 						</li>
 						<li class="mui-table-view-cell mui-media mui-col-xs-3" style="margin-left: -20px;">
-							<span class="mui-icon" style="width: 60px;height: 60px; border:1px solid;border-radius:50%;font-size: 14px;color: #00CFBD;margin-top: 40px;">
-								<span style="color: red;height: 60px;line-height: 60px;vertical-align: middle;">{{scoreRank.cls_order}}</span>
+							<span class="mui-icon scoreOrderBorder">
+								<span class="scoreOrder">{{scoreRank.cls_order}}</span>
 							</span>
-							<div class="mui-media-body">班级排名</div>
+							<div class="mui-media-body scoreOrderName">班级排名</div>
 						</li>
 					</ul>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
 						<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
-							<div class="mui-media-body">年级最高分：{{scoreRank.grd_max_score}}</div>
-							<div class="mui-media-body">班级最高分：{{scoreRank.cls_max_score}}</div>
+							<div class="mui-media-body scoreDetail">年级最高分：{{scoreRank.grd_max_score}}</div>
+							<div class="mui-media-body scoreDetail">班级最高分：{{scoreRank.cls_max_score}}</div>
 						</li>
 						<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
-							<div class="mui-media-body">年级均分：{{scoreRank.grd_avg_score}}</div>
-							<div class="mui-media-body">班级均分：{{scoreRank.cls_avg_score}}</div>
+							<div class="mui-media-body scoreDetail">年级均分：{{scoreRank.grd_avg_score}}</div>
+							<div class="mui-media-body scoreDetail">班级均分：{{scoreRank.cls_avg_score}}</div>
 						</li>
 					</ul>
 					<div class="mui-row" style="padding: 10px;">
@@ -131,22 +96,22 @@
 							</template>
 						</ul>
 					</div>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">总分趋势</h4>
-					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试成绩趋势如下：</p>
+					<h4 class="spaceLine">总分趋势</h4>
+					<p class="spaceLineName">历次考试成绩趋势如下：</p>
 					<div class="chart" id="lineChartScore"></div>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">排名趋势</h4>
-					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试排名趋势如下：</p>
+					<h4 class="spaceLine">排名趋势</h4>
+					<p class="spaceLineName">历次考试排名趋势如下：</p>
 					<div class="chart" id="lineChartRank"></div>
 				</div>
 				<div id="item2" class="mui-control-content">
-					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">2019-2020学年初三上学期期末语文</h4>
+					<h4 class="examName">{{goodBadSub.name}}</h4>
 					<div style="margin-top: 20px;">
-						<span style="margin-left: 20px;background:  #00CFBD;padding: 3px 10px 3px 10px;border-radius: 10px;">优势学科</span>
+						<span class="goodBadSub" style="background:  #f86a6a;">优势学科</span>
 						<span v-if="goodBadSub.pros_sub_names ==null" style="margin-left: 10px;">暂无</span>
 						<span style="margin-left: 10px;">{{goodBadSub.pros_sub_names}}</span>
 					</div>
 					<div style="margin-top: 20px;">
-						<span style="margin-left: 20px;background: orange;padding: 3px 10px 3px 10px;border-radius: 10px;">劣势学科</span>
+						<span class="goodBadSub" style="background: #43cf7c;">劣势学科</span>
 						<span v-if="goodBadSub.pros_sub_names ==null" style="margin-left: 10px;">暂无</span>
 						<span style="margin-left: 10px;">{{goodBadSub.pros_sub_names}}</span>
 					</div>
@@ -164,14 +129,14 @@
 					<div style="margin-left: 20px;font-size: 13px;padding-bottom: 20px;">注：优劣学科将各科分值转化为标准分后再进行比较。</div>
 				</div>
 				<div id="item3" class="mui-control-content">
-					<h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">{{fullSubPk.name}}</h4>
-					<button style="float: right;margin-right: 20px;" type="button" class="mui-btn" @click="yaoqing()">邀请</button>
-					<button style="float: right;margin-right: 20px;background: #00CFBD;border-color: #00CFBD;color: white;" type="button"
+					<h4 class="examName">{{fullSubPk.name}}</h4>
+					<button style="float: right;margin-right: 20px;background: #43cf7c;border-color: #43cf7c;color: white;" type="button" class="mui-btn" @click="yaoqing()">邀请</button>
+					<button style="float: right;margin-right: 20px;background: #5da4ef;border-color: #5da4ef;color: white;" type="button"
 					 class="mui-btn" @click="tiaozhanzhe()">挑战者<span v-if="fullSubPk.challenge_list.length>0" class="mui-badge" style="background: red;color: white;">{{fullSubPk.challenge_list.length}}</span></button>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 70px;">PK榜</h4>
+					<h4 class="spaceLine" style="margin-top: 50px;">PK榜</h4>
 					<div class="mui-row">
-						<ul class="mui-table-view no-line" style="font-size: 13px;">
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;">
+						<ul class="mui-table-view" style="font-size: 13px;">
+							<li class="mui-table-view-cell beauline talbeLiFirst">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">次序</div>
 									<div class="mui-col-xs-2">对手</div>
@@ -180,17 +145,17 @@
 									<div class="mui-col-xs-2"> </div>
 								</div>
 							</li>
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in fullSubPk.pk_list" :class="index%2==0?'':'bg-gray'">
+							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in fullSubPk.pk_list">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">{{index}}</div>
 									<div class="mui-col-xs-2">{{item.pk_user_name}}</div>
-									<div v-if="item.my_score==item.pk_user_score" class="mui-col-xs-2" style="color: #008080;font-size: 20px;font-weight: 900;">平</div>
+									<div v-if="item.my_score==item.pk_user_score" class="mui-col-xs-2" style="color: #FDD60C;font-size: 20px;font-weight: 900;">平</div>
 									<div v-if="item.my_score>item.pk_user_score" class="mui-col-xs-2" style="color: #008080;font-size: 20px;font-weight: 900;">胜</div>
 									<div v-if="item.my_score<item.pk_user_score" class="mui-col-xs-2" style="color: red;font-size: 20px;font-weight: 900;">败</div>
 									<div class="mui-col-xs-5">
 										<span style="color: red;font-size: 20px;font-weight: 900;">{{item.pkb}}胜</span>
 										<span style="color: #008080;font-size: 20px;font-weight: 900;">{{item.pkc}}败</span>
-										<span style="color: #008080;font-size: 20px;font-weight: 900;">{{item.pka}}平</span>
+										<span style="color: #FDD60C;font-size: 20px;font-weight: 900;">{{item.pka}}平</span>
 									</div>
 									<div class="mui-col-xs-2" @click="toDetailPage(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;"
 										 src="../../img/homeSchool/search.png"></img></div>
@@ -539,9 +504,9 @@
 							}
 						}
 					},
-					toDetailPage: function(line) {
-						console.log(JSON.stringify(line))
-						utils.mOpenWithData("pk_xiangqing.html", line);
+					toDetailPage: function(model) {
+						model.name = contentData.fullSubPk.name;
+						utils.mOpenWithData("pk_xiangqing.html", model);
 					},
 					tiaozhanzhe: function() {
 						if(contentData.fullSubPk.challenge_list.length==0){
@@ -664,7 +629,7 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/subAnalyse', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						contentData.goodBadSub.name = data.data.name;
+						contentData.goodBadSub.name = curPage.name;
 						contentData.goodBadSub.pros_sub_names = data.data.pros_sub_names;
 						contentData.goodBadSub.cons_sub_names = data.data.cons_sub_names;
 						contentData.goodBadSub.list = data.data.list;

@@ -47,34 +47,6 @@
 				border-right: 0px solid #eee;
 				border-bottom: 0px solid #eee;
 			}
-
-			.chart {
-				height: 200px;
-				margin: 10px;
-				padding: 0px;
-			}
-
-			.mui-grid-view.mui-grid-9.table {
-				border-top: 1px solid #eee !important;
-				border-left: 1px solid #eee !important;
-			}
-
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
-				text-align: left;
-				padding: 0 7px;
-				border-right: 1px solid #eee !important;
-				border-bottom: 1px solid #eee !important;
-			}
-
-			.mui-table-view-cell.beauline:after {
-				left: 0 !important;
-				height: 0 !important;
-			}
-
-			.bg-gray {
-				background: #eaeaea !important;
-			}
-
 			.mui-media-body {
 				margin: 4px 0;
 			}
@@ -123,26 +95,26 @@
 					</ul>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
 						<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
-							<div class="mui-media-body">年级最高分：{{scoreRank.grd_max_score}}</div>
-							<div class="mui-media-body">班级最高分：{{scoreRank.cls_max_score}}</div>
-							<div class="mui-media-body">年级参考人数：{{scoreRank.grd_stuc}}</div>
+							<div class="mui-media-body scoreDetail">年级最高分：{{scoreRank.grd_max_score}}</div>
+							<div class="mui-media-body scoreDetail">班级最高分：{{scoreRank.cls_max_score}}</div>
+							<div class="mui-media-body scoreDetail">年级参考人数：{{scoreRank.grd_stuc}}</div>
 						</li>
 						<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
-							<div class="mui-media-body">年级均分：{{scoreRank.grd_avg_score}}</div>
-							<div class="mui-media-body">班级均分：{{scoreRank.cls_avg_score}}</div>
-							<div class="mui-media-body">班级参考人数：{{scoreRank.cls_stuc}}</div>
+							<div class="mui-media-body scoreDetail">年级均分：{{scoreRank.grd_avg_score}}</div>
+							<div class="mui-media-body scoreDetail">班级均分：{{scoreRank.cls_avg_score}}</div>
+							<div class="mui-media-body scoreDetail">班级参考人数：{{scoreRank.cls_stuc}}</div>
 						</li>
 					</ul>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">成绩趋势</h4>
-					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试成绩趋势如下：</p>
+					<h4 class="spaceLine">成绩趋势</h4>
+					<p class="spaceLineName">历次考试成绩趋势如下：</p>
 					<div class="chart" id="lineChartScore"></div>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">排名趋势</h4>
-					<p style="padding-top: 5px;padding-left: 20px;font-size: 16px;color: #000000;">历次考试排名趋势如下：</p>
+					<h4 class="spaceLine">排名趋势</h4>
+					<p class="spaceLineName">历次考试排名趋势如下：</p>
 					<div class="chart" id="lineChartRank"></div>
 				</div>
 				<div id="item2" class="mui-control-content">
 					<h4 class="examName">{{singleAnswer.name}}</h4>
-					<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">答卷图片</h4>
+					<h4 class="spaceLine">答卷图片</h4>
 					<div v-for="(tempAns,index) in singleAnswer.img_url_list" style="text-align: center;margin-top: 20px;">
 						<img style="width:200px;height: 300px;border:2px solid;" :src=tempAns.merge_file_path />
 					</div>
@@ -153,42 +125,42 @@
 						<div class="mui-col-xs-6" style="text-align: right;"><span style="margin-right: 10px;font-size: 16px;">考试难度：</span></div>
 						<div id="star" class="mui-col-xs-6" style="margin-left: -10px;"></div>
 					</div>
-					<div class="mui-row" style="padding: 10px;">
+					<div class="mui-row" style="padding: 10px 20px;">
 						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
-							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">题型</div>
 								</a></li>
-							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">数量</div>
 								</a></li>
-							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">分值</div>
 								</a></li>
-							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">分值占比</div>
 								</a></li>
 							<template v-for="item in examAnalysis.que_type_list">
-								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.question_type_name}}</div>
 									</a></li>
-								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.count}}</div>
 									</a></li>
-								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.score}}</div>
 									</a></li>
-								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.score_rate}}</div>
 									</a></li>
 							</template>
 						</ul>
 					</div>
 					<div class="mui-row">
-						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">试题分析</h4>
+						<h4 class="spaceLine">试题分析</h4>
 					</div>
 					<div class="mui-row">
-						<ul class="mui-table-view no-line" style="font-size: 13px;">
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;">
+						<ul class="mui-table-view" style="font-size: 13px;">
+							<li class="mui-table-view-cell beauline talbeLiFirst">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">题号</div>
 									<div class="mui-col-xs-2">分值</div>
@@ -198,8 +170,7 @@
 									<div class="mui-col-xs-1"> </div>
 								</div>
 							</li>
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in examAnalysis.que_score_list"
-							 :class="index%2==0?'':'bg-gray'">
+							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in examAnalysis.que_score_list">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">{{item.question_number}}</div>
 									<div class="mui-col-xs-2">{{item.question_score}}</div>
@@ -213,11 +184,11 @@
 						</ul>
 					</div>
 					<div class="mui-row">
-						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;margin-top: 15px;">知识点分析</h4>
+						<h4 class="spaceLine" style="margin-top: 30px;">知识点分析</h4>
 					</div>
 					<div v-if="examAnalysis.knowledge_list.length>0" class="mui-row">
-						<ul class="mui-table-view no-line" style="font-size: 13px;">
-							<li class="mui-table-view-cell  no-bgc beauline" style="text-align: center; background: #55ffff;">
+						<ul class="mui-table-view" style="font-size: 13px;">
+							<li class="mui-table-view-cell beauline talbeLiFirst">
 								<div class="mui-row">
 									<div class="mui-col-xs-2">知识点</div>
 									<div class="mui-col-xs-1">分值</div>
@@ -227,8 +198,7 @@
 									<div class="mui-col-xs-1"> </div>
 								</div>
 							</li>
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in examAnalysis.knowledge_list"
-							 :class="index%2==0?'':'bg-gray'">
+							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in examAnalysis.knowledge_list">
 								<div class="mui-row">
 									<div class="mui-col-xs-2" style="text-align: left;">{{item.knowledge_name}}</div>
 									<div class="mui-col-xs-1">{{item.total_score}}</div>
@@ -251,7 +221,7 @@
 					</div>
 					<div class="mui-row" style="padding: 10px;">
 						<div>
-							<div style="height: 22px;width: 2px;background: #55ffff;float: left;margin-right: 5px;"></div>
+							<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
 							<div>高于年级平均分的错题</div>
 						</div>
 						<div class="mui-row" style="margin-top: 15px;">
@@ -261,7 +231,7 @@
 					</div>
 					<div class="mui-row" style="padding: 10px;">
 						<div>
-							<div style="height: 22px;width: 2px;background: #55ffff;float: left;margin-right: 5px;"></div>
+							<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
 							<div>低于年级平均分的错题</div>
 						</div>
 						<div class="mui-row" style="margin-top: 15px;">
@@ -270,11 +240,11 @@
 						</div>
 					</div>
 					<div class="mui-row">
-						<h4 style="text-align: center;padding-top: 15px;padding-bottom: 15px;background: #7FFFD4;">错题详情</h4>
+						<h4 class="spaceLine">错题详情</h4>
 					</div>
 					<div class="mui-row">
-						<ul class="mui-table-view no-line" style="font-size: 13px;">
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center; background: #55ffff;">
+						<ul class="mui-table-view" style="font-size: 13px;">
+							<li class="mui-table-view-cell beauline talbeLiFirst">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">题号</div>
 									<div class="mui-col-xs-2">分值</div>
@@ -284,8 +254,7 @@
 									<div class="mui-col-xs-1"> </div>
 								</div>
 							</li>
-							<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in errorQue.error_que_list"
-							 :class="index%2==0?'':'bg-gray'">
+							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in errorQue.error_que_list">
 								<div class="mui-row">
 									<div class="mui-col-xs-1">{{item.question_number}}</div>
 									<div class="mui-col-xs-2">{{item.question_score}}</div>
