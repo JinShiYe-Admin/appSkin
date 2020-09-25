@@ -1,7 +1,6 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-
 	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
@@ -147,6 +146,7 @@ var storageKeyName = (function(mod) {
 			console[item]=function(){}
 		}
 	})
+	
 	
 	
 	

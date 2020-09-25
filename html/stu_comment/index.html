@@ -650,13 +650,13 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUPYSUB + 'Comment/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
-							if (data.data.yearArray&& data.data.yearArray.length == 0) {
-								events.closeWaiting();
-								mui.toast('无法获取年份');
-							}  else if(data.data.termArray&& data.data.termArray.length == 0){
-								events.closeWaiting();
-								mui.toast('无法获取学期');
-							}else{
+							// if (data.data.yearArray&& data.data.yearArray.length == 0) {
+							// 	events.closeWaiting();
+							// 	mui.toast('无法获取年份');
+							// }  else if(data.data.termArray&& data.data.termArray.length == 0){
+							// 	events.closeWaiting();
+							// 	mui.toast('无法获取学期');
+							// }else{
 								let newList=data.data.yearArray.sort(compare("value",0));
 								let yearList = [{
 									value: '',
@@ -674,7 +674,7 @@
 								
 								datasource.remarkType = data.data.remarkTypeArray;
 								getPageDataArray();
-							}
+							// }
 						} else {
 							events.closeWaiting();
 							mui.toast(data.msg);

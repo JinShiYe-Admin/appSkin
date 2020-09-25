@@ -732,13 +732,13 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'Talk/getDict', {}, comData, 2,
 					function(data) {
 						if (data.code == 0) {
-							if (data.data.qbArray&& data.data.qbArray.length == 0) {
-								events.closeWaiting();
-								mui.toast('无法获取行为细项');
-							}  else if(data.data.statusArray&& data.data.statusArray.length == 0){
-								events.closeWaiting();
-								mui.toast('无法获取谈话状态');
-							}else{
+							// if (data.data.qbArray&& data.data.qbArray.length == 0) {
+							// 	events.closeWaiting();
+							// 	mui.toast('无法获取行为细项');
+							// }  else if(data.data.statusArray&& data.data.statusArray.length == 0){
+							// 	events.closeWaiting();
+							// 	mui.toast('无法获取谈话状态');
+							// }else{
 								let lxList = [{
 									value: '',
 									text: '全部谈话'
@@ -753,7 +753,7 @@
 								datasource.ztList = ztList;
 								datasource.ztValue = ztList[0];
 								getPageDataArray();
-							}
+							// }
 						} else {
 							events.closeWaiting();
 							mui.toast(data.msg);

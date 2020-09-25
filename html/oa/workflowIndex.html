@@ -552,6 +552,11 @@
 					setTimeout(function(){
 						tempVue.canBack=true
 					},600)
+					
+					plus.key.addEventListener("backbutton",function(){
+						mui.fire(plus.webview.currentWebview().opener(), 'getNoticeNoReadCnt', {});
+					});
+					
 					//阻尼系数
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
 					$('.mui-scroll-wrapper').scroll({
