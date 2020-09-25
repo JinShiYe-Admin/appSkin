@@ -358,7 +358,7 @@
 				data: {
 					showBack: 0,
 					headTitle: '',
-					headImg: ""
+					headImg: setImg(personal.img_url,9)
 				},
 				methods: {
 					clickLeftImg: function() {
@@ -454,7 +454,6 @@
 											getSingleSubScore();
 										}else if(contentData.semFlag == 1){
 											contentData.sumSubScore.refrushFlag = 1,//0刷新1加载更多
-											contentData.sumSubScore.pageNumber++,//
 											// 获取全科成绩列表
 											getSumSubScore();
 										}else if(contentData.semFlag == 2){
@@ -578,7 +577,7 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						if(contentData.singleSubScore.refrushFlag == 0){
+						if(contentData.sumSubScore.refrushFlag == 0){
 							contentData.sumSubScore.sumScoreList = [].concat(data.data.list);
 						}else{
 							contentData.sumSubScore.sumScoreList = contentData.sumSubScore.sumScoreList.concat(data.data.list);
@@ -586,7 +585,6 @@
 								mui.toast('暂无更多数据');
 							}
 						}
-						
 						contentData.sumSubScore.pageNumber++;
 					} else {
 						mui.toast(data.msg);
