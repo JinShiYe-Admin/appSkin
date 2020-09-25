@@ -693,17 +693,17 @@
 							if (jcList.length > 0) {
 								datasource.jcList=jcList
 							}
-							if (data.data.qbArray.length > 0) {
+							// if (data.data.qbArray.length > 0) {
 								let xwList = [{
 									value: '',
 									text: '全部行为'
 								}].concat(data.data.qbArray);
 								datasource.xwList = xwList;
 								datasource.xwValue = xwList[0];
-							} else {
-								events.closeWaiting();
-								mui.toast('无法获取行为细项');
-							}
+							// } else {
+							// 	events.closeWaiting();
+							// 	mui.toast('无法获取行为细项');
+							// }
 						} else {
 							events.closeWaiting();
 							mui.toast(data.msg);
