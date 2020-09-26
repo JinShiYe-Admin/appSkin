@@ -341,31 +341,39 @@
 			this.options.up.callback.apply(this);
 		},
 		endPullDownToRefresh: function() {
-			this.loading = false;
-			this.pullUpTips && this.pullUpTips.classList.remove(CLASS_HIDDEN);
-			this.pullDownTips.classList.add(CLASS_TRANSITIONING);
-			this.pullDownTips.style.webkitTransform = 'translate3d(0,0,0)';
-			if (this.deltaY <= 0) {
-				this.removePullDownTips();
-			} else {
-				this.removing = true;
-			}
-			if (this.isInScroll) {
-				$(this.element.parentNode).scroll().refresh();
+			try{
+				this.loading = false;
+				this.pullUpTips && this.pullUpTips.classList.remove(CLASS_HIDDEN);
+				this.pullDownTips.classList.add(CLASS_TRANSITIONING);
+				this.pullDownTips.style.webkitTransform = 'translate3d(0,0,0)';
+				if (this.deltaY <= 0) {
+					this.removePullDownTips();
+				} else {
+					this.removing = true;
+				}
+				if (this.isInScroll) {
+					$(this.element.parentNode).scroll().refresh();
+				}
+			}catch(e){
+				console.log(e)
 			}
 		},
 		endPullUpToRefresh: function(finished) {
-			if (finished) {
-				this.finished = true;
-				this.pullUpTipsIcon.innerHTML = this.options.up.contentnomore;
-				this.element.removeEventListener('dragup', this);
-				window.removeEventListener('scroll', this);
-			} else {
-				this.pullUpTipsIcon.innerHTML = this.options.up.contentdown;
-			}
-			this.loading = false;
-			if (this.isInScroll) {
-				$(this.element.parentNode).scroll().refresh();
+			try{
+				if (finished) {
+					this.finished = true;
+					this.pullUpTipsIcon.innerHTML = this.options.up.contentnomore;
+					this.element.removeEventListener('dragup', this);
+					window.removeEventListener('scroll', this);
+				} else {
+					this.pullUpTipsIcon.innerHTML = this.options.up.contentdown;
+				}
+				this.loading = false;
+				if (this.isInScroll) {
+					$(this.element.parentNode).scroll().refresh();
+				}
+			}catch(e){
+			     console.log(e)
 			}
 		},
 		setStopped: function(stopped) {
