@@ -195,6 +195,7 @@ var appUpdate = (function(mod) {
 	 */
 	var setDialog = function(hint, cancelToast, callback, cancelCallback,yesCallback,noCallback) {
 			mui.closePopups();
+			events.closeWaiting();
 			var btnArray = ['是', '否'];
 			mui.confirm(hint, '教宝校园', btnArray, function(e) {
 				//console.log("当前点击的东东：" + JSON.stringify(e));
