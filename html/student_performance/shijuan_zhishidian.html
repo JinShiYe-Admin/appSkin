@@ -8,6 +8,7 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 			<link rel="stylesheet" href="../../js/swiper/swiper-bundle.min.css">
+			<link rel="stylesheet" href="../../css/utils/preview.css" />
 		<style type="text/css">
 			[v-cloak] {
 				display: none !important;
@@ -166,7 +167,7 @@
 						<template v-for="(item,index) in currentModel.stu_answer">
 							<p style="font-size: 14px;color: #666;margin-left: 15px;">{{item}}</p>
 						</template>
-						<img v-if="currentModel.stu_answer_img_url.length>0" :src=currentModel.stu_answer_img_url width="100%">
+						<img v-if="currentModel.stu_answer_img_url.length>0" :data-preview-src="currentModel.stu_answer_img_url" :src=currentModel.stu_answer_img_url width="100%">
 					</div>
 					<div class="mui-row">
 						<h5 style="text-align: center;padding-top: 10px;padding-bottom: 10px;background: #7FFFD4;width: 80px;">标准答案：</h4>
@@ -188,6 +189,8 @@
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/mui.zoom.js"></script>
+		<script src="../../js/utils/mui.previewimage.js"></script>
 		<script src="../../js/swiper/swiper-bundle.min.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<!--加密-->
@@ -200,6 +203,7 @@
 		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<script type="text/javascript">
 			mui.init();
+			mui.previewImage();
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));

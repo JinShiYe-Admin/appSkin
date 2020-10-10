@@ -8,6 +8,7 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
 		<link rel="stylesheet" type="text/css" href="../../css/student_performance/stuScore.css" />
+		<link rel="stylesheet" href="../../css/utils/preview.css" />
 		<!-- 考试难度 -->
 		<link rel="stylesheet" type="text/css" href="../../js/libs/raty/stylesheets/jquery.raty.css" />
 		<style type="text/css">
@@ -77,16 +78,16 @@
 				<div id="item1" class="mui-control-content mui-active">
 					<h4 class="examName">{{scoreRank.name}}</h4>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" style="padding-left: 32px;">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-3 mui-col-sm-3" style="padding-left: 32px;">
 							<span class="mui-icon scoreOrderBorder">
 								<span class="scoreOrder">{{scoreRank.grd_order}}</span>
 							</span>
 							<div class="mui-media-body scoreOrderName">年级排名</div>
 						</li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-6">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6">
 							<div class="pieChart" id="pieChartScore"></div>
 						</li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" style="margin-left: -20px;">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-3 mui-col-sm-3" style="margin-left: -20px;">
 							<span class="mui-icon scoreOrderBorder">
 								<span class="scoreOrder">{{scoreRank.cls_order}}</span>
 							</span>
@@ -94,12 +95,12 @@
 						</li>
 					</ul>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
 							<div class="mui-media-body scoreDetail">年级最高分：{{scoreRank.grd_max_score}}</div>
 							<div class="mui-media-body scoreDetail">班级最高分：{{scoreRank.cls_max_score}}</div>
 							<div class="mui-media-body scoreDetail">年级参考人数：{{scoreRank.grd_stuc}}</div>
 						</li>
-						<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
+						<li class="mui-table-view-cell no-bgc mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
 							<div class="mui-media-body scoreDetail">年级均分：{{scoreRank.grd_avg_score}}</div>
 							<div class="mui-media-body scoreDetail">班级均分：{{scoreRank.cls_avg_score}}</div>
 							<div class="mui-media-body scoreDetail">班级参考人数：{{scoreRank.cls_stuc}}</div>
@@ -116,47 +117,47 @@
 					<h4 class="examName">{{singleAnswer.name}}</h4>
 					<h4 class="spaceLine">答卷图片</h4>
 					<div v-for="(tempAns,index) in singleAnswer.img_url_list" style="text-align: center;margin-top: 20px;">
-						<img style="width:200px;height: 300px;border:2px solid;" :src=tempAns.merge_file_path />
+						<img :data-preview-src="tempAns.merge_file_path" :data-preview-group="[tempAns.merge_file_path]" style="width:200px;height: 300px;border:2px solid;" :src=tempAns.merge_file_path />
 					</div>
 				</div>
 				<div id="item3" class="mui-control-content">
 					<h4 class="examName">{{examAnalysis.name}}</h4>
 					<div class="mui-row">
 						<div class="mui-col-xs-6" style="text-align: right;"><span style="margin-right: 10px;font-size: 16px;">考试难度：</span></div>
-						<div id="star" class="mui-col-xs-6" style="margin-left: -10px;"></div>
+						<div id="star" class="mui-col-xs-6" style="margin-left: -15px;"></div>
 					</div>
 					<div class="mui-row" style="padding: 10px 20px;">
 						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
-							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">题型</div>
 								</a></li>
-							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">数量</div>
 								</a></li>
-							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">分值</div>
 								</a></li>
-							<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+							<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 									<div class="mui-media-body">分值占比</div>
 								</a></li>
 							<template v-for="item in examAnalysis.que_type_list">
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.question_type_name}}</div>
 									</a></li>
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.count}}</div>
 									</a></li>
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.score}}</div>
 									</a></li>
-								<li class="mui-table-view-cell table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
+								<li class="mui-table-view-cell no-bgc table mui-media mui-col-xs-3 mui-col-sm-3"><a href="javascript:void(0)">
 										<div class="mui-media-body">{{item.score_rate}}</div>
 									</a></li>
 							</template>
 						</ul>
 					</div>
 					<div class="mui-row">
-						<h4 class="spaceLine">试题分析</h4>
+						<h4 class="spaceLine" style="margin: 30px 0 10px;">试题分析</h4>
 					</div>
 					<div class="mui-row">
 						<ul class="mui-table-view" style="font-size: 13px;">
@@ -184,9 +185,9 @@
 						</ul>
 					</div>
 					<div class="mui-row">
-						<h4 class="spaceLine" style="margin-top: 30px;">知识点分析</h4>
+						<h4 class="spaceLine" style="margin: 30px 0 10px;">知识点分析</h4>
 					</div>
-					<div v-if="examAnalysis.knowledge_list.length>0" class="mui-row">
+					<div v-if="examAnalysis.knowledge_list.length>0" class="mui-row" >
 						<ul class="mui-table-view" style="font-size: 13px;">
 							<li class="mui-table-view-cell beauline talbeLiFirst">
 								<div class="mui-row">
@@ -240,7 +241,7 @@
 						</div>
 					</div>
 					<div class="mui-row">
-						<h4 class="spaceLine">错题详情</h4>
+						<h4 class="spaceLine" style="margin: 30px 0 10px;">错题详情</h4>
 					</div>
 					<div class="mui-row">
 						<ul class="mui-table-view" style="font-size: 13px;">
@@ -279,8 +280,8 @@
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
-		<script src="../../js/utils/pushPermission.js"></script>
-		<script src="../../js/utils/clearIcon.js"></script>
+		<script src="../../js/utils/mui.zoom.js"></script>
+		<script src="../../js/utils/mui.previewimage.js"></script>
 		<script src="../../js/utils/echarts-all.js"></script>
 		<script src="../../js/echarts/echarts-en.min.js"></script>
 		<script src="../../js/libs/raty/javascripts/jquery.raty.js"></script>
@@ -297,6 +298,7 @@
 
 		<script type="text/javascript">
 			mui.init();
+			mui.previewImage();
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));

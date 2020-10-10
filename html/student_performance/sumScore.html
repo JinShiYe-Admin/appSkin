@@ -61,16 +61,16 @@
 				<div id="item1" class="mui-control-content mui-active">
 					<h4 class="examName">{{scoreRank.name}}</h4>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-3" style="padding-left: 32px;">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-3" style="padding-left: 32px;">
 							<span class="mui-icon scoreOrderBorder">
 								<span class="scoreOrder">{{scoreRank.grd_order}}</span>
 							</span>
 							<div class="mui-media-body scoreOrderName">年级排名</div>
 						</li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-6">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6">
 							<div class="pieChart" id="pieChartScore"></div>
 						</li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-3" style="margin-left: -20px;">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-3" style="margin-left: -20px;">
 							<span class="mui-icon scoreOrderBorder">
 								<span class="scoreOrder">{{scoreRank.cls_order}}</span>
 							</span>
@@ -78,23 +78,31 @@
 						</li>
 					</ul>
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
+						<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6 mui-col-sm-6" style="text-align: left;padding-left: 30px;">
 							<div class="mui-media-body scoreDetail">年级最高分：{{scoreRank.grd_max_score}}</div>
 							<div class="mui-media-body scoreDetail">班级最高分：{{scoreRank.cls_max_score}}</div>
 						</li>
-						<li class="mui-table-view-cell mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
+						<li class="mui-table-view-cell no-bgc mui-col-xs-6 mui-col-sm-6" style="text-align: left;">
 							<div class="mui-media-body scoreDetail">年级均分：{{scoreRank.grd_avg_score}}</div>
 							<div class="mui-media-body scoreDetail">班级均分：{{scoreRank.cls_avg_score}}</div>
 						</li>
 					</ul>
 					<div class="mui-row" style="padding: 10px;">
-						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
-							<template v-for="item in scoreRank.child_paper_list">
-								<li class="mui-table-view-cell table mui-media mui-col-xs-6 mui-col-sm-3">
-									<a style="margin-top: 5px;"><span>{{item.sub_name}}：</span><span style="color: red;">{{item.stu_score}} </span><span>/{{item.score}}</span></a>
-								</li>
+						<template v-for="(item,index) in scoreRank.child_paper_list">
+							<template v-if="scoreRank.child_paper_list.length<=1">
+								<div class="mui-col-xs-6 mui-col-sm-6" style="border: 1px solid #eee;padding: 15px;">
+									<a style="margin-top: 5px;"><span style="color: #333333;">{{item.sub_name}}：</span><span style="color: red;">{{item.stu_score}} </span><span>/{{item.score}}</span></a>
+								</div>
 							</template>
-						</ul>
+							<template v-else>
+								<div v-if="index%2==0" class="mui-col-xs-6 mui-col-sm-6" style="border: 1px solid #eee;padding: 15px;border-right: 0;">
+									<a style="margin-top: 5px;"><span style="color: #333333;">{{item.sub_name}}：</span><span style="color: red;">{{item.stu_score}} </span><span>/{{item.score}}</span></a>
+								</div>
+								<div v-else class="mui-col-xs-6 mui-col-sm-6" style="border: 1px solid #eee;padding: 15px;">
+									<a style="margin-top: 5px;"><span style="color: #333333;">{{item.sub_name}}：</span><span style="color: red;">{{item.stu_score}} </span><span>/{{item.score}}</span></a>
+								</div>
+							</template>
+						</template>
 					</div>
 					<h4 class="spaceLine">总分趋势</h4>
 					<p class="spaceLineName">历次考试成绩趋势如下：</p>
@@ -118,13 +126,21 @@
 					<div class="chart" id="radarChart"></div>
 					<div style="margin-left: 20px;">各科标准分：</div>
 					<div class="mui-row" style="padding: 10px;">
-						<ul class="mui-table-view mui-grid-view mui-grid-9 table">
-							<template v-for="item in goodBadSub.list">
-								<li class="mui-table-view-cell table mui-media mui-col-xs-6 mui-col-sm-3">
-									<a style="margin-top: 5px;"><span>{{item.sub_name}}：<span>{{item.standard_score}}</span></a>
-								</li>
+						<template v-for="(item,index) in goodBadSub.list">
+							<template v-if="goodBadSub.list.length<=1">
+								<div class="mui-col-xs-6 mui-col-sm-6" style="border: 1px solid #eee;padding: 15px;">
+									<a style="margin-top: 5px;"><span style="color: #333333;">{{item.sub_name}}：<span>{{item.standard_score}}</span></a>
+								</div>
 							</template>
-						</ul>
+							<template v-else>
+								<div v-if="index%2==0" class="mui-col-xs-6 mui-col-sm-6" style="border: 1px solid #eee;padding: 15px;border-right: 0;">
+									<a style="margin-top: 5px;"><span style="color: #333333;">{{item.sub_name}}：<span>{{item.standard_score}}</span></a>
+								</div>
+								<div v-else class="mui-col-xs-6 mui-col-sm-6" style="border: 1px solid #eee;padding: 15px;">
+									<a style="margin-top: 5px;"><span style="color: #333333;">{{item.sub_name}}：<span>{{item.standard_score}}</span></a>
+								</div>
+							</template>
+						</template>
 					</div>
 					<div style="margin-left: 20px;font-size: 13px;padding-bottom: 20px;">注：优劣学科将各科分值转化为标准分后再进行比较。</div>
 				</div>
@@ -133,7 +149,7 @@
 					<button style="float: right;margin-right: 20px;background: #43cf7c;border-color: #43cf7c;color: white;" type="button" class="mui-btn" @click="yaoqing()">邀请</button>
 					<button style="float: right;margin-right: 20px;background: #5da4ef;border-color: #5da4ef;color: white;" type="button"
 					 class="mui-btn" @click="tiaozhanzhe()">挑战者<span v-if="fullSubPk.challenge_list.length>0" class="mui-badge" style="background: red;color: white;">{{fullSubPk.challenge_list.length}}</span></button>
-					<h4 class="spaceLine" style="margin-top: 50px;">PK榜</h4>
+					<h4 class="spaceLine" style="margin: 50px 0 10px;">PK榜</h4>
 					<div class="mui-row">
 						<ul class="mui-table-view" style="font-size: 13px;">
 							<li class="mui-table-view-cell beauline talbeLiFirst">
@@ -639,16 +655,20 @@
 							var tempM = data.data.list[a];
 							var tempM1 = {
 								name: tempM.sub_name,
-								max: tempM.standard_score
+								// max: tempM.standard_score
+								max: 100
 							}
 							tempArray.push(tempM1);
 							tempArray1.push(tempM.standard_score);
 						}
 						contentData.goodBadSub.radarChartDetail.radar.indicator = [].concat(tempArray);
+						contentData.goodBadSub.radarChartDetail.radar.center = ['50%', '60%']
 						contentData.goodBadSub.radarChartDetail.series[0].data[0].value = [].concat(tempArray1);
 						// 优劣学科雷达图
 						var radarChart = echarts.init(document.getElementById('radarChart'));
-						radarChart.setOption(contentData.goodBadSub.radarChartDetail);
+						// radarChart.setOption(contentData.goodBadSub.radarChartDetail);
+						let abc={"radar":{"name":{"textStyle":{"color":"#000","borderRadius":3,"padding":[0,0]}},"indicator":[{"name":"物理","max":100},{"name":"测试1","max":100},{"name":"test2","max":100}], center: ['50%', '60%'],},"series":[{"type":"radar","data":[{"value":["54.17","74.17","66"],"label":{"show":true}}]}]}
+						radarChart.setOption(abc);
 					} else {
 						mui.toast(data.msg);
 					}

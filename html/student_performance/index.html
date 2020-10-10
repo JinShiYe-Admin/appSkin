@@ -223,7 +223,7 @@
 					<div id='refrushSingleScore' class="mui-scroll-wrapper" style="margin-top: 160px;">
 						<div class="mui-scroll">
 							<section id="cd-timeline" class="cd-container" v-cloak>
-								<div v-for="(item,index) in singleSubScore.singleScoreList" @click="clickSingleScore(item)" class="cd-timeline-block">
+								<div v-for="(item,index) in singleSubScore.singleScoreList" @tap="clickSingleScore(item)" class="cd-timeline-block">
 									<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 									<div class="cd-timeline-content">
 										<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
@@ -258,7 +258,7 @@
 					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
 						<div class="mui-scroll">
 							<section v-show="sumSubScore.sumScoreList.length>0" id="cd-timeline" class="cd-container" v-cloak>
-								<div v-for="(item,index) in sumSubScore.sumScoreList" @click="clickSumScore(item)" class="cd-timeline-block">
+								<div v-for="(item,index) in sumSubScore.sumScoreList" @tap="clickSumScore(item)" class="cd-timeline-block">
 									<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 									<div class="cd-timeline-content">
 										<div class="diva">{{item.exam_date.split(' ')[0]}}</div>
@@ -411,6 +411,7 @@
 					},
 				},
 			});
+			var self=0;
 			mui.plusReady(function() {
 				(function($) {
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -424,6 +425,7 @@
 							$(pullRefreshEl).pullToRefresh({
 								down: {
 									callback: function() {
+										 self = this;
 										if(contentData.semFlag == 0){
 											contentData.singleSubScore.refrushFlag = 0,//0刷新1加载更多
 											contentData.singleSubScore.pageNumber = 1,//
@@ -439,15 +441,14 @@
 										}else if(contentData.semFlag == 3){
 											
 										}
-										
-										var self = this;
-										setTimeout(function() {
-											self.endPullDownToRefresh();
-										}, 1000);
+										// setTimeout(function() {
+										// 	self.endPullDownToRefresh();
+										// }, 1000);
 									}
 								},
 								up: {
 									callback: function() {
+										self = this;
 										if(contentData.semFlag == 0){
 											contentData.singleSubScore.refrushFlag = 1,//0刷新1加载更多
 											// 获取单科成绩列表
@@ -461,10 +462,9 @@
 										}else if(contentData.semFlag == 3){
 											
 										}
-										var self = this;
-										setTimeout(function() {
-											self.endPullUpToRefresh();
-										}, 1000);
+										// setTimeout(function() {
+										// 	self.endPullUpToRefresh();
+										// }, 1000);
 									}
 								}
 							});
@@ -516,7 +516,7 @@
 								navigation: {
 									nextEl: '.swiper-button-next',
 									prevEl: '.swiper-button-prev',
-								},
+								},    
 								on: {
 									slideChangeTransitionEnd: function() {
 										mui('#refrushSingleScore').scroll().scrollTo(0, 0)
@@ -530,7 +530,7 @@
 									},
 								},
 							});
-						}, 500)
+						}, 500) 
 					} else {
 						mui.toast(data.msg);
 					}
@@ -552,11 +552,23 @@
 					if (data.code == 0) {
 						if(contentData.singleSubScore.refrushFlag == 0){
 							contentData.singleSubScore.singleScoreList = [].concat(data.data.list);
+							setTimeout(()=>{
+								self&&self.endPullDownToRefresh(); 
+								if(data.data.page_number>=data.data.total_page){
+										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+								}
+							},1000)
 						}else{
 							contentData.singleSubScore.singleScoreList = contentData.singleSubScore.singleScoreList.concat(data.data.list);
-							if(data.data.list.length==0){
-								mui.toast('暂无更多数据');
-							}
+							// if(data.data.list.length==0){
+							// 	mui.toast('暂无更多数据');
+							// }    
+							setTimeout(()=>{
+								self&&self.endPullUpToRefresh(); 
+								if(data.data.page_number>=data.data.total_page){
+										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+								}
+							},1000)
 						}
 						contentData.singleSubScore.pageNumber++;
 					} else {
@@ -578,12 +590,25 @@
 					events.closeWaiting();
 					if (data.code == 0) {
 						if(contentData.sumSubScore.refrushFlag == 0){
+							
 							contentData.sumSubScore.sumScoreList = [].concat(data.data.list);
+							setTimeout(()=>{
+								self&&self.endPullDownToRefresh(); 
+								if(data.data.page_number>=data.data.total_page){
+									mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+								}
+							},1000)
 						}else{
 							contentData.sumSubScore.sumScoreList = contentData.sumSubScore.sumScoreList.concat(data.data.list);
-							if(data.data.list.length==0){
-								mui.toast('暂无更多数据');
-							}
+							// if(data.data.list.length==0){
+							// 	mui.toast('暂无更多数据');
+							// }
+							setTimeout(()=>{
+								self&&self.endPullUpToRefresh(); 
+								if(data.data.page_number>=data.data.total_page){
+									mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+								}
+							},1000)
 						}
 						contentData.sumSubScore.pageNumber++;
 					} else {
