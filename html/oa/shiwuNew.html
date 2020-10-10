@@ -383,10 +383,10 @@
 			function uploadFile(wd) {
 				var getUpTokenData = {
 					type: '0', //获取上传token的方式
-					appId: window.storageKeyName.QNAPPID, //项目id
+					appId: window.storageKeyName.QNOAAPPID, //项目id
 					fileArray: [], //文件数组
-					mainSpace: window.storageKeyName.QNPUBSPACE, //文件存放在私有空间或公有空间
-					uploadSpace: window.storageKeyName.XXTNOTICE, //上传的空间
+					mainSpace: window.storageKeyName.QNOANAME, //文件存放在私有空间或公有空间
+					uploadSpace: '', //上传的空间
 				}
 
 				if (multiMedia.data.PictureArray.length != 0) { //图片
@@ -406,27 +406,26 @@
 				}
 				uploadNum = getUpTokenData.fileArray.length; //记录上传的次数
 				//								console.log('uploadNum:' + uploadNum);
-				//								console.log('getUpTokenData:' + JSON.stringify(getUpTokenData));
+												// console.log('getUpTokenData:' + JSON.stringify(getUpTokenData));
 				CloudFileUtil.getUpLoadTokens(getUpTokenData, function(data) {
-					//					console.log("getUpLoadTokens111111 " + JSON.stringify(data));
+										// console.log("getUpLoadTokens111111 " + JSON.stringify(data));
 					if (data.code == 1) {
-						//						console.log('上传配置 ' + JSON.stringify(data.configure));
-						//						console.log('上传凭证 ' + JSON.stringify(data.data));
+												// console.log('上传配置 ' + JSON.stringify(data.configure));
+												// console.log('上传凭证 ' + JSON.stringify(data.data));
 						QNUptoken = data.data; //token数据
 
 						if (multiMedia.data.PictureArray.length != 0) { //图片
 							//记录图片和缩略图地址
 							for (var j = 0; j < multiMedia.data.PictureArray.length; j++) {
 								for (var i = 0; i < QNUptoken.Data.length; i++) {
-									//									console.log(JSON.stringify(QNUptoken.Data[i]));
+																		// console.log(JSON.stringify(QNUptoken.Data[i]));
 									var filePath = QNUptoken.Data[i].P_Key.split("/");
 									var fileName = filePath[filePath.length - 1];
 									var fileId = fileName.split("_")[0];
 									if (multiMedia.data.PictureArray[j].id == fileId) {
-										//										console.log('QNUptoken.Data[i].Domain:' + QNUptoken.Data[i].Domain);
-										//										console.log('+QNUptoken.Data[i].Key:' + QNUptoken.Data[i].Key);
+																				// console.log('QNUptoken.Data[i].Domain:' + QNUptoken.Data[i].Domain);
+																				// console.log('+QNUptoken.Data[i].Key:' + QNUptoken.Data[i].Key);
 										multiMedia.data.PictureArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
-										multiMedia.data.PictureArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
 									}
 								}
 							}
@@ -440,8 +439,7 @@
 									var filePath = QNUptoken.Data[i].P_Key.split("/");
 									var fileName = filePath[filePath.length - 1];
 									if (videoName == fileName) {
-										//										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
-										multiMedia.data.VideoArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
+										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
 										multiMedia.data.VideoArray[j].thumb = QNUptoken.Data[i].OtherKey[data.configure.thumbKey[i]];
 									}
 								}
@@ -479,7 +477,7 @@
 			 */
 			function BatchDelete(paths, wd) {
 				var batchDelete = {
-					appId: window.storageKeyName.QNAPPID, //int 必填 项目id
+					appId: window.storageKeyName.QNOAAPPID, //int 必填 项目id
 					urls: paths //array 必填 需要获取下载token文件的路径
 				}
 				/**
@@ -507,16 +505,20 @@
 			function taskCreate(wd) {
 				for (var i = 0; i < QNUptoken.Data.length; i++) {
 					if (QNUptoken.Data[i].task == undefined) {
+						// console.log('QNUptoken:'+JSON.stringify(QNUptoken));
 						var filePath = QNUptoken.Data[i].P_Key.split("/");
+						// console.log('filePath:'+filePath);
 						var fileName = filePath[filePath.length - 1];
 						//获取路径
 						var fPath = '';
 						var num; //记录第几个文件
 						if (multiMedia.data.PictureArray.length !== 0) { //图片
+						// console.log('multiMedia.data.PictureArray:'+JSON.stringify(multiMedia.data.PictureArray));
 							for (var k = 0; k < multiMedia.data.PictureArray.length; k++) {
 								var path = multiMedia.data.PictureArray[k].path.split("/");
 								var name = path[path.length - 1];
 								if (fileName == name) {
+									console.log('111111');
 									num = k;
 									fPath = multiMedia.data.PictureArray[k].path;
 									break;
@@ -543,6 +545,7 @@
 								}
 							}
 						}
+						// console.log('fPath:'+fPath);
 						CloudFileUtil.upload(fPath, QNUptoken.Data[i].Token, QNUptoken.Data[i].Key, function(upload, status) {
 							//上传任务完成的监听
 							//														console.log('上传任务完成' + status + '|' + JSON.stringify(upload));

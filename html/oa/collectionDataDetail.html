@@ -467,9 +467,18 @@
 				},
 				methods: {
 					checkEnc: function(tempUrl) {
-						console.log('tempUrl:' + tempUrl);
-						var urlStr = encodeURI(tempUrl)
-						plus.runtime.openURL(urlStr);
+						var getDownToken = {
+							appId: window.storageKeyName.QNOAAPPID, //int 必填 项目id
+							urls: [tempUrl] //array 必填 需要获取下载token文件的路径
+						}
+						var getDownTokenUrl = window.storageKeyName.QNGETDOWNTOKENFILE;
+						CloudFileUtil.getQNDownToken(getDownTokenUrl, getDownToken, function(data) {
+							// console.log('七牛下载token ' + JSON.stringify(data));
+							var urlStr = encodeURI(data.Data[0].Value)
+							plus.runtime.openURL(urlStr);
+						}, function(xhr, type, errorThrown) {
+							mui.toast('获取文件失败 ' + type);
+						});
 					},
 					saveTag: function() {
 						console.log('saveTag');

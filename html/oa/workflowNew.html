@@ -460,10 +460,10 @@
 			function uploadFile(wd) {
 				var getUpTokenData = {
 					type: '0', //获取上传token的方式
-					appId: window.storageKeyName.QNAPPID, //项目id
+					appId: window.storageKeyName.QNOAAPPID, //项目id
 					fileArray: [], //文件数组
-					mainSpace: window.storageKeyName.QNPUBSPACE, //文件存放在私有空间或公有空间
-					uploadSpace: window.storageKeyName.XXTNOTICE, //上传的空间
+					mainSpace: window.storageKeyName.QNOANAME, //文件存放在私有空间或公有空间
+					uploadSpace: '', //上传的空间
 				}
 
 				if (multiMedia.data.PictureArray.length != 0) { //图片
@@ -503,7 +503,6 @@
 										//										console.log('QNUptoken.Data[i].Domain:' + QNUptoken.Data[i].Domain);
 										//										console.log('+QNUptoken.Data[i].Key:' + QNUptoken.Data[i].Key);
 										multiMedia.data.PictureArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
-										multiMedia.data.PictureArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
 									}
 								}
 							}
@@ -517,8 +516,7 @@
 									var filePath = QNUptoken.Data[i].P_Key.split("/");
 									var fileName = filePath[filePath.length - 1];
 									if (videoName == fileName) {
-										//										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
-										multiMedia.data.VideoArray[j].domain = window.storageKeyName.QNPB + QNUptoken.Data[i].Key;
+										multiMedia.data.VideoArray[j].domain = QNUptoken.Data[i].Domain + QNUptoken.Data[i].Key;
 										multiMedia.data.VideoArray[j].thumb = QNUptoken.Data[i].OtherKey[data.configure.thumbKey[i]];
 									}
 								}
@@ -556,7 +554,7 @@
 			 */
 			function BatchDelete(paths, wd) {
 				var batchDelete = {
-					appId: window.storageKeyName.QNAPPID, //int 必填 项目id
+					appId: window.storageKeyName.QNOAAPPID, //int 必填 项目id
 					urls: paths //array 必填 需要获取下载token文件的路径
 				}
 				/**

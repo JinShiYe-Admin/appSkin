@@ -51,8 +51,8 @@ var CloudFileUtil = (function($, mod) {
 	 * }
 	 */
 	mod.getQNDownToken = function(url, data, successCB, errorCB) {
-		//console.log('getQNDownToken:url ' + JSON.stringify(data));
-		//console.log('getQNDownToken:data ' + JSON.stringify(data));
+		// console.log('getQNDownToken:url ' + JSON.stringify(data));
+		// console.log('getQNDownToken:data ' + JSON.stringify(data));
 		var desKey = ''; //项目名称
 		var appId = 0; //项目id
 		var urls = []; //需要获取下载token文件的路径
@@ -72,7 +72,7 @@ var CloudFileUtil = (function($, mod) {
 				AppID: appId,
 				Param: encryptByDES(desKey, JSON.stringify(urls))
 			}
-			//console.log("参数数据：" + JSON.stringify(configure.options));
+			// console.log("参数数据：" + JSON.stringify(configure.options));
 			mui.ajax(url, {
 				async: false,
 				data: configure.options,
@@ -196,7 +196,7 @@ var CloudFileUtil = (function($, mod) {
 			Param: encryptByDES(desKey, JSON.stringify(params))
 		}
 
-//		console.log("参数数据：" + JSON.stringify(configure.options))
+		// console.log("参数数据：" + JSON.stringify(configure.options))
 		//获取token
 		mod.getQNUpTokenWithManage(window.storageKeyName.QNGETUPLOADTOKEN, configure.options, function(data) {
 			callBack({
@@ -654,6 +654,9 @@ var CloudFileUtil = (function($, mod) {
 			case 8: //校讯通
 				desKey = storageKeyName.QNPUBXXT;
 				break;
+			case 13: //oa
+				desKey = storageKeyName.QNOAKEY;
+				break;
 			default:
 				break;
 		}
@@ -749,9 +752,9 @@ var CloudFileUtil = (function($, mod) {
 	 * @param {Object} successCallBack 上传任务创建成功监听的回调
 	 */
 	mod.upload = function(fPath, token, key, uploadCompletedCallBack, onStateChangedCallBack, successCallBack) {
-		console.log('upload fPath ' + fPath);
-		console.log('upload token ' + token);
-		console.log('upload key ' + key);
+		// console.log('upload fPath: ' + fPath);
+		// console.log('upload token: ' + token);
+		// console.log('upload key: ' + key);
 		var task = plus.uploader.createUpload("https://upload.qiniu.com/", {
 				method: "POST"
 			},
@@ -780,7 +783,7 @@ var CloudFileUtil = (function($, mod) {
 			function(upload, status) {
 				onStateChangedCallBack(upload, status);
 			}, false);
-		////console.log('upload2:' + fPath + '|' + type + "|" + QNUptoken);
+		// console.log('upload2:' + fPath + '|' + type + "|" + QNUptoken);
 		successCallBack(task);
 		//task.start();
 	}
