@@ -13,9 +13,9 @@ var UploadHeadImage = (function($, mod) {
 	//获取七牛上传token的url
 	var getUploadTokenUrl = window.storageKeyName.QNGETUPTOKENHEADIMGE;
 	//私有空间或公有空间
-	var mainSpace = window.storageKeyName.QNPUBSPACE;
+	var mainSpace = window.storageKeyName.QN_PB_NAME;
 	//头像上传的空间
-	var uploadSpace = window.storageKeyName.XXTNOTICE;
+	var uploadSpace = window.storageKeyName.QN_HEADIMG;
 	//成功的回调
 	var successCallBack;
 	//失败的回调
@@ -199,7 +199,8 @@ var UploadHeadImage = (function($, mod) {
 		var getToken = {
 			type: '0', //str 必填 获取上传token的类型。0上传需要生成缩略图的文件；1上传文件
 			QNFileName: fileName, //str 必填 存放到七牛的文件名
-			appId: window.storageKeyName.QNAPPID, //int 必填 项目id
+			appId: window.storageKeyName.QN_APPID, //int 必填 项目id
+			appKey: window.storageKeyName.QN_APPKEY,
 			mainSpace: mainSpace, //str 必填 私有空间或公有空间
 			uploadSpace: uploadSpace, //str 必填  上传的空间
 		}

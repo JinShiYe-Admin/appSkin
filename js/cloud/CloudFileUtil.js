@@ -60,7 +60,7 @@ var CloudFileUtil = (function($, mod) {
 		if(data) {
 			if(data.appId) {
 				appId = data.appId;
-				desKey = getAppKey(appId);
+				desKey = data.appKey;
 			}
 			if(data.urls) {
 				urls = data.urls;
@@ -148,7 +148,7 @@ var CloudFileUtil = (function($, mod) {
 
 //		console.log("getUpLoadTokens " + JSON.stringify(data));
 		var appId = data.appId; //项目id
-		var desKey = getAppKey(appId); //项目名称
+		var desKey = data.appKey; //项目名称
 		var configure = {}; //配置的数据
 		var params = []; //配置的参数信息
 
@@ -273,7 +273,7 @@ var CloudFileUtil = (function($, mod) {
 			}
 			if(data.appId) {
 				appId = data.appId;
-				desKey = getAppKey(appId);
+				desKey = data.appKey;
 			}
 			if(data.mainSpace) {
 				mainSpace = data.mainSpace;
@@ -427,97 +427,6 @@ var CloudFileUtil = (function($, mod) {
 		});
 
 	}
-
-	/**
-	 * 需要先加载qiniu.js,cryption.js,events.js,使用实例在publish-answer.js
-	 * 配置获取上传token时需要上传的数据（传单张图片）
-	 * @author 安琪
-	 * @param {Object} picPath 图片本地路径
-	 * @param {Object} appId AppID
-	 * @param {Object} maxSize 最大长宽
-	 * @param {Object} spaceType 空间类型0：公共空间 1:私有空间
-	 * @param {Object} uploadSpace 上传的空间
-	 * @return {Object} data data.options为获取token的参数之一，data.thumbKey为获取token后获取缩略图地址的key值
-	 */
-	mod.getSingleUploadDataOptions = function(picPath, appId, maxSize, spaceType, uploadSpace) {
-		var data = {};
-		var desKey = getAppKey(appId);
-		var mainSpace;
-		if(spaceType) {
-			mainSpace = storageKeyName.QNPRISPACE; //七牛私有空间
-		} else {
-			mainSpace = storageKeyName.QNPUBSPACE; //七牛公共空间
-		}
-		var saveSpace = uploadSpace;
-		var thumbSpace = saveSpace + 'thumb/';
-		var QNFileName = events.getFileNameByPath(picPath);
-		data.thumbKey = Qiniu.URLSafeBase64Encode(mainSpace + ":" + thumbSpace + QNFileName);
-		var ops = "imageView2/1/w/" + maxSize + "/h/" + maxSize + "/format/png|saveas/" + data.thumbKey;
-		var param = {
-			Bucket: mainSpace,
-			Key: saveSpace + QNFileName,
-			Pops: ops,
-			NotifyUrl: ''
-		}
-		//console.log("参数数据：" + JSON.stringify(param))
-		data.options = {
-			AppID: appId,
-			Param: encryptByDES(desKey, JSON.stringify(param))
-		}
-		//console.log("加密后的信息：" + encryptByDES(desKey, JSON.stringify(param)));
-		return data;
-	}
-	/**
-	 * 需要先加载qiniu.js,cryption.js,events.js,使用实例在publish-answer.js
-	 * 配置获取上传token时需要上传的数据（传单张图片 自定义参数）
-	 * @author 安琪
-	 * @param {Object} picPath 图片本地路径
-	 * @param {Object} appId AppID
-	 * @param {Object} spaceType 空间类型0：公共空间 1:私有空间
-	 * @param {Object} saveSpace 上传的空间
-	 * @param {Object} manageOptions 处理参数{
-	 * 	type:0 // 0生成缩略图1裁剪 10缩略图和裁剪
-	 * 	thumbSize {width height } 生成缩略图大小
-	 * 	cropSize{width 生成缩略图的长（1-10000）
-	 * 	height  宽（1-10000）
-	 * 	offsX 水平偏移量
-	 *	offsY} 垂直偏移量
-	 * }
-	 * @return {Object} data data.options为获取token的参数之一，data.thumbKey为获取token后获取缩略图地址的key值
-	 */
-	mod.getSingleImgUploadOptions = function(picPath, appId, spaceType, saveSpace, manageOptions) {
-		var data = {};
-		var desKey = getAppKey(appId);
-		var mainSpace;
-		if(spaceType) {
-			mainSpace = storageKeyName.QNPRISPACE; //七牛私有空间
-		} else {
-			mainSpace = storageKeyName.QNPUBSPACE; //七牛公共空间
-		}
-		var QNFileName = events.getFileNameByPath(picPath);
-		var opsData = getOptions(manageOptions, saveSpace, mainSpace, QNFileName);
-		//console.log("设定的参数：" + JSON.stringify(opsData));
-		var ops = opsData.ops;
-		if(opsData.thumbKey) {
-			data.thumbKey = opsData.thumbKey;
-		}
-		if(opsData.clipKey) {
-			data.clipKey = opsData.clipKey;
-		}
-		var param = {
-			Bucket: mainSpace,
-			Key: saveSpace + QNFileName,
-			Pops: ops,
-			NotifyUrl: ''
-		}
-		//console.log("参数数据：" + JSON.stringify(param))
-		data.options = {
-			AppID: appId,
-			Param: encryptByDES(desKey, JSON.stringify(param))
-		}
-		//console.log("加密后的信息：" + encryptByDES(desKey, JSON.stringify(param)));
-		return data;
-	}
 	/**
 	 *获取参数
 	 * @param {Object} manageOptions 处理参数
@@ -566,151 +475,8 @@ var CloudFileUtil = (function($, mod) {
 		}
 		return returnData;
 	}
-	/**
-	 * 需要先加载qiniu.js,cryption.js,events.js,使用实例在publish-answer.js
-	 * 配置获取上传token时需要上传的数据（传多张图片 自定义参数）
-	 * @author 安琪
-	 * @param {Array} picPaths 图片本地路径数组
-	 * @param {Int} appId AppID
-	 * @param {int} spaceType 空间类型0：公共空间 1:私有空间
-	 * @param {String} saveSpace 上传的空间
-	 * @param {Object} manageOptions 处理参数{
-	 * 	type:0 // 0生成缩略图1裁剪 10缩略图和裁剪
-	 * 	thumbSize {width height } 生成缩略图大小
-	 * 	cropSize{width 生成缩略图的长（1-10000）
-	 * 	height  宽（1-10000）
-	 * 	offsX 水平偏移量
-	 *	offsY} 垂直偏移量
-	 * }
-	 * @return {Object} data data.options为获取token的参数之一，data.thumbKey为获取token后获取缩略图地址的key值
-	 */
-	mod.getMultipleImgUploadOptions = function(picPaths, appId, spaceType, saveSpace, uploadOptions) {
-		var data = {};
-		var desKey = getAppKey(appId);
-		var mainSpace;
-		if(spaceType) {
-			mainSpace = storageKeyName.QNPRISPACE; //七牛私有空间
-		} else {
-			mainSpace = storageKeyName.QNPUBSPACE; //七牛公共空间
-		}
-		var QNFileName; //文件名
-		var params = [];
-		for(var i in picPaths) {
-			uploadOptions[i].type = 10;
-			var param = {};
-			param.Bucket = mainSpace;
-			//获取文件路径
-			QNFileName = events.getFileNameByPath(picPaths[i]);
-			param.Key = saveSpace + QNFileName;
-			//console.log('key:' + param.Key);
-			//获取处理参数
-			var opsData = getOptions(uploadOptions[i], saveSpace, mainSpace, QNFileName);
-			param.Pops = opsData.ops;
-			param.NotifyUrl = '';
-			//保存空间值
-			params.push(param);
-		}
-		//console.log("参数数据：" + JSON.stringify(params))
-		data.options = {
-			AppID: appId,
-			Param: encryptByDES(desKey, JSON.stringify(params))
-		}
-		//console.log("加密后的信息：" + encryptByDES(desKey, JSON.stringify(param)));
-		//console.log('加密后的data:' + JSON.stringify(data));
-		return data;
-	}
 	var getIfExist = function(option) {
 		return option ? option : '';
-	}
-	/**
-	 *
-	 * @param {Object} appId app的id
-	 */
-	var getAppKey = function(appId) {
-		var desKey = "";
-		switch(appId) {
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2: //资源平台
-				desKey = storageKeyName.QNPUBZYKEY;
-				break;
-			case 3: //教宝云作业
-				desKey = storageKeyName.QNPUBJBYZYKEY;
-				break;
-			case 4: //教宝云盘
-				desKey = storageKeyName.QNPUBXXT;
-				break;
-			case 5: //教宝云用户管理
-				desKey = storageKeyName.QUPUBJBMANKEY;
-				break;
-			case 6: //家校圈
-				desKey = storageKeyName.QNPUBJXQKEY;
-				break;
-			case 7: //求知
-				desKey = storageKeyName.QNPUBQZKEY;
-				break;
-			case 8: //校讯通
-				desKey = storageKeyName.QNPUBXXT;
-				break;
-			case 13: //oa
-				desKey = storageKeyName.QNOAKEY;
-				break;
-			default:
-				break;
-		}
-		return desKey;
-	}
-
-	/**
-	 * 需要先加载qiniu.js,cryption.js,events.js,使用实例在publish-answer.js
-	 * 配置获取上传token时需要上传的数据（传多张图片）
-	 * @author 安琪
-	 * @param {Object} picPaths 图片本地路径
-	 * @param {Object} appId AppID
-	 * @param {Object} maxSize 最大长宽
-	 * @param {Object} spaceType 空间类型0：公共空间 1:私有空间
-	 * @param {Object} saveSpace 上传的空间
-	 * @return {Object} data data.options为获取token的参数之一，data.thumbKey为获取token后获取缩略图地址的key值
-	 */
-	mod.getMultipleUploadDataOptions = function(picPaths, appId, maxSize, spaceType, saveSpace) {
-		var data = {};
-		var desKey = getAppKey(appId);
-		var mainSpace;
-		if(spaceType) {
-			mainSpace = storageKeyName.QNPRISPACE; //七牛私有空间
-		} else {
-			mainSpace = storageKeyName.QNPUBSPACE; //七牛公共空间
-		}
-		var thumbSpace = saveSpace + 'thumb/';
-		var QNFileName;
-		//		var QNFileNames =[];
-		data.thumbKeys = []
-		//		var ops=[];
-		var thumbKey;
-		var params = [];
-		for(var i in picPaths) {
-			var param = {};
-			param.Bucket = mainSpace;
-			QNFileName = events.getFileNameByPath(picPaths[i])
-			//			QNFileNames.push(QNFileName);
-			thumbKey = Qiniu.URLSafeBase64Encode(mainSpace + ":" + thumbSpace + QNFileName);
-			data.thumbKeys.push(thumbKey);
-			param.Key = saveSpace + QNFileName;
-			//console.log('key:' + param.Key);
-			param.Pops = "imageView2/1/w/" + maxSize + "/h/" + maxSize + "/format/png|saveas/" + thumbKey;
-			param.NotifyUrl = '';
-			params.push(param);
-		}
-		//console.log("参数数据：" + JSON.stringify(params))
-		data.options = {
-			AppID: appId,
-			Param: encryptByDES(desKey, JSON.stringify(params))
-		}
-		//console.log("加密后的信息：" + encryptByDES(desKey, JSON.stringify(param)));
-		//console.log('加密后的data:' + JSON.stringify(data));
-		return data;
 	}
 
 	/**
@@ -894,7 +660,7 @@ var CloudFileUtil = (function($, mod) {
 		if(data) {
 			if(data.appId) {
 				appId = data.appId;
-				desKey = getAppKey(appId);
+				desKey = data.appKey;
 				if(data.urls) {
 					urls = data.urls;
 				}

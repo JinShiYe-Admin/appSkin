@@ -397,7 +397,7 @@ var cloudutil = (function(mod) {
 		fileName = fileName + "." + types[types.length - 1];
 		var getTokenData = {
 			appId: storageutil.QNQYWXKID,
-			mainSpace: storageutil.QNPUBSPACE,
+			mainSpace: storageutil.QN_PB_NAME,
 			saveSpace: storageutil.QNSSPACEWEBCON,
 			qnCmdOption: manageOption,
 			fileArray: [{

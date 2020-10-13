@@ -1,15 +1,15 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =1; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
 			mod.APPCODE = 'schapp#'; //应用系统代码
-			mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/suptohr/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
-			mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/suptohr/api/hr/'; //单点登录,供人事系统使用
+			mod.INTERFACE_SSO_SKIN = 'http://develop309.jiaobaowang.net/ssotoskin/api/skin/'; //单点登录,供PC外皮及APP用户登录,管理
+			mod.INTERFACE_SSO_HR = 'http://develop309.jiaobaowang.net/ssotohr/api/hr/'; //单点登录,供人事系统使用
 			mod.INTERFACE_SUP_HR = 'http://cs1.108800.com/suptohr/api/hr/'; //单点登录,供人事系统使用                  单点对人事及登录皮肤接口
-			mod.INTERFACE_SSO_SUB = 'http://develop309.jiaobaowang.net/suptosub/api/sub/'; //单点登录,供各子系统用
+			mod.INTERFACE_SSO_SUB = 'http://develop309.jiaobaowang.net/ssotosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://develop309.jiaobaowang.net/hrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://develop309.jiaobaowang.net/hrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
 			mod.INTERFACE_OA = 'http://develop309.jiaobaowang.net:8081/oasubapi/sub/api/';//oa接口(孔)
@@ -23,6 +23,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = '? 需连广西开发环境';//学生评语（阮)
 			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			//七牛上传
+			mod.QN_APPID = 15;//七牛appid
+			mod.QN_APPKEY = "oakf1010";//七牛appkey
 			break;
 		case 2: //广西开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -44,6 +47,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8080/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8080/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8080/stuzy/api/stuScore/';//学生成绩（蒙)
+			//七牛上传
+			mod.QN_APPID = 15;//七牛appid
+			mod.QN_APPKEY = "oakf1010";//七牛appkey
 			break;
 		case 3: //联测
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
@@ -65,6 +71,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
+			//七牛上传
+			mod.QN_APPID = 16;//七牛appid
+			mod.QN_APPKEY = "oatest1010";//七牛appkey
 			break;
 		case 4: //云测
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -86,6 +95,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			//七牛上传
+			mod.QN_APPID = 16;//七牛appid
+			mod.QN_APPKEY = "oatest1010";//七牛appkey
 			break;
 		case 5://正式
 			mod.PLATFORMCODE = 'PT0001'; //平台代码
@@ -107,6 +119,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			//七牛上传
+			mod.QN_APPID = 17;//七牛appid
+			mod.QN_APPKEY = "oafor1010";//七牛appkey
 			break;
 		case 6://性能测试
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -128,6 +143,9 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://cs1.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			//七牛上传
+			mod.QN_APPID = 16;//七牛appid
+			mod.QN_APPKEY = "oatest1010";//七牛appkey
 			break;
 		default:
 			break;
@@ -146,12 +164,6 @@ var storageKeyName = (function(mod) {
 			console[item]=function(){}
 		}
 	})
-	
-	
-	
-	
-	
-	
 	
 	mod.pay = 0; //0,单个商家接口;1,多商家接口
 	// var exLog = console.log;
@@ -197,34 +209,28 @@ var storageKeyName = (function(mod) {
 	mod.VIDEOLENGTH = 301; //视频时长限制 -1为不限制
 
 	mod.SIGNKEY = 'jsy309'; //签名密钥
-	//---七牛---start---
-	//七牛上传空间key值
-	//资源平台
-	mod.QNPUBZYKEY = "jsy8004";
-	//教宝云作业
-	mod.QNPUBJBYZYKEY = "zy309309!";
-	//教宝云盘
-	mod.QNPUBJBYPKEY = "jbyp@2017";
-	//教宝云用户管理
-	mod.QUPUBJBMANKEY = "jbman456";
-	//家校圈
-	mod.QNPUBJXQKEY = "jxq789!@";
-	//求知
-	mod.QNPUBQZKEY = "qz123qwe";
-	//校讯通
-	mod.QNPUBXXT = "jsy@180526";
-	//oa
-	mod.QNOAAPPID = 13;
-	mod.QNOAKEY = "jsy181221";
-	mod.QNOANAME = 'oafiles';
 	
 	mod.STOREAPPID='wxf9b41cac260dd423';
 
-	//七牛存储子空间（文件二级文件名）
-	mod.QNPUBSPACE = "pb"; //七牛公开空间
-	mod.QNPRISPACE = "pv"; //七牛私有空间
-	mod.XXTNOTICE = 'notice/'; //笔校讯通、通知
-	mod.QNAPPID = 4; 
+	//七牛空间
+	mod.QN_PV_NAME = 'jbsch-pv';//七牛私有空间名
+	mod.QN_PB_NAME = 'jbsch-pb';//七牛公有空间名
+	//七牛各个模块子级文件夹
+	// 头像
+	mod.QN_HEADIMG = "headImg/"; //oa事物
+	// oa
+	mod.QN_OA_SHIW = "oa/shiw/"; //oa事物
+	mod.QN_OA_GZL = "oa/gzl/"; //oa工作流
+	mod.QN_OA_ZLSJ = "oa/zlsj/"; //oa资料收集
+	mod.QN_OA_TONGZ = "oa/tongz/"; //oa通知
+	mod.QN_OA_GONGG = "oa/gongg/"; //oa公告
+	mod.QN_OA_XIAOL = "oa/xiaol/"; //oa校历
+	// 学生行为
+	mod.QN_XSXW_KTXW = "xsxw/ktxw/"; //课堂行为
+	mod.QN_XSXW_KWXW = "xsxw/kwxw/"; //课外行为
+	mod.QN_XSXW_XSTH = "xsxw/xsth/"; //学生谈话
+	// 教师考勤
+	mod.QN_JSKQ_WDKQ = "jskq/wdkq/"; //我的考勤
 	//---七牛---end---
 
 

@@ -194,6 +194,9 @@
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src='../../js/utils/md5.js'></script>
+		
+		<script src="../../js/utils/cryption.js"></script>
+		<script src="../../js/cloud/CloudFileUtil.js"></script>
 		<script type="text/javascript">
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
@@ -252,12 +255,13 @@
 				methods: {
 					checkEnc: function(tempUrl) {
 						var getDownToken = {
-							appId: window.storageKeyName.QNOAAPPID, //int 必填 项目id
+							appId: window.storageKeyName.QN_APPID, //int 必填 项目id
+							appKey: window.storageKeyName.QN_APPKEY,
 							urls: [tempUrl] //array 必填 需要获取下载token文件的路径
 						}
 						var getDownTokenUrl = window.storageKeyName.QNGETDOWNTOKENFILE;
 						CloudFileUtil.getQNDownToken(getDownTokenUrl, getDownToken, function(data) {
-							// console.log('七牛下载token ' + JSON.stringify(data));
+							console.log('七牛下载token ' + JSON.stringify(data));
 							var urlStr = encodeURI(data.Data[0].Value)
 							plus.runtime.openURL(urlStr);
 						}, function(xhr, type, errorThrown) {
