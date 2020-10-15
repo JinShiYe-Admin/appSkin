@@ -231,37 +231,37 @@
 				 * 播放视频
 				 * @param {Object} data
 				 */
-				multiMedia.videoPlayCallBack = function(data) {
-					//console.log("videoPlayCallBack")
-					ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', data.path, data.localthumb);
-				}
+				// multiMedia.videoPlayCallBack = function(data) {
+				// 	//console.log("videoPlayCallBack")
+				// 	ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', data.path, data.localthumb);
+				// }
 
-				/**
-				 * 播放音频
-				 * @param {Object} data
-				 */
-				multiMedia.audioPlayCallBack = function(data) {
-					//console.log('audioPlayCallBack ' + JSON.stringify(data));
-					ShowAudioUtil.initAudio(data, 1);
-				}
+				// /**
+				//  * 播放音频
+				//  * @param {Object} data
+				//  */
+				// multiMedia.audioPlayCallBack = function(data) {
+				// 	//console.log('audioPlayCallBack ' + JSON.stringify(data));
+				// 	ShowAudioUtil.initAudio(data, 1);
+				// }
 
-				//初始化视频播放器
-				ShowVideoUtil.initVideo(document.getElementById("video"));
-				//初始化音频播放器
-				audio_option = {
-					x: localStorage.getItem('resolutionWidth') * 1.4, //圆心的x轴坐标值
-					y: (plus.screen.resolutionHeight / 3 * 2), //圆心的y轴坐标值
-					r: plus.screen.resolutionHeight * 0.25 * 1.5 //圆的半径
-				};
-				ShowAudioUtil.initAudioPopover({
-					show: document.getElementById("audio_show"),
-					icon: document.getElementById("audio_icon"),
-					canvas: document.getElementById("audio_canvas"),
-					play: document.getElementById("audio_play"),
-					pause: document.getElementById("audio_pause"),
-					time: document.getElementById("audio_time"),
-					audio: document.getElementById("audio_audio")
-				});
+				// //初始化视频播放器
+				// ShowVideoUtil.initVideo(document.getElementById("video"));
+				// //初始化音频播放器
+				// audio_option = {
+				// 	x: localStorage.getItem('resolutionWidth') * 1.4, //圆心的x轴坐标值
+				// 	y: (plus.screen.resolutionHeight / 3 * 2), //圆心的y轴坐标值
+				// 	r: plus.screen.resolutionHeight * 0.25 * 1.5 //圆的半径
+				// };
+				// ShowAudioUtil.initAudioPopover({
+				// 	show: document.getElementById("audio_show"),
+				// 	icon: document.getElementById("audio_icon"),
+				// 	canvas: document.getElementById("audio_canvas"),
+				// 	play: document.getElementById("audio_play"),
+				// 	pause: document.getElementById("audio_pause"),
+				// 	time: document.getElementById("audio_time"),
+				// 	audio: document.getElementById("audio_audio")
+				// });
 				//获取配置信息
 				hideOption = events.initHideKeyBoard();
 				

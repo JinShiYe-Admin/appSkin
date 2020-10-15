@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =1; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -60,13 +60,13 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SSO_SUB = 'http://nwifapp.jiaobaowang.net/ssotosub/api/sub/'; //单点登录,供各子系统用
 			mod.INTERFACE_HR_SUB = 'http://nwifapp.jiaobaowang.net/testhrtosub/api/sub/'; //人事接口,供子系统用
 			mod.INTERFACE_HR_SKIN = 'http://nwifapp.jiaobaowang.net/testhrtosup/api/skin/'; //人事接口,供APP或PC注册及外皮用
-			mod.INTERFACE_OA = 'http://nwifapp.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
-			mod.INTERFACE_ITEM = 'http://nwifapp.jiaobaowang.net/imsubapi/sub/api/';//物品管理接口(孔)  http://115.28.11.115:8080/imsubapi/sub/api/
+			mod.INTERFACE_OA = 'http://develop309.jiaobaowang.net/oasubapi/sub/api/';//oa接口(孔)
+			mod.INTERFACE_ITEM = 'http://develop309.jiaobaowang.net/imsubapi/sub/api/';//物品管理接口(孔)  http://115.28.11.115:8080/imsubapi/sub/api/
 			mod.INTERFACE_BASESUB = 'http://nwifapp.jiaobaowang.net/testbaseapi/api/Data/';//统一信息接口:考务、家校用(顾)
 			mod.INTERFACE_EXAMINATION = 'http://139.129.252.49:8180/stuzy/api/paper/';//考务系统接口(蒙)
 			mod.INTERFACE_WORK = 'http://139.129.252.49:8180/stukqsubapi/attendance/';//学生考勤系统接口(阮)
-			mod.INTERFACE_PROGRAMME = 'http://nwifapp.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
-			mod.INTERFACE_ATTENDAND = 'http://nwifapp.jiaobaowang.net/tecgpskqsubapi/sub/api/';//教师考勤（孔)
+			mod.INTERFACE_PROGRAMME = 'http://develop309.jiaobaowang.net/tecrcsubapi/sub/api/';//日程（孔)
+			mod.INTERFACE_ATTENDAND = 'http://develop309.jiaobaowang.net/tecgpskqsubapi/sub/api/';//教师考勤（孔)
 			mod.INTERFACE_STUXWSUB = 'http://139.129.252.49:8180/stuxwsubapi/behavior/';//学生行为（阮) 
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)

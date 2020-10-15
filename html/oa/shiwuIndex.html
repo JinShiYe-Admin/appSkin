@@ -112,6 +112,19 @@
 			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
 				color: #00CFBD;
 			}
+			
+			.mui-badge {
+				position: absolute;
+				font-size: 9px !important;
+				line-height: 1;
+				padding: 2px 4px !important;
+				color: white;
+				border-radius: 100px;
+				background-color: red;
+				border-width: 0px;
+				margin-left: -2px;
+				margin-top: 5px;
+			}
 		</style>
 	</head>
 
@@ -126,10 +139,10 @@
 				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 					<div class="mui-scroll">
 						<a @tap="clickSlider(0)" class="mui-control-item mui-active" href="#item1mobile">
-							未处理
+							未处理<span v-if="receive0.noReadCut>0" class="mui-badge">{{receive0.noReadCut}}</span>
 						</a>
 						<a @tap="clickSlider(1)" class="mui-control-item" href="#item2mobile">
-							未结束
+							未结束<span v-if="receive1.noReadCut>0" class="mui-badge">{{receive1.noReadCut}}</span>
 						</a>
 						<a @tap="clickSlider(2)" class="mui-control-item" href="#item3mobile">
 							已结束
@@ -312,24 +325,33 @@
 				data: {
 					sliderFlag: 0, //当前位置在第几个slider
 					receive0: {
+						noReadCut:0,//未读数
+						noReadFlag:'schapp_OA_CooperateNotice_ToMe',//当前标识
 						data: [],
 						refreshFlag: 0, //0刷新，1加载更多
 						pageIndex: 1, //第几页
 						TotalPage: 1 //总页数
 					},
 					receive1: {
+						noReadCut:0,//未读数
+						noReadFlag:'schapp_OA_CooperateNotice_MyRead',//当前标识
+						noReadCut:0,//
 						data: [],
 						refreshFlag: 0,
 						pageIndex: 1,
 						TotalPage: 1
 					},
 					receive2: {
+						noReadCut:0,//未读数
+						noReadFlag:'schapp_OA_CooperateNotice_End',//当前标识
 						data: [],
 						refreshFlag: 0,
 						pageIndex: 1,
 						TotalPage: 1
 					},
 					send: {
+						noReadCut:0,//未读数
+						noReadFlag:'schapp_OA_CooperateNotice_MyPub',//当前标识
 						data: [],
 						refreshFlag: 0,
 						pageIndex: 1,
@@ -368,6 +390,35 @@
 					}
 				}
 			});
+			
+			// 获取未读数
+			var getUnReadCntFun = function() {
+				for (var a = 0; a < curPage.childList.length; a++) {
+					var tempM0 = curPage.childList[a];
+					if (tempM0.redspot_url != null && tempM0.redspot_url.length > 0) {
+						// 获取未读数
+						getUnReadCut(tempM0.access, tempM0.redspot_url, function(data) {
+							console.log('tempM0.url:' + tempM0.url);
+							console.log('getUnReadCut:' + JSON.stringify(data));
+							if (data.code == 0) {
+								// var tempNoRead = 0;
+								for (var b = 0; b < curPage.childList.length; b++) {
+									var tempM1 = curPage.childList[b];
+									if (tempM1.access == data.data.list[0].access) {
+										if(datasource.receive0.noReadFlag == tempM1.url){
+											datasource.receive0.noReadCut = data.data.list[0].dotnum;
+										}
+										if(datasource.receive1.noReadFlag == tempM1.url){
+											datasource.receive1.noReadCut = data.data.list[0].dotnum;
+										}
+									}
+								}
+								
+							}
+						});
+					}
+				}
+			}
 			document.querySelector('.mui-slider').addEventListener('slide', function(event) {
 				var i = event.detail.slideNumber;
 				datasource.clickSlider(i);
@@ -554,6 +605,8 @@
 								tempVue.showAdd = 1;
 							}
 						});
+						// 获取未读数
+						getUnReadCntFun();
 						events.showWaiting();
 						getData(null, 0);
 						//循环初始化所有下拉刷新，上拉加载。
