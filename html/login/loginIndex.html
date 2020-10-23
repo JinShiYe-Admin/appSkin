@@ -113,13 +113,14 @@
 			// document.getElementById('yonghuBB').addEventListener('tap',function () {
 			// 	utils.mOpenWithData("../../html/login/privace.html", {});
 			// })
+			
 			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
 			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
 				events.showWaiting(" ");
-				appUpdate.updateApp(function(){
+				appUpdate.updateApp(function(type){
 					events.closeWaiting();
-					mui.toast("APP正在下载，稍后将开始安装")
-				},function(){
+					getInfo()
+				},function(){ 
 					// store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
 					events.closeWaiting();
 					getInfo()

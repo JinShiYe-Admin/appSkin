@@ -24,7 +24,7 @@ var appUpdate = (function(mod) {
 					if (request.response.results.length == 0) {
 						noCallback();
 					} else{
-						mod.getAppVersion(request.response.results[0]);
+						mod.getAppVersion(request.response.results[0],yesCallback,noCallback);
 					}
 				}
 			}
@@ -37,27 +37,6 @@ var appUpdate = (function(mod) {
 			getXml(yesCallback,noCallback);
 		}
 		
-		
-		
-//		var tempVVL = 'android';
-//		//所需参数
-//		var comData9 = {
-//			uuid: plus.device.uuid, //用户设备号
-//			appid: plus.runtime.appid, //应用ID
-//			vvl: tempVVL //安卓：android,苹果：ios
-//		};
-		
-		// 等待的对话框
-//		var wd_0 =  events.showWaiting();
-//		postDataPro_PostVerInfo(comData9, function(data) {
-//			console.log('获取APP版本号0:', data);
-//			if(data.code == 0) {
-//				mod.getAppVersion(JSON.parse(data.data));
-//				console.log('获取APP版本号:', data);
-//			} else {
-//				mui.toast(data.msg);
-//			}
-//		});
 	}
 	
 	//获取android 更新信息
@@ -133,10 +112,14 @@ var appUpdate = (function(mod) {
 		var appVersions = mod.appVersion.split('.');
 		var newestVersions;
 		if(mui.os.android) { //android
+			events.closeWaiting();
 			newestVersions = versionInfo.version.split('.');
 			var appVersionMinMax = getMinMax(appVersions);
 			var newestVersionMinMax = getMinMax(newestVersions);
-			if(appVersionMinMax.max < newestVersionMinMax.max) { //整包更新
+			console.log("appVersionMinMax:"+JSON.stringify(appVersionMinMax))
+			console.log("newestVersionMinMax:"+JSON.stringify(newestVersionMinMax))
+			if(appVersionMinMax.max < newestVersionMinMax.max) { //整包更新   1.0.0 ：2.0.0
+				console.log(11111)
 				if(mod.updateFlag == 0) {
 					//询问是否更新
 					setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
@@ -149,25 +132,42 @@ var appUpdate = (function(mod) {
 				} else if(mod.updateFlag == 1) {
 					resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
 				} 
-
 			} else if(appVersionMinMax.max == newestVersionMinMax.max) {
-				if(appVersionMinMax.min < newestVersionMinMax.min) { 
-					resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);//在线更新
-					// setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
-					// 	mod.updateFlag = 1;
-					// 	console.log("下载APK路径：" + versionInfo.download_url)
-					// 	resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
-					// }, function() {
-					// 	mod.updateFlag = 2;
-					// },yesCallback,noCallback)
+				if(appVersionMinMax.middle < newestVersionMinMax.middle) { //整包更新   1.0.0 ：1.1.0
+				console.log(22222)
+					if(mod.updateFlag == 0) {
+						//询问是否更新
+						setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
+							mod.updateFlag = 1;
+							console.log("下载APK路径：" + versionInfo.download_url)
+							resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
+						}, function() {
+							mod.updateFlag = 2;
+						},yesCallback,noCallback)
+					} else if(mod.updateFlag == 1) {
+						resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
+					} 
 				}else{
-					noCallback()
+					if(appVersionMinMax.min < newestVersionMinMax.min) { //wgt更新   1.1.0 ：1.1.1
+					console.log(33333)
+						resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);//在线更新
+						// setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
+						// 	mod.updateFlag = 1;
+						// 	console.log("下载APK路径：" + versionInfo.download_url)
+						// 	resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
+						// }, function() {
+						// 	mod.updateFlag = 2;
+						// },yesCallback,noCallback)
+					}else{
+						noCallback()
+					}
 				}
 			}else{
 				noCallback()
 			}
 		} else { //ios
 			if(versionInfo) {
+				events.closeWaiting();
 				newestVersions = versionInfo.version.split('.');
 				var hasNewerVersion = newestVersions.some(function(verNo, index) {
 					return parseInt(verNo) > parseInt(appVersions[index]);
@@ -195,13 +195,12 @@ var appUpdate = (function(mod) {
 	 */
 	var setDialog = function(hint, cancelToast, callback, cancelCallback,yesCallback,noCallback) {
 			mui.closePopups();
-			events.closeWaiting();
 			var btnArray = ['是', '否'];
 			mui.confirm(hint, '教宝校园', btnArray, function(e) {
 				//console.log("当前点击的东东：" + JSON.stringify(e));
 				if(e.index == 0) {
 					callback();
-					yesCallback();
+					if(mui.os.android) {mui.toast("APP正在下载，稍后将开始安装")}
 				} else {
 					mui.toast(cancelToast);
 					if(cancelCallback) {
@@ -222,13 +221,14 @@ var appUpdate = (function(mod) {
 		for(var i in numArray) {
 			if(i == 0) {
 				minMax.max = parseInt(numArray[i]);
-			} else if(i < 3) {
-				min += numArray[i];
+			}else if(i == 1){
+				minMax.middle = parseInt(numArray[i]);
+			} else if(i == 2) {
+				minMax.min = parseInt(numArray[i]);
 			} else {
 				break;
 			}
 		}
-		minMax.min = parseInt(min);
 		return minMax;
 	}
 	/**
@@ -237,6 +237,7 @@ var appUpdate = (function(mod) {
 	 */
 	function downApk(ApkUrl,yesCallback,noCallback) {
 //		console.log(plus.os.name);
+		events.showWaiting('APP正在下载');
 		if(plus.os.name == "Android") {
 //			console.log("下载APK路径：" + ApkUrl)
 			var url = "_doc/update/"; // 下载文件地址
@@ -244,6 +245,7 @@ var appUpdate = (function(mod) {
 				filename: "_doc/update/"
 			}, function(d, status) {
 				console.log("下载状态：" + status+"，"+d.state);
+				events.closeWaiting();
 				if(d.state==4&&status == 200) { // 下载成功
 					var path = d.filename;
 					console.log(d.filename);
@@ -271,18 +273,22 @@ var appUpdate = (function(mod) {
 	 * 下载在线更新的资源
 	 * @param {Object} wgtUrl
 	 */
-	function downWgt(wgtUrl) {
+	function downWgt(wgtUrl,yesCallback,noCallback) {
 		//		plus.nativeUI.showWaiting("下载wgt文件...");
+		events.showWaiting('正在下载wgt文件');
 		var dtask = plus.downloader.createDownload(wgtUrl, {
 			filename: "_doc/update/"
 		}, function(d, status) {
+			// events.closeWaiting();
 			console.log("当前下载状态：" + status);
 			if(status == 200) {
 				console.log("下载wgt成功：" + d.filename);
-				installWgt(d.filename); // 安装wgt包
+				installWgt(d.filename,yesCallback,noCallback); // 安装wgt包
 			} else {
+				events.closeWaiting();
+				noCallback()
 				//console.log("下载wgt失败！");
-				//				plus.nativeUI.alert("下载wgt失败！");
+								// plus.nativeUI.alert("下载wgt失败！");
 			}
 		});
 		dtask.addEventListener("statechanged", onStateChanged, false);
@@ -312,14 +318,17 @@ var appUpdate = (function(mod) {
 	 * 加载在线安装包
 	 * @param {Object} path
 	 */
-	function installWgt(path) {
+	function installWgt(path,yesCallback,noCallback) {
 		plus.runtime.install(path, {
 			force: true
 		}, function() {
-			removeFile(path);
+			removeFile(path,yesCallback,noCallback);
 			console.log("安装wgt文件成功！");
+			events.closeWaiting();
 		}, function(e) {
-			plus.nativeUI.closeWaiting();
+			// plus.nativeUI.closeWaiting();
+			noCallback();
+			events.closeWaiting();
 			console.log("安装wgt文件失败[" + e.code + "]：" + e.message);
 		});
 	}
@@ -335,55 +344,37 @@ var appUpdate = (function(mod) {
 			// 可通过entry对象操作test.html文件 
 			console.log('存在文件！' + entry.isFile+"，"+entry.toLocalURL());
 			entry.getMetadata(function(metadata) {
-//				if(store.get("loadFileSize") == metadata.size) {
-//					console.log("Remove succeeded:" + store.get("loadFileSize"));
-//					if(type) {
-//						if(mod.installFlag == 0) {
-//							setDialog("新版app文件已下载，是否安装？", "您已取消安装app", function() {
-//								installApk(filePath);
-//								mod.installFlag = 1;
-//							}, function() {
-//								mod.installFlag = 2;
-//							})
-//						} else if(mod.installFlag == 1) {
-//							installApk(filePath);
-//						}
-//					} else {
-//						installWgt(filePath);
-//					}
-//				} else {
 					entry.remove(function(entry) {
 						if(type) {
 							downApk(fileUrl,yesCallback,noCallback);
 						} else {
-							downWgt(fileUrl);
+							downWgt(fileUrl,yesCallback,noCallback);
 						}
 					}, function(e) {
 						alert(e.message); 
 					});
-
-//				}
 			}, function() {
 				//console.log("文件错误");
 			});
 		}, function(e) {
-			if(type) {
+			if(type) { 
 				downApk(fileUrl,yesCallback,noCallback);
 			} else {
-				downWgt(fileUrl)
+				downWgt(fileUrl,yesCallback,noCallback)
 			}
 		});
 	}
 
-	function removeFile(fileName, type) {
+	function removeFile(fileName, type,yesCallback,noCallback) {
 		plus.io.resolveLocalFileSystemURL(fileName, function(entry) {
 			entry.remove(function() {
 				console.log("删除文件成功！")
+				yesCallback()
 			}, function(e) {
-
+				noCallback()
 			})
 		}, function(e) {
-
+			noCallback()
 		})
 	}
 	return mod;
