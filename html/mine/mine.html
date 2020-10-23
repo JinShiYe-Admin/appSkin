@@ -91,10 +91,11 @@
 			<div class="mui-row" style="background: #EEEEEE;height: 20px;"></div>
 			<div class="mui-row btns">
 				<ul class="mui-table-view" style="margin-bottom: 61px;">
-					<template v-for="setting in settings" >
-						<li class="mui-table-view-cell" v-on:click="jumpToDetail(setting)" >
+					<template v-for="setting in settings">
+						<li class="mui-table-view-cell" v-on:click="jumpToDetail(setting)">
 							<a class="mui-navigate-right">
-								<span :class="setting.cls" :style="setting.name=='关联学生'||setting.name=='学生账号'?'font-size: 24px;margin:0 -2px 0 -3px;':'font-size: 20px'"></span>  <span style="font-size: 14px;">{{setting.name}}</span> 
+								<span :class="setting.cls" :style="setting.name=='关联学生'||setting.name=='学生账号'?'font-size: 24px;margin:0 -2px 0 -3px;':'font-size: 20px'"></span>
+								<span style="font-size: 14px;">{{setting.name}}</span>
 							</a>
 						</li>
 					</template>
@@ -144,101 +145,119 @@
 						img_url: data.detail.img_url
 					});
 				});
-			
-			
-			window.addEventListener('refush_count', function() {
+
+
+				window.addEventListener('refush_count', function() {
 					console.log('refush_count001');
 					mui.fire(plus.webview.currentWebview().opener(), 'refush_count1', {});
 				});
 
-			var mine = new Vue({
-				el: "#mine",
-				data: {
-					userName: personal.user_name,
-					userImg: setImg(personal.img_url,9),
-					settings: [{
-						name: "密码修改",
-						icon: "",
-						href: "",
-						tempID: 0,
-						cls: 'mui-icon mui-icon-locked',
-						qx:"0,1,2"
+				var mine = new Vue({
+					el: "#mine",
+					data: {
+						userName: personal.user_name,
+						userImg: setImg(personal.img_url, 9),
+						settings: [{
+								name: "密码修改",
+								icon: "",
+								href: "",
+								tempID: 0,
+								cls: 'mui-icon mui-icon-locked',
+								qx: "0,1,2"
+							},
+							{
+								name: "关于教宝校园",
+								icon: "",
+								href: "",
+								tempID: 2,
+								cls: 'mui-icon mui-icon-info',
+								qx: "0,1,2"
+							},
+						],
+						isMineShow: false, //屏蔽或显示我的界面
 					},
-					{
-						name: "关于教宝校园",
-						icon: "",
-						href: "",
-						tempID: 2,
-						cls: 'mui-icon mui-icon-info',
-						qx:"0,1,2"
-					},
-					],
-					isMineShow: false,//屏蔽或显示我的界面
-				},
-				methods: {
-					jumpToDetail: function(setting) {
-						hideMenu();
-						this.isMineShow = false;
-						if(setting.tempID == 0) {//密码修改
-							var tempModel = {
-								flag: 0 //0是主动修改密码，1是判断是默认密码，自动让修改
+					methods: {
+						jumpToDetail: function(setting) {
+							hideMenu();
+							this.isMineShow = false;
+							if (setting.tempID == 0) { //密码修改
+								var tempModel = {
+									flag: 0 //0是主动修改密码，1是判断是默认密码，自动让修改
+								}
+								utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
+							} else if (setting.tempID == 2) { //关于教宝校园
+								utils.mOpenWithData("../../html/mine/about.html", setting);
 							}
-							utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
-						} else if(setting.tempID == 2) {//关于教宝校园
-							utils.mOpenWithData("../../html/mine/about.html", setting);
+						},
+						clickHeadImg: function() {
+							this.isMineShow = false;
+							hideMenu();
+							utils.mOpenWithData("../../html/mine/headImg.html", {});
 						}
-					},
-					clickHeadImg: function() {
-						this.isMineShow = false;
-						hideMenu();
-						utils.mOpenWithData("../../html/mine/headImg.html", {});
 					}
-				}
-			});
-			
-			function quitLogin(){
-				closeMenu();
-				hideMenu();
-			}
-
-			function hideMenu() {
-				console.log('侧滑执行方法执行了吗')
-				mui.fire(plus.webview.currentWebview().opener(), 'hideMenu', {
-					hide: true
 				});
-			}
 
-			function closeMenu() {
-				//获取个人信息
-				var personal = store.get(window.storageKeyName.PERSONALINFO);
-				//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
-				utils.setBadgeNumber(0, 0);
-				store.set(window.storageKeyName.BADGENUMBER, 0);
-				//解绑个推
-				var tool = new igexinTool();
-				tool.unbindAlias(personal.user_code);
-				
-				store.remove(window.storageKeyName.PERSONALINFO);
-
-				//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
-				plus.webview.open('../../html/login/loginIndex.html','../../html/login/loginIndex.html',{statusbar:{background: "#00CFBD"}});
-				// utils.mOpenWithData("../../html/login/loginIndex.html", {});
-				var curr = plus.webview.currentWebview();
-				var wvs = plus.webview.all();
-				for(var i = 0, len = wvs.length; i < len; i++) {
-					//关闭除login页面外的其他页面
-					if(wvs[i].getURL().indexOf('loginIndex.html') != -1) {
-						continue;
-					}
-					plus.webview.close(wvs[i]);
+				function quitLogin() {
+					closeMenu();
+					hideMenu();
 				}
-				curr.close();
-			}
 
-			//左滑显示出来的菜单，只需监听右滑，然后将菜单关闭即可；在该菜单上左滑，不做任何操作；
-//			window.addEventListener("swiperight", hideMenu);
+				function hideMenu() {
+					console.log('侧滑执行方法执行了吗')
+					mui.fire(plus.webview.currentWebview().opener(), 'hideMenu', {
+						hide: true
+					});
+				}
 
-			document.getElementById("close-btn").addEventListener('tap', quitLogin);
+				function closeMenu() {
+					//设置app角标,flag=0直接设置角标数字，flag=1角标减1,falg=2角标加1
+					utils.setBadgeNumber(0, 0);
+					store.set(window.storageKeyName.BADGENUMBER, 0);
+					//解绑个推
+					var tool = new igexinTool();
+					tool.unbindAlias(personal.user_code);
+
+					store.remove(window.storageKeyName.PERSONALINFO);
+
+					//获取所有已打开的webview 实例————重新打开login.html————循环关闭页面
+					plus.webview.open('../../html/login/loginIndex.html', '../../html/login/loginIndex.html', {
+						statusbar: {
+							background: "#00CFBD"
+						}
+					});
+					// utils.mOpenWithData("../../html/login/loginIndex.html", {});
+					var curr = plus.webview.currentWebview();
+					var wvs = plus.webview.all();
+					for (var i = 0, len = wvs.length; i < len; i++) {
+						//关闭除login页面外的其他页面
+						if (wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+							continue;
+						}
+						plus.webview.close(wvs[i]);
+					}
+					curr.close();
+				}
+
+				//左滑显示出来的菜单，只需监听右滑，然后将菜单关闭即可；在该菜单上左滑，不做任何操作；
+				//			window.addEventListener("swiperight", hideMenu);
+
+				document.getElementById("close-btn").addEventListener('tap', function() {
+					var enData0 = {};
+					//不需要加密的数据
+					var comData0 = {
+						platform_code: personal.platform_code, //平台代码
+						app_code: personal.app_code, //应用系统代码
+						unit_code: personal.unit_code, //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+						index_code:'index',
+						access_token: personal.access_token
+					};
+					events.showWaiting();
+					//发送网络请求，data为网络返回值
+					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'session/removeSession', enData0, comData0, 0, function(data) {
+						events.closeWaiting();
+						quitLogin();
+					});
+				});
 			});
 		</script>
 	</body>

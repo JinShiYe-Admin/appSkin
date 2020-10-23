@@ -152,14 +152,14 @@ var appUpdate = (function(mod) {
 
 			} else if(appVersionMinMax.max == newestVersionMinMax.max) {
 				if(appVersionMinMax.min < newestVersionMinMax.min) { 
-					// resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);//在线更新
-					setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
-						mod.updateFlag = 1;
-						console.log("下载APK路径：" + versionInfo.download_url)
-						resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
-					}, function() {
-						mod.updateFlag = 2;
-					},yesCallback,noCallback)
+					resolveFile(versionInfo.download_url, 0,yesCallback,noCallback);//在线更新
+					// setDialog('教宝校园有新版本，是否下载？', "您已取消下载", function() {
+					// 	mod.updateFlag = 1;
+					// 	console.log("下载APK路径：" + versionInfo.download_url)
+					// 	resolveFile(versionInfo.download_url, 1,yesCallback,noCallback);
+					// }, function() {
+					// 	mod.updateFlag = 2;
+					// },yesCallback,noCallback)
 				}else{
 					noCallback()
 				}

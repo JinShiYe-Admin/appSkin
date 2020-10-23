@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =4; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -151,8 +151,10 @@ var storageKeyName = (function(mod) {
 			break;
 	}
 	
+	mod.FIRSTOPEN = 'firstOpen';//首次打开，判断是否同意用户协议
 	mod.PWD_ENCRYPTION = '#@_JFnice_@#';//修改密码时，加密密钥
 	mod.SCHOOLID = 100005;//学校ID
+	// mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 	mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1503612695';//IOS升级地址
 	
@@ -217,7 +219,7 @@ var storageKeyName = (function(mod) {
 	mod.QN_PB_NAME = 'jbsch-pb';//七牛公有空间名
 	//七牛各个模块子级文件夹
 	// 头像
-	mod.QN_HEADIMG = "headImg/"; //oa事物
+	mod.QN_HEADIMG = "headImg/"; //头像
 	// oa
 	mod.QN_OA_SHIW = "oa/shiw/"; //oa事物
 	mod.QN_OA_GZL = "oa/gzl/"; //oa工作流

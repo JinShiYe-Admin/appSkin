@@ -35,7 +35,8 @@
         },
         "Maps" : {},
         "Push" : {},
-        "UIWebview" : {}
+        "UIWebview" : {},
+        "OAuth" : {}
     },
     "fullscreen" : false,
     "plus" : {
@@ -246,7 +247,8 @@
                 "push" : {
                     "unipush" : {}
                 },
-                "payment" : {}
+                "payment" : {},
+                "oauth" : {}
             }
         },
         "screenOrientation" : [ "portrait-primary", "portrait-secondary" ]

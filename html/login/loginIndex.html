@@ -14,6 +14,11 @@
 				color: #00CFBD;
 				border-radius: 20px;
 			}
+			.yonghuxieyi{
+				margin-top: 10px;
+				font-size: 14px;
+				color: gray;
+			}
 		</style>
 
 	</head>
@@ -26,6 +31,9 @@
 		</header>
 		<div class="mui-content" style="background-color: white;">
 			<div style="height: 200px;font-size: 18px;color: #00cfbd;;padding: 100px 0px;text-align: center;">欢迎登录</div>
+			<!-- <div class='yonghuxieyi'>依据最新的法律要求，我们更新了《<a id='yonghuA' style='text-decoration: underline;'>用户协议</a>》和《<a id='yonghuB' style='text-decoration: underline;'>隐私政策</a>》，请您务必审慎阅读，充分理解相关条款内容，特别是字体加粗标识的重要条款。</div>
+			<div class='yonghuxieyi'>点击同意即代表您已阅读并同意《用户协议》和《隐私政策》，如果您不同意用户协议和隐私政策的内容，我们暂时无法为您提供服务。</div>
+			<div class='yonghuxieyi'>我们会尽力保护您的个人信息安全。</div> -->
 			<div class="mui-input-row">
 				<label style="margin-top: -5px;">
 					<image src="../../img/login/username.png" style="width: 25px;height: 25px;" />
@@ -81,6 +89,30 @@
 		var loginFlag = 0; //0自动登录，1不自动登录
 
 		mui.plusReady(function() {
+			// var firstOpen = store.get(window.storageKeyName.FIRSTOPEN);
+			// if(firstOpen == null){
+			// 	mui.confirm("<div class='yonghuxieyi'>依据最新的法律要求，我们更新了《<a id='yonghuA' style='text-decoration: underline;'>用户协议</a>》和《<a id='yonghuB' style='text-decoration: underline;'>隐私政策</a>》，请您务必审慎阅读，充分理解相关条款内容，特别是字体加粗标识的重要条款。</div><div class='yonghuxieyi'>点击同意即代表您已阅读并同意《<a id='yonghuAA' style='text-decoration: underline;'>用户协议</a>》和《<a id='yonghuBB' style='text-decoration: underline;'>隐私政策</a>》，如果您不同意用户协议和隐私政策的内容，我们暂时无法为您提供服务。</div><div class='yonghuxieyi'>我们会尽力保护您的个人信息安全。</div>", '用户须知', ['同意', '不同意'], function(e) {
+			// 		if (e.index == 0) {
+			// 			// store.set(window.storageKeyName.FIRSTOPEN,'1');
+			// 		}else{
+			// 			mui.alert('由于您不同意教宝校园《用户协议》和《隐私政策》的相关内容，我们暂时无法为您提供服务。请谅解！','','返回',function (e) {
+			// 			},'div')
+			// 			return false;
+			// 		}
+			// 	},'div');
+			// }
+			// document.getElementById('yonghuA').addEventListener('tap',function () {
+			// 	utils.mOpenWithData("../../html/login/privace.html", {});
+			// })
+			// document.getElementById('yonghuB').addEventListener('tap',function () {
+			// 	utils.mOpenWithData("../../html/login/privace.html", {});
+			// })
+			// document.getElementById('yonghuAA').addEventListener('tap',function () {
+			// 	utils.mOpenWithData("../../html/login/privace.html", {});
+			// })
+			// document.getElementById('yonghuBB').addEventListener('tap',function () {
+			// 	utils.mOpenWithData("../../html/login/privace.html", {});
+			// })
 			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
 			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
 				events.showWaiting(" ");
@@ -277,6 +309,7 @@
 						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
 						app_code: window.storageKeyName.APPCODE, //应用系统代码
 						unit_code: data1.data.user.unit_code,
+						index_code:'index',
 						access_token: data1.data.access_token //用户令牌
 					};
 					events.showWaiting();
