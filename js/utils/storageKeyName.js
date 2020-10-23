@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =4; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -154,8 +154,8 @@ var storageKeyName = (function(mod) {
 	mod.FIRSTOPEN = 'firstOpen';//首次打开，判断是否同意用户协议
 	mod.PWD_ENCRYPTION = '#@_JFnice_@#';//修改密码时，加密密钥
 	mod.SCHOOLID = 100005;//学校ID
-	mod.ANDROIDUPDATEURL='http://192.168.1.243:8080/app/versionCode.xml';//安卓升级地址
-	// mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
+	// mod.ANDROIDUPDATEURL='http://192.168.1.243:8080/app/versionCode.xml';//安卓升级地址
+	mod.ANDROIDUPDATEURL='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/versionCode.xml';//安卓升级地址
 	mod.IOSUPDATEURL='http://itunes.apple.com/lookup?id=1503612695';//IOS升级地址
 	
 	//正式包 屏蔽控制台打印
@@ -163,7 +163,7 @@ var storageKeyName = (function(mod) {
 		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
 			console[item]=console[item].bind(console)
 		}else{
-			console[item]=function(){}
+			// console[item]=function(){}
 		}
 	})
 	

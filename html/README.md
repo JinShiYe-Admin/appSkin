@@ -12,3 +12,10 @@ stu_comment|学生评语|Liu|Ruan(广西)|正式
 stu_dorm|学生宿舍|Liu,Zhao|Ruan(广西)|正式
 interaction|家校互动|No!!!|Gu(广西)|开发
 student_performance|学生成绩|Zhao|Meng(广西)|开发 <!-- 有滑动列表切换丢失的解决方法 index.html--> 
+<!-- 
+打包说明
+1、注释vconsole
+2、按需修改mainfest.json 里的版本号
+3、修改storageKeyName 文件的以下内容：
+	mod.key、注释console打印
+ -->
