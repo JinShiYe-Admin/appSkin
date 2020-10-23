@@ -52,6 +52,13 @@
 				font-size: 12px;
 				color: #3c9bfe;
 			}
+			
+				table,tr,th,td{
+					border: 1px solid #e8e8e8 !important;
+				}
+				table{
+					margin: 0 auto !important;
+				}
 		</style>
 	</head>
 
@@ -65,10 +72,10 @@
 				<p align="center" class="titleCSS" style="font-size: 18px;color: #000;margin-top: 10px;">{{pageModel.Title}}</p>
 				<p align="center" class="name-timeCSS" style="font-size: 13px;color: #999;">{{pageModel.SendManName}} |
 					{{pageModel.SendTime}}</p>
-				<p class="contentCSS" style="font-size: 14px;color: #666;" v-html=pageModel.WeekWork></p>
+				<div class="contentCSS" v-html=pageModel.WeekWork></div>
 				<!-- <p class="contentCSS" style="font-size: 14px;color: #666;">{{pageModel.WeekWork}}</p> -->
 				<p class="contentCSS" style="font-size: 14px;color: #666;">负责部门：{{pageModel.WorkDept}}</p>
-				<p class="contentCSS" style="font-size: 14px;color: #666;">起止时间：{{pageModel.BeginTime}}--{{pageModel.EndTime}}</p>
+				<p class="contentCSS" style="font-size: 14px;color: #666;padding-bottom: 10px;">起止时间：{{pageModel.BeginTime}}--{{pageModel.EndTime}}</p>
 			</template>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -96,16 +103,16 @@
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
-					
+
 				}
 			});
-			
+
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					pageModel:{}
+					pageModel: {}
 				},
-				methods:{
+				methods: {
 					checkEnc: function(tempUrl) {
 						console.log('tempUrl:' + tempUrl);
 						var urlStr = encodeURI(tempUrl)
@@ -120,12 +127,12 @@
 				events.showWaiting();
 				var tempData = {
 					schoolWeekWorkId: curPage.AnnouncementId, //公告ID
-					index_code:curPage.access.split('#')[1],
+					index_code: curPage.access.split('#')[1],
 					op_code: 'index'
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getWeekWorkById', {}, tempData, 2,function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_OA + 'announcement/getWeekWorkById', {}, tempData, 2, function(data) {
 					events.closeWaiting();
-					if(data.code == 0) {
+					if (data.code == 0) {
 						data.data.BeginTime = data.data.BeginTime.split(' ')[0];
 						data.data.EndTime = data.data.EndTime.split(' ')[0];
 						contentData.pageModel = data.data;

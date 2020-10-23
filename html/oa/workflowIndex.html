@@ -476,7 +476,7 @@
 					comData0.page_number = datasource.receive2.pageIndex; //当前页数
 				} else if (datasource.sliderFlag == 3) {
 					comData0.status = '1'; //状态,0 全部1 预览2 待批3 已批
-					comData0.page_number = datasource.receive2.pageIndex; //当前页数
+					comData0.page_number = datasource.receive3.pageIndex; //当前页数
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
