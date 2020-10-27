@@ -165,7 +165,8 @@
 					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.NoticeEncAddr[index])">附件{{index+1}}</a>
 				</p>
 			</template>
-			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3">
+			<template v-if="pageFlag==0&&detailModel.NoticeStatus==1">
+				<!-- <template v-if="pageFlag==0&&detailModel.NoticeStatus==1&&detailModel.NoticeProgress!=3"> -->
 				<p class="" style="height: 10px;background-color: #f2f2f2;"></p>
 				<a v-show="detailModel.DoneStatus == 1" style="color: black;size: 15px;margin-left: 15px;">继续回复</a>
 				<a v-show="detailModel.DoneStatus == 2" style="color: black;size: 15px;margin-left: 15px;">回复</a>
@@ -581,7 +582,8 @@
 										});
 								}
 								console.log('123456789');
-								if (noticeDetailData.pageFlag == 0 && data.data.NoticeStatus == 1 && data.data.NoticeProgress != 3) {
+								if (noticeDetailData.pageFlag == 0 && data.data.NoticeStatus == 1 ) {
+									// if (noticeDetailData.pageFlag == 0 && data.data.NoticeStatus == 1 && data.data.NoticeProgress != 3) {
 									document.getElementById("MultiMedia").style.display = 'block';
 								} else {
 									document.getElementById("MultiMedia").style.display = 'none';
