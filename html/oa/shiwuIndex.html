@@ -161,9 +161,10 @@
 										<div class="mui-table">
 											<div class="mui-table-cell">
 												<img class="mui-media-object mui-pull-left peopleImg" :src=model.SendManPic />
-												<div v-if="model.IsNew" style="width: 8px;height: 8px;border-radius: 50%;background: red;margin-left: 48px;position: fixed;"></div>
+												<!-- <div v-if="model.IsNew" style="width: 8px;height: 8px;border-radius: 50%;background: red;margin-left: 48px;position: fixed;"></div> -->
 												<div>
-													<a class="tempCss">[{{model.DoneStatusName}}]</a><a class="biaoti nvtt">{{model.NoticeTitle}}</a>
+													<!-- <a class="tempCss">[{{model.DoneStatusName}}]</a> -->
+													<a class="biaoti nvtt">{{model.NoticeTitle}}</a>
 												</div>
 												<!-- <div>
 													<a class="tempCss">{{model.SendManName}}</a><a class="mui-ellipsis time">{{model.SendTime}}</a>
@@ -515,7 +516,7 @@
 							}
 						} else { //加载更多
 							if (data.data.list.length == 0) {
-								mui.toast('已加载全部');
+								// mui.toast('已加载全部');
 							}
 						}
 						if (datasource.sliderFlag == 0) {
@@ -533,8 +534,9 @@
 							datasource.receive0.data = datasource.receive0.data.concat(data.data.list);
 							if (data.data.list.length > 0) {
 								datasource.receive0.pageIndex++;
+								mui(".mui-pull-loading")[0].innerHTML = "";
 							}else {
-								// mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+								mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 							}
 						} else if (datasource.sliderFlag == 1) {
 							if (datasource.receive1.refreshFlag == 0) {
@@ -543,8 +545,9 @@
 							datasource.receive1.data = datasource.receive1.data.concat(data.data.list);
 							if (data.data.list.length > 0) {
 								datasource.receive1.pageIndex++;
+								mui(".mui-pull-loading")[1].innerHTML = "";
 							}else {
-								// mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+								mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 							}
 						} else if (datasource.sliderFlag == 2) {
 							if (datasource.receive2.refreshFlag == 0) {
@@ -553,8 +556,9 @@
 							datasource.receive2.data = datasource.receive2.data.concat(data.data.list);
 							if (data.data.list.length > 0) {
 								datasource.receive2.pageIndex++;
+								mui(".mui-pull-loading")[2].innerHTML = "";
 							} else {
-								// mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
+								mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
 							}
 						} else if (datasource.sliderFlag == 3) {
 							if (datasource.send.refreshFlag == 0) {
@@ -573,8 +577,9 @@
 							datasource.send.data = datasource.send.data.concat(data.data.list);
 							if (data.data.list.length > 0) {
 								datasource.send.pageIndex++;
+								mui(".mui-pull-loading")[3].innerHTML = "";
 							}else {
-								// mui(".mui-pull-loading")[3].innerHTML = "没有更多了";
+								mui(".mui-pull-loading")[3].innerHTML = "没有更多了";
 							}
 						}
 					});
