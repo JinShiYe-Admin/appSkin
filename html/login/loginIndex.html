@@ -84,14 +84,25 @@
 		//		$(function() {
 		//			
 		//		});
+		var backButtonPress = 0;
+		var tempModel = {};
+		var loginFlag = 0; //0自动登录，1不自动登录
 		mui.init({
+			//重写物理/虚拟返回按钮，防止与弹出层冲突
 			statusBarBackground: '#00CFBD',
 			beforeback: function(){  
+				backButtonPress++;
+				if (backButtonPress > 1) {
+					plus.runtime.quit();
+				} else {
+					plus.nativeUI.toast('再按一次退出应用');
+				}
+				setTimeout(function() {
+					backButtonPress = 0;
+				}, 1000);
 				return false;  
 			}
 		});
-		var tempModel = {};
-		var loginFlag = 0; //0自动登录，1不自动登录
 
 		mui.plusReady(function() {
 			//判断是否是第一次使用APP start
@@ -100,42 +111,56 @@
 				mui.confirm("<div class='yonghuxieyi'>依据最新的法律要求，我们更新了《<a id='yonghuA' style='text-decoration: underline;'>用户隐私政策</a>》，请您务必审慎阅读，充分理解相关条款内容，特别是字体加粗标识的重要条款</div><div class='yonghuxieyi'>点击同意即代表您已阅读并同意《<a id='yonghuAA' style='text-decoration: underline;'>用户隐私政策</a>》，如果您不同意用户协议和隐私政策的内容，我们暂时无法为您提供服务</div><div class='yonghuxieyi'>我们会尽力保护您的个人信息安全</div>", '用户须知', ['同意', '不同意'], function(e) {
 					if (e.index == 0) {
 						store.set(window.storageKeyName.FIRSTOPEN,'1');
+						//检查APP更新
+						checkUpdate();
 					}else{
 						mui.alert("<div class='yonghuxieyi'>由于您不同意教宝校园《用户隐私政策》的相关内容，我们暂时无法为您提供服务。请谅解！</div>",'','返回',function (e) {
 						},'div')
 						return false;
 					}
 				},'div');
+				document.getElementById('yonghuA').addEventListener('tap',function () {
+					utils.mOpenWithData("../../html/login/privace.html", {});
+				})
+				document.getElementById('yonghuAA').addEventListener('tap',function () {
+					utils.mOpenWithData("../../html/login/privace.html", {});
+				})
+			}else{
+				//检查APP更新
+				checkUpdate();
 			}
-			document.getElementById('yonghuA').addEventListener('tap',function () {
-				utils.mOpenWithData("../../html/login/privace.html", {});
-			})
-			document.getElementById('yonghuAA').addEventListener('tap',function () {
-				utils.mOpenWithData("../../html/login/privace.html", {});
-			})
 			//判断是否是第一次使用APP end
-			//检查更新 start 
-			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
-			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
-				events.showWaiting(" ");
-				appUpdate.updateApp(function(type){
-					events.closeWaiting();
-					getInfo()
-				},function(){ 
-					// store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
-					events.closeWaiting();
-					getInfo()
-				});
-			// }else if('UNCHECK'==CHECKUPDATE){
-			// 	getInfo()
-			// }
-			//检查更新 end 
+			
 			plus.navigator.setStatusBarBackground("#00CFBD");
 			tempModel = {
 				uuid: '',
 				appid: ''
 			}
 		});
+		
+		
+		function checkUpdate(){
+			//检查更新 start
+			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
+			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
+				events.showWaiting(" ");
+				appUpdate.updateApp(function(type){
+					//wgt安装成功 回调
+					events.closeWaiting();
+					//登录
+					getInfo()
+				},function(){ 
+					//取消更新/取消安装/wgt安装失败 回调
+					// store.set(window.storageKeyName.CHECKUPDATE,'UNCHECK');
+					events.closeWaiting();
+					//登录
+					getInfo()
+				});
+			// }else if('UNCHECK'==CHECKUPDATE){
+			// 	getInfo()
+			// }
+			//检查更新 end 
+		}
 		
 		function getInfo() {
 			console.log('333333');
