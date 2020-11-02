@@ -164,8 +164,21 @@
 								tempID: 0,
 								cls: 'mui-icon mui-icon-locked',
 								qx: "0,1,2"
-							},
-							{
+							},{
+								name: "注销账号",
+								icon: "",
+								href: "",
+								tempID: 1,
+								cls: 'mui-icon mui-icon-locked',
+								qx: "0,1,2"
+							},{
+								name: "用户信息与隐私政策",
+								icon: "",
+								href: "",
+								tempID: 3,
+								cls: 'mui-icon mui-icon-locked',
+								qx: "0,1,2"
+							},{
 								name: "关于教宝校园",
 								icon: "",
 								href: "",
@@ -186,6 +199,29 @@
 								}
 								utils.mOpenWithData("../../html/mine/modifyPassword.html", tempModel);
 							} else if (setting.tempID == 2) { //关于教宝校园
+								utils.mOpenWithData("../../html/mine/about.html", setting);
+							}else if (setting.tempID == 1) { //注销账号
+								mui.confirm("注销账号将会删除个人信息等相关信息，不可恢复，确定注销吗？", '确定注销？', ['确定', '取消'], function(e) {
+										if (e.index == 0) {
+											var enData0 = {};
+											//不需要加密的数据
+											var comData0 = {
+												platform_code: personal.platform_code, //平台代码
+												app_code: personal.app_code, //应用系统代码
+												unit_code: personal.unit_code, //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+												index_code:'index',
+												op_user_code:personal.user_code,
+												access_token: personal.access_token
+											};
+											events.showWaiting();
+											//发送网络请求，data为网络返回值
+											postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'api/hr/user/unregister', enData0, comData0, 0, function(data) {
+												events.closeWaiting();
+												// quitLogin();
+											});
+										}
+									});
+							}else if (setting.tempID == 3) { //隐私协议
 								utils.mOpenWithData("../../html/mine/about.html", setting);
 							}
 						},
