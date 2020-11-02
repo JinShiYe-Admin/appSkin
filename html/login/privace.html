@@ -28,10 +28,11 @@
 			<div id="info"></div>
 		</div>
 		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script type="text/javascript">
 			mui.plusReady(function() {
-				var url = 'http://www.jiaobao.net/dl/jiaobaoxiaoyuan/jbxyPrivacy.htm';
+				var url = window.storageKeyName.PRIVACE;
 				var self = plus.webview.currentWebview();
 				var privaceP = plus.webview.create(url, "", {
 					//这里定义页面高度

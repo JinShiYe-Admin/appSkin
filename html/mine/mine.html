@@ -217,12 +217,16 @@
 											//发送网络请求，data为网络返回值
 											postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'api/hr/user/unregister', enData0, comData0, 0, function(data) {
 												events.closeWaiting();
-												// quitLogin();
+												if(data.code == 0) {
+													quitLogin();
+												} else {
+													mui.toast(data.msg);
+												}
 											});
 										}
 									});
 							}else if (setting.tempID == 3) { //隐私协议
-								utils.mOpenWithData("../../html/mine/about.html", setting);
+								utils.mOpenWithData("../../html/login/privace.html", setting);
 							}
 						},
 						clickHeadImg: function() {

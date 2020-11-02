@@ -18,6 +18,8 @@
 				margin-top: 10px;
 				font-size: 14px;
 				color: gray;
+				text-align: left;
+				text-indent: 1.5em;
 			}
 		</style>
 
@@ -83,37 +85,36 @@
 		//			
 		//		});
 		mui.init({
-			statusBarBackground: '#00CFBD'
+			statusBarBackground: '#00CFBD',
+			beforeback: function(){  
+				return false;  
+			}
 		});
 		var tempModel = {};
 		var loginFlag = 0; //0自动登录，1不自动登录
 
 		mui.plusReady(function() {
-			// var firstOpen = store.get(window.storageKeyName.FIRSTOPEN);
-			// if(firstOpen == null){
-			// 	mui.confirm("<div class='yonghuxieyi'>依据最新的法律要求，我们更新了《<a id='yonghuA' style='text-decoration: underline;'>用户协议</a>》和《<a id='yonghuB' style='text-decoration: underline;'>隐私政策</a>》，请您务必审慎阅读，充分理解相关条款内容，特别是字体加粗标识的重要条款。</div><div class='yonghuxieyi'>点击同意即代表您已阅读并同意《<a id='yonghuAA' style='text-decoration: underline;'>用户协议</a>》和《<a id='yonghuBB' style='text-decoration: underline;'>隐私政策</a>》，如果您不同意用户协议和隐私政策的内容，我们暂时无法为您提供服务。</div><div class='yonghuxieyi'>我们会尽力保护您的个人信息安全。</div>", '用户须知', ['同意', '不同意'], function(e) {
-			// 		if (e.index == 0) {
-			// 			// store.set(window.storageKeyName.FIRSTOPEN,'1');
-			// 		}else{
-			// 			mui.alert('由于您不同意教宝校园《用户协议》和《隐私政策》的相关内容，我们暂时无法为您提供服务。请谅解！','','返回',function (e) {
-			// 			},'div')
-			// 			return false;
-			// 		}
-			// 	},'div');
-			// }
-			// document.getElementById('yonghuA').addEventListener('tap',function () {
-			// 	utils.mOpenWithData("../../html/login/privace.html", {});
-			// })
-			// document.getElementById('yonghuB').addEventListener('tap',function () {
-			// 	utils.mOpenWithData("../../html/login/privace.html", {});
-			// })
-			// document.getElementById('yonghuAA').addEventListener('tap',function () {
-			// 	utils.mOpenWithData("../../html/login/privace.html", {});
-			// })
-			// document.getElementById('yonghuBB').addEventListener('tap',function () {
-			// 	utils.mOpenWithData("../../html/login/privace.html", {});
-			// })
-			
+			//判断是否是第一次使用APP start
+			var firstOpen = store.get(window.storageKeyName.FIRSTOPEN);
+			if(firstOpen == null){
+				mui.confirm("<div class='yonghuxieyi'>依据最新的法律要求，我们更新了《<a id='yonghuA' style='text-decoration: underline;'>用户隐私政策</a>》，请您务必审慎阅读，充分理解相关条款内容，特别是字体加粗标识的重要条款</div><div class='yonghuxieyi'>点击同意即代表您已阅读并同意《<a id='yonghuAA' style='text-decoration: underline;'>用户隐私政策</a>》，如果您不同意用户协议和隐私政策的内容，我们暂时无法为您提供服务</div><div class='yonghuxieyi'>我们会尽力保护您的个人信息安全</div>", '用户须知', ['同意', '不同意'], function(e) {
+					if (e.index == 0) {
+						store.set(window.storageKeyName.FIRSTOPEN,'1');
+					}else{
+						mui.alert("<div class='yonghuxieyi'>由于您不同意教宝校园《用户隐私政策》的相关内容，我们暂时无法为您提供服务。请谅解！</div>",'','返回',function (e) {
+						},'div')
+						return false;
+					}
+				},'div');
+			}
+			document.getElementById('yonghuA').addEventListener('tap',function () {
+				utils.mOpenWithData("../../html/login/privace.html", {});
+			})
+			document.getElementById('yonghuAA').addEventListener('tap',function () {
+				utils.mOpenWithData("../../html/login/privace.html", {});
+			})
+			//判断是否是第一次使用APP end
+			//检查更新 start 
 			// var CHECKUPDATE = store.get(window.storageKeyName.CHECKUPDATE);
 			// if('CHECK'==CHECKUPDATE || null==CHECKUPDATE){
 				events.showWaiting(" ");
@@ -128,7 +129,7 @@
 			// }else if('UNCHECK'==CHECKUPDATE){
 			// 	getInfo()
 			// }
-			
+			//检查更新 end 
 			plus.navigator.setStatusBarBackground("#00CFBD");
 			tempModel = {
 				uuid: '',
