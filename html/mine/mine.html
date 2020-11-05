@@ -172,7 +172,7 @@
 								cls: 'mui-icon mui-icon-locked',
 								qx: "0,1,2"
 							},{
-								name: "用户信息与隐私政策",
+								name: "用户隐私政策",
 								icon: "",
 								href: "",
 								tempID: 3,
@@ -215,9 +215,10 @@
 											};
 											events.showWaiting();
 											//发送网络请求，data为网络返回值
-											postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'api/hr/user/unregister', enData0, comData0, 0, function(data) {
+											postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + 'unregister', enData0, comData0, 0, function(data) {
 												events.closeWaiting();
 												if(data.code == 0) {
+													mui.toast(data.msg);
 													quitLogin();
 												} else {
 													mui.toast(data.msg);
