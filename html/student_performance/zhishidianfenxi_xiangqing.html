@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/student_performance/stuScore.css" />
+		<link rel="stylesheet" href="../../css/utils/preview.css" />
+		<style type="text/css">
+			[v-cloak] {
+				display: none !important;
+			}
+
+			.circular-square {
+				border-radius: 10%;
+				width: 30px;
+				height: 30px;
+			}
+
+			.divd {
+				padding-left: 10px;
+				width: 80%;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				/* background: #7FFFD4; */
+			}
+
+			.mui-grid-view.mui-grid-9 {
+				margin: 0;
+				padding: 0;
+				border-top: 0px solid #eee;
+				border-left: 0px solid #eee;
+				background-color: white;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				background: white;
+				margin: 0;
+				padding: 11px 15px;
+				vertical-align: top;
+				border-right: 0px solid #eee;
+				border-bottom: 0px solid #eee;
+			}
+
+			.chart {
+				height: 200px;
+				margin: 10px;
+				padding: 0px;
+			}
+
+			.mui-grid-view.mui-grid-9.table {
+				border-top: 1px solid #eee !important;
+				border-left: 1px solid #eee !important;
+			}
+
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
+				text-align: left;
+				padding: 0 7px;
+				border-right: 1px solid #eee !important;
+				border-bottom: 1px solid #eee !important;
+			}
+
+			.mui-table-view-cell.beauline:after {
+				left: 0 !important;
+				height: 0 !important;
+			}
+
+			.bg-gray {
+				background: #eaeaea !important;
+			}
+		</style>
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+		</header>
+		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div class="mui-row">
+				<h4 class="examName">文言文阅读</h4>
+				<img src="../../img/homeSchool/change.png" @click="changeKnowPoint" style="position: absolute;right: 10px;top: 55px;width: 30px;height: 30px;">
+			</div> 
+			<div class="mui-row" style="padding: 0 10px;">
+				<div>
+					<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+					<div>当前知识点信息</div>
+				</div>
+				<div class="mui-row" style="margin-top: 15px;">
+					<div class="mui-col-sm-7 mui-col-xs-7" style="margin-top: -30px;">
+						<div id="charts" style="width: 200px;height:200px;"></div>
+					</div>
+					<div class="mui-col-sm-5 mui-col-xs-5" style="font-size: 13px;">
+						<div class="mui-row">
+							<div class="mui-col-xs-5" style="margin-top: 10px;">考查题量:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">3题</div>
+							<div class="mui-col-xs-5" style="margin-top: 10px;">分值:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">6分</div>
+							<div class="mui-col-xs-5" style="margin-top: 10px;">年级均分:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">3.6分</div>
+							<div class="mui-col-xs-5" style="margin-top: 10px;">我的均分:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">5分</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mui-row" v-for="item in 5">
+				<h4 class="spaceLine">考题{{item}}</h4>
+				<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+					<div>
+						<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+						<div>当前题目信息</div>
+					</div>
+					<div class="mui-row" style="margin: 10px 0 0 15px;font-size: 14px;">
+						<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">考查题量: 2019-2020学年上学期高二期末考试语文卷</div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;">分值: 6分</div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分: 3.6分</div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分: 5分</div>
+					</div>
+				</div>
+				<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+					<div>
+						<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+						<div>题目</div>
+					</div>
+					<div class="mui-row" style="margin-top: 10px;font-size: 14px;">
+						<p>该无症状患者，男，47岁，河南人，临时居住地为滨海新区临港路。在我市开展对第138例本土确诊病例流行病学调查中发现，该男子曾于11月5日上午11时左右驾驶货车到中新天津生态城海联冷库装载冷链食品。该司机虽不属于冷库工作人员，但与涉事场所有关联，属于疾控部门排查的第二圈层。11月8日上午，我市疾控部门与该司机取得联系，发现其已开车驾驶到我市静海区唐官屯服务区，并按照疾控部门要求，停靠唐官屯服务区等候，后经120救护车转运至静海区人民医院发热门诊隔离，并进行核酸检测。经静海区人民医院采样核酸检测阳性，并再次采样送静海区疾控中心复核阳性。其本人现无发热、咳嗽等临床症状，11月9日上午确诊为无症状患者，已转运至定点医院。静海区疾控中心人员正在开展流行病学调查。</p>
+					</div> 
+				</div>
+				<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+					<div>
+						<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+						<div>我的答案</div>
+					</div>
+					<div class="mui-row" style="margin-top: 10px;">
+						<img :data-preview-src="img" :data-preview-group="[img]" style="width:100%;" :src="img" >
+					</div> 
+				</div>
+				<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+					<div>
+						<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+						<div>标准答案</div>
+					</div>
+					<div class="mui-row" style="margin-top: 10px;font-size: 14px;">
+						<p>该无症状患者，男，47岁，河南人，临时居住地为滨海新区临港路。在我市开展对第138例本土确诊病例流行病学调查中发现，该男子曾于11月5日上午11时左右驾驶货车到中新天津生态城海联冷库装载冷链食品。该司机虽不属于冷库工作人员，但与涉事场所有关联，属于疾控部门排查的第二圈层。11月8日上午，我市疾控部门与该司机取得联系，发现其已开车驾驶到我市静海区唐官屯服务区，并按照疾控部门要求，停靠唐官屯服务区等候，后经120救护车转运至静海区人民医院发热门诊隔离，并进行核酸检测。经静海区人民医院采样核酸检测阳性，并再次采样送静海区疾控中心复核阳性。其本人现无发热、咳嗽等临床症状，11月9日上午确诊为无症状患者，已转运至定点医院。静海区疾控中心人员正在开展流行病学调查。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<!---->
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src='../../js/utils/big.min.js'></script>
+		<script src="../../js/utils/mui.zoom.js"></script>
+		<script src="../../js/utils/mui.previewimage.js"></script>
+		<script src="../../js/echarts/echarts.min.js"></script>
+		<script src="../../js/echarts/echarts-liquidfill.min.js"></script>
+		<script src="../../js/libs/raty/javascripts/jquery.raty.js"></script>
+		<script src="../../js/libs/raty/javascripts/labs.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
+		
+		
+		
+		<script type="text/javascript">
+			mui.init();
+			mui.previewImage();
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {
+					showBack: 1,
+					headTitle: '知识点详情',
+				}
+			});
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					img:'https://img.xiaopiu.com/userImages/img84346173eb045af0.png'
+				},
+				methods: {
+					changeKnowPoint:function(){
+						utils.mOpenWithData("zhangjie_change.html", {});
+					}
+				},
+			});
+
+			mui.plusReady(function() {
+				let curPage = utils.getDataFromUrl(window.location.href);
+				var containers = document.getElementsByClassName('chart');
+				var option = {
+					series: [{
+						type: 'liquidFill',
+						radius: '70%', //大小
+						name: '本知识点得分率',
+						data: [58 / 100], //数据 需传入小数
+						color: ['#73DC9E'], //波浪颜色
+						outline: { //外边框
+							show: false
+						},
+						itemStyle: { //阴影
+							shadowBlur: 0
+						},
+						backgroundStyle: { //边框
+							borderWidth: 3,
+							borderColor: '#00BAAD',
+							color: '#fff'
+						},
+						label: {
+							formatter: function(param) {
+								console.log("param: " + JSON.stringify(param));
+								return param.seriesName + '\n\n' + (new Big(param.value).times(100)) + '%';
+							},
+							// normal: { //内联字体
+							color: 'black',
+							insideColor: 'black',
+							fontSize: 13
+							// },
+
+						}
+					}]
+				};
+				var chart = echarts.init(document.getElementById('charts'));
+				chart.setOption(option);
+
+
+				// 获取知识点详情
+				// getKnowPointDetail();
+				
+				//知识点切换监听
+				window.addEventListener('checkData', function(data) {
+					console.log("data.detail: " + JSON.stringify(data.detail));
+				});
+			});
+
+			// 获取知识点详情
+			var getKnowPointDetail = function() {
+				comData = {
+					user_code: personal.user_code,
+					id: contentData.examId, //试卷id
+					que_numbers: contentData.stItem.question_number, //题号
+					index_code: contentData.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/queDetail', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						// contentData.stDetail = data.data;
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

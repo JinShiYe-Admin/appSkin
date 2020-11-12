@@ -42,6 +42,9 @@ var appPay = (function(mod) {
 			}
 			//侧滑菜单处于隐藏状态，则立即显示出来；
 			//显示完毕后，根据不同动画效果移动窗体；
+			console.log("mod.menu:"+mod.menu)
+			console.log("mod.main:"+mod.main)
+			console.log("mod.mask:"+mod.mask)
 			if (mod.menu) {
 				mod.menu.show('none', 0, function() {
 					// mod.main.setStyle({
@@ -88,7 +91,7 @@ var appPay = (function(mod) {
 			//等窗体动画结束后，隐藏菜单webview，节省资源；
 			setTimeout(function() {
 				mod.menu.hide();
-			}, 200);
+			}, 1);
 			//改变标志位
 			mod.showMenu = false;
 			//通知index页显示tab栏
@@ -134,6 +137,6 @@ var appPay = (function(mod) {
 				zindex: 9997
 			}
 		});
-	}, 1);
+	}, 100);
 return mod;
 })(appPay || {})
