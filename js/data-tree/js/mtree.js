@@ -12,7 +12,7 @@
   // Settings
   var collapsed = true; // Start with collapsed menu (only level 1 items visible)
   var close_same_level = false; // Close elements on same level when opening new node.
-  var duration = 100; // Animation duration should be tweaked according to easing.
+  var duration = 1; // Animation duration should be tweaked according to easing.
   var listAnim = true; // Animate separate list items on open/close element (velocity.js only).
   var easing = 'easeOutQuart'; // Velocity.js only, defaults to 'swing' with jquery animation.
     

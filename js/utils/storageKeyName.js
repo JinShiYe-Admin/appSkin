@@ -159,13 +159,13 @@ var storageKeyName = (function(mod) {
 	mod.PRIVACE='http://www.jiaobao.net/dl/jiaobaoxiaoyuan/jbxyPrivacy.htm';//用户隐私政策地址
 	
 	//正式包 屏蔽控制台打印
-	['log','warn','info','error'].map(function(item){
-		if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
-			console[item]=console[item].bind(console)
-		}else{
-			console[item]=function(){}
-		}
-	})
+	// ['log','warn','info','error'].map(function(item){
+	// 	if(mod.key==1||mod.key==2||mod.key==3||mod.key==4||mod.key==6){
+	// 		console[item]=console[item].bind(console)
+	// 	}else{
+	// 		console[item]=function(){}
+	// 	}
+	// })
 	
 	mod.pay = 0; //0,单个商家接口;1,多商家接口
 	// var exLog = console.log;
