@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =2; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -150,7 +150,7 @@ var storageKeyName = (function(mod) {
 		default:
 			break;
 	}
-	
+	mod.APPFLAG = 0;//0是普通平台，1是大学平台（大学平台注册没有用户类型)
 	mod.FIRSTOPEN = 'firstOpen';//首次打开，判断是否同意用户协议
 	mod.PWD_ENCRYPTION = '#@_JFnice_@#';//修改密码时，加密密钥
 	mod.SCHOOLID = 100005;//学校ID
