@@ -97,10 +97,10 @@
 					</div>
 					<div class="mui-col-sm-5 mui-col-xs-5" style="font-size: 13px;">
 						<div class="mui-row">
-							<div class="mui-col-xs-5" style="margin-top: 10px;">考查题量:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">3题</div>
-							<div class="mui-col-xs-5" style="margin-top: 10px;">分值:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">6分</div>
-							<div class="mui-col-xs-5" style="margin-top: 10px;">年级均分:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">3.6分</div>
-							<div class="mui-col-xs-5" style="margin-top: 10px;">我的均分:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">5分</div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;">考查题量：3题</div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;">分值：6分</div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分：3.6分</div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分：5分</div>
 						</div>
 					</div>
 				</div>
@@ -113,8 +113,8 @@
 						<div>当前题目信息</div>
 					</div>
 					<div class="mui-row" style="margin: 10px 0 0 15px;font-size: 14px;">
-						<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">考查题量: 2019-2020学年上学期高二期末考试语文卷</div>
-						<div class="mui-col-xs-12" style="margin-top: 10px;">分值: 6分</div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">试题来源: 2019-2020学年上学期高二期末考试语文卷</div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;">本题分值: 6分</div>
 						<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分: 3.6分</div>
 						<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分: 5分</div>
 					</div>
@@ -179,6 +179,10 @@
 		<script type="text/javascript">
 			mui.init();
 			mui.previewImage();
+			curPage = utils.getDataFromUrl(window.location.href);
+			console.log('2222:' + JSON.stringify(curPage));
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
@@ -194,13 +198,12 @@
 				},
 				methods: {
 					changeKnowPoint:function(){
-						utils.mOpenWithData("zhangjie_change.html", {});
+						utils.mOpenWithData("zhishidian_change.html", curPage);
 					}
 				},
 			});
 
 			mui.plusReady(function() {
-				let curPage = utils.getDataFromUrl(window.location.href);
 				var containers = document.getElementsByClassName('chart');
 				var option = {
 					series: [{

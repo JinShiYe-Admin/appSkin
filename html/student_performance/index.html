@@ -188,7 +188,7 @@
 				position: fixed;
 				/* 仅为适配swiper而改动，原值：absolute */
 			}
-			
+
 			.mui-grid-view.mui-grid-9 {
 				margin: 0;
 				padding: 0;
@@ -196,7 +196,7 @@
 				border-left: 0px solid #eee;
 				background-color: white;
 			}
-			
+
 			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
 				background: white;
 				margin: 0;
@@ -205,28 +205,29 @@
 				border-right: 0px solid #eee;
 				border-bottom: 0px solid #eee;
 			}
+
 			.mui-media-body {
 				margin: 4px 0;
 			}
-			
+
 			.pieChart {
 				height: 150px;
 				margin: 10px;
 				padding: 0px;
 			}
-			
-			.pieChartline{
+
+			.pieChartline {
 				height: 350px;
-				margin:-20px 10px;
+				margin: -20px 10px;
 				padding: 0px;
 			}
-			
-			.pieChart-worngbook{
+
+			.pieChart-worngbook {
 				height: 200px;
 				margin: 10px;
 				padding: 0px;
 			}
-			
+
 			.line {
 				right: 0;
 				bottom: 0;
@@ -236,7 +237,7 @@
 				-webkit-transform: scaleY(.5);
 				transform: scaleY(.5);
 				background-color: #77DDA0;
-				margin-top:30px;
+				margin-top: 30px;
 			}
 		</style>
 	</head>
@@ -354,16 +355,16 @@
 						<div class="mui-scroll-norefresh">
 							<div class="mui-row">
 								<h4 class="spaceLine">本科知识点概况</h4>
-								<div class="pieChart"  id="pieChartKnowPoint"></div>
+								<div class="pieChart" id="pieChartKnowPoint"></div>
 								<div style="text-align: center;">
 									<div class="mui-media-body scoreDetail">各知识点平均得分率</div>
 								</div>
 								<ul class="mui-table-view mui-grid-view mui-grid-9">
-									<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6 mui-col-sm-6" >
-										<div class="mui-media-body scoreDetail">本科目知识点总数：{{knowPoints.knowData.zs}}个</div>
+									<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6 mui-col-sm-6">
+										<div class="mui-media-body scoreDetail">本科目知识点总数：{{knowPoints.knowData.total_point}}个</div>
 									</li>
-									<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6 mui-col-sm-6" >
-										<div class="mui-media-body scoreDetail">已考察知识点数量：{{knowPoints.knowData.kc}}个</div>
+									<li class="mui-table-view-cell no-bgc mui-media mui-col-xs-6 mui-col-sm-6">
+										<div class="mui-media-body scoreDetail">已考察知识点数量：{{knowPoints.knowData.survey_point}}个</div>
 									</li>
 								</ul>
 								<div style="text-align: center;margin-top: 10px;">
@@ -373,11 +374,12 @@
 							<div class="mui-row">
 								<h4 class="spaceLine" style="background-color: #F86A6A;color: #fff;margin-top: 20px;">得分率最低的十个知识点</h4>
 								<ul class="mui-table-view no-line" style="font-size: 13px;">
-									<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="item in knowPoints.knowData.lowList">
+									<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in knowPoints.knowData.low_score_list">
 										<div class="mui-row">
-											<div class="mui-col-xs-1" style="text-align: center;padding: 2px;margin-top: -2px;background-color:#F86A6A;border-radius: 50%;width: 25px;height: 25px;color: #fff;">{{item.xh}}</div>
-											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;margin-left: 5px;text-align: left;">{{item.name}}</div>
-											<div class="mui-col-xs-1" @click="toDetailPageKnowPointLow(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+											<div class="mui-col-xs-1" style="text-align: center;padding: 2px;margin-top: -2px;background-color:#F86A6A;border-radius: 50%;width: 25px;height: 25px;color: #fff;">{{index+1}}</div>
+											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;padding-left: 5px;text-align: left;">{{item.name}}</div>
+											<div class="mui-col-xs-1" @click="toDetailPageKnowPointLow(item)"><img style="width: 15px;height: 15px;margin-top: 5px; "
+												 src="../../img/homeSchool/search.png"></img></div>
 										</div>
 									</li>
 								</ul>
@@ -385,11 +387,12 @@
 							<div class="mui-row">
 								<h4 class="spaceLine" style="background-color: #499DF8;color: #fff;margin-top: 15px;">得分率最高的十个知识点</h4>
 								<ul class="mui-table-view no-line" style="font-size: 13px;">
-									<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="item in knowPoints.knowData.lowList">
+									<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="(item,index) in knowPoints.knowData.high_score_list">
 										<div class="mui-row">
-											<div class="mui-col-xs-1" style="text-align: center;padding: 2px;margin-top: -2px;background-color:#499DF8;border-radius: 50%;width: 25px;height: 25px;color: #fff;">{{item.xh}}</div>
-											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;margin-left: 5px;text-align: left;">{{item.name}}</div>
-											<div class="mui-col-xs-1" @click="toDetailPageKnowPointHeight(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+											<div class="mui-col-xs-1" style="text-align: center;padding: 2px;margin-top: -2px;background-color:#499DF8;border-radius: 50%;width: 25px;height: 25px;color: #fff;">{{index+1}}</div>
+											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;padding-left: 5px;text-align: left;">{{item.name}}</div>
+											<div class="mui-col-xs-1" @click="toDetailPageKnowPointHeight(item)"><img style="width: 15px;height: 15px;margin-top: 5px;"
+												 src="../../img/homeSchool/search.png"></img></div>
 										</div>
 									</li>
 								</ul>
@@ -412,7 +415,7 @@
 						<div class="mui-scroll-norefresh">
 							<div class="mui-row">
 								<h4 class="spaceLine">错题数量及趋势</h4>
-								<div class="pieChart-worngbook"  id="pieChartWrongBook"></div>
+								<div class="pieChart-worngbook" id="pieChartWrongBook"></div>
 								<!-- <div style="text-align: left;margin-left: 30px;">
 									<div class="mui-media-body scoreDetail">错题总数：465道</div>
 								</div> -->
@@ -420,40 +423,42 @@
 									<span @click="clickWrongBookDetail" style="background: #00CFBD;padding: 10px 50px;font-size: 14px;color:#fff;border-radius: 30px;">查看错题</span>
 								</div>
 							</div>
-								<div class="line"></div>
+							<div class="line"></div>
 							<div class="mui-row">
-								<h4  style="margin-top: 15px;font-size: 14px;font-weight: normal;margin-left: 10px;">历次考试错题数量趋势如下：</h4>
-								<div class="pieChartline"  id="kaosChart"></div>
+								<h4 style="margin-top: 15px;font-size: 14px;font-weight: normal;margin-left: 10px;">历次考试错题数量趋势如下：</h4>
+								<div class="pieChartline" id="kaosChart"></div>
 							</div>
 							<div class="mui-row">
 								<div class="line"></div>
 							</div>
 							<div class="mui-row">
-								<h4  style="margin-top: 20px;font-size: 14px;font-weight: normal;margin-left: 10px;">历次作业错题数量趋势如下：</h4>
-								<div class="pieChartline"  id="zuoyChart"></div>
+								<h4 style="margin-top: 20px;font-size: 14px;font-weight: normal;margin-left: 10px;">历次作业错题数量趋势如下：</h4>
+								<div class="pieChartline" id="zuoyChart"></div>
 							</div>
 							<div class="mui-row">
 								<h4 class="spaceLine" style="background-color: #F86A6A;color: #fff;margin-top: 20px;">知识点错题榜</h4>
-								<h4  style="margin-top: 20px;font-size: 14px;font-weight: normal;margin-left: 15px;">错题数量最多的十个知识点如下：</h4>
+								<h4 style="margin-top: 20px;font-size: 14px;font-weight: normal;margin-left: 15px;">错题数量最多的十个知识点如下：</h4>
 								<ul class="mui-table-view no-line" style="font-size: 13px;">
 									<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="item in wrongBook.wrongData.knowWrongList">
 										<div class="mui-row">
 											<div class="mui-col-xs-1" style="text-align: center;padding: 2px;margin-top: -2px;background-color:#F86A6A;border-radius: 50%;width: 25px;height: 25px;color: #fff;">{{item.xh}}</div>
-											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;margin-left: 5px;text-align: left;">{{item.name}}</div>
-											<div class="mui-col-xs-1" @click="toDetailPageKnowPointWrong(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;padding-left: 5px;text-align: left;">{{item.name}}</div>
+											<div class="mui-col-xs-1" @click="toDetailPageKnowPointWrong(item)"><img style="width: 15px;height: 15px; margin-top: 5px;"
+												 src="../../img/homeSchool/search.png"></img></div>
 										</div>
 									</li>
 								</ul>
 							</div>
 							<div class="mui-row">
 								<h4 class="spaceLine" style="background-color: #F5A35A;color: #fff;margin-top: 15px;">考试/作业错题榜</h4>
-								<h4  style="margin-top: 20px;font-size: 14px;font-weight: normal;margin-left: 15px;">错题数量最多的十次考试/作业：</h4>
+								<h4 style="margin-top: 20px;font-size: 14px;font-weight: normal;margin-left: 15px;">错题数量最多的十次考试/作业：</h4>
 								<ul class="mui-table-view no-line" style="font-size: 13px;">
 									<li class="mui-table-view-cell no-bgc beauline" style="text-align: center;" v-for="item in wrongBook.wrongData.homeWorkWrongList">
 										<div class="mui-row">
 											<div class="mui-col-xs-1" style="text-align: center;padding: 2px;margin-top: -2px;background-color:#F5A35A;border-radius: 50%;width: 25px;height: 25px;color: #fff;">{{item.xh}}</div>
-											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;margin-left: 5px;text-align: left;">{{item.name}}</div>
-											<div class="mui-col-xs-1" @click="toDetailPageHomeWorkWrong(item)"><img style="width: 15px;height: 15px; margin:2px 0 0 8px;" src="../../img/homeSchool/search.png"></img></div>
+											<div class="mui-col-xs-10" style="word-break: break-all;padding: 0 5px;padding-left: 5px;text-align: left;">{{item.name}}</div>
+											<div class="mui-col-xs-1" @click="toDetailPageHomeWorkWrong(item)"><img style="width: 15px;height: 15px; margin-top: 5px;"
+												 src="../../img/homeSchool/search.png"></img></div>
 										</div>
 									</li>
 								</ul>
@@ -499,7 +504,7 @@
 				data: {
 					showBack: 0,
 					headTitle: '',
-					headImg: setImg(personal.img_url,9)
+					headImg: setImg(personal.img_url, 9)
 				},
 				methods: {
 					clickLeftImg: function() {
@@ -514,36 +519,36 @@
 				data: {
 					semFlag: 0, //点击的seg索引
 					singleSubScore: { //单科成绩
-						refrushFlag:0,//0刷新1加载更多
+						refrushFlag: 0, //0刷新1加载更多
 						subList: [], //科目列表
 						nowSubject: {}, //当前科目信息
 						pageNumber: 1,
 						pageSize: 10,
 						singleScoreList: [], //根据当前科目得到的列表
 					},
-					sumSubScore: {//全科成绩
-						refrushFlag:0,//0刷新1加载更多
+					sumSubScore: { //全科成绩
+						refrushFlag: 0, //0刷新1加载更多
 						pageNumber: 1,
 						pageSize: 10,
 						sumScoreList: []
 					},
-					knowPoints:{
+					knowPoints: {
 						subList: [], //科目列表
 						nowSubject: {}, //当前科目信息
 						knowData: {
-							zs:'',//本科目知识点总数
-							kc:'',//已考察知识点数量
-							lowList:[],//得分率最低的十个知识点
-							heightList:[]//得分率最高的十个知识点
+							total_point: '', //本科目知识点总数
+							// kc:'',//已考察知识点数量
+							// lowList:[],//得分率最低的十个知识点
+							// heightList:[]//得分率最高的十个知识点
 						}
 					},
-					wrongBook:{
+					wrongBook: {
 						subList: [], //科目列表
 						nowSubject: {}, //当前科目信息
 						wrongData: {
-							zs:'',
-							knowWrongList:[],//知识点错题榜
-							homeWorkWrongList:[],//考试/作业错题榜
+							zs: '',
+							knowWrongList: [], //知识点错题榜
+							homeWorkWrongList: [], //考试/作业错题榜
 						}
 					}
 				},
@@ -554,7 +559,7 @@
 							contentData.semFlag = flag;
 							if (flag == 0 && contentData.singleSubScore.subList.length == 0) {
 								// 获取科目列表
-								getSubList(subArray=>{
+								getSubList(flag, subArray => {
 									contentData.singleSubScore.subList = [].concat(subArray);
 									if (subArray.length > 0) {
 										contentData.singleSubScore.nowSubject = subArray[0];
@@ -565,10 +570,10 @@
 								});
 							} else if (flag == 1 && contentData.sumSubScore.sumScoreList.length == 0) {
 								// 获取全科成绩列表
-								getSumSubScore(); 
-							}else if (flag == 2 && contentData.knowPoints.knowData.zs == '') {
+								getSumSubScore();
+							} else if (flag == 2 && contentData.knowPoints.knowData.total_point == '') {
 								// 获取科目列表
-								getSubList(subArray=>{
+								getSubList(flag, subArray => {
 									contentData.knowPoints.subList = [].concat(subArray);
 									if (subArray.length > 0) {
 										contentData.knowPoints.nowSubject = subArray[0];
@@ -577,9 +582,9 @@
 									// 获取知识点分析
 									getKnowPoint();
 								});
-							}else if (flag == 3 && contentData.wrongBook.wrongData.zs == '') {
+							} else if (flag == 3 && contentData.wrongBook.wrongData.zs == '') {
 								// 获取科目列表
-								getSubList(subArray=>{
+								getSubList(flag, subArray => {
 									contentData.wrongBook.subList = [].concat(subArray);
 									if (subArray.length > 0) {
 										contentData.wrongBook.nowSubject = subArray[0];
@@ -599,42 +604,48 @@
 						model.access = curPage.access.split('#')[1];
 						utils.mOpenWithData("../../html/student_performance/sumScore.html", model);
 					},
-					clickKnowPointDetail: function(model) {//查看各知识点详情
+					clickKnowPointDetail: function(model) { //查看各知识点详情
 						model.access = curPage.access.split('#')[1];
-						console.log('查看各知识点详情',JSON.stringify(model))
+						model.book_id = contentData.knowPoints.knowData.book_id;
+						model.nowSubject = contentData.knowPoints.nowSubject;
+						console.log('查看各知识点详情', JSON.stringify(model))
 						utils.mOpenWithData("../../html/student_performance/zhishidianfenxi_xiangqing.html", model);
 					},
-					toDetailPageKnowPointLow:function(model){//得分率最低的十个知识点
+					toDetailPageKnowPointLow: function(model) { //得分率最低的十个知识点
 						model.access = curPage.access.split('#')[1];
 						model.type = 'low';
+						model.headTitle = '得分率最低的十个知识点';
 						console.log('得分率最低的十个知识点')
 						utils.mOpenWithData("../../html/student_performance/zhishidianfenxi.html", model);
 					},
-					toDetailPageKnowPointHeight:function(model){//得分率最高的十个知识点
+					toDetailPageKnowPointHeight: function(model) { //得分率最高的十个知识点
 						model.access = curPage.access.split('#')[1];
 						model.type = 'height';
+						model.headTitle = '得分率最高的十个知识点';
 						console.log('得分率最高的十个知识点')
 						utils.mOpenWithData("../../html/student_performance/zhishidianfenxi.html", model);
 					},
-					clickWrongBookDetail: function(model) {//查看错题详情
+					clickWrongBookDetail: function(model) { //查看错题详情
 						model.access = curPage.access.split('#')[1];
-						console.log('查看查看错题详情',JSON.stringify(model))
-						utils.mOpenWithData("../../html/student_performance/zhishidianfenxi_xiangqing.html", model);
+						console.log('查看查看错题详情', JSON.stringify(model))
+						utils.mOpenWithData("../../html/student_performance/cuoti_xiangqing.html", model);
 					},
-					toDetailPageKnowPointWrong:function(model){//知识点错题榜
+					toDetailPageKnowPointWrong: function(model) { //知识点错题榜
 						model.access = curPage.access.split('#')[1];
+						model.headTitle = '知识点错题榜';
 						console.log('知识点错题榜')
 						utils.mOpenWithData("../../html/student_performance/zhishidianfenxi.html", model);
 					},
-					toDetailPageHomeWorkWrong:function(model){//考试/作业错题榜
+					toDetailPageHomeWorkWrong: function(model) { //考试/作业错题榜
 						model.access = curPage.access.split('#')[1];
+						model.headTitle = '考试/作业错题榜';
 						console.log('考试/作业错题榜')
 						utils.mOpenWithData("../../html/student_performance/zhishidianfenxi.html", model);
 					},
-					
+
 				},
 			});
-			var self=0;
+			var self = 0;
 			mui.plusReady(function() {
 				(function($) {
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -648,20 +659,20 @@
 							$(pullRefreshEl).pullToRefresh({
 								down: {
 									callback: function() {
-										 self = this;
-										if(contentData.semFlag == 0){
-											contentData.singleSubScore.refrushFlag = 0,//0刷新1加载更多
-											contentData.singleSubScore.pageNumber = 1,//
-											// 获取单科成绩列表
-											getSingleSubScore();
-										}else if(contentData.semFlag == 1){
-											contentData.sumSubScore.refrushFlag = 0,//0刷新1加载更多
-											contentData.sumSubScore.pageNumber = 1,//
-											// 获取全科成绩列表
-											getSumSubScore();
-										}else if(contentData.semFlag == 2){
+										self = this;
+										if (contentData.semFlag == 0) {
+											contentData.singleSubScore.refrushFlag = 0, //0刷新1加载更多
+												contentData.singleSubScore.pageNumber = 1, //
+												// 获取单科成绩列表
+												getSingleSubScore();
+										} else if (contentData.semFlag == 1) {
+											contentData.sumSubScore.refrushFlag = 0, //0刷新1加载更多
+												contentData.sumSubScore.pageNumber = 1, //
+												// 获取全科成绩列表
+												getSumSubScore();
+										} else if (contentData.semFlag == 2) {
 											self.endPullDownToRefresh();
-										}else if(contentData.semFlag == 3){
+										} else if (contentData.semFlag == 3) {
 											self.endPullDownToRefresh();
 										}
 										// setTimeout(function() {
@@ -672,17 +683,17 @@
 								up: {
 									callback: function() {
 										self = this;
-										if(contentData.semFlag == 0){
-											contentData.singleSubScore.refrushFlag = 1,//0刷新1加载更多
-											// 获取单科成绩列表
-											getSingleSubScore();
-										}else if(contentData.semFlag == 1){
-											contentData.sumSubScore.refrushFlag = 1,//0刷新1加载更多
-											// 获取全科成绩列表
-											getSumSubScore();
-										}else if(contentData.semFlag == 2){
+										if (contentData.semFlag == 0) {
+											contentData.singleSubScore.refrushFlag = 1, //0刷新1加载更多
+												// 获取单科成绩列表
+												getSingleSubScore();
+										} else if (contentData.semFlag == 1) {
+											contentData.sumSubScore.refrushFlag = 1, //0刷新1加载更多
+												// 获取全科成绩列表
+												getSumSubScore();
+										} else if (contentData.semFlag == 2) {
 											self.endPullUpToRefresh();
-										}else if(contentData.semFlag == 3){
+										} else if (contentData.semFlag == 3) {
 											self.endPullUpToRefresh();
 										}
 										// setTimeout(function() {
@@ -714,7 +725,7 @@
 					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
 				}
 				// 获取科目列表
-				getSubList(subArray=>{
+				getSubList(0, subArray => {
 					contentData.singleSubScore.subList = [].concat(subArray);
 					if (subArray.length > 0) {
 						contentData.singleSubScore.nowSubject = subArray[0];
@@ -726,13 +737,19 @@
 			});
 
 			// 获取科目列表
-			var getSubList = function(callback) {
+			var getSubList = function(flag, callback) {
 				comData = {
 					user_code: personal.user_code,
 					index_code: curPage.access.split('#')[1],
 				}
+				var tempUrl = 'singleSub/subList';
+				if (flag == 2) {
+					tempUrl = 'point/pointSub';
+				} else if (flag == 3) {
+					tempUrl = 'singleSub/subList';
+				}
 				events.showWaiting();
-				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/subList', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + tempUrl, {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						callback(data.data.list);
@@ -741,18 +758,18 @@
 					}
 				});
 			}
-			
-			function setSwiper(id){
+
+			function setSwiper(id) {
 				// swiper左右切换
 				setTimeout(function() {
-					var swiper = new Swiper("#"+id, {
+					var swiper = new Swiper("#" + id, {
 						navigation: {
 							nextEl: '.swiper-button-next',
 							prevEl: '.swiper-button-prev',
-						},    
+						},
 						on: {
 							slideChangeTransitionEnd: function() {
-								switch (id){
+								switch (id) {
 									case 'single-score-swiper':
 										mui('#single-score-body').scroll().scrollTo(0, 0)
 										console.log(JSON.stringify(contentData.singleSubScore.subList))
@@ -760,10 +777,10 @@
 										var tempSub = contentData.singleSubScore.subList[swiper.activeIndex];
 										contentData.singleSubScore.nowSubject = tempSub;
 										console.log('tempSub single-score:' + JSON.stringify(tempSub));
-										contentData.singleSubScore.refrushFlag = 0,//0刷新1加载更多
-										contentData.singleSubScore.pageNumber = 1,//
-										// 获取单科成绩列表
-										getSingleSubScore();
+										contentData.singleSubScore.refrushFlag = 0, //0刷新1加载更多
+											contentData.singleSubScore.pageNumber = 1, //
+											// 获取单科成绩列表
+											getSingleSubScore();
 										break;
 									case 'know-point-swiper':
 										mui('#know-point-body').scroll().scrollTo(0, 0)
@@ -772,7 +789,7 @@
 										console.log('tempSub know-point:' + JSON.stringify(tempSub));
 										// 获取知识点
 										getKnowPoint();
-										break;	
+										break;
 									case 'wrong-book-swiper':
 										mui('#wrong-book-body').scroll().scrollTo(0, 0)
 										var tempSub = contentData.wrongBook.subList[swiper.activeIndex];
@@ -780,16 +797,16 @@
 										console.log('tempSub wrong-book:' + JSON.stringify(tempSub));
 										// 获取错题本
 										getWrongBook();
-										break;	
+										break;
 									default:
 										break;
 								}
 							},
 						},
 					});
-				}, 500) 
+				}, 500)
 			}
-			
+
 			// 获取单科成绩列表
 			var getSingleSubScore = function() {
 				comData = {
@@ -803,25 +820,25 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						if(contentData.singleSubScore.refrushFlag == 0){
+						if (contentData.singleSubScore.refrushFlag == 0) {
 							contentData.singleSubScore.singleScoreList = [].concat(data.data.list);
-							setTimeout(()=>{
-								self&&self.endPullDownToRefresh(); 
-								if(data.data.page_number>=data.data.total_page){
-										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
+									mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 								}
-							},1000)
-						}else{
+							}, 1000)
+						} else {
 							contentData.singleSubScore.singleScoreList = contentData.singleSubScore.singleScoreList.concat(data.data.list);
 							// if(data.data.list.length==0){
 							// 	mui.toast('暂无更多数据');
 							// }    
-							setTimeout(()=>{
-								self&&self.endPullUpToRefresh(); 
-								if(data.data.page_number>=data.data.total_page){
-										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
+									mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 								}
-							},1000)
+							}, 1000)
 						}
 						contentData.singleSubScore.pageNumber++;
 					} else {
@@ -842,26 +859,26 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'fullSub/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						if(contentData.sumSubScore.refrushFlag == 0){
-							
+						if (contentData.sumSubScore.refrushFlag == 0) {
+
 							contentData.sumSubScore.sumScoreList = [].concat(data.data.list);
-							setTimeout(()=>{
-								self&&self.endPullDownToRefresh(); 
-								if(data.data.page_number>=data.data.total_page){
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
 									mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 								}
-							},1000)
-						}else{
+							}, 1000)
+						} else {
 							contentData.sumSubScore.sumScoreList = contentData.sumSubScore.sumScoreList.concat(data.data.list);
 							// if(data.data.list.length==0){
 							// 	mui.toast('暂无更多数据');
 							// }
-							setTimeout(()=>{
-								self&&self.endPullUpToRefresh(); 
-								if(data.data.page_number>=data.data.total_page){
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
 									mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 								}
-							},1000)
+							}, 1000)
 						}
 						contentData.sumSubScore.pageNumber++;
 					} else {
@@ -869,45 +886,50 @@
 					}
 				});
 			}
-			
+
 			//获取知识点
 			var getKnowPoint = function() {
-				contentData.knowPoints.knowData.zs=666
-				contentData.knowPoints.knowData.kc=345
-				contentData.knowPoints.knowData.lowList=[{xh:1,name:'一次函数的图像'},{xh:2,name:'子集与交集、并集运算的转换'},{xh:3,name:'指数函数的定义、解析式、定义域和值域'}]
-				contentData.knowPoints.knowData.heightList=[{xh:1,name:'一次函数的图像'},{xh:2,name:'子集与交集、并集运算的转换'},{xh:3,name:'指数函数的定义、解析式、定义域和值域'}]
-				//知识点 饼图
-				var e=80;
-				var pieChartKnowPoint = echarts.init(document.getElementById('pieChartKnowPoint'));
-				pieChartKnowPoint.setOption({
-						title:{
-							show:true,
-							text:e+'%',
-							x:'center',
-							y:'center',
-							textStyle: {
-								fontSize: '28',
-								color:'#499DF8',
-								fontWeight: '600'
-							}
-						},
-						tooltip: {
-							trigger: 'item',
-							formatter: "{d}%",
-							show:false
-						},
-						legend: {
-							orient: 'vertical',
-							x: 'left',
-							show:false
-						},
-						series: [
-							{
-								name:'',
-								type:'pie',
+				comData = {
+					user_code: personal.user_code,
+					sub_code: contentData.knowPoints.nowSubject.sub_code,
+					index_code: curPage.access.split('#')[1],
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/subOverview', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						contentData.knowPoints.knowData = data.data;
+						//知识点 饼图
+						var e = contentData.knowPoints.knowData.average_score_rate;
+						var pieChartKnowPoint = echarts.init(document.getElementById('pieChartKnowPoint'));
+						pieChartKnowPoint.setOption({
+							title: {
+								show: true,
+								text: e + '%',
+								x: 'center',
+								y: 'center',
+								textStyle: {
+									fontSize: '28',
+									color: '#499DF8',
+									fontWeight: '600'
+								}
+							},
+							tooltip: {
+								trigger: 'item',
+								formatter: "{d}%",
+								show: false
+							},
+							legend: {
+								orient: 'vertical',
+								x: 'left',
+								show: false
+							},
+							series: [{
+								name: '',
+								type: 'pie',
 								radius: ['80%', '90%'],
 								avoidLabelOverlap: true,
-								hoverAnimation:false,
+								hoverAnimation: false,
 								label: {
 									normal: {
 										show: false,
@@ -922,32 +944,64 @@
 										show: false
 									}
 								},
-								data:[
-									{value:e, name:'',itemStyle:{color:"#499DF8"}},
-									{value:100-e, name:'',itemStyle:{color:"#E5E5E5"}}
+								data: [{
+										value: e,
+										name: '',
+										itemStyle: {
+											color: "#499DF8"
+										}
+									},
+									{
+										value: 100 - e,
+										name: '',
+										itemStyle: {
+											color: "#E5E5E5"
+										}
+									}
 								]
-							}
-						],
-					});
+							}],
+						});
+					} else {
+						mui.toast(data.msg);
+					}
+				});
 			}
-			
-			
+
+
 			// 获取错题本
 			var getWrongBook = function() {
-				contentData.wrongBook.wrongData.knowWrongList=[{xh:1,name:'一次函数的图像'},{xh:2,name:'子集与交集、并集运算的转换'},{xh:3,name:'指数函数的定义、解析式、定义域和值域'}]
-				contentData.wrongBook.wrongData.homeWorkWrongList=[{xh:1,name:'一次函数的图像'},{xh:2,name:'子集与交集、并集运算的转换'},{xh:3,name:'指数函数的定义、解析式、定义域和值域'}]
-				
+				contentData.wrongBook.wrongData.knowWrongList = [{
+					xh: 1,
+					name: '一次函数的图像'
+				}, {
+					xh: 2,
+					name: '子集与交集、并集运算的转换'
+				}, {
+					xh: 3,
+					name: '指数函数的定义、解析式、定义域和值域'
+				}]
+				contentData.wrongBook.wrongData.homeWorkWrongList = [{
+					xh: 1,
+					name: '一次函数的图像'
+				}, {
+					xh: 2,
+					name: '子集与交集、并集运算的转换'
+				}, {
+					xh: 3,
+					name: '指数函数的定义、解析式、定义域和值域'
+				}]
+
 				//错题本 折线图
-				let kaos_option = {//考试错题数量趋势
+				let kaos_option = { //考试错题数量趋势
 					tooltip: {
-				        trigger: 'axis',
-				        axisPointer: {
-				            type: 'cross',
-				            label: {
-				                backgroundColor: '#6a7985'
-				            }
-				        }
-				    },
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross',
+							label: {
+								backgroundColor: '#6a7985'
+							}
+						}
+					},
 					xAxis: {
 						type: 'category',
 						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -961,21 +1015,21 @@
 						smooth: true
 					}]
 				};
-				
+
 				var pieChartKaos = echarts.init(document.getElementById('kaosChart'));
 				pieChartKaos.setOption(kaos_option)
-				
+
 				//错题本 折线图
-				let zuoy_option = {//作业错题数量趋势
+				let zuoy_option = { //作业错题数量趋势
 					tooltip: {
-				        trigger: 'axis',
-				        axisPointer: {
-				            type: 'cross',
-				            label: {
-				                backgroundColor: '#6a7985'
-				            }
-				        }
-				    },
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross',
+							label: {
+								backgroundColor: '#6a7985'
+							}
+						}
+					},
 					xAxis: {
 						type: 'category',
 						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -991,58 +1045,62 @@
 				};
 				var pieChartZuoy = echarts.init(document.getElementById('zuoyChart'));
 				pieChartZuoy.setOption(zuoy_option)
-		
+
 				//错题本 饼图
-				let total=465
-				let datas = [{name:"作业错题",value:339}, {name:"考试错题",value:126}]
-				let wrongBook_option = {//错题及数量趋势
+				let total = 465
+				let datas = [{
+					name: "作业错题",
+					value: 339
+				}, {
+					name: "考试错题",
+					value: 126
+				}]
+				let wrongBook_option = { //错题及数量趋势
 					title: {
-				        text: '',
-				        subtext: '错题总数： '+total+' 道',
-				        bottom: 0,
-						left:40,
-						subtextStyle:{
-							fontSize:13,
-							color:'#505050',
-							align:'center'
+						text: '',
+						subtext: '错题总数： ' + total + ' 道',
+						bottom: 0,
+						left: 40,
+						subtextStyle: {
+							fontSize: 13,
+							color: '#505050',
+							align: 'center'
 						}
-				    },
+					},
 					tooltip: {
-				        trigger: 'item',
-				        formatter: '{b}({d}%)'
-				    },
+						trigger: 'item',
+						formatter: '{b}({d}%)'
+					},
 					legend: {
 						orient: 'vertical',
 						right: 15,
 						top: 20,
 						bottom: 20,
 						data: datas,
-						formatter:(name)=>{
-								let arr = []
-							    datas.map(item=>{
-									if(item.name==name){
-										arr.push(name+'  '+item.value+'  道'+'  '+(item.value/total*100).toFixed(1)+'%')
-									}
-								})
-							    return arr.join('\n')
-						}
-					}, 
-					series: [
-						{
-							type: 'pie',
-							radius: '80%',
-							center: ['25%', '45%'],
-							data: datas,
-							label: {
-								normal: {
-									formatter: '{d}%  ',
-									position: 'inner',
-									show : true
+						formatter: (name) => {
+							let arr = []
+							datas.map(item => {
+								if (item.name == name) {
+									arr.push(name + '  ' + item.value + '  道' + '  ' + (item.value / total * 100).toFixed(1) + '%')
 								}
-							},
+							})
+							return arr.join('\n')
 						}
-					],
-					color: ['#F4967B','#F5A35A']
+					},
+					series: [{
+						type: 'pie',
+						radius: '80%',
+						center: ['25%', '45%'],
+						data: datas,
+						label: {
+							normal: {
+								formatter: '{d}%  ',
+								position: 'inner',
+								show: true
+							}
+						},
+					}],
+					color: ['#F4967B', '#F5A35A']
 				};
 				var pieChartWrongBook = echarts.init(document.getElementById('pieChartWrongBook'));
 				pieChartWrongBook.setOption(wrongBook_option)

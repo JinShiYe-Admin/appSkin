@@ -201,7 +201,7 @@
 							} else if (setting.tempID == 2) { //关于教宝校园
 								utils.mOpenWithData("../../html/mine/about.html", setting);
 							}else if (setting.tempID == 1) { //注销账号
-								mui.confirm("注销账号将会删除个人信息等相关信息，不可恢复，确定注销吗？", '确定注销？', ['确定', '取消'], function(e) {
+								mui.confirm("注销后账号将不可使用，与账号相关的数据也会一并删除，确定注销吗？", '确定注销？', ['确定', '取消'], function(e) {
 										if (e.index == 0) {
 											var enData0 = {};
 											//不需要加密的数据

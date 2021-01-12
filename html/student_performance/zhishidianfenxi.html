@@ -143,7 +143,8 @@
 				<div id='know-point-swiper' class="swiper-container">
 					<div class="swiper-wrapper">
 						<div v-for="(subModel,index) in knowPoints.subList" class="swiper-slide">
-							<span class="swiper-slide-span" :class="type=='height'?'height':'low'">{{index+1}}</span><span style="font-weight: bold;margin-top: 1px;">{{subModel.sub_name}}</span>
+							<!-- <span class="swiper-slide-span" :class="type=='height'?'height':'low'">{{index+1}}</span><span style="font-weight: bold;margin-top: 1px;">{{subModel.sub_name}}</span> -->
+							<span style="font-weight: bold;margin-top: 1px;">{{subModel.sub_name}}</span>
 						</div>
 					</div>
 					<!-- Add Arrows -->
@@ -151,7 +152,7 @@
 					<div class="swiper-button-prev"></div>
 				</div>
 			</div>
-			<div  id='know-point-body'  class="mui-scroll-wrapper"  style="margin-top: 120px;">
+			<div  id='know-point-body'  class="mui-scroll-wrapper"  style="margin-top: 100px;">
 				<div class="mui-scroll">
 					<div>
 						<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;margin-left: 10px;"></div>
@@ -163,10 +164,10 @@
 						</div>
 						<div class="mui-col-sm-5 mui-col-xs-5" style="font-size: 13px;">
 							<div class="mui-row">
-								<div class="mui-col-xs-5" style="margin-top: 10px;">考查题量:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">3题</div>
-								<div class="mui-col-xs-5" style="margin-top: 10px;">分值:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">6分</div>
-								<div class="mui-col-xs-5" style="margin-top: 10px;">年级均分:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">3.6分</div>
-								<div class="mui-col-xs-5" style="margin-top: 10px;">我的均分:</div><div class="mui-col-xs-7" style="margin-top: 10px;padding-left: 5px;">5分</div>
+								<div class="mui-col-xs-12" style="margin-top: 10px;">考查题量：3题</div>
+								<div class="mui-col-xs-12" style="margin-top: 10px;">分值：6分</div>
+								<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分：3.6分</div>
+								<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分：5分</div>
 							</div>
 						</div>
 					</div>
@@ -178,8 +179,8 @@
 								<div>当前题目信息</div>
 							</div>
 							<div class="mui-row" style="margin: 10px 0 0 15px;font-size: 14px;">
-								<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">考查题量: 2019-2020学年上学期高二期末考试语文卷</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">分值: 6分</div>
+								<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">试题来源: 2019-2020学年上学期高二期末考试语文卷</div>
+								<div class="mui-col-xs-12" style="margin-top: 10px;">本题分值: 6分</div>
 								<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分: 3.6分</div>
 								<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分: 5分</div>
 							</div>
@@ -252,7 +253,7 @@
 				el: "#tempHead",
 				data: {
 					showBack: 1,
-					headTitle: '知识点详情',
+					headTitle: '',
 				} 
 			});
 			//vue数据
@@ -345,6 +346,7 @@
 			}
 			
 			mui.plusReady(function() {
+				console.log('23456dfghjkfghjkl');
 				(function($) {
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
 					$('.mui-scroll-wrapper').scroll({
@@ -354,7 +356,10 @@
 					});
 				})(mui);
 				
-				let	curPage = utils.getDataFromUrl(window.location.href);
+				console.log('curPage:'+JSON.stringify(curPage));
+				tempHead.headTitle = curPage.headTitle;
+				
+				// let	curPage = utils.getDataFromUrl(window.location.href);
 				getSubList(subArray=>{
 					contentData.knowPoints.subList = [].concat(subArray);
 					if (subArray.length > 0) {

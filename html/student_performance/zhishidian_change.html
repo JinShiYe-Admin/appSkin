@@ -67,9 +67,38 @@
 				margin-left: 0em;
 			}
 
+			.children-item {
+				/* padding-left: 20px !important; */
+				padding-top: 10px !important;
+				padding-bottom: 10px !important;
+				background-color: #E7FAEF !important;
+			}
+
 			.checked {
 				background-color: #00BAAD !important;
 				border: 1px solid #00BAAD !important;
+			}
+
+			.mui-card {
+				margin: 0px;
+				box-shadow: 0 0px 0px rgba(0, 0, 1, .3);
+			}
+
+			.mui-card-header:after {
+				height: 0px;
+			}
+
+			ul.mtree.transit li.mtree-node>ul:after {
+				height: 0px;
+			}
+
+			ul.mtree.transit li.mtree-node>ul>li:last-child {
+				margin-bottom: 0em !important;
+				padding-bottom: 0em !important;
+			}
+
+			.transit {
+				padding-left: 0px !important;
 			}
 		</style>
 	</head>
@@ -80,14 +109,14 @@
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
-			<div class="mui-card">
+			<div class="mui-card" v-if="pointList.length">
 				<div class="mui-card-header">
-					<h4 class="examName" style="width: 100%;text-align: center;margin: 2px 20px 2px;">高中语文</h4>
+					<h4 class="examName" style="width: 100%;text-align: center;margin: 2px 20px 2px;">{{point_name}}</h4>
 				</div>
-				<div class="mui-card-content">
-						<tree-list :list="datas" @item-clicked="onItemClicked" style="margin-top: 0px;margin-bottom: 0px;"></tree-list>
+				<div v-cloak class="mui-card-content">
+					<tree-list :list="pointList" @item-clicked="onItemClicked" style="margin-top: 0px;margin-bottom: 0px;"></tree-list>
 				</div>
-				
+
 			</div>
 		</div>
 
@@ -112,6 +141,7 @@
 		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<script src="../../js/data-tree/js/mtree.js" defer></script>
 		<script type="text/javascript">
+			<!-- <a href="javascript:void(0)" class="mui-icon" :class="{'last-item':!item.child,'checked':item.isChecked} "  @click="item.child?'':itemClicked(item)">{{item.name}}</a> -->
 			Vue.component('tree-list', {
 				props: {
 					list: { //列表内容
@@ -119,16 +149,14 @@
 						default: []
 					}
 				},
-				template: `
-										        <ul class="mtree transit">
-										        	<li v-for="(item,index) in list" :key="item.key">
-														<a href="javascript:void(0)" class="mui-icon" :class="{'last-item':!item.child,'checked':item.isChecked} "  @click="item.child?'':itemClicked(item)">{{item.name}}</a>
-														<template v-if="item.child">
-															<tree-list :list="item.child" @item-clicked="itemClicked" :key="item.key"></tree-list>
-														</template>
-													</li>
-												</ul>
-										    `,
+				template: `<ul class="mtree transit">
+							<li v-for="(item,index) in list" :id="item.id">
+								<a href="javascript:void(0)" class="mui-icon" :class="[item.children?'children-item':'last-item']"  @click="item.children?'':itemClicked(item)">{{item.name}}</a>
+								<template v-if="item.children">
+									<tree-list :list="item.children" @item-clicked="itemClicked" :id="item.id"></tree-list>
+								</template>
+							</li>
+						</ul>`,
 				methods: {
 					itemClicked: function(item) {
 						this.$emit('item-clicked', item);
@@ -138,7 +166,8 @@
 
 
 			mui.init();
-			//获取个人信息
+			curPage = utils.getDataFromUrl(window.location.href);
+			console.log('2222:' + JSON.stringify(curPage));
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
 			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
@@ -153,126 +182,9 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					datas: [{
-							key: 'a1',
-							name: '基础知识1',
-							child: [{
-								key: 'b1',
-								name: '词汇1',
-							}, {
-								key: 'b2',
-								name: '词汇2',
-							}, {
-								key: 'b3',
-								name: '词汇3',
-							}, {
-								key: 'b4',
-								name: '词汇4',
-							}, {
-								key: 'b4',
-								name: '词汇5',
-							}, {
-								key: 'b6',
-								name: '词汇6',
-							}, {
-								key: 'b7',
-								name: '词汇7',
-							}]
-						},
-						{
-							key: 'a2',
-							name: '基础知识2',
-							child: [{
-								name: '句子1',
-								child: [{
-									key: 'b8',
-									name: '标点符号',
-									child: [{
-										key: 'c1',
-										name: '帅'
-									}, {
-										key: 'c2',
-										name: '帅'
-									}, {
-										key: 'c3',
-										name: '帅'
-									}]
-								}, {
-									key: 'b16',
-									name: '语句停顿',
-								}, {
-									key: 'b17',
-									name: '修辞方法',
-								}]
-							}, {
-								key: 'b9',
-								name: '句子2',
-								child: [{
-									key: 'c4',
-									name: '标点符号2',
-								}, {
-									key: 'c5',
-									name: '语句停顿2',
-								}, {
-									key: 'c6',
-									name: '修辞方法2',
-								}]
-							}, {
-								key: 'b20',
-								name: '句子3',
-							}, {
-								key: 'b21',
-								name: '句子4',
-							}]
-						},
-						{
-							key: 'a3',
-							name: '基础知识3',
-							child: [{
-								key: 'b10',
-								name: '句子1',
-								child: [{
-									key: 'c7',
-									name: '标点符号',
-									child: [{
-										key: 'd1',
-										name: 'test1'
-									}, {
-										key: 'd2',
-										name: 'test2'
-									}, {
-										key: 'd3',
-										name: 'test3'
-									}]
-								}, {
-									key: 'c8',
-									name: '语句停顿'
-								}, {
-									key: 'c9',
-									name: '修辞方法'
-								}]
-							}, {
-								key: 'b11',
-								name: '句子2',
-								child: [{
-									key: 'c10',
-									name: '标点符号2',
-								}, {
-									key: 'c11',
-									name: '语句停顿2',
-								}, {
-									key: 'c12',
-									name: '修辞方法2',
-								}]
-							}, {
-								key: 'c250',
-								name: '句子3',
-							}, {
-								key: 'c251',
-								name: '句子4'
-							}]
-						},
-					]
+					per_code:'',
+					point_name:'',
+					pointList:[]
 				},
 				methods: {
 					onItemClicked: function(item) {
@@ -281,24 +193,64 @@
 							if (e.index == 0) {
 								mui.fire(plus.webview.currentWebview().opener(), 'checkData', item);
 								mui.back()
-							}else{
-								var node = $('.mtree li');  
+							} else {
+								var node = $('.mtree li');
 								node.each(function(index, val) {
-								  console.log()
-								  if($(this).hasClass('mtree-active')){
-									  $(this).removeClass('mtree-active')
-								  }
+									console.log()
+									if ($(this).hasClass('mtree-active')) {
+										$(this).removeClass('mtree-active')
+									}
 								});
 							}
 						})
-						
+
 					}
 				},
 			});
 
 			mui.plusReady(function() {
-
+				// 先获取学段
+				comData = {
+					sch_code: '', //查询学校的代码
+					index_code: curPage.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'per', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if(data.data.list.length>0){
+							var tempM = data.data.list[0];
+							contentData.per_code = tempM.per_code;
+							contentData.point_name = tempM.per_name+curPage.nowSubject.sub_name;
+							// 获取知识点目录
+							getPointList(function(tempList){
+								console.log('tempList:'+tempList.length);
+								contentData.pointList = [].concat(tempList);
+								console.log('contentData.pointList:'+JSON.stringify(contentData.pointList));
+							});
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
 			});
+			// 获取知识点目录
+			var getPointList = function(callback) {
+				comData = {
+					book_id: curPage.book_id, //书籍id
+					index_code: curPage.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/catalogs', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					callback(data.data.list);
+					if (data.code == 0) {
+						callback(data.data.list);
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
 		</script>
 	</body>
 
