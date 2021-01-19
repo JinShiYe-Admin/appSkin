@@ -110,7 +110,7 @@
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div class="mui-card" v-if="pointList.length">
-				<div class="mui-card-header">
+				<div v-if="herfData.flag==0||(herfData.flag==1&&herfData.type==0)" class="mui-card-header">
 					<h4 class="examName" style="width: 100%;text-align: center;margin: 2px 20px 2px;">{{point_name}}</h4>
 				</div>
 				<div v-cloak class="mui-card-content">
@@ -139,7 +139,7 @@
 		<script src='../../js/libs/crypto-js/require.js'></script>
 		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
 		<script src='../../js/libs/encryption/sortSign.js'></script>
-		<script src="../../js/data-tree/js/mtree.js" defer></script>
+		<!-- <script src="../../js/data-tree/js/mtree.js" defer></script> -->
 		<script type="text/javascript">
 			<!-- <a href="javascript:void(0)" class="mui-icon" :class="{'last-item':!item.child,'checked':item.isChecked} "  @click="item.child?'':itemClicked(item)">{{item.name}}</a> -->
 			Vue.component('tree-list', {
@@ -173,7 +173,7 @@
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
-					headTitle: '知识点选择',
+					headTitle: '',
 				},
 				methods: {}
 			});
@@ -182,9 +182,10 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					per_code:'',
-					point_name:'',
-					pointList:[]
+					herfData:curPage,
+					per_code: '',
+					point_name: '',
+					pointList: []
 				},
 				methods: {
 					onItemClicked: function(item) {
@@ -209,47 +210,98 @@
 			});
 
 			mui.plusReady(function() {
-				// 先获取学段
-				comData = {
-					sch_code: '', //查询学校的代码
-					index_code: curPage.access,
-				}
-				events.showWaiting();
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'per', {}, comData, 2, function(data) {
-					events.closeWaiting();
-					if (data.code == 0) {
-						if(data.data.list.length>0){
-							var tempM = data.data.list[0];
-							contentData.per_code = tempM.per_code;
-							contentData.point_name = tempM.per_name+curPage.nowSubject.sub_name;
-							// 获取知识点目录
-							getPointList(function(tempList){
-								console.log('tempList:'+tempList.length);
-								contentData.pointList = [].concat(tempList);
-								console.log('contentData.pointList:'+JSON.stringify(contentData.pointList));
-							});
-						}
-					} else {
-						mui.toast(data.msg);
+				if (curPage.flag == 0) {
+					tempHead.headTitle = '知识点选择';
+					// 获取知识点目录
+					getPointList(function(tempList) {
+						contentData.pointList = [].concat(tempList);
+						//执行异步加载js
+						loadScript("../../js/data-tree/js/mtree.js", function() {
+							console.log("加载download.js成功！");
+						});
+					});
+				} else {
+					if(curPage.type == 0){
+						tempHead.headTitle = '知识点选择';
+					}else{
+						tempHead.headTitle = '章节选择';
 					}
-				});
+					getChapterList(function(tempList) {
+						contentData.pointList = [].concat(tempList);
+						//执行异步加载js
+						loadScript("../../js/data-tree/js/mtree.js", function() {
+							console.log("加载download.js成功！");
+						});
+					});
+				}
 			});
 			// 获取知识点目录
 			var getPointList = function(callback) {
 				comData = {
-					book_id: curPage.book_id, //书籍id
+					per_code: curPage.per_code, //学段代码
+					sub_code: curPage.nowSubject.sub_code, //科目代码
 					index_code: curPage.access,
 				}
 				events.showWaiting();
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/catalogs', {}, comData, 2, function(data) {
 					events.closeWaiting();
-					callback(data.data.list);
 					if (data.code == 0) {
-						callback(data.data.list);
+						contentData.point_name = data.data.list[0].name;
+						callback(data.data.list[0].catalog_list);
 					} else {
 						mui.toast(data.msg);
 					}
 				});
+			}
+
+			// 获取章节目录
+			var getChapterList = function(callback) {
+				comData = {
+					type: curPage.type, //0为查知识点目录,1为查章节目录
+					sub_code: curPage.nowSubject.sub_code, //科目代码
+					index_code: curPage.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'errorBook/catalogs', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (curPage.type == 0) {
+							contentData.point_name = data.data.list[0].name;
+							callback(data.data.list[0].catalog_list);
+						} else {
+							var tempArr = data.data.list.map(function(item) {
+								return {
+									children: item.catalog_list,
+									name: item.name,
+									id: item.id,
+								}
+							})
+							callback(tempArr);
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			function loadScript(url, callback) {
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				if (script.readyState) { //IE
+					script.onreadystatechange = function() {
+						if (script.readyState == "loaded" ||
+							script.readyState == "complete") {
+							script.onreadystatechange = null;
+							callback();
+						}
+					};
+				} else { //加载
+					script.onload = function() {
+						callback(); //加载成功的回调
+					};
+				}
+				script.src = url;
+				document.body.appendChild(script);
 			}
 		</script>
 	</body>

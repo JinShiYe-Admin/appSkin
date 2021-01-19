@@ -93,7 +93,7 @@
 				 <div>{{item.cls_name}}</div>
 				 <div style="height: 3px;width: 100%;background: #B5E9E5;margin-top: 8px;"></div>
 				 <div class="mui-row">
-					<div v-if="stuItem.stu_code!=personal.user_code" v-for="(stuItem,index) in item.stu_list" class="mui-col-xs-3" style="height: 50px;" :style="{'margin-top':index<4?'15px':'0','text-align':stuItem.stu_name&&stuItem.stu_name.length>4?'left':'center'}" @click="clickMe(item.cls_code,stuItem)">
+					<div v-for="(stuItem,index) in item.stu_list" class="mui-col-xs-3" style="height: 50px;" :style="{'margin-top':index<4?'15px':'0','text-align':stuItem.stu_name&&stuItem.stu_name.length>4?'left':'center'}" @click="clickMe(item.cls_code,stuItem)">
 						<p 
 							style="padding:5px 10px;margin: 0 3px;"
 							:style="{
@@ -217,10 +217,15 @@
 					if (data.code == 0) {
 						for(var a = 0;a<data.data.list.length;a++){
 							var tempM0 = data.data.list[a];
+							var tempArr = [];
 							for(var b = 0;b<tempM0.stu_list.length;b++){
 								var tempM1 = tempM0.stu_list[b];
-								tempM1.isCheck = false;
+								if(tempM1.stu_code != contentData.personal.user_code){
+									tempM1.isCheck = false;
+									tempArr.push(tempM1);
+								}
 							}
+							tempM0.stu_list = [].concat(tempArr);
 						}
 						contentData.stuList = [].concat(data.data.list);
 					} else {

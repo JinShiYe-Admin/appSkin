@@ -134,7 +134,8 @@
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" v-for="item in stList">
-							<p style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">{{item.question_number}}</p>
+							<p v-if="item.question_number == stItem.question_number" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: #FF8D1A;color: #FFFFFF;">{{item.question_number}}</p>
+							<p v-if="item.question_number != stItem.question_number" style="margin: 5px;padding-top: 5px;text-align:center;width: 30px;height: 30px;border-radius: 50%;background: darkgray;color: #FFFFFF;">{{item.question_number}}</p>
 						</div>
 					</div>
 					<!-- Add Arrows -->

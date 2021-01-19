@@ -14,19 +14,20 @@
 			[v-cloak] {
 				display: none !important;
 			}
+
 			.circular-square {
 				border-radius: 10%;
 				width: 30px;
 				height: 30px;
 			}
-			
+
 			.swiper-container {
 				margin-top: 10px;
 				margin-bottom: 15px;
 				width: 100%;
 				height: 100%;
 			}
-			
+
 			.swiper-slide {
 				text-align: center;
 				font-size: 18px;
@@ -44,18 +45,18 @@
 				-webkit-align-items: center;
 				align-items: center;
 			}
-			
+
 			.swiper-button-next:after,
 			.swiper-button-prev:after {
 				font-size: 15px;
 				font-weight: bold;
 				color: #00CFBD;
 			}
-			
+
 			.swiper-slide-span {
 				width: 25px;
 				height: 25px;
-				background:#F86A6A;
+				background: #F86A6A;
 				padding-top: 2px;
 				font-size: 13px;
 				margin-right: 5px;
@@ -63,13 +64,13 @@
 				border-radius: 50%;
 				color: white;
 			}
-			
+
 			.swiper-slide-span.height {
-				background:#499DF8;
+				background: #499DF8;
 			}
-			
+
 			.swiper-slide-span.low {
-				background:#F86A6A;
+				background: #F86A6A;
 			}
 
 			.divd {
@@ -104,32 +105,38 @@
 				margin: 10px;
 				padding: 0px;
 			}
-			
+
 			.mui-grid-view.mui-grid-9.table {
-			    border-top: 1px solid #eee !important;
-			    border-left: 1px solid #eee !important;
+				border-top: 1px solid #eee !important;
+				border-left: 1px solid #eee !important;
 			}
-			
+
 			.mui-grid-view.mui-grid-9 .mui-table-view-cell.table {
 				text-align: left;
 				padding: 0 7px;
-			    border-right: 1px solid #eee !important;
-			    border-bottom: 1px solid #eee !important;
+				border-right: 1px solid #eee !important;
+				border-bottom: 1px solid #eee !important;
 			}
-			
+
 			.mui-table-view-cell.beauline:after {
-			    left: 0 !important;
+				left: 0 !important;
 				height: 0 !important;
 			}
-			.bg-gray{
+
+			.bg-gray {
 				background: #eaeaea !important;
 			}
-			
+
 			.mui-scroll-wrapper {
 				position: fixed;
 				/* 仅为适配swiper而改动，原值：absolute */
 			}
-			 
+
+			.rich>img {
+				display: block;
+				max-width: 100%;
+				height: 100%;
+			}
 		</style>
 	</head>
 
@@ -142,9 +149,14 @@
 			<div class="mui-row">
 				<div id='know-point-swiper' class="swiper-container">
 					<div class="swiper-wrapper">
-						<div v-for="(subModel,index) in knowPoints.subList" class="swiper-slide">
-							<!-- <span class="swiper-slide-span" :class="type=='height'?'height':'low'">{{index+1}}</span><span style="font-weight: bold;margin-top: 1px;">{{subModel.sub_name}}</span> -->
-							<span style="font-weight: bold;margin-top: 1px;">{{subModel.sub_name}}</span>
+						<div v-if="flag==1" v-for="(subModel,index) in knowPoints.bookList" class="swiper-slide">
+							<span class="swiper-slide-span" :class="type=='height'?'height':'low'">{{index+1}}</span><span style="font-weight: bold;margin-top: 1px;">{{subModel.book_catalog_name}}</span>
+						</div>
+						<div v-if="flag==2" v-for="(subModel,index) in knowPoints.bookList" class="swiper-slide">
+							<span class="swiper-slide-span" :class="type=='height'?'height':'low'">{{index+1}}</span><span style="font-weight: bold;margin-top: 1px;">{{subModel.name}}</span>
+						</div>
+						<div v-if="flag==3" v-for="(subModel,index) in knowPoints.bookList" class="swiper-slide">
+							<span class="swiper-slide-span" :class="type=='height'?'height':'low'">{{index+1}}</span><span style="font-weight: bold;margin-top: 1px;font-size: 14px;">{{subModel.paper_name}}</span>
 						</div>
 					</div>
 					<!-- Add Arrows -->
@@ -152,76 +164,97 @@
 					<div class="swiper-button-prev"></div>
 				</div>
 			</div>
-			<div  id='know-point-body'  class="mui-scroll-wrapper"  style="margin-top: 100px;">
-				<div class="mui-scroll">
-					<div>
-						<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;margin-left: 10px;"></div>
-						<div>当前知识点信息</div>
-					</div>
-					<div class="mui-row" style="margin-top: 15px;">
-						<div class="mui-col-sm-7 mui-col-xs-7" style="margin-top: -30px;">
-							<div id="charts" style="width: 200px;height:200px;"></div>
-						</div>
-						<div class="mui-col-sm-5 mui-col-xs-5" style="font-size: 13px;">
-							<div class="mui-row">
-								<div class="mui-col-xs-12" style="margin-top: 10px;">考查题量：3题</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">分值：6分</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分：3.6分</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分：5分</div>
-							</div>
-						</div>
-					</div>
-					<div class="mui-row" v-for="item in 5">
-						<h4 class="spaceLine">考题{{item}}</h4>
-						<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+			<div class="mui-slider-group">
+				<div id='know-point-body' class="mui-scroll-wrapper" style="margin-top: 100px;">
+					<div class="mui-scroll">
+						<div v-if="flag==1">
 							<div>
-								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
-								<div>当前题目信息</div>
+								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;margin-left: 10px;"></div>
+								<div>当前知识点信息</div>
 							</div>
-							<div class="mui-row" style="margin: 10px 0 0 15px;font-size: 14px;">
-								<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">试题来源: 2019-2020学年上学期高二期末考试语文卷</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">本题分值: 6分</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分: 3.6分</div>
-								<div class="mui-col-xs-12" style="margin-top: 10px;">我的均分: 5分</div>
+							<div class="mui-row" style="margin-top: 15px;">
+								<div class="mui-col-sm-7 mui-col-xs-7" style="margin-top: -30px;">
+									<div id="charts" style="width: 200px;height:200px;"></div>
+								</div>
+								<div class="mui-col-sm-5 mui-col-xs-5" style="font-size: 13px;">
+									<div class="mui-row">
+										<div class="mui-col-xs-12" style="margin-top: 10px;">考查题量：{{pointInfo.question_number}}题</div>
+										<div class="mui-col-xs-12" style="margin-top: 10px;">分值：{{pointInfo.question_total_score}}分</div>
+										<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分：{{pointInfo.grd_avg_score}}分</div>
+										<div class="mui-col-xs-12" style="margin-top: 10px;">我的得分：{{pointInfo.stu_total_score}}分</div>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
-							<div>
-								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
-								<div>题目</div>
-							</div>
-							<div class="mui-row" style="margin-top: 10px;font-size: 14px;">
-								<p>该无症状患者，男，47岁，河南人，临时居住地为滨海新区临港路。在我市开展对第138例本土确诊病例流行病学调查中发现，该男子曾于11月5日上午11时左右驾驶货车到中新天津生态城海联冷库装载冷链食品。该司机虽不属于冷库工作人员，但与涉事场所有关联，属于疾控部门排查的第二圈层。11月8日上午，我市疾控部门与该司机取得联系，发现其已开车驾驶到我市静海区唐官屯服务区，并按照疾控部门要求，停靠唐官屯服务区等候，后经120救护车转运至静海区人民医院发热门诊隔离，并进行核酸检测。经静海区人民医院采样核酸检测阳性，并再次采样送静海区疾控中心复核阳性。其本人现无发热、咳嗽等临床症状，11月9日上午确诊为无症状患者，已转运至定点医院。静海区疾控中心人员正在开展流行病学调查。</p>
-							</div> 
+						<div v-if="flag==2||flag==3" style="margin-top: 10px;margin-bottom: 20px;">
+							<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;margin-left: 10px;"></div>
+							<div v-if="pointInfo.question_id_list" style="text-align: center;">当前错题数量：<span style="color: red;font-size: 25px;">{{pointInfo.question_id_list.length}}</span>
+								题</div>
 						</div>
-						<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
-							<div>
-								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
-								<div>我的答案</div>
+						<div class="mui-row" v-for="(item,index) in pointList">
+							<h4 class="spaceLine">考题{{index+1}}</h4>
+							<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+								<div>
+									<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+									<div>当前题目信息</div>
+								</div>
+								<div class="mui-row" style="margin: 10px 0 0 15px;font-size: 14px;">
+									<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;">试题来源: {{item.task_name}}</div>
+									<div class="mui-col-xs-12" style="margin-top: 10px;">本题分值: {{item.question_score}}分</div>
+									<div class="mui-col-xs-12" style="margin-top: 10px;">年级均分: {{item.grd_avg_score}}分</div>
+									<div class="mui-col-xs-12" style="margin-top: 10px;">我的得分: {{item.stu_score}}分</div>
+								</div>
 							</div>
-							<div class="mui-row" style="margin-top: 10px;">
-								<img :data-preview-src="img" :data-preview-group="[img]" style="width:100%;" :src="img" >
-							</div> 
-						</div>
-						<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
-							<div>
-								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
-								<div>标准答案</div>
+							<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+								<div>
+									<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+									<div>题目</div>
+								</div>
+								<div class="mui-row" style="margin-top: 10px;font-size: 14px;">
+									<p v-if="item.content.length==0&&item.option.length==0">暂无数据</p>
+									<p class="rich" v-if="item.content.length>0" style="font-size: 14px;color: #666;" v-html=item.content></p>
+									<template v-for="(item,index) in item.option">
+										<p style="font-size: 14px;color: #666;margin-left: 15px;">{{item}}</p>
+									</template>
+								</div>
 							</div>
-							<div class="mui-row" style="margin-top: 10px;font-size: 14px;">
-								<p>该无症状患者，男，47岁，河南人，临时居住地为滨海新区临港路。在我市开展对第138例本土确诊病例流行病学调查中发现，该男子曾于11月5日上午11时左右驾驶货车到中新天津生态城海联冷库装载冷链食品。该司机虽不属于冷库工作人员，但与涉事场所有关联，属于疾控部门排查的第二圈层。11月8日上午，我市疾控部门与该司机取得联系，发现其已开车驾驶到我市静海区唐官屯服务区，并按照疾控部门要求，停靠唐官屯服务区等候，后经120救护车转运至静海区人民医院发热门诊隔离，并进行核酸检测。经静海区人民医院采样核酸检测阳性，并再次采样送静海区疾控中心复核阳性。其本人现无发热、咳嗽等临床症状，11月9日上午确诊为无症状患者，已转运至定点医院。静海区疾控中心人员正在开展流行病学调查。</p>
+							<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+								<div>
+									<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+									<div>我的答案</div>
+								</div>
+								<div class="mui-row" style="margin-top: 10px;">
+									<p v-if="item.stu_answer.length==0&&item.stu_answer_img_url.length==0" class="noData" style="margin-top: 15px;">暂无数据</p>
+									<template v-for="(item1,index) in item.stu_answer">
+										<p style="font-size: 14px;color: #666;margin-left: 15px;">{{item1}}</p>
+									</template>
+									<img v-if="item.stu_answer_img_url.length>0" :data-preview-src="item.stu_answer_img_url" :src=item.stu_answer_img_url
+									 width="100%">
+									<!-- <img :data-preview-src="img" :data-preview-group="[img]" style="width:100%;" :src="img"> -->
+								</div>
+							</div>
+							<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
+								<div>
+									<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;"></div>
+									<div>标准答案</div>
+								</div>
+								<div class="mui-row" style="margin-top: 10px;font-size: 14px;">
+									<p>{{item.task_name}}</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div> 
+		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/utils.js"></script>
 		<!---->
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
@@ -254,99 +287,189 @@
 				data: {
 					showBack: 1,
 					headTitle: '',
-				} 
+				}
 			});
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					img:'https://img.xiaopiu.com/userImages/img84346173eb045af0.png',
-					type:curPage.type,//类型 得分率最高（少）的十个知识点  height(low)
-					 knowPoints:{
-						 subList:[],
-						 nowSubject:{}
-					 }
+					// img: 'https://img.xiaopiu.com/userImages/img84346173eb045af0.png',
+					type: curPage.type, //类型 得分率最高（少）的十个知识点  height(low)
+					flag: curPage.flag,
+					pointInfo: {},
+					pointList: [],
+					refrushFlag: 0, //0刷新1加载更多
+					pageNumber: 1,
+					pageSize: 10,
+					knowPoints: {
+						bookList: [],
+						nowBook: {}
+					}
 				},
-				methods: {
-				},
+				methods: {},
 			});
 
-			
-			
-			var containers = document.getElementsByClassName('chart');
-			var option = {
-				series: [{
-					type: 'liquidFill',
-					radius: '70%', //大小
-					name: '本知识点得分率',
-					data: [58 / 100], //数据 需传入小数
-					color: ['#73DC9E'], //波浪颜色
-					outline: { //外边框
-						show: false
-					},
-					itemStyle: { //阴影
-						shadowBlur: 0
-					},
-					backgroundStyle: { //边框
-						borderWidth: 3,
-						borderColor: '#00BAAD',
-						color: '#fff'
-					},
-					label: {
-						formatter: function(param) {
-							console.log("param: " + JSON.stringify(param));
-							return param.seriesName + '\n\n' + (new Big(param.value).times(100)) + '%';
+			var option, chart;
+			if (curPage.flag == 1) {
+				var containers = document.getElementsByClassName('chart');
+				option = {
+					series: [{
+						type: 'liquidFill',
+						radius: '70%', //大小
+						name: '本知识点得分率',
+						data: [0.0], //数据 需传入小数
+						color: ['#73DC9E'], //波浪颜色
+						outline: { //外边框
+							show: false
 						},
-						// normal: { //内联字体
-						color: 'black',
-						insideColor: 'black',
-						fontSize: 13
-						// },
-			
-					}
-				}]
-			};
-			var chart = echarts.init(document.getElementById('charts'));
-			chart.setOption(option);
-			
+						itemStyle: { //阴影
+							shadowBlur: 0
+						},
+						backgroundStyle: { //边框
+							borderWidth: 3,
+							borderColor: '#00BAAD',
+							color: '#fff'
+						},
+						label: {
+							formatter: function(param) {
+								console.log("param: " + JSON.stringify(param));
+								return param.seriesName + '\n\n' + (new Big(param.value).times(100)) + '%';
+							},
+							// normal: { //内联字体
+							color: 'black',
+							insideColor: 'black',
+							fontSize: 13
+							// },
+
+						}
+					}]
+				};
+				chart = echarts.init(document.getElementById('charts'));
+				chart.setOption(option);
+			}
+
+
 			// 获取知识点详情
 			var getKnowPointDetail = function() {
 				comData = {
 					user_code: personal.user_code,
-					id: contentData.examId, //试卷id
-					que_numbers: contentData.stItem.question_number, //题号
-					index_code: contentData.access,
-				}
-				events.showWaiting();
-				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/queDetail', {}, comData, 2, function(data) {
-					events.closeWaiting();
-					if (data.code == 0) {
-						// contentData.stDetail = data.data;
-					} else {
-						mui.toast(data.msg);
-					}
-				});
-			}
-			
-			// 获取科目列表
-			var getSubList = function(callback) {
-				comData = {
-					user_code: personal.user_code,
+					book_catalog_id: contentData.knowPoints.nowBook.book_catalog_id, //知识点id
 					index_code: curPage.access,
 				}
 				events.showWaiting();
-				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'singleSub/subList', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/pointInfo', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						callback(data.data.list);
+						contentData.pointInfo = data.data;
+						// var chart = echarts.init(document.getElementById('charts'));
+						option.series[0].data = [data.data.score_rate];
+						chart.setOption(option);
+						// 获取题目列表
+						if (data.data.question_id_list.length > 0) {
+							var tempA = data.data.question_id_list.slice(0, 10);
+							getKnowPointList(tempA);
+						}
 					} else {
 						mui.toast(data.msg);
 					}
 				});
 			}
-			
+
+			// 1.23.通过知识点找错题列表
+			var getCatalogDetail = function() {
+				comData = {
+					user_code: personal.user_code,
+					catalog_id: contentData.knowPoints.nowBook.book_catalog_id, //知识点id
+					index_code: curPage.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'errorBook/findListByCatalog', {}, comData, 2, function(
+					data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						contentData.pointInfo = data.data;
+						// 获取题目列表
+						if (data.data.question_id_list.length > 0) {
+							var tempA = data.data.question_id_list.slice(0, 10);
+							getKnowPointList(tempA);
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 1.24.通过考试找错题列表
+			var getPaperDetail = function() {
+				comData = {
+					user_code: personal.user_code,
+					paper_id: contentData.knowPoints.nowBook.paper_id, //
+					index_code: curPage.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'errorBook/findListByPaper', {}, comData, 2, function(
+					data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						contentData.pointInfo = data.data;
+						// 获取题目列表
+						if (data.data.question_id_list.length > 0) {
+							var tempA = data.data.question_id_list.slice(0, 10);
+							getKnowPointList(tempA);
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 获取题目列表
+			var getKnowPointList = function(list) {
+				comData = {
+					user_code: personal.user_code,
+					question_id_list: list, //题目id列表
+					index_code: curPage.access,
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/queDetail', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						for (var a = 0; a < data.data.list.length; a++) {
+							var tempD = data.data.list[a];
+							if (tempD.content) {
+								tempD.content = tempD.content;
+							} else {
+								tempD.content = '';
+							}
+							if (tempD.answer) {
+								tempD.answer = tempD.answer;
+							} else {
+								tempD.answer = [];
+							}
+							if (tempD.stu_answer_img_url) {
+								tempD.stu_answer_img_url = tempD.stu_answer_img_url;
+							} else {
+								tempD.stu_answer_img_url = '';
+							}
+							if (tempD.option) {
+								tempD.option = tempD.option;
+							} else {
+								tempD.option = [];
+							}
+							if (tempD.stu_answer) {
+								tempD.stu_answer = tempD.stu_answer;
+							} else {
+								tempD.stu_answer = [];
+							}
+						}
+						contentData.pointList = [].concat(data.data.list);
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
 			mui.plusReady(function() {
-				console.log('23456dfghjkfghjkl');
 				(function($) {
 					var deceleration = mui.os.ios ? 0.003 : 0.0009;
 					$('.mui-scroll-wrapper').scroll({
@@ -354,43 +477,65 @@
 						indicators: true, //是否显示滚动条
 						deceleration: deceleration
 					});
+					$.ready(function() {
+						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								up: {
+									callback: function() {
+										self = this;
+										contentData.refrushFlag = 1; //0刷新1加载更多
+										if (contentData.flag == 1) {} else if (contentData.flag == 2 || contentData.flag == 3) {
+											// 获取题目列表
+											if (contentData.pointInfo.question_id_list.length > 0) {
+												var tempA = contentData.pointInfo.question_id_list.slice((contentData.pageNumber - 1) * 10, 10);
+												getKnowPointList(tempA);
+											}
+										}
+									}
+								}
+							});
+						});
+					});
 				})(mui);
-				
-				console.log('curPage:'+JSON.stringify(curPage));
+
 				tempHead.headTitle = curPage.headTitle;
-				
-				// let	curPage = utils.getDataFromUrl(window.location.href);
-				getSubList(subArray=>{
-					contentData.knowPoints.subList = [].concat(subArray);
-					if (subArray.length > 0) {
-						contentData.knowPoints.nowSubject = subArray[0];
-					}
-					setSwiper('know-point-swiper');
+
+				contentData.knowPoints.bookList = curPage.bookList;
+				contentData.knowPoints.nowBook = curPage.bookList[curPage.bookIndex];
+				setSwiper('know-point-swiper');
+				if (contentData.flag == 1) {
 					// 获取知识点详情
-					// getKnowPointDetail();
-				});
+					getKnowPointDetail();
+				} else if (contentData.flag == 2) {
+					// 1.23.通过知识点找错题列表
+					getCatalogDetail();
+				} else if (contentData.flag == 3) {
+					// 1.24.通过考试找错题列表
+					getPaperDetail();
+				}
 			});
-			
-			function setSwiper(id){
+
+			function setSwiper(id) {
 				// swiper左右切换
 				setTimeout(function() {
-					var swiper = new Swiper("#"+id, {
+					var swiper = new Swiper("#" + id, {
 						navigation: {
 							nextEl: '.swiper-button-next',
 							prevEl: '.swiper-button-prev',
-						},    
+						},
 						on: {
 							slideChangeTransitionEnd: function() {
 								mui('#know-point-body').scroll().scrollTo(0, 0)
-								var tempSub = contentData.knowPoints.subList[swiper.activeIndex];
-								contentData.knowPoints.nowSubject = tempSub;
+								var tempSub = contentData.knowPoints.bookList[swiper.activeIndex];
+								contentData.knowPoints.nowBook = tempSub;
 								console.log('tempSub know-point:' + JSON.stringify(tempSub));
-								// // 获取知识点
-								// getKnowPoint();
+								// 获取知识点
+								getKnowPointDetail();
 							},
 						},
 					});
-				}, 500) 
+					swiper.slideTo(curPage.bookIndex, 0, false); //切换到第一个slide
+				}, 500)
 			}
 		</script>
 	</body>

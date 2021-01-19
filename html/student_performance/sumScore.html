@@ -120,8 +120,8 @@
 					</div>
 					<div style="margin-top: 20px;">
 						<span class="goodBadSub" style="background: #43cf7c;">劣势学科</span>
-						<span v-if="goodBadSub.pros_sub_names ==null" style="margin-left: 10px;">暂无</span>
-						<span style="margin-left: 10px;">{{goodBadSub.pros_sub_names}}</span>
+						<span v-if="goodBadSub.cons_sub_names ==null" style="margin-left: 10px;">暂无</span>
+						<span style="margin-left: 10px;">{{goodBadSub.cons_sub_names}}</span>
 					</div>
 					<div class="chart" id="radarChart"></div>
 					<div style="margin-left: 20px;">各科标准分：</div>
@@ -477,7 +477,7 @@
 										color: '#000',
 										// backgroundColor: '#999',
 										borderRadius: 3,
-										padding: [0, 0]
+										padding: -20,
 									}
 								},
 								indicator: []
@@ -655,20 +655,22 @@
 							var tempM = data.data.list[a];
 							var tempM1 = {
 								name: tempM.sub_name,
-								// max: tempM.standard_score
-								max: 100
+								max: tempM.standard_score
+								// max: 100
 							}
 							tempArray.push(tempM1);
 							tempArray1.push(tempM.standard_score);
 						}
+						// tempArray.push({"name":"物理","max":100});
+						// tempArray1.push(100);
 						contentData.goodBadSub.radarChartDetail.radar.indicator = [].concat(tempArray);
-						contentData.goodBadSub.radarChartDetail.radar.center = ['50%', '60%']
+						contentData.goodBadSub.radarChartDetail.radar.center = ['50%', '50%']
 						contentData.goodBadSub.radarChartDetail.series[0].data[0].value = [].concat(tempArray1);
 						// 优劣学科雷达图
 						var radarChart = echarts.init(document.getElementById('radarChart'));
-						// radarChart.setOption(contentData.goodBadSub.radarChartDetail);
-						let abc={"radar":{"name":{"textStyle":{"color":"#000","borderRadius":3,"padding":[0,0]}},"indicator":[{"name":"物理","max":100},{"name":"测试1","max":100},{"name":"test2","max":100}], center: ['50%', '60%'],},"series":[{"type":"radar","data":[{"value":["54.17","74.17","66"],"label":{"show":true}}]}]}
-						radarChart.setOption(abc);
+						radarChart.setOption(contentData.goodBadSub.radarChartDetail);
+						// let abc={"radar":{"name":{"textStyle":{"color":"#000","borderRadius":3,"padding":[0,0]}},"indicator":[{"name":"物理","max":100},{"name":"测试1","max":100},{"name":"test2","max":100}], center: ['50%', '60%'],},"series":[{"type":"radar","data":[{"value":["54.17","74.17","66"],"label":{"show":true}}]}]}
+						// radarChart.setOption(abc);
 					} else {
 						mui.toast(data.msg);
 					}
