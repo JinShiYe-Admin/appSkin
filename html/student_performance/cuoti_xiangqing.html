@@ -29,12 +29,12 @@
 				overflow: hidden;
 				/* background: #7FFFD4; */
 			}
-			
+
 			.mui-bar~.mui-content .mui-fullscreen {
 				top: 44px;
 				height: auto;
 			}
-			
+
 			.mui-pull-top-tips {
 				position: absolute;
 				top: -20px;
@@ -43,13 +43,13 @@
 				width: 40px;
 				height: 40px;
 				border-radius: 100%;
-				z-index: 1;
+				z-index: 2;
 			}
-			
+
 			.mui-bar~.mui-pull-top-tips {
 				top: 24px;
 			}
-			
+
 			.mui-pull-top-wrapper {
 				width: 42px;
 				height: 42px;
@@ -62,25 +62,25 @@
 				box-shadow: 0 4px 10px #bbb;
 				overflow: hidden;
 			}
-			
+
 			.mui-pull-top-tips.mui-transitioning {
 				-webkit-transition-duration: 200ms;
 				transition-duration: 200ms;
 			}
-			
+
 			.mui-pull-top-tips .mui-pull-loading {
 				margin: 0;
 			}
-			
+
 			.mui-pull-top-wrapper .mui-icon,
 			.mui-pull-top-wrapper .mui-spinner {
 				margin-top: 7px;
 			}
-			
+
 			.mui-pull-top-wrapper .mui-icon.mui-reverse {
 				/*-webkit-transform: rotate(180deg) translateZ(0);*/
 			}
-			
+
 			.mui-pull-bottom-tips {
 				text-align: center;
 				background-color: #efeff4;
@@ -88,7 +88,7 @@
 				line-height: 40px;
 				color: #777;
 			}
-			
+
 			.mui-pull-top-canvas {
 				overflow: hidden;
 				background-color: #fafafa;
@@ -98,15 +98,15 @@
 				height: 40px;
 				margin: 0 auto;
 			}
-			
+
 			.mui-pull-top-canvas canvas {
 				width: 40px;
 			}
-			
+
 			.mui-slider-indicator.mui-segmented-control {
 				background-color: #efeff4;
 			}
-			
+
 			.mui-scroll-wrapper {
 				position: fixed;
 				/* 仅为适配swiper而改动，原值：absolute */
@@ -178,18 +178,17 @@
 			</div>
 			<div class="mui-slider-group">
 				<div id="item1" class="mui-control-content mui-active">
-					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
+					<div class="mui-row">
+						<h4 class="examName">{{pointModel.nowPoint.name}}</h4>
+						<img src="../../img/homeSchool/change.png" @click="changeKnowPoint(0)" style="position: absolute;right: 10px;top: 15px;width: 30px;height: 30px;">
+					</div>
+					<div id='scrollTemp0' class="mui-scroll-wrapper" style="margin-top: 150px;">
 						<div class="mui-scroll">
-							<div class="mui-row">
-								<h4 class="examName">{{pointModel.nowPoint.name}}</h4>
-								<img src="../../img/homeSchool/change.png" @click="changeKnowPoint(0)" style="position: absolute;right: 10px;top: 15px;width: 30px;height: 30px;">
-							</div>
 							<div style="margin-top: 10px;margin-bottom: 20px;">
 								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;margin-left: 10px;"></div>
-								<div style="text-align: center;">当前错题数量：<span style="color: red;font-size: 25px;">{{pointModel.questionIdList.length}}</span>
-									题</div>
+								<div style="text-align: center;">当前错题数量：<span style="color: red;font-size: 25px;">{{pointModel.questionIdList.length}}</span> 题</div>
 							</div>
-							<div class="mui-row" v-for="(item,index) in pointModel.questionDetailList">
+							<div v-if="pointModel.questionDetailList.length>0" class="mui-row" v-for="(item,index) in pointModel.questionDetailList">
 								<h4 class="spaceLine">考题{{index+1}}</h4>
 								<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
 									<div>
@@ -228,7 +227,6 @@
 										</template>
 										<img v-if="item.stu_answer_img_url.length>0" :data-preview-src="item.stu_answer_img_url" :src=item.stu_answer_img_url
 										 width="100%">
-										<!-- <img :data-preview-src="img" :data-preview-group="[img]" style="width:100%;" :src="img"> -->
 									</div>
 								</div>
 								<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
@@ -241,22 +239,22 @@
 									</div>
 								</div>
 							</div>
+							<div></div>
 						</div>
 					</div>
 				</div>
 				<div id="item2" class="mui-control-content">
-					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
+					<div class="mui-row">
+						<h4 class="examName">{{chapterModel.nowChapter.name}}</h4>
+						<img src="../../img/homeSchool/change.png" @click="changeKnowPoint(1)" style="position: absolute;right: 10px;top: 15px;width: 30px;height: 30px;">
+					</div>
+					<div id='scrollTemp1' class="mui-scroll-wrapper" style="margin-top: 150px;">
 						<div class="mui-scroll">
-							<div class="mui-row">
-								<h4 class="examName">{{chapterModel.nowChapter.name}}</h4>
-								<img src="../../img/homeSchool/change.png" @click="changeKnowPoint(1)" style="position: absolute;right: 10px;top: 15px;width: 30px;height: 30px;">
-							</div>
 							<div style="margin-top: 10px;margin-bottom: 20px;">
 								<div style="height: 22px;width: 2px;background: #00baad;float: left;margin-right: 5px;margin-left: 10px;"></div>
-								<div style="text-align: center;">当前错题数量：<span style="color: red;font-size: 25px;">{{chapterModel.questionIdList.length}}</span>
-									题</div>
+								<div style="text-align: center;">当前错题数量：<span style="color: red;font-size: 25px;">{{chapterModel.questionIdList.length}}</span> 题</div>
 							</div>
-							<div class="mui-row" v-for="(item,index) in chapterModel.questionDetailList">
+							<div v-if="chapterModel.questionDetailList.length>0" class="mui-row" v-for="(item,index) in chapterModel.questionDetailList">
 								<h4 class="spaceLine">考题{{index+1}}</h4>
 								<div class="mui-row" style="padding: 0 10px;margin-top: 15px;">
 									<div>
@@ -308,6 +306,7 @@
 									</div>
 								</div>
 							</div>
+							<div></div>
 						</div>
 					</div>
 				</div>
@@ -383,6 +382,7 @@
 				},
 				methods: {
 					changeKnowPoint: function(tag) {
+						console.log('changeKnowPoint');
 						curPage.flag = 1; //错题
 						curPage.type = tag;
 						utils.mOpenWithData("zhishidian_change.html", curPage);
@@ -398,7 +398,8 @@
 									getFirstPoint(tempList, function(model) {
 										contentData.chapterModel.nowChapter = model;
 										// 获取列表
-										getChapterDetail();
+										// getChapterDetail();
+										getKnowPointDetail();
 									});
 								});
 							}
@@ -425,12 +426,14 @@
 										if (contentData.semFlag == 0) {
 											contentData.pointModel.refrushFlag = 0; //0刷新1加载更多
 											contentData.pointModel.pageNumber = 1
-											var tempA = contentData.pointModel.questionIdList.slice((contentData.pointModel.pageNumber - 1) * 10, 10);
+											var tempA = contentData.pointModel.questionIdList.slice((contentData.pointModel.pageNumber - 1) *
+												10, 10);
 											getKnowPointList(tempA);
 										} else if (contentData.semFlag == 1) {
 											contentData.chapterModel.refrushFlag = 0; //0刷新1加载更多
 											contentData.chapterModel.pageNumber = 1
-											var tempA = contentData.chapterModel.questionIdList.slice((contentData.chapterModel.pageNumber - 1) * 10, 10);
+											var tempA = contentData.chapterModel.questionIdList.slice((contentData.chapterModel.pageNumber - 1) *
+												10, 10);
 											getKnowPointList(tempA);
 										}
 									}
@@ -440,11 +443,13 @@
 										self = this;
 										if (contentData.semFlag == 0) {
 											contentData.pointModel.refrushFlag = 1; //0刷新1加载更多
-											var tempA = contentData.pointModel.questionIdList.slice((contentData.pointModel.pageNumber - 1) * 10, (contentData.pointModel.pageNumber - 1) * 10+9);
+											var tempA = contentData.pointModel.questionIdList.slice((contentData.pointModel.pageNumber - 1) *
+												10, (contentData.pointModel.pageNumber - 1) * 10 + 10);
 											getKnowPointList(tempA);
 										} else if (contentData.semFlag == 1) {
 											contentData.chapterModel.refrushFlag = 1; //0刷新1加载更多
-											var tempA = contentData.chapterModel.questionIdList.slice((contentData.chapterModel.pageNumber - 1) * 10, (contentData.pointModel.pageNumber - 1) * 10+9);
+											var tempA = contentData.chapterModel.questionIdList.slice((contentData.chapterModel.pageNumber - 1) *
+												10, (contentData.pointModel.pageNumber - 1) * 10 + 10);
 											getKnowPointList(tempA);
 										}
 									}
@@ -474,7 +479,8 @@
 						} else {
 							contentData.chapterModel.nowChapter = data.detail;
 							// 获取列表
-							getChapterDetail();
+							// getChapterDetail();
+							getKnowPointDetail();
 						}
 					}
 				});
@@ -514,15 +520,15 @@
 
 			// 获取题目列表
 			var getKnowPointList = function(list) {
-				if(list.length>0){
+				if (list.length > 0) {
 					comData = {
 						user_code: personal.user_code,
 						question_id_list: list, //题目id列表
 						index_code: curPage.access,
 					}
-					events.showWaiting();
+					// events.showWaiting();
 					postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/queDetail', {}, comData, 2, function(data) {
-						events.closeWaiting();
+						// events.closeWaiting();
 						if (data.code == 0) {
 							for (var a = 0; a < data.data.list.length; a++) {
 								var tempD = data.data.list[a];
@@ -552,56 +558,156 @@
 									tempD.stu_answer = [];
 								}
 							}
-							if (contentData.pointModel.refrushFlag == 0) {
-								contentData.pointModel.questionDetailList = [].concat(data.data.list);
-								setTimeout(() => {
-									self && self.endPullDownToRefresh();
-									if (data.data.list.length == 0) {
-										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-									}
-								}, 1000)
-							} else {
-								contentData.pointModel.questionDetailList = contentData.pointModel.questionDetailList.concat(data.data.list);  
-								setTimeout(() => {
-									self && self.endPullUpToRefresh();
-									if (data.data.list.length == 0) {
-										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-									}
-								}, 1000)
+							if (contentData.semFlag == 0) {
+								if (contentData.pointModel.refrushFlag == 0) {
+									contentData.pointModel.questionDetailList = [].concat(data.data.list);
+									setTimeout(() => {
+										self && self.endPullDownToRefresh();
+										if (data.data.list.length == 0) {
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}, 1000)
+								} else {
+									contentData.pointModel.questionDetailList = contentData.pointModel.questionDetailList.concat(data.data.list);
+									setTimeout(() => {
+										self && self.endPullUpToRefresh();
+										if (data.data.list.length == 0) {
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}, 1000)
+								}
+								contentData.pointModel.pageNumber++;
+							} else if (contentData.semFlag == 1) {
+								if (contentData.chapterModel.refrushFlag == 0) {
+									contentData.chapterModel.questionDetailList = [].concat(data.data.list);
+									setTimeout(() => {
+										self && self.endPullDownToRefresh();
+										if (data.data.list.length == 0) {
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}, 1000)
+								} else {
+									contentData.chapterModel.questionDetailList = contentData.chapterModel.questionDetailList.concat(data.data.list);
+									setTimeout(() => {
+										self && self.endPullUpToRefresh();
+										if (data.data.list.length == 0) {
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}, 1000)
+								}
+								contentData.chapterModel.pageNumber++;
 							}
-							contentData.pointModel.pageNumber++;
 						} else {
 							mui.toast(data.msg);
 						}
 					});
-				}else{
-					mui.toast('已加载全部数据');
+				} else {
+					if (contentData.semFlag == 0) {
+						if (contentData.pointModel.refrushFlag == 0) {
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+								if (list.length == 0) {
+									mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+								}
+							}, 1000)
+						} else {
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (list.length == 0) {
+									mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+								}
+							}, 1000)
+						}
+					} else if (contentData.semFlag == 1) {
+						if (contentData.chapterModel.refrushFlag == 0) {
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+								if (list.length == 0) {
+									mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+								}
+							}, 1000)
+						} else {
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (list.length == 0) {
+									mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+								}
+							}, 1000)
+						}
+					}
 				}
 			}
 
 			// 获取知识点详情
 			var getKnowPointDetail = function() {
-				comData = {
-					user_code: personal.user_code,
-					book_catalog_id: contentData.pointModel.nowPoint.id, //知识点id
-					index_code: curPage.access,
-				}
-				events.showWaiting();
-				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'errorBook/findListByCatalog', {}, comData, 2, function(
-					data) {
-					events.closeWaiting();
-					if (data.code == 0) {
-						contentData.pointModel.questionIdList = data.data.question_id_list;
-						contentData.pointModel.questionDetailList = [];
-						// 获取题目列表
-						if (data.data.question_id_list.length > 0) {
-							var tempA = data.data.question_id_list.slice(0, 10);
-							getKnowPointList(tempA);
-						}
-					} else {
-						mui.toast(data.msg);
+				if (contentData.semFlag == 0) {
+					comData = {
+						user_code: personal.user_code,
+						book_catalog_id: contentData.pointModel.nowPoint.id, //知识点id
+						index_code: curPage.access,
 					}
-				});
+					events.showWaiting();
+					postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'errorBook/findListByCatalog', {}, comData, 2, function(
+						data) {
+						events.closeWaiting();
+						setTimeout(() => {
+							mui('#scrollTemp0').scroll().scrollTo(0, 0)
+						}, 1000)
+						if (data.code == 0) {
+							contentData.pointModel.questionIdList = data.data.question_id_list;
+							contentData.pointModel.questionDetailList = [];
+							// 获取题目列表
+							if (data.data.question_id_list.length > 0) {
+								var tempA = data.data.question_id_list.slice(0, 10);
+								getKnowPointList(tempA);
+							}
+						} else {
+							mui.toast(data.msg);
+						}
+					});
+				} else if (contentData.semFlag == 1) {
+					comData = {
+						user_code: personal.user_code,
+						paper_id: contentData.chapterModel.nowChapter.id, //试卷id
+						index_code: curPage.access,
+					}
+					events.showWaiting();
+					postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'errorBook/findListByPaper', {}, comData, 2, function(
+						data) {
+							setTimeout(() => {
+								mui('#scrollTemp1').scroll().scrollTo(0, 0)
+							}, 1000)
+						events.closeWaiting();
+						if (data.code == 0) {
+							contentData.chapterModel.questionIdList = data.data.question_id_list;
+							contentData.chapterModel.questionDetailList = [];
+							// 获取题目列表
+							if (data.data.question_id_list.length > 0) {
+								var tempA = data.data.question_id_list.slice(0, 10);
+								getKnowPointList(tempA);
+							} else {
+								if (contentData.chapterModel.refrushFlag == 0) {
+									setTimeout(() => {
+										self && self.endPullDownToRefresh();
+										if (data.data.question_id_list.length == 0) {
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}, 1000)
+								} else {
+									setTimeout(() => {
+										self && self.endPullUpToRefresh();
+										if (data.data.question_id_list.length == 0) {
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}, 1000)
+								}
+							}
+						} else {
+							mui.toast(data.msg);
+						}
+					});
+				}
+				
 			}
 
 			// 1.24.通过考试找错题列表
@@ -622,6 +728,22 @@
 						if (data.data.question_id_list.length > 0) {
 							var tempA = data.data.question_id_list.slice(0, 10);
 							getKnowPointList(tempA);
+						} else {
+							if (contentData.chapterModel.refrushFlag == 0) {
+								setTimeout(() => {
+									self && self.endPullDownToRefresh();
+									if (data.data.question_id_list.length == 0) {
+										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+									}
+								}, 1000)
+							} else {
+								setTimeout(() => {
+									self && self.endPullUpToRefresh();
+									if (data.data.question_id_list.length == 0) {
+										mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+									}
+								}, 1000)
+							}
 						}
 					} else {
 						mui.toast(data.msg);

@@ -137,6 +137,6 @@ var appPay = (function(mod) {
 				zindex: 9997
 			}
 		});
-	}, 100);
+	}, 1000);
 return mod;
 })(appPay || {})

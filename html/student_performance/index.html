@@ -930,7 +930,7 @@
 					if (data.code == 0) {
 						contentData.knowPoints.knowData = data.data;
 						//知识点 饼图
-						var e = contentData.knowPoints.knowData.average_score_rate*100;
+						var e = contentData.knowPoints.knowData.average_score_rate*10*10;
 						var pieChartKnowPoint = echarts.init(document.getElementById('pieChartKnowPoint'));
 						pieChartKnowPoint.setOption({
 							title: {
@@ -1017,7 +1017,7 @@
 							kaosArr0.push(tempM.exam);
 							kaosArr1.push(tempM.wrong_num);
 						}
-						//错题本 折线图
+						//错题本 考试折线图
 						let kaos_option = { //考试错题数量趋势
 							tooltip: {
 								trigger: 'axis',
@@ -1052,7 +1052,7 @@
 							zuoyArr0.push(tempM.exam);
 							zuoyArr1.push(tempM.wrong_num);
 						}
-						//错题本 折线图
+						//错题本 作业折线图
 						let zuoy_option = { //作业错题数量趋势
 							tooltip: {
 								trigger: 'axis',
