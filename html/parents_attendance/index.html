@@ -1,0 +1,423 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="../../css/student_performance/stuScore.css" /> -->
+		<link rel="stylesheet" href="../../js/timeline/timeline.css">
+		<style type="text/css">
+			[v-cloak] {
+				display: none !important;
+			}
+
+			.mui-media-body {
+				margin: 4px 0;
+			}
+
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item {
+				border-top: 0px;
+			}
+
+			.timelineDate {
+				width: 30%;
+				font-size: 0.75em;
+				padding-top: 0.40rem;
+				padding-right: 2rem;
+				text-align: left;
+			}
+
+			.timelineDesc {
+				margin: 0;
+				font-size: 14px;
+				font-weight: 400;
+				color: #808080;
+			}
+
+			.divTime {
+				color: gray;
+				float: left;
+				width: 70px;
+				height: 50px;
+				font-size: 14px;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				margin-left: -15px;
+			}
+
+			.divContent {
+				margin-left: 65px;
+				width: calc(100% - 65px);
+			}
+
+			.divFlag {
+				height: 30px !important;
+				width: 70px;
+				text-align: center;
+				padding-top: 5px;
+				background: green;
+				border-radius: 5px;
+				color: white;
+			}
+
+			.divNote {
+				width: calc(100%);
+			}
+
+			.divStuName {
+				font-size: 15px;
+				font-weight: 900;
+			}
+
+			.pieChart {
+				height: 250px;
+				margin: -30px 0px 0 20px;
+				padding: 0px;
+			}
+
+			/* 间隔 */
+			.spaceLine {
+				padding-left: 15px;
+				text-align: left;
+				padding-top: 15px;
+				padding-bottom: 15px;
+				background: #d7f3ef;
+				font-size: 16px;
+				color: #505050;
+			}
+		</style>
+	</head>
+
+	<body style="background: white;">
+		<header class="mui-bar mui-bar-nav" id="tempHead">
+			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
+				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
+			</a>
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+		</header>
+		<div v-cloak class="mui-content mui-fullscreen" style="margin-top: 0px;background: white;z-index:0;" id="contentData">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1mobile">
+						考勤记录
+					</a>
+					<a class="mui-control-item" href="#item2mobile">
+						请假统计
+					</a>
+					<a class="mui-control-item" href="#item3mobile">
+						考勤统计
+					</a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<section id="cd-timeline" class="cd-container" v-cloak>
+									<div v-for="(item,index) in semFlag0Data.attenceList" class="cd-timeline-block">
+										<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
+										<div class="cd-timeline-content">
+											<div class="divTime">{{item.time}}</div>
+											<div v-if="item.flag == 0||item.flag == 1" class="divContent" style="height: auto;">
+												<div class="divFlag">{{item.flagName}}</div>
+												<div class="divStuName">{{item.className}} {{item.stuName}}</div>
+												<div style="height: 20px;margin: 5px 0 5px 0;padding: 0px;">{{item.address}}</div>
+											</div>
+											<div v-else class="divContent" style="height: auto;">
+												<div class="divFlag" style="background: #f88c54;">{{item.flagName}}</div>
+												<div class="divStuName">{{item.className}} {{item.stuName}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.note}}</div>
+												<div style="height: 20px;margin: 5px 0 5px 0;padding: 0px;">{{item.startTime}} 至 {{item.endTime}}</div>
+											</div>
+										</div>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div style="margin: 10px 0 0 20px;color: #00CFBD;">
+									<span>2020-01</span> ~ <span>2020-06</span>
+								</div>
+								<div style="text-align: center;margin-top: 10px;">请假总次数：<span style="color: red;font-size: 20px;">7</span></div>
+								<p style="margin: 10px 0 0 20px;font-weight: 900;font-size: 17px;color: midnightblue;">各月对比</p>
+								<div class="pieChart" id="leaveCount"></div>
+								<p style="margin: -10px 0 0 20px;font-weight: 900;font-size: 17px;color: midnightblue;">请假记录</p>
+								<ul class="mui-table-view" style="margin-top: 10px;">
+									<li @click="clickLeaveDetail(item)" v-for="(item,index) in semFlag1Data.leaveList" class="mui-table-view-cell">
+										<a class="mui-navigate-right">
+											<span>{{index+1}}</span>
+											<span style="margin-left: 20px;">{{item.leaveName}}</span>
+											<span style="margin-left: 20px;">{{item.startTime}}~{{item.endTime}}</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div style="margin: 10px 0 0 20px;color: #00CFBD;">
+									<span>2020-01</span> ~ <span>2020-06</span>
+								</div>
+								<h4 class="spaceLine">一、出入校</h4>
+								<ul class="mui-table-view">
+									<li @click="churuxiao()" class="mui-table-view-cell">
+										<a class="mui-navigate-right">
+											<span style="margin-left: 40px;">出入校记录</span>
+											<span style="margin-left: 60px;">207条</span>
+										</a>
+									</li>
+								</ul>
+								<h4 class="spaceLine">二、考勤统计</h4>
+								<p style="margin: 10px 0 0 20px;font-weight: 900;font-size: 17px;color: midnightblue;">各月对比</p>
+								<div class="pieChart" id="attendceCount"></div>
+								<p style="margin: -10px 0 0 20px;font-weight: 900;font-size: 17px;color: midnightblue;">请假记录</p>
+								<ul class="mui-table-view" style="margin-top: 10px;">
+									<li @click="clickAttenceDetail(item)" v-for="(item,index) in semFlag2Data.attenceList" class="mui-table-view-cell">
+										<a class="mui-navigate-right">
+											<span>{{index+1}}</span>
+											<span style="margin-left: 20px;">{{item.attenceName}}</span>
+											<span style="margin-left: 20px;">{{item.attenceCount}}</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<!---->
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
+		<script src="../../js/utils/echarts-all.js"></script>
+		<script src="../../js/echarts/echarts-en.min.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
+
+		<script type="text/javascript">
+			mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			var tempHead = new Vue({
+				el: "#tempHead",
+				data: {
+					showBack: 0,
+					headTitle: '',
+					headImg: setImg(personal.img_url, 9)
+				},
+				methods: {
+					clickLeftImg: function() {
+						appPay.openMenu();
+					}
+				}
+			});
+
+			//vue数据
+			var contentData = new Vue({
+				el: "#contentData",
+				data: {
+					semFlag: 0, //点击的seg索引
+					semFlag0Data: { //考勤记录
+						refrushFlag: 0, //0刷新1加载更多
+						pageNumber: 1,
+						pageSize: 10,
+						attenceList: [{
+							time: '2020/07/06 08:30:15',
+							flag: 0,
+							flagName: '入校',
+							className: '高一 1702班',
+							stuName: '张三',
+							address: '南门',
+							note: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, {
+							time: '2020/07/06 08:30:15',
+							flag: 1,
+							flagName: '出校',
+							className: '高一 1702班',
+							stuName: '张三',
+							address: '南门',
+							note: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, {
+							time: '2020/07/06 08:30:15',
+							flag: 2,
+							flagName: '旷课',
+							className: '高一 1702班',
+							stuName: '张三',
+							address: '南门',
+							note: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, {
+							time: '2020/07/06 08:30:15',
+							flag: 3,
+							flagName: '请假',
+							className: '高一 1702班',
+							stuName: '张三',
+							address: '南门',
+							note: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, {
+							time: '2020/07/06 08:30:15',
+							flag: 4,
+							flagName: '上课迟到',
+							className: '高一 1702班',
+							stuName: '张三',
+							address: '南门',
+							note: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, ], //考勤记录列表
+					},
+					semFlag1Data: { //请假统计
+						leaveList: [{
+							leaveName: '事假',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, {
+							leaveName: '病假',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}, {
+							leaveName: '病假',
+							startTime: '2020/07/06 11:30',
+							endTime: '2020/07/07 11:30',
+						}]
+					},
+					semFlag2Data: {
+						knowData: {},
+						attenceList: [{
+							attenceName: '上课迟到',
+							attenceCount: 5,
+						}, {
+							attenceName: '早操迟到',
+							attenceCount: 5,
+						}, {
+							attenceName: '课堂缺勤',
+							attenceCount: 5,
+						}]
+					}
+				},
+				methods: {
+					clickLeaveDetail: function(model) {
+						utils.mOpenWithData("../../html/parents_attendance/leaveDetail.html", model);
+					},
+					clickAttenceDetail: function(model) {
+						utils.mOpenWithData("../../html/parents_attendance/attenceDetail.html", model);
+					},
+					churuxiao:function(){
+						utils.mOpenWithData("../../html/parents_attendance/churuxiao.html", {});
+					}
+				},
+			});
+			var self = 0;
+			mui.plusReady(function() {
+				(function($) {
+					$('.mui-scroll-wrapper').scroll({
+						indicators: true //是否显示滚动条
+					});
+				})(mui);
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				tempHead.headTitle = curPage.name;
+				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
+					var ws = plus.webview.currentWebview();
+					console.log("当前Webview：" + JSON.stringify(ws.preload));
+					if (ws.preload) {
+						curPage = ws.preload;
+						tempHead.headTitle = ws.preload.name;
+					}
+					if (ws.preload.index == 0) {
+						tempHead.showBack = 2;
+					}
+				} else {
+					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
+				}
+
+				var pieChartLeave = echarts.init(document.getElementById('leaveCount'));
+				pieChartLeave.setOption({
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [{
+						data: [120, 200, 150, 80, 70, 110, 130],
+						type: 'bar',
+						barWith: '30px',
+						itemStyle: {
+							//通常情况下：
+							normal: {
+								color: '#00CFBD'
+							},
+						},
+						label: {
+							show: true,
+							position: 'top',
+							valueAnimation: true,
+						}
+					}]
+				});
+
+				var pieChartAttence = echarts.init(document.getElementById('attendceCount'));
+				pieChartAttence.setOption({
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [{
+						data: [120, 200, 150, 80, 70, 110, 130],
+						type: 'bar',
+						barWith: '30px',
+						itemStyle: {
+							//通常情况下：
+							normal: {
+								color: '#00CFBD'
+							},
+						},
+						label: {
+							show: true,
+							position: 'top',
+							valueAnimation: true,
+						}
+					}]
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -142,7 +142,7 @@
 			<p align="center" class="titleCSS" style="font-size: 18px;color: #000;margin-top: 10px;">{{detailModel.ApplyTitle}}</p>
 			<p align="center" class="name-timeCSS" style="font-size: 13px;color: #999;">{{detailModel.ApplyManName}} |
 				{{detailModel.CreateTime}}</p>
-			<p class="contentCSS" style="font-size: 14px;color: #666;">{{detailModel.ApplyContent}}</p>
+			<p v-html="detailModel.ApplyContent" class="contentCSS" style="font-size: 14px;color: #666;"></p>
 			<template v-for="(extraFile,index) in detailModel.ApplyEncName" v-show="detailModel.ApplyEncName.length==0">
 				<p class="encName" v-show="extraFile">附件:
 					<a class="" style="font-size: 13px;color: #3c9bfe;" v-on:click="checkEnc(detailModel.ApplyEncAddr[index])">附件{{index+1}}</a>

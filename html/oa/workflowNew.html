@@ -364,7 +364,7 @@
 				var tempData = {
 					schoolId: personal.unit_code, //学校ID
 					applyTitle: message.title, //标题
-					applyContent: message.content, //内容
+					applyContent: message.content.replace(/\n/g,'<br>'), //内容
 					applyEncName: encName, //附件名称
 					applyEncAddr: encAddr, //附件地址
 					// smsSync: 0, //是否短信同步

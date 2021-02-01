@@ -466,6 +466,7 @@
 					events.closeWaiting();
 					if (data.code == 0) {
 						contentData.pointInfo = data.data;
+						contentData.pageNumber=1;
 						// 获取题目列表
 						if (data.data.question_id_list.length > 0) {
 							var tempA = data.data.question_id_list.slice(0, 10);
@@ -490,6 +491,7 @@
 					events.closeWaiting();
 					if (data.code == 0) {
 						contentData.pointInfo = data.data;
+						contentData.pageNumber=1;
 						// 获取题目列表
 						if (data.data.question_id_list.length > 0) {
 							var tempA = data.data.question_id_list.slice(0, 10);
@@ -512,6 +514,7 @@
 				postDataEncry(window.storageKeyName.INTERFACE_STUSCORE + 'point/queDetail', {}, comData, 2, function(data) {
 					// events.closeWaiting();
 					if (data.code == 0) {
+						contentData.pageNumber++;
 						for (var a = 0; a < data.data.list.length; a++) {
 							var tempD = data.data.list[a];
 							if (tempD.content) {
@@ -545,8 +548,8 @@
 							setTimeout(() => {
 								self && self.endPullDownToRefresh();
 								if (data.data.list.length == 0) {
-									mui.toast('数据为空');
-									// mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+									// mui.toast('数据为空');
+									mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 								}
 							}, 1000)
 						} else {
@@ -554,12 +557,11 @@
 							setTimeout(() => {
 								self && self.endPullUpToRefresh();
 								if (data.data.list.length == 0) {
-									mui.toast('已加载全部');
-									// mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+									// mui.toast('已加载全部');
+									mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 								}
 							}, 1000)
 						}
-						contentData.pageNumber++;
 					} else {
 						mui.toast(data.msg);
 					}
@@ -643,6 +645,10 @@
 								mui('#know-point-body').scroll().scrollTo(0, 0)
 								var tempSub = contentData.knowPoints.bookList[swiper.activeIndex];
 								contentData.knowPoints.nowBook = tempSub;
+								contentData.pointInfo = {};
+								contentData.pointList = [];
+								contentData.refrushFlag = 0;
+								contentData.pageNumber = 1;
 								console.log('tempSub know-point:' + JSON.stringify(tempSub));
 								// 获取知识点
 								if (contentData.flag == 1) {
@@ -655,7 +661,6 @@
 									// 1.24.通过考试找错题列表
 									getPaperDetail();
 								}
-								contentData.refrushFlag = 0;
 							},
 						},
 					});

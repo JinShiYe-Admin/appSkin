@@ -1,6 +1,7 @@
 #### 模块说明
 包名|说明|App|Api|流程
 -|-|-|-|-
+test|起始页test|-|-|-
 oa|OA系统|Liu|Kong|正式
 programme|日程|Zhao|Kong|正式
 schapp_examination|考务系统|Liu|Meng(广西)|正式
@@ -12,6 +13,7 @@ stu_comment|学生评语|Liu|Ruan(广西)|正式
 stu_dorm|学生宿舍|Liu,Zhao|Ruan(广西)|正式
 interaction|家校互动|No!!!|Gu(广西)|开发
 student_performance|学生成绩|Zhao|Meng(广西)|开发 <!-- 有滑动列表切换丢失的解决方法 index.html--> 
+parents_attendance|学生考勤家长端|zhao|未知
 <!-- 
 打包说明
 1、注释vconsole

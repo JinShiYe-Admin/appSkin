@@ -930,12 +930,12 @@
 					if (data.code == 0) {
 						contentData.knowPoints.knowData = data.data;
 						//知识点 饼图
-						var e = contentData.knowPoints.knowData.average_score_rate*10*10;
+						var e = contentData.knowPoints.knowData.average_score_rate*100;
 						var pieChartKnowPoint = echarts.init(document.getElementById('pieChartKnowPoint'));
 						pieChartKnowPoint.setOption({
 							title: {
 								show: true,
-								text: e + '%',
+								text: e.toFixed(1) + '%',
 								x: 'center',
 								y: 'center',
 								textStyle: {
@@ -1030,7 +1030,8 @@
 							},
 							xAxis: {
 								type: 'category',
-								data: kaosArr0
+								data: kaosArr0,
+								axisLabel: {									fontSize: 12,									// rotate:15,									align: 'center',									formatter: function (value) {										value = value.replace(/[^\x00-\xff]/g, "$&\x01").replace(/.{16}\x01?/g, "$&\n").replace(/\x01/g, "");										return value;									}								},
 							},
 							yAxis: {
 								type: 'value'
@@ -1065,7 +1066,8 @@
 							},
 							xAxis: {
 								type: 'category',
-								data: zuoyArr0
+								data: zuoyArr0,
+								axisLabel: {									fontSize: 12,									// rotate:15,									align: 'center',									formatter: function (value) {										value = value.replace(/[^\x00-\xff]/g, "$&\x01").replace(/.{16}\x01?/g, "$&\n").replace(/\x01/g, "");										return value;									}								},
 							},
 							yAxis: {
 								type: 'value'
@@ -1114,7 +1116,7 @@
 									let arr = []
 									datas.map(item => {
 										if (item.name == name) {
-											arr.push(name + '  ' + item.value + '  道' + '  ' + (item.value / total * 100).toFixed(2) + '%')
+											arr.push(name + '  ' + item.value + '  道' + '  ' + (item.value / total * 100).toFixed(1) + '%')
 										}
 									})
 									return arr.join('\n')

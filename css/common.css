@@ -45,6 +45,14 @@ header {
 	color: white;
 }
 
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+	color: #00CFBD;
+}
+
+.mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar {
+	background-color: #00CFBD;
+}
+
 /* .mui-bar-nav{
 	height: 70px;
 	padding: 25px 0;

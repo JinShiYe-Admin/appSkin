@@ -34,7 +34,7 @@ Main components
   height: 80%;width: 1px;background: #C3E3FF;top:20px;
 }*/
 .cd-timeline-block:before{
-      content: '';position: absolute;height: 67px;width: 1px;
+      content: '';position: absolute;height: 100%;width: 1px;
     background: #00CFBD;left: 25px;bottom: -28px;
 }
 .cd-timeline-block:first-child:before{
@@ -192,7 +192,7 @@ a.cd-read-more:hover{text-decoration:none; background-color: #424242;  }
     -moz-animation: cd-bounce-2-inverse 0.6s; animation: cd-bounce-2-inverse 0.6s;
   }
 }
-.cd-timeline-content div{height: 40px;margin-top: 15px;}
+.cd-timeline-content div{height: auto;margin-top: 15px;}
 /* .cd-timeline-content div:first-child{
     color: #000;font-size: 14px;line-height: 25px;
 }
