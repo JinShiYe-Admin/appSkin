@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link type="text/css" rel="stylesheet" href="../../js/libs/jeDate/skin/jedate.css">
 		<style type="text/css">
 			[v-cloak] {
 				display: none !important;
@@ -20,6 +21,39 @@
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div class="mui-row" style="height: 45px;background: #EAEAEA;text-align: center; padding: 12px 0;">
+				<p style="color: #00CFBD;" class="jeindiv month-picker" placeholder="YYYY-MM"></p>
+			</div>
+			<div class="mui-row">
+				<div class="mui-col-xs-12" style="padding: 0 15px;margin-top: 10px;text-align: center;font-size: 14px;">
+					<span>出入总次数：</span><span style="color: #FF3333;font-size: 18px;">99999</span> 
+				</div>
+			</div>
+				<div class="mui-row">
+					<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;padding: 5px 0 0 10px;">
+						 <p>出入校详情</p>
+					</div>
+					<div>
+						<ul class="mui-table-view" style="font-size: 13px;">
+							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in 9">
+								<div class="mui-row">
+									<div class="mui-col-xs-1">{{++index}}</div>
+									<div class="mui-col-xs-5">2021年2月5日 15:10:12</div>
+									<div class="mui-col-xs-4">哪个门？</div>
+									<template v-if="index<3">
+										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;">出</p></div>
+									</template>
+									<template v-else-if="index>2 && index<6">
+										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;">入</p></div>
+									</template>
+									<template v-else>
+										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #3ACA3A;color: #FFFFFF;border-radius: 7px;">入</p></div>
+									</template>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -30,6 +64,7 @@
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
+		<script type="text/javascript" src="../../js/libs/jeDate/src/jedate.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -44,7 +79,7 @@
 				el: "#tempHead",
 				data: {
 					showBack: 1,
-					headTitle: '出入校详情',
+					headTitle: '详情',
 				}
 			});
 			//vue数据 
@@ -54,11 +89,16 @@
 					personal:store.get(window.storageKeyName.PERSONALINFO),
 					pageData: {},
 				}
-			});
+			});  
 
 			mui.plusReady(function() {
 				let curPage = utils.getDataFromUrl(window.location.href);
-				
+				jeDate(".month-picker",{
+					format: "YYYY年MM月",
+					multiPane:true,
+					range:" ~ ",
+					
+				}).setValue("2021-01 ~ 2021-06");
 			});
 		</script>
 	</body>

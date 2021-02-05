@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+		<link type="text/css" rel="stylesheet" href="../../js/libs/jeDate/skin/jedate.css">
 		<style type="text/css">
 			[v-cloak] {
 				display: none !important;
@@ -20,6 +21,31 @@
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
+			<div class="mui-row" style="height: 45px;background: #EAEAEA;text-align: center; padding: 12px 0;">
+				<p style="color: #00CFBD;" class="jeindiv month-picker" placeholder="YYYY-MM"></p>
+			</div>
+			<div class="mui-row">
+				<div class="mui-col-xs-12" style="padding: 0 15px;margin-top: 10px;text-align: center;font-size: 14px;">
+					<span>上课迟到次数：</span><span style="color: #FF3333;font-size: 18px;">99999</span> 
+				</div>
+			</div>
+			<template v-for="(item,index) in 5">
+				<div class="mui-row">
+					<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
+						<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
+							<div style="color: #FFFFFF;font-size: 14px;font-weight: 600;display: inline-block;margin-top: 5px;">{{++index}}</div>
+						</div>
+					</div>
+					<div style="padding: 10px 20px 0;">
+						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">考勤日期：</p><p class="mui-col-xs-8" style="float: left;">2021-02-05</p></div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">星期：</p><p class="mui-col-xs-8" style="float: left;">二</p></div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">节次：</p><p class="mui-col-xs-8" style="float: left;">第二节</p></div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">科目：</p><p class="mui-col-xs-8" style="float: left;">数学</p></div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;"><p class="mui-col-xs-4" style="float: left;">说明：</p><p class="mui-col-xs-8" style="float: left;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa这里有一个很长的请假事由。。。。。。。。。。。。的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由aa按点</p></div>
+						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">记录人：</p><p class="mui-col-xs-8" style="float: left;">吴孟达</p></div>
+					</div>
+				</div>
+			</template>
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
@@ -30,6 +56,7 @@
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
+		<script type="text/javascript" src="../../js/libs/jeDate/src/jedate.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -54,11 +81,16 @@
 					personal:store.get(window.storageKeyName.PERSONALINFO),
 					pageData: {},
 				}
-			});
+			});  
 
 			mui.plusReady(function() {
 				let curPage = utils.getDataFromUrl(window.location.href);
-				
+				jeDate(".month-picker",{
+					format: "YYYY年MM月",
+					multiPane:true,
+					range:" ~ ",
+					
+				}).setValue("2021-01 ~ 2021-06");
 			});
 		</script>
 	</body>
