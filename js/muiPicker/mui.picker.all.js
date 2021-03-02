@@ -413,7 +413,8 @@
 		return [].slice.call($.__create_dom_div__.childNodes);
 	};
 
-	var panelBuffer = '<div class="mui-poppicker">\
+	var panelBuffer =
+		'<div class="mui-poppicker">\
 		<div class="mui-poppicker-header">\
 			<button class="mui-btn mui-poppicker-btn-cancel">取消</button>\
 			<button class="mui-btn mui-btn-blue mui-poppicker-btn-ok">确定</button>\
@@ -423,7 +424,8 @@
 		</div>\
 	</div>';
 
-	var pickerBuffer = '<div class="mui-picker">\
+	var pickerBuffer =
+		'<div class="mui-picker">\
 		<div class="mui-picker-inner">\
 			<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
 			<ul class="mui-pciker-list">\
@@ -528,7 +530,7 @@
 			self.mask.close();
 			document.body.classList.remove($.className('poppicker-active-for-page'));
 			//处理物理返回键
-			$.back=self.__back;
+			$.back = self.__back;
 		},
 		dispose: function() {
 			var self = this;
@@ -570,60 +572,67 @@
 		return [].slice.call($.__create_dom_div__.childNodes);
 	};
 
-	var domBuffer = '<div class="mui-dtpicker" data-type="datetime">\
-		<div class="mui-dtpicker-header">\
-			<button data-id="btn-cancel" class="mui-btn">取消</button>\
-			<button data-id="btn-ok" class="mui-btn mui-btn-blue">确定</button>\
-		</div>\
-		<div class="mui-dtpicker-title"><h5 data-id="title-y">年</h5><h5 data-id="title-m">月</h5><h5 data-id="title-d">日</h5><h5 data-id="title-h">时</h5><h5 data-id="title-i">分</h5></div>\
-		<div class="mui-dtpicker-body">\
-			<div data-id="picker-y" class="mui-picker">\
-				<div class="mui-picker-inner">\
-					<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
-					<ul class="mui-pciker-list">\
-					</ul>\
-					<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+	var doms =
+		'<div class="mui-dtpicker-header">\
+					<button data-id="btn-cancel" class="mui-btn">取消</button>\
+					<button data-id="btn-ok" class="mui-btn mui-btn-blue">确定</button>\
 				</div>\
-			</div>\
-			<div data-id="picker-m" class="mui-picker">\
-				<div class="mui-picker-inner">\
-					<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
-					<ul class="mui-pciker-list">\
-					</ul>\
-					<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+				<div class="mui-dtpicker-title"><h5 data-id="title-y">年</h5><h5 data-id="title-m">月</h5><h5 data-id="title-d">日</h5><h5 data-id="title-h">时</h5><h5 data-id="title-i">分</h5></div>\
+				<div class="mui-dtpicker-body">\
+					<div data-id="picker-y" class="mui-picker">\
+						<div class="mui-picker-inner">\
+							<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
+							<ul class="mui-pciker-list">\
+							</ul>\
+							<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+						</div>\
+					</div>\
+					<div data-id="picker-m" class="mui-picker">\
+						<div class="mui-picker-inner">\
+							<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
+							<ul class="mui-pciker-list">\
+							</ul>\
+							<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+						</div>\
+					</div>\
+					<div data-id="picker-d" class="mui-picker">\
+						<div class="mui-picker-inner">\
+							<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
+							<ul class="mui-pciker-list">\
+							</ul>\
+							<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+						</div>\
+					</div>\
+					<div data-id="picker-h" class="mui-picker">\
+						<div class="mui-picker-inner">\
+							<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
+							<ul class="mui-pciker-list">\
+							</ul>\
+							<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+						</div>\
+					</div>\
+					<div data-id="picker-i" class="mui-picker">\
+						<div class="mui-picker-inner">\
+							<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
+							<ul class="mui-pciker-list">\
+							</ul>\
+							<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
+						</div>\
+					</div>\
 				</div>\
-			</div>\
-			<div data-id="picker-d" class="mui-picker">\
-				<div class="mui-picker-inner">\
-					<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
-					<ul class="mui-pciker-list">\
-					</ul>\
-					<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
-				</div>\
-			</div>\
-			<div data-id="picker-h" class="mui-picker">\
-				<div class="mui-picker-inner">\
-					<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
-					<ul class="mui-pciker-list">\
-					</ul>\
-					<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
-				</div>\
-			</div>\
-			<div data-id="picker-i" class="mui-picker">\
-				<div class="mui-picker-inner">\
-					<div class="mui-pciker-rule mui-pciker-rule-ft"></div>\
-					<ul class="mui-pciker-list">\
-					</ul>\
-					<div class="mui-pciker-rule mui-pciker-rule-bg"></div>\
-				</div>\
-			</div>\
-		</div>\
-	</div>';
+			</div>';
 
 	//plugin
 	var DtPicker = $.DtPicker = $.Class.extend({
 		init: function(options) {
 			var self = this;
+			var domBuffer = '<div class="mui-dtpicker" data-type="datetime">'
+			if (options.title) {
+				domBuffer += '<p style="text-align:center;margin:10px 0 -33px;">' + options.title + '</p>'
+				domBuffer += doms
+			} else {
+				domBuffer += doms
+			}
 			var _picker = $.dom(domBuffer)[0];
 			document.body.appendChild(_picker);
 			$('[data-id*="picker"]', _picker).picker();
@@ -697,8 +706,10 @@
 			};
 			switch (type) {
 				case 'datetime':
-					selected.value = selected.y.value + '-' + selected.m.value + '-' + selected.d.value + ' ' + selected.h.value + ':' + selected.i.value;
-					selected.text = selected.y.text + '-' + selected.m.text + '-' + selected.d.text + ' ' + selected.h.text + ':' + selected.i.text;
+					selected.value = selected.y.value + '-' + selected.m.value + '-' + selected.d.value + ' ' + selected.h.value +
+						':' + selected.i.value;
+					selected.text = selected.y.text + '-' + selected.m.text + '-' + selected.d.text + ' ' + selected.h.text + ':' +
+						selected.i.text;
 					break;
 				case 'date':
 					selected.value = selected.y.value + '-' + selected.m.value + '-' + selected.d.value;
@@ -842,7 +853,8 @@
 				dArray = options.customData.d;
 			} else {
 				var d = self._isBeginMonth() ? options.beginDay : 1;
-				var maxDay = self._isEndMonth() ? options.endDay : self.getDayNum(parseInt(this.ui.y.picker.getSelectedValue()), parseInt(this.ui.m.picker.getSelectedValue()));
+				var maxDay = self._isEndMonth() ? options.endDay : self.getDayNum(parseInt(this.ui.y.picker.getSelectedValue()),
+					parseInt(this.ui.m.picker.getSelectedValue()));
 				for (; d <= maxDay; d++) {
 					var val = self._fill(d);
 					dArray.push({
