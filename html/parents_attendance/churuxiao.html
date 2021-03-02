@@ -16,6 +16,13 @@
 				text-align: left;
 				padding-left: 15px;
 			}
+			.pstyle{
+				font-size: 14px;
+				color: #505050;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 		</style>
 	</head>
 
@@ -26,32 +33,32 @@
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div class="mui-row" style="height: 45px;background: #EAEAEA;text-align: center; padding: 12px 0;">
-				<p id='months' style="color: #00CFBD;" data-options='{"type":"month"}'  @tap="months($event)"  class="month-picker"></p>
+				<p id='months' style="color: #00CFBD;font-size: 12px;" data-options='{"type":"month"}'  @tap="months($event)"  class="month-picker"></p>
 			</div>
 			<div class="mui-row">
 				<div class="mui-col-xs-12" style="padding: 0 15px;margin-top: 10px;text-align: center;font-size: 14px;">
-					<span>出入总次数：</span><span style="color: #FF3333;font-size: 18px;">99999</span> 
+					<span style="color: #505050;font-size: 12px;">出入总次数：</span><span style="color: #FF3333;font-size: 28px;margin-left: 10px;">99999</span> 
 				</div>
 			</div>
 				<div class="mui-row">
 					<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;padding: 5px 0 0 10px;">
-						 <p>出入校详情</p>
+						 <p style="color: #505050;font-size: 12px;">出入校详情</p>
 					</div>
 					<div>
 						<ul class="mui-table-view" style="font-size: 13px;">
 							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in 19">
 								<div class="mui-row">
-									<div class="mui-col-xs-1">{{++index}}</div>
-									<div class="mui-col-xs-5">2021年2月5日 15:10:12</div>
-									<div class="mui-col-xs-4">哪个门？</div>
+									<div class="mui-col-xs-1 pstyle">{{++index}}</div>
+									<div class="mui-col-xs-5 pstyle">2021/2/5 15:10:12</div>
+									<div class="mui-col-xs-4 pstyle">哪个门...</div>
 									<template v-if="index<3">
-										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;">出</p></div>
+										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;font-size: 12px;">出</p></div>
 									</template>
 									<template v-else-if="index>2 && index<6">
-										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;">入</p></div>
+										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;font-size: 12px">入</p></div>
 									</template>
 									<template v-else>
-										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #3ACA3A;color: #FFFFFF;border-radius: 7px;">入</p></div>
+										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #3ACA3A;color: #FFFFFF;border-radius: 7px;font-size: 12px">入</p></div>
 									</template>
 								</div>
 							</li>

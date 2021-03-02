@@ -16,6 +16,10 @@
 				text-align: left;
 				padding-left: 15px;
 			}
+			p{
+				font-size: 14px;
+				color: #505050;
+			}
 		</style>
 	</head>
 
@@ -26,18 +30,18 @@
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div class="mui-row" style="height: 45px;background: #EAEAEA;text-align: center; padding: 12px 0;">
-				<p id='months' style="color: #00CFBD;" data-options='{"type":"month"}'  @tap="months($event)"  class="month-picker"></p>
+				<p id='months' style="color: #00CFBD;font-size: 12px;" data-options='{"type":"month"}'  @tap="months($event)"  class="month-picker"></p>
 			</div>
 			<div class="mui-row">
 				<div class="mui-col-xs-12" style="padding: 0 15px;margin-top: 10px;text-align: center;font-size: 14px;">
-					<span>上课迟到次数：</span><span style="color: #FF3333;font-size: 18px;">99999</span> 
+					<span style="color: #505050;font-size: 12px;">上课迟到次数：</span><span style="color: #FF3333;font-size: 28px;margin-left: 10px;">99999</span> 
 				</div>
 			</div>
 			<template v-for="(item,index) in 5">
 				<div class="mui-row">
-					<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
-						<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
-							<div style="color: #FFFFFF;font-size: 14px;font-weight: 600;display: inline-block;margin-top: 5px;">{{++index}}</div>
+					<div style="height: 34px;background-color: #F3EDDB;margin-top:15px;">
+						<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 34px;height: 34px;">
+							<div style="color: #FFFFFF;font-size: 18px;font-weight: 600;display: inline-block;margin-top: 7px;">{{++index}}</div>
 						</div>
 					</div>
 					<div style="padding: 10px 20px 0;">
