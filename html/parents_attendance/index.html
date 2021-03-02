@@ -20,6 +20,7 @@
 
 			.mui-slider .mui-segmented-control.mui-segmented-control-inverted~.mui-slider-group .mui-slider-item {
 				border-top: 0px;
+				border-bottom: 0px;
 			}
 
 			.timelineDate {
@@ -59,7 +60,7 @@
 				width: 70px;
 				text-align: center;
 				padding-top: 5px;
-				background: green;
+				background: #3aca3a;
 				border-radius: 5px;
 				color: white;
 			}
@@ -124,12 +125,14 @@
 										<div class="cd-timeline-content">
 											<div class="divTime">{{item.time}}</div>
 											<div v-if="item.flag == 0||item.flag == 1" class="divContent" style="height: auto;">
-												<div class="divFlag">{{item.flagName}}</div>
+												<div>
+													<span style="color: #505050;">{{item.address}}</span>
+													<span class="divFlag" style="padding: 5px 10px;">{{item.flagName}}</span>
+												</div>
 												<div class="divStuName">{{item.className}} {{item.stuName}}</div>
-												<div style="height: 20px;margin: 5px 0 5px 0;padding: 0px;">{{item.address}}</div>
 											</div>
 											<div v-else class="divContent" style="height: auto;">
-												<div class="divFlag" style="background: #f88c54;">{{item.flagName}}</div>
+												<div class="divFlag" style="background: #ff9900;">{{item.flagName}}</div>
 												<div class="divStuName">{{item.className}} {{item.stuName}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.note}}</div>
 												<div style="height: 20px;margin: 5px 0 5px 0;padding: 0px;">{{item.startTime}} 至 {{item.endTime}}</div>
