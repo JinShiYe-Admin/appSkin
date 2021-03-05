@@ -45,7 +45,7 @@
 			}
 			
 			.user-info {
-				padding: 30px 0 30px 0;
+				padding: 30px 0 10px 0;
 				text-align: center;
 				background: #fff;
 			}
@@ -85,7 +85,8 @@
 			<div class="mui-row" style="margin-top: 44px;">
 				<div class="user-info">
 					<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
-					<p class="user-text">{{userName}}</p>
+					<p class="user-text">{{userName}}<span v-if="userModel.type_code =='YHLX0005'">(家长)</span></p>
+					<p style="text-align: center;">天桥一中 初三 1902班</p>
 				</div>
 			</div>
 			<div class="mui-row" style="background: #EEEEEE;height: 20px;"></div>
@@ -155,6 +156,7 @@
 				var mine = new Vue({
 					el: "#mine",
 					data: {
+						userModel:personal,
 						userName: personal.user_name,
 						userImg: setImg(personal.img_url, 9),
 						settings: [{
