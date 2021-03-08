@@ -256,6 +256,7 @@
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div >123</div>
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll" >
 					<template v-cloak v-if="pageArray.length>0">
@@ -431,7 +432,8 @@
 			function getPageDataArray() {
 				//需要加密的数据
 				comData = {
-					sms_msgtype_code:'school',
+					get_unit_code:personal.unit_code,
+					msg_type:'1-1',
 					msg_content:'',
 					dest_user:'',
 					send_time_begin:'1970-01-01',
@@ -439,12 +441,13 @@
 					send_user:personal.user_code,
 					grd_code:'',
 					cls_code:'',
-					page_number: pageIndex, //当前页数
+					serviced:'0,1,99,100',
+					page_number: pageIndex, //当前页数 
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
-				} 
-				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
+				}  
+				// 1.1.列表页 
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
