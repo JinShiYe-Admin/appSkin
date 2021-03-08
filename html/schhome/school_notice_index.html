@@ -391,7 +391,10 @@
 						if(datasource.inputText==''){
 							mui.toast('请先输入搜索内容')
 						}else{
-							getPageDataArray(datasource.inputText)
+							pageIndex = 1;
+							flagRef = 0;
+							events.showWaiting();
+							getPageDataArray()
 						}
 					},
 				}
@@ -399,7 +402,11 @@
 			
 			function inputChange(input){
 				if(input.value==''){
-					getPageDataArray('');
+					pageIndex = 1;
+					flagRef = 0;
+					events.showWaiting();
+					datasource.inputText=''
+					getPageDataArray();
 				}
 			}
 
@@ -524,6 +531,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
+							datasource.pageArray =[]
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
