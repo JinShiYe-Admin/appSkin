@@ -242,10 +242,10 @@
 				bottom: 0;
 				left: 0;
 				height: 1px;
+				background: #00cfbd;
 				content: '';
 				-webkit-transform: scaleY(.5);
 				transform: scaleY(.5);
-				background-color: #e4e4e4;
 			}
 			
 			.mui-input-row:after {
@@ -288,9 +288,9 @@
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-						 <div style="padding: 0 10px;">
-							 <p class="tow-line" v-if="formData.msg_content">{{formData.msg_content}}</p>
-							 <h5 class="mui-ellipsis" >状态:{{formData.is_copy?'已发送':'等待'}}</h5>
+						 <div style="padding: 15px 15px 0;">
+							 <p class="tow-line" v-if="formData.msg_content" style="font-size: 16px;color: #000000;">{{formData.msg_content}}</p>
+							 <!-- <h5 class="mui-ellipsis" >状态:{{formData.is_copy?'已发送':'等待'}}</h5> -->
 							 <div style="margin-top: 0.55rem;">
 							 	<div class="mui-table-cell mui-col-xs-5">
 							 		<h5 class="mui-ellipsis" >发布人:{{formData.send_user_tname}}</h5>
@@ -304,11 +304,12 @@
 						 <div class="mui-input-row">
 						 	<label class="aCss">接收人</label>
 						 </div>
+						 <div class="line"></div>
 						 <div class="mui-input-row">
 							<div v-cloak v-for="grd_child in student" >
 								<div v-cloak v-for="cls_child in grd_child.children" v-if="cls_child.children.length>0" style="margin: 0 15px;">
-										<p >{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
-										<span v-for="(stu_child,index) in cls_child.children" v-if="stu_child.stu_name">
+										<p style="font-size: 15px;margin-top: 10px;">{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
+										<span style="font-size: 14px;" v-for="(stu_child,index) in cls_child.children" v-if="stu_child.stu_name">
 											<template v-if="index==cls_child.children.length-1">
 												{{stu_child.stu_name}}
 											</template>
@@ -316,7 +317,7 @@
 												{{stu_child.stu_name}},
 											</template>
 										</span>
-										<div class="line"></div>
+										<!-- <div class="line"></div> -->
 								</div>
 							</div>
 						 </div>
@@ -390,7 +391,6 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'grd', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
-					events.closeWaiting();
 					if (data.code == 0) {
 						if(data.data.list && data.data.list.length>0){
 							let grd_list =data.data.list
@@ -405,7 +405,6 @@
 								index_code: curPage.index_code,
 							}
 							postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'cls', {}, params, 2, function(data) {
-								console.log(JSON.stringify(data))
 								if(data.data.list && data.data.list.length>0){
 									let cls_list =data.data.list
 									let cls_codes=[]
@@ -428,7 +427,7 @@
 										index_code: curPage.index_code,
 									}
 									postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'stu', {}, params, 2, function(data) {
-										console.log(JSON.stringify(data))
+										events.closeWaiting();
 										if(data.data.list && data.data.list.length>0){
 											let stu_list =data.data.list
 											grd_list.map(function(grd_item){ 
@@ -448,10 +447,15 @@
 											datasource.student=grd_list
 										}
 									});
+								}else{
+									events.closeWaiting();
 								}
 							});
+						}else{
+							events.closeWaiting();
 						}
 					}else{
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});

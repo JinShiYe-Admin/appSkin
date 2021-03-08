@@ -241,6 +241,38 @@ var storageKeyName = (function(mod) {
 	//---七牛---end---
 
 
+	
+	//----------家校互动短信配置---------start
+	mod.MSG_SMS= {
+	    SCHOOL:{
+	      MSG_TYPE: '1-1', //信息类型 - 学校通知
+	      SMS_TYPE: 'jxhd_tz_unit_stugen', //短信类型 - 学校
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    GRADE: {
+	      MSG_TYPE: '1-2', //信息类型 - 年级通知
+	      SMS_TYPE: 'jxhd_tz_grd_stugen', //短信类型 - 年级
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    CLASS: {
+	      MSG_TYPE: '1-3', //信息类型 - 班级通知
+	      SMS_TYPE: 'jxhd_tz_cls_stugen', //短信类型 - 班级
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    HOMEWORK: {
+	      MSG_TYPE: '1-4', //信息类型 - 班级作业
+	      SMS_TYPE: 'jxhd_tz_cls_stugen', //短信类型 - 班级
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    PERFORMANCE: {
+	      MSG_TYPE: '1-5', //信息类型 - 在线表现
+	      SMS_TYPE: 'jxhd_tz_ps_stugen', //短信类型 - 表现
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	  }
+	
+	//----------家校互动短信配置---------end
+	
 	//---Activity的code---start---
 	mod.CODERECORDVIDEO = 0; //录像
 	mod.CODEPLAYVIDEO = 1; //播放视频
