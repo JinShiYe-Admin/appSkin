@@ -93,7 +93,7 @@
 						if(_self.picker) {
 							_self.picker.show(function (rs) {
 								let start_month=moment(rs.text).format('YYYY年MM月');
-								let end_month=moment(rs.text).add(6, 'M').format('YYYY年MM月');
+								let end_month=moment(rs.text).add(5, 'M').format('YYYY年MM月');
 								$('#months').html(start_month+' ~ '+end_month)
 								_self.picker.dispose();
 								_self.picker = null;
@@ -102,11 +102,12 @@
 							console.log(that);
 							var optionsJson = that.getAttribute('data-options') || '{}';
 							var options = JSON.parse(optionsJson);
+							options.beginDate=new Date(currentYear(),currentMonth());
 							var id = that.getAttribute('id');
 							_self.picker = new mui.DtPicker(options);
 							_self.picker.show(function(rs) {
 								let start_month=moment(rs.text).format('YYYY年MM月');
-								let end_month=moment(rs.text).add(6, 'M').format('YYYY年MM月');
+								let end_month=moment(rs.text).add(5, 'M').format('YYYY年MM月');
 								$('#months').html(start_month+' ~ '+end_month)
 								_self.picker.dispose();
 								_self.picker = null;
@@ -118,9 +119,17 @@
 
 			mui.plusReady(function() {
 				let start_month=moment().format('YYYY年MM月')
-				let end_month=moment().add(6, 'M').format('YYYY年MM月');
+				let end_month=moment().add(5, 'M').format('YYYY年MM月');
 				$('#months').html(start_month+' ~ '+end_month)
 			});
+			
+			function currentYear(){
+				return moment().format("YYYY")
+			}
+			
+			function currentMonth(){
+				return moment().months()
+			}
 		</script>
 	</body>
 
