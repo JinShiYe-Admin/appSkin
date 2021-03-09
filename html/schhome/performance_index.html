@@ -261,7 +261,6 @@
 					<div v-cloak class="mui-segmented-control" v-cloak>
 						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a v-cloak class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showStu()"><span>{{stuValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 				</div>
@@ -272,19 +271,26 @@
 								<a class="mui-navigate-right"><!-- mui-navigate-right -->
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
-											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
 											<div style="margin-top: 0.55rem;">
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >接收人:{{model.send_user_tname}}</h5>
+												<div class="mui-table-cell mui-col-xs-12">
+													<!-- <h5 class="mui-ellipsis mui-text-left " style="font-size: 16px;">{{model.send_time}}</h5> -->
+													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 3px;">接收年级:
+													<span v-for="(item,index) in model.tousers" style="word-break: break-all;word-wrap: break-word;">
+														<template v-if="index < model.tousers.length-1">{{item.grd_name}},</template>
+														<template v-else>{{item.grd_name}}</template>
+													</span>
+													</h5>
+													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 10px;">接收班级:
+													<span v-for="(item,index) in model.tousers" style="word-break: break-all;word-wrap: break-word;">
+														<template v-if="index < model.tousers.length-1">{{item.cls_name}},</template>
+														<template v-else>{{item.cls_name}}</template>
+													</span>
+													</h5>
 												</div>
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
-												</div>
-												<div class="mui-table-cell mui-col-xs-7">
-													<h5 class="mui-ellipsis mui-text-right">{{model.send_time}}</h5>
-												</div>
-												
 											</div>
+											<!-- <div style="height: 1px;width: 100%;background-color: rgba(0,0,0,0.1);transform: scaleY(.5);margin-bottom: 15px;"></div> -->
+											<div style="margin-bottom: 10px;"></div>
+											<p class="three-line" v-if="model.msg_content">{{model.msg_content}}</p>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
 											<h5 class="mui-text-right" ></h5>
@@ -342,7 +348,7 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/interaction/performance_add.html", model);
+							utils.mOpenWithData("../../html/schhome/performance_add.html", model);
 					}
 				}
 			});
@@ -353,16 +359,14 @@
 					pageArray: [], //界面总数组
 					grdList: [], //年级数组
 					clsList: [], //班级数组
-					stuList: [], //学生数组
 					grdValue: {}, //年级选择值
 					clsValue: {}, //班级选择值
-					stuValue: {}, //学生选择值
 				},
 				methods: {
 					clickLi: function(model) {
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/stu_behavior/extra_behavior_detail.html", model);
+						utils.mOpenWithData("../../html/schhome/performance_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -398,29 +402,7 @@
 								mui.toast('未选择班级')
 							} else {
 								datasource.clsValue = items[0]
-								events.showWaiting();
-								pageIndex = 1;
-								flagRef = 0;
-								datasource.pageArray = [];
-								getStuList(datasource.grdValue.value ,items[0].value)
-								userPicker.dispose();
-								userPicker = null;
-							}
-						});
-					},
-					showStu: function() {
-						var userPicker = new $M.PopPicker();
-						console.log("datasource.stuList: " + JSON.stringify(datasource.stuList));
-						userPicker.setData(datasource.stuList);
-						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.stuValue.value);
-						}, 100);
-						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							if (JSON.stringify(items[0]) == '{}') {
-								mui.toast('未选择学生')
-							} else {
-								datasource.stuValue = items[0]
+								//获取课堂考勤列表
 								events.showWaiting();
 								pageIndex = 1;
 								flagRef = 0;
@@ -465,7 +447,6 @@
 							//console.log("下拉刷新");
 							pageIndex = 1;
 							flagRef = 0;
-							//1.课堂考勤记录列表
 							events.showWaiting();
 							datasource.pageArray = [];
 							getPageDataArray();
@@ -481,7 +462,6 @@
 							//console.log("上拉加载更多");
 							flagRef = 1;
 							if (pageIndex <= totalPageCount) {
-								//1.获取课堂考勤记录列表
 								events.showWaiting();
 								getPageDataArray();
 								setTimeout(function() {
@@ -554,73 +534,32 @@
 			//获取数据范围授权：班级
 			function getClsList(grd_code) {
 				const params = {
-					op_code: 'index',
-					grd_code: grd_code ? grd_code : '-1',
-					get_cls: true,
-					all_cls: true,
+					op_code:'index',
+					grd_code:grd_code,
+					get_cls:true,
+					all_cls:true,
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let clss = data.data.cls_list;
-						let clsList = [];
+						let clsList=[];
 						clss.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
 							let obj = {};
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部班级';
 							obj.value = currentValue.value;
 							obj.text = name;
 							clsList.push(obj)
 						})
-
-						if (clsList.length > 0) {
-							datasource.clsList = clsList;
-							datasource.clsValue = clsList[0];
-							//获取学生数组
-							getStuList(grd_code,clsList[0].value)
-						} else {
+						if(clsList.length>0 ){
+							datasource.clsList=clsList;
+							datasource.clsValue=clsList[0];
+							getPageDataArray();
+						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					}
-				});
-			}
-
-
-			//获取数据范围授权：学生
-			function getStuList(grd_id,cls_id) {
-				const params = {
-					op_code:'index',
-					grd_code: grd_id,
-					cls_code: cls_id,
-					get_stu:true,
-					all_stu:true,
-					index_code: curPage.access.split('#')[1],
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					console.log(JSON.stringify(data))
-					if (data.code == 0) {
-						let stu = data.data.stu_list;
-						let stuList=[];
-						stu.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部学生';
-							let obj = {};
-							obj.value = currentValue.value;
-							obj.text = name;
-							stuList.push(obj)
-						})
-						if(stuList.length>0 ){
-							datasource.stuList=stuList;
-							datasource.stuValue = stuList[0];
-							getPageDataArray() 
-						}else{
-							events.closeWaiting();
-							mui.toast('无数据授权 无法获取学生');
-						}
-						
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -631,23 +570,24 @@
 			function getPageDataArray() {
 				let grd_code=datasource.grdValue.value
 				let cls_code=datasource.clsValue.value
-				let stu_code=datasource.stuValue.value
 				//需要加密的数据
 				comData = {
-					sms_msgtype_code:'performance',
+					get_unit_code:personal.unit_code,
+					msg_type:window.storageKeyName.MSG_SMS.PERFORMANCE.MSG_TYPE,
 					msg_content:'',
+					dest_user:'',
 					send_time_begin:'1970-01-01',
 					send_time_end:'2051-01-01',
 					send_user:personal.user_code,
 					grd_code:grd_code=='-1'?'':grd_code,
 					cls_code:cls_code=='-1'?'':cls_code,
-					dest_user:stu_code=='-1'?'':stu_code,
+					serviced:'0,1,99,100',
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
 				} 
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
@@ -671,6 +611,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
+							datasource.pageArray =[]
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}

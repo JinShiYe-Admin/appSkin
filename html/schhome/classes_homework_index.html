@@ -271,16 +271,26 @@
 								<a class="mui-navigate-right"><!-- mui-navigate-right -->
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
-											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
-											<h5 class="mui-ellipsis" >班级:{{model.names.join("，")}}</h5>
 											<div style="margin-top: 0.55rem;">
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
-												</div>
-												<div class="mui-table-cell mui-col-xs-7">
-													<h5 class="mui-ellipsis mui-text-right">{{model.send_time}}</h5>
+												<div class="mui-table-cell mui-col-xs-12">
+													<!-- <h5 class="mui-ellipsis mui-text-left " style="font-size: 16px;">{{model.send_time}}</h5> -->
+													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 3px;">接收年级:
+													<span v-for="(item,index) in model.tousers" style="word-break: break-all;word-wrap: break-word;">
+														<template v-if="index < model.tousers.length-1">{{item.grd_name}},</template>
+														<template v-else>{{item.grd_name}}</template>
+													</span>
+													</h5>
+													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 10px;">接收班级:
+													<span v-for="(item,index) in model.tousers" style="word-break: break-all;word-wrap: break-word;">
+														<template v-if="index < model.tousers.length-1">{{item.cls_name}},</template>
+														<template v-else>{{item.cls_name}}</template>
+													</span>
+													</h5>
 												</div>
 											</div>
+											<!-- <div style="height: 1px;width: 100%;background-color: rgba(0,0,0,0.1);transform: scaleY(.5);margin-bottom: 15px;"></div> -->
+											<div style="margin-bottom: 10px;"></div>
+											<p class="three-line" v-if="model.msg_content">{{model.msg_content}}</p>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
 											<h5 class="mui-text-right" ></h5>
@@ -338,7 +348,7 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/interaction/classes_homework_add.html", model);
+							utils.mOpenWithData("../../html/schhome/classes_homework_add.html", model);
 					}
 				}
 			});
@@ -355,8 +365,8 @@
 				methods: {
 					clickLi: function(model) {
 						let index_code = curPage.access.split('#')[1]
-						model.index_code = index_code; 
-						utils.mOpenWithData("../../html/interaction/classes_homework_detail.html", model);
+						model.index_code = index_code;
+						utils.mOpenWithData("../../html/schhome/classes_homework_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -512,11 +522,11 @@
 							//获取数据范围授权：班级
 							getClsList(grd_code)
 						} else {
-							events.closeWaiting()
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting()
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -524,35 +534,34 @@
 			//获取数据范围授权：班级
 			function getClsList(grd_code) {
 				const params = {
-					op_code: 'index',
-					grd_code: grd_code ? grd_code : '-1',
-					get_cls: true,
-					all_cls: true,
+					op_code:'index',
+					grd_code:grd_code,
+					get_cls:true,
+					all_cls:true,
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
 					if (data.code == 0) {
 						let clss = data.data.cls_list;
-						let clsList = [];
+						let clsList=[];
 						clss.map(function(currentValue) {
-							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
 							let obj = {};
+							let name=currentValue.name.indexOf('全部')==-1?currentValue.name:'全部班级';
 							obj.value = currentValue.value;
 							obj.text = name;
 							clsList.push(obj)
 						})
-
-						if (clsList.length > 0) {
-							datasource.clsList = clsList;
-							datasource.clsValue = clsList[0];
-							getPageDataArray()
-						} else {
-							events.closeWaiting()
+						if(clsList.length>0 ){
+							datasource.clsList=clsList;
+							datasource.clsValue=clsList[0];
+							getPageDataArray();
+						}else{
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
-					} else {
-						events.closeWaiting()
+					}else{
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -563,7 +572,8 @@
 				let cls_code=datasource.clsValue.value
 				//需要加密的数据
 				comData = {
-					sms_msgtype_code:'homework',
+					get_unit_code:personal.unit_code,
+					msg_type:window.storageKeyName.MSG_SMS.HOMEWORK.MSG_TYPE,
 					msg_content:'',
 					dest_user:'',
 					send_time_begin:'1970-01-01',
@@ -571,26 +581,19 @@
 					send_user:personal.user_code,
 					grd_code:grd_code=='-1'?'':grd_code,
 					cls_code:cls_code=='-1'?'':cls_code,
+					serviced:'0,1,99,100',
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
 				} 
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
 					data) {
-					events.closeWaiting()
+					events.closeWaiting();
 					if (data.code == 0) {
 						if(data.data!=null){
 							totalPageCount = data.data.total_page;
 							pageIndex++;
-							data.data.list.map(function(item){
-								let tousers=item.tousers
-								let names=[]
-								tousers.map(function(item){
-									names.push(item.grd_name+item.cls_name)
-								})
-								item.names=names
-							})
 							if (flagRef == 0) { //刷新
 								datasource.pageArray = data.data.list
 								if (data.data.list.length == 0) {
@@ -608,12 +611,11 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
-							events.closeWaiting()
+							datasource.pageArray =[]
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {
-						events.closeWaiting()
 						mui.toast(data.msg);
 					}
 				});
