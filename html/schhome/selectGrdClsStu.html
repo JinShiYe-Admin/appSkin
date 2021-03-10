@@ -23,111 +23,6 @@
 				top: 44px;
 				height: auto;
 			}
-
-			.mui-pull-top-tips {
-				position: absolute;
-				top: -20px;
-				left: 50%;
-				margin-left: -25px;
-				width: 40px;
-				height: 40px;
-				border-radius: 100%;
-				z-index: 1;
-			}
-
-			.mui-bar~.mui-pull-top-tips {
-				top: 24px;
-			}
-
-			.mui-pull-top-wrapper {
-				width: 42px;
-				height: 42px;
-				display: block;
-				text-align: center;
-				background-color: #efeff4;
-				border: 1px solid #ddd;
-				border-radius: 25px;
-				background-clip: padding-box;
-				box-shadow: 0 4px 10px #bbb;
-				overflow: hidden;
-			}
-
-			.mui-pull-top-tips.mui-transitioning {
-				-webkit-transition-duration: 200ms;
-				transition-duration: 200ms;
-			}
-
-			.mui-pull-top-tips .mui-pull-loading {
-				margin: 0;
-			}
-
-			.mui-pull-top-wrapper .mui-icon,
-			.mui-pull-top-wrapper .mui-spinner {
-				margin-top: 7px;
-			}
-
-			.mui-pull-top-wrapper .mui-icon.mui-reverse {
-				/*-webkit-transform: rotate(180deg) translateZ(0);*/
-			}
-
-			.mui-pull-bottom-tips {
-				text-align: center;
-				background-color: #efeff4;
-				font-size: 15px;
-				line-height: 40px;
-				color: #777;
-			}
-
-			.mui-pull-top-canvas {
-				overflow: hidden;
-				background-color: #fafafa;
-				border-radius: 40px;
-				box-shadow: 0 4px 10px #bbb;
-				width: 40px;
-				height: 40px;
-				margin: 0 auto;
-			}
-
-			.mui-pull-top-canvas canvas {
-				width: 40px;
-			}
-
-			.mui-slider-indicator.mui-segmented-control {
-				background-color: #efeff4;
-			}
-
-			.peopleImg {
-				width: 40px;
-				height: 40px;
-				border-radius: 50%;
-			}
-
-			.time {
-				font-size: 14px;
-				float: right;
-				color: gray;
-			}
-
-			.biaoti {
-				width: 80%;
-				color: #000000;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
-
-			.tempCss {
-				font-size: 14px;
-				color: gray;
-			}
-
-			.grdName {
-				padding-top: 5px;
-				margin-left: 20px;
-				font-size: 17px;
-				color: black;
-				height: 30px;
-			}
 			
 			.mui-scroll-wrapper{
 				background: #FFFFFF;
@@ -289,7 +184,8 @@
 						this.clsSelect=model
 						this.cClicked=true
 						let pageArray=datasource.pageArray
-						pageArray.map(grdItem=>{							if(grdItem.value===gmodel.value){								grdItem.clsArray.map(clsItem=>{									if(clsItem.value===model.value){										if(clsItem.stuArray.length>0){
+						pageArray.map(grdItem=>{							if(grdItem.value===gmodel.value){								grdItem.clsArray.map(clsItem=>{									if(clsItem.value===model.value){
+										if(clsItem.loaded){
 											datasource.stuArray=clsItem.stuArray
 										}else{
 											let serviced=curPage.serviced
@@ -360,6 +256,7 @@
 					if (datas.code == 0) {
 						for (var i = 0; i < datas.data.cls_list.length; i++) {
 							datas.data.cls_list[i].stuArray=[]
+							datas.data.cls_list[i].loaded = false;
 						}
 						for (var i = 0; i < grd_list.length; i++) {
 							if (grdModel.value === grd_list[i].value) {
@@ -368,9 +265,26 @@
 						}
 						datasource.pageArray = grd_list
 						
-						
 						let serviced=curPage.serviced
+						let grd_clss=[]
 						curPage.selectData.map(item=>{
+							let grd_cls={
+								grd_code:item.grd_code,
+								cls_code:item.cls_code,
+								cls_name:item.cls_name,
+								grd_name:item.grd_name,
+							}
+							let input=true
+							grd_clss.map(gcitem=>{
+								if(item.grd_code===gcitem.grd_code && item.cls_code===gcitem.cls_code){
+									input=false
+								}
+							})
+							if(input){
+								grd_clss.push(grd_cls)
+							}
+						})
+						grd_clss.map(item=>{
 							 if(serviced!==''){
 							 	if(serviced=='0' || serviced=='99'){
 							 		getStuArray(item)
@@ -425,17 +339,16 @@
 							})
 						})
 						
-						let pageArray=datasource.pageArray
-						pageArray.map(grdItem=>{
+						datasource.pageArray.map(grdItem=>{
 							if(grdItem.value===grdCode){
 								grdItem.clsArray.map(clsItem=>{
 									if(clsItem.value===clsCode){
 										clsItem.stuArray=datas.data.list
+										clsItem.loaded=true
 									}
 								})
 							}
 						})
-						
 						datasource.stuArray=datas.data.list
 					} else {
 						mui.toast(datas.msg);
@@ -476,15 +389,14 @@
 								if(citem.grd_code===grdCode && citem.cls_code===clsCode && citem.stu_code===item.stu_code){
 									item.checked=true
 								}
-							})
+							}) 
 						})
-						
-						let pageArray=datasource.pageArray
-						pageArray.map(grdItem=>{
+						datasource.pageArray.map(grdItem=>{
 							if(grdItem.value===grdCode){
 								grdItem.clsArray.map(clsItem=>{
 									if(clsItem.value===clsCode){
 										clsItem.stuArray=datas.data.list
+										clsItem.loaded=true
 									}
 								})
 							}
