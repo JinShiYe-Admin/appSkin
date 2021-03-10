@@ -274,8 +274,40 @@
 			}
 			
 			.double-line{
-				height: 10px;
+				height: 2px;
 				background-color: #EAEAEA;
+			}
+			
+			.icons-text{
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				padding:15px;
+			}
+			
+			.icons-text p{
+				font-weight: 800 !important;
+				color: #FFFFFF;
+				font-size: 20px;
+			}
+			.icons-text.icons-text-school{
+				background: #57D2C9;
+			}
+			
+			.icons-text.icons-text-grade{
+				background:#FF9079;
+			}
+			
+			.icons-text.icons-text-class{
+				background:#73ADED;
+			}
+			
+			.icons-text.icons-text-homework{
+				background: #FFD757;
+			}
+			
+			.icons-text.icons-text-performance{
+				background: #C879D6;
 			}
 		</style>
 	</head>
@@ -288,38 +320,32 @@
 		<div id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
-						 <div style="padding: 15px 15px 0;">
-							 <p class="tow-line" v-if="formData.msg_content" style="font-size: 16px;color: #000000;">{{formData.msg_content}}</p>
-							 <!-- <h5 class="mui-ellipsis" >状态:{{formData.is_copy?'已发送':'等待'}}</h5> -->
-							 <div style="margin-top: 0.55rem;">
-							 	<div class="mui-table-cell mui-col-xs-5">
-							 		<h5 class="mui-ellipsis" >发布人:{{formData.send_user_tname}}</h5>
-							 	</div>
-							 	<div class="mui-table-cell mui-col-xs-7">
-							 		<h5 class="mui-ellipsis mui-text-right">{{formData.send_time}}</h5>
-							 	</div>
+						 <div style="padding: 15px 10px 0;">
+							 <div class="mui-table-cell mui-col-xs-2" style="position: inherit;vertical-align: bottom;padding-bottom: 8px;">
+								<div v-if="formData.msg_type==='1-1'" class="icons-text icons-text-school"><p>校</p></div>
+								<div v-if="formData.msg_type==='1-2'" class="icons-text icons-text-grade"><p>年</p></div>
+								<div v-if="formData.msg_type==='1-3'" class="icons-text icons-text-class"><p>班</p></div>
+								<div v-if="formData.msg_type==='1-4'" class="icons-text icons-text-homework"><p>作</p></div>
+								<div v-if="formData.msg_type==='1-5'" class="icons-text icons-text-performance"><p>个</p></div>
 							 </div>
+							  <div class="mui-table-cell mui-col-xs-6">
+								<p style="font-size: 16px;color: #000000;">{{formData.send_user_tname}}</p>
+								<div class="mui-table-cell mui-col-xs-12">
+									<h5 v-if="formData.msg_type==='1-1'" class="mui-ellipsis" >类别：校园通知</h5>
+									<h5 v-if="formData.msg_type==='1-2'" class="mui-ellipsis" >类别：年级通知</h5>
+									<h5 v-if="formData.msg_type==='1-3'" class="mui-ellipsis" >类别：班级通知</h5>
+									<h5 v-if="formData.msg_type==='1-4'" class="mui-ellipsis" >类别：班级作业</h5>
+									<h5 v-if="formData.msg_type==='1-5'" class="mui-ellipsis" >类别：个性表现</h5>
+								</div>
+							  </div>
+							  <div class="mui-table-cell mui-col-xs-5" style="position: inherit;vertical-align: bottom;padding-bottom: 3px;">
+							  	<h5 class="mui-ellipsis mui-text-right">{{formData.send_time}}</h5>
+							  </div>
 						 </div>
+						 <div style="margin-top: 10px;"></div>
 						 <div class="double-line"></div>
 						 <div class="mui-input-row">
-						 	<label class="aCss">接收人</label>
-						 </div>
-						 <div class="line"></div>
-						 <div class="mui-input-row">
-							<div v-cloak v-for="grd_child in student" >
-								<div v-cloak v-for="cls_child in grd_child.children" v-if="cls_child.children.length>0" style="margin: 0 15px;">
-										<p style="font-size: 15px;margin-top: 10px;">{{cls_child.grd_name}}{{cls_child.cls_name}}</p>
-										<span style="font-size: 14px;" v-for="(stu_child,index) in cls_child.children" v-if="stu_child.stu_name">
-											<template v-if="index==cls_child.children.length-1">
-												{{stu_child.stu_name}}
-											</template>
-											<template v-else>
-												{{stu_child.stu_name}},
-											</template>
-										</span>
-										<!-- <div class="line"></div> -->
-								</div>
-							</div>
+							 <p style="text-indent: 2em;color: #000000;margin-top: 5px;">{{formData.msg_content}}</p>
 						 </div>
 				</div>
 			</div>
@@ -363,13 +389,13 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					formData: {}, //表单内容
-					student:[]//年级 班级 学生 数组
+					formData: ''
 				},
 			});
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
+				console.log("curPage: " + JSON.stringify(curPage));
 				datasource.formData=curPage;
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -378,65 +404,7 @@
 					indicators: true, //是否显示滚动条
 					deceleration: deceleration
 				});
-				events.showWaiting();
-				getStudentFromHR();
 			});
-			
-			
-			function getStudentFromHR() {
-				let tousers=curPage.tousers
-				let grd_list = []
-				let grd_codes=[]
-				let cls_list = []
-				let cls_codes=[]
-				for (var i = 0; i < tousers.length; i++) {
-					if(grd_codes.indexOf(tousers[i].grd_code)===-1){
-						grd_codes.push(tousers[i].grd_code)
-						grd_list.push({
-							grd_code:tousers[i].grd_code,
-							grd_name:tousers[i].grd_name,
-						})
-					}
-					cls_codes.push(tousers[i].cls_code)
-				} 
-				grd_list.map(function(grd_item){
-					let children=[]
-					tousers.map(function(cls_item){
-						if(grd_item.grd_code==cls_item.grd_code){
-							children.push(cls_item)
-						}
-					})
-					grd_item.children=children
-				})
-				 
-				const params = {
-					grd_codes:grd_codes.join(","),
-					cls_codes:cls_codes.join(","),
-					op_code:'index',
-					index_code: curPage.index_code,
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'stu', {}, params, 2, function(data) {
-					events.closeWaiting();
-					if(data.data.list && data.data.list.length>0){
-						let stu_list =data.data.list
-						grd_list.map(function(grd_item){ 
-							let cls_list=grd_item.children
-							let grd_code=grd_item.grd_code
-							cls_list.map(function(cls_item){
-								let cls_code=cls_item.cls_code
-								let children=[]
-								stu_list.map(function(stu_item){
-									 if(grd_code== stu_item.grd_code && cls_code==stu_item.cls_code){
-										 children.push(stu_item)
-									 }
-								})
-								cls_item.children=children
-							})
-						})
-						datasource.student=grd_list
-					}
-				});
-			}
 		</script>
 	</body>
 </html>
