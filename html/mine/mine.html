@@ -85,8 +85,8 @@
 			<div class="mui-row" style="margin-top: 44px;">
 				<div class="user-info">
 					<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
-					<p class="user-text">{{userName}}<span v-if="userModel.type_code =='YHLX0005'">(家长)</span></p>
-					<p style="text-align: center;">天桥一中 初三 1902班</p>
+					<p class="user-text">{{userName}}<span v-if="userModel.type_code =='YHLX0004'">(家长)</span></p>
+					<p style="text-align: center;">{{userMsg}}</p>
 				</div>
 			</div>
 			<div class="mui-row" style="background: #EEEEEE;height: 20px;"></div>
@@ -157,7 +157,8 @@
 					el: "#mine",
 					data: {
 						userModel:personal,
-						userName: personal.user_name,
+						userName: '',
+						userMsg:'',
 						userImg: setImg(personal.img_url, 9),
 						settings: [{
 								name: "密码修改",
@@ -239,6 +240,14 @@
 						}
 					}
 				});
+				
+				if(personal.type_code == 'YHLX0003'){
+					mine.userName = personal.tec_name;
+					mine.userMsg = personal.sch_name+' '+personal.dpt_name;
+				}else{
+					mine.userName = personal.stu_name;
+					mine.userMsg = personal.sch_name+' '+personal.grd_name+' '+personal.cls_name;
+				}
 
 				function quitLogin() {
 					closeMenu();

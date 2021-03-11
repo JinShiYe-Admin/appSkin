@@ -15,6 +15,8 @@ schhome|家校互动 家长端|Liu|Gu(广西)、meng(广西)|开发
 schhome_stu|家校互动 家长端|Liu|Gu(广西)、meng(广西)|开发
 student_performance|学生成绩|Zhao|Meng(广西)|开发 <!-- 有滑动列表切换丢失的解决方法 index.html--> 
 parents_attendance|学生考勤家长端|zhao|未知
+think_learning_resources|智学资源|zhao|廖建鹏
+stu_actionComment|行为与评语|zhao|阮本伟
 
 <!-- 
 打包说明

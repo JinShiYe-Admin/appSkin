@@ -74,9 +74,10 @@
 
 	<body style="background: white;">
 		<header class="mui-bar mui-bar-nav" v-cloak style="background-color:#00CFBD;" id="tempHead">
-			<a @click="clickLeftImg" v-cloak class="mui-icon mui-pull-left">
-				<img :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
+			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
+				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
 			</a>
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 @click="clickTitle()" class="mui-title" v-cloak style="color: white;">
 				<a class="mui-icon" style="font-size: 16px;">{{titleName}}<span class="mui-icon-arrowdown"></span></a>
 			</h1>
@@ -135,32 +136,34 @@
 			<div v-show="showFlag==0 || showFlag==-1">
 				<p style="text-align: center;margin-top: 5px;" v-cloak>{{noData}}</p>
 				<div v-cloak style="text-align: center;margin:10% auto;">
-					<img src="../../img/noData.png" style="width: 250px;" />
+					<img src="../../img/homeSchool/noData.png" style="width: 250px;" />
 				</div>
 			</div>
 		</div>
-
-		<script src="../../js/mui.min.js"></script>
-		<script type="text/javascript" src="../../js/utils/vconsole.min.js"></script>
-		<script type="text/javascript" src="../../js/utils/vue.js"></script>
-		<script src="../../js/utils/utils.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/demoCssJs/jquery-2.1.4.js"></script>
-		<script type="text/javascript" src="../../js/swiper/swiper.js"></script>
+		
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/swiper/swiper-bundle.js"></script>
 		<!--加密-->
-		<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/utils/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/jquery.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<!---->
 		<script src='../../js/libs/crypto-js/require.js'></script>
-		<script src='../../js/utils/signHmacSHA1.js'></script>
-		<script src='../../js/utils/sortSign.js'></script>
-		<script src="../../js/storageKeyName.js"></script>
 		<script src="../../js/utils/store.js"></script>
-		<script src="../../js/publicProtocol-ziyuan.js"></script>
+		<script src="../../js/utils/publicProtocol-ziyuan.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/pushPermission.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
 		<script type="text/javascript">
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
@@ -172,36 +175,36 @@
 			store.set(window.storageKeyName.CATALOGOBJ, null);
 			store.set(window.storageKeyName.ZJPERCODE, null);
 
-			mui.init({
-				statusBarBackground: '#00CFBD',
-				swipeBack: false,
-				beforeback: back,
-				pullRefresh: {
-					container: '#contentData',
-					down: {
-						style: 'circle', //必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
-						color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
-						height: '50px', //可选,默认50px.下拉刷新控件的高度,
-						range: '100px', //可选 默认100px,控件可下拉拖拽的范围
-						offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
-						auto: false, //可选,默认false.首次加载自动上拉刷新一次
-						callback: pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
-					},
-					up: {
-						height: 50, //可选.默认50.触发上拉加载拖动距离
-						auto: false, //可选,默认false.自动上拉加载一次
-						contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
-						contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
-						callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
-					}
-				}
-			});
+			// mui.init({
+			// 	statusBarBackground: '#00CFBD',
+			// 	swipeBack: false,
+			// 	// beforeback: back,
+			// 	pullRefresh: {
+			// 		container: '#contentData',
+			// 		down: {
+			// 			style: 'circle', //必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+			// 			color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+			// 			height: '50px', //可选,默认50px.下拉刷新控件的高度,
+			// 			range: '100px', //可选 默认100px,控件可下拉拖拽的范围
+			// 			offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+			// 			auto: false, //可选,默认false.首次加载自动上拉刷新一次
+			// 			callback: pulldownRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			// 		},
+			// 		up: {
+			// 			height: 50, //可选.默认50.触发上拉加载拖动距离
+			// 			auto: false, //可选,默认false.自动上拉加载一次
+			// 			contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+			// 			contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+			// 			callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			// 		}
+			// 	}
+			// });
 			//加载更多
-			function pullupRefresh() {
-				contentData.flag = 1;
-				//4.获取资源列表
-				getZiYuanList();
-			}
+			// function pullupRefresh() {
+			// 	contentData.flag = 1;
+			// 	//4.获取资源列表
+			// 	getZiYuanList();
+			// }
 			//选择章节目录监听
 			window.addEventListener('selectCatalog', function(data) {
 				console.log(JSON.stringify(data.detail));
@@ -226,61 +229,25 @@
 				//4.获取资源列表
 				getZiYuanList();
 			}
-
-			function back() {
-				if(showMenu) {
-					//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
-					closeMenu();
-					return false;
-				} else {
-					//菜单处于隐藏状态，执行返回时，要先close菜单页面，然后继续执行mui.back逻辑关闭主窗口；
-					menu.close('none');
-					return true;
-				}
-			}
-
-			var main;
-			var menu;
-			var mask = mui.createMask(_closeMenu);
-			var showMenu = false,
-				mode = 'all-move';
 			//首先改变移动标志
-			slideTogether = true;
-			//变换menu界面初始化位置，整体移动时，Menu界面left需要在-70%的地方；
-			//						menu.setStyle({
-			//							left: '-70%'
-			//						});
+			// slideTogether = true;
 			mui.plusReady(function() {
-				toChildPage("子页智学资源");
-				var backButtonPress = 0;
-				//重写返回键
-				mui.back = function(event) {
-					backButtonPress++;
-					if(backButtonPress > 1) {
-						plus.runtime.quit();
-					} else {
-						plus.nativeUI.toast('再按一次退出应用');
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				tempHead.headTitle = curPage.name;
+				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
+					var ws = plus.webview.currentWebview();
+					console.log("当前Webview：" + JSON.stringify(ws.preload));
+					if (ws.preload) {
+						curPage = ws.preload;
+						tempHead.headTitle = ws.preload.name;
 					}
-					setTimeout(function() {
-						backButtonPress = 0;
-					}, 1000);
-					return false;
-				};
-
-				main = plus.webview.currentWebview();
-				//setTimeout的目的是等待窗体动画结束后，再执行create webview操作，避免资源竞争，导致窗口动画不流畅；
-				setTimeout(function() {
-					//侧滑菜单默认隐藏，这样可以节省内存；
-					menu = mui.preload({
-						id: '../../html/ziyuan/mine.html',
-						url: '../../html/ziyuan/mine.html',
-						styles: {
-							left: 0,
-							width: '70%',
-							zindex: 9997
-						}
-					});
-				}, 1000);
+					if (ws.preload.index == 0) {
+						tempHead.showBack = 2;
+					}
+				} else {
+					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
+				}
 
 				window.addEventListener('home_setHeadImg', function(data) {
 					tempHead.headImg = data.detail.imgurl;
@@ -299,20 +266,19 @@
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
-					personal: personal,
-					//							addFlag: ifNew(), //是否可以新建，0不可以
-					headImg: setImg(personal.imgurl),
+					showBack: 0,
+					headTitle: '',
+					headImg: setImg(personal.img_url, 9),
 					titleName: ''
 				},
 				methods: {
 					clickLeftImg: function() {
-						console.log('indexweeeeeeeeee:');
-						openMenu();
+						appPay.openMenu();
 					},
 					clickTitle: function() {
 						console.log('点击标题');
 						if(contentData.showFlag != -1) {
-							utils.mOpenWithData("../../html/catalog/catalogPage.html", {});
+							utils.mOpenWithData("../../html/think_learning_resources/catalogPage.html", {});
 						}
 					}
 				}
@@ -613,169 +579,6 @@
 			//父——>子页传值方法
 			function toChildPage(text) {
 				console.log(text)
-			}
-
-			//关闭侧滑
-			window.addEventListener('closeMinePage', function(data) {
-				console.log('closeMinePage,菜单已关闭')
-				closeMenu();
-			});
-
-			window.addEventListener('hideMenu', function(data) {
-				console.log('hideMenu,菜单已关闭')
-				mask.close();
-				menu.hide();
-				showMenu = false;
-				var wvs = plus.webview.getDisplayWebview();
-				for(var i = 0; i < wvs.length; i++) {
-					wvs[i].setStyle({
-						mask: "none"
-					});
-				}
-			});
-			/**
-			 * 显示菜单菜单
-			 */
-			function openMenu() {
-				//				if(!showMenu) {
-				var wvs = plus.webview.getDisplayWebview();
-				for(var i = 0; i < wvs.length; i++) {
-					var url = wvs[i].getURL();
-					if(url.indexOf('/ziyuan/mine') == -1) {
-						if(plus.os.name == 'Android') {
-							wvs[i].setStyle({
-								mask: "rgba(0,0,0,0.1)"
-							});
-						} else {
-							wvs[i].setStyle({
-								mask: "rgba(0,0,0,0.3)"
-							});
-						}
-						wvs[i].addEventListener("maskClick", function() {
-							closeMenu();
-						}, false);
-					}
-				}
-				//							mui.fire(plus.webview.currentWebview().opener(), 'closeClick', {});
-				//侧滑菜单处于隐藏状态，则立即显示出来；
-				//显示完毕后，根据不同动画效果移动窗体；
-				menu.show('none', 0, function() {
-					switch(mode) {
-						case 'main-move':
-							//主窗体开始侧滑；
-							main.setStyle({
-								left: '70%',
-								transition: {
-									duration: 150
-								}
-							});
-							break;
-						case 'menu-move':
-							menu.setStyle({
-								left: '0%',
-								transition: {
-									duration: 10
-								}
-							});
-							break;
-						case 'all-move':
-							//								main.setStyle({
-							//									left: '70%',
-							//									transition: {
-							//										duration: 150
-							//									}
-							//								});
-							menu.setStyle({
-								left: '0%',
-								transition: {
-									duration: 10
-								}
-							});
-							break;
-					}
-				});
-				//显示遮罩
-				mask.show();
-				showMenu = true;
-				//通知index页隐藏tab栏
-				//				}
-			}
-			/**
-			 * 关闭侧滑菜单
-			 */
-			function closeMenu() {
-				_closeMenu();
-				//关闭遮罩
-				mask.close();
-			}
-
-			/**
-			 * 关闭侧滑菜单（业务部分）
-			 */
-			function _closeMenu() {
-				//				if(showMenu) {
-				//						mui.fire(plus.webview.currentWebview().opener(), 'openClick', {});
-				var wvs = plus.webview.getDisplayWebview();
-				for(var i = 0; i < wvs.length; i++) {
-					wvs[i].setStyle({
-						mask: "none"
-					});
-				}
-				//关闭遮罩；
-				switch(mode) {
-					case 'main-move':
-						//主窗体开始侧滑；
-						main.setStyle({
-							left: '0',
-							transition: {
-								duration: 150
-							}
-						});
-						break;
-					case 'menu-move':
-						//主窗体开始侧滑；
-						menu.setStyle({
-							left: '-70%',
-							transition: {
-								duration: 150
-							}
-						});
-						break;
-					case 'all-move':
-						//主窗体开始侧滑；
-						//							main.setStyle({
-						//								left: '0',
-						//								transition: {
-						//									duration: 150
-						//								}
-						//							});
-						//menu页面同时移动
-						menu.setStyle({
-							left: '-70%',
-							transition: {
-								duration: 150
-							}
-						});
-
-						break;
-				}
-
-				//等窗体动画结束后，隐藏菜单webview，节省资源；
-				setTimeout(function() {
-					menu.hide();
-				}, 200);
-				//改变标志位
-				showMenu = false;
-				//通知index页显示tab栏
-				//				}
-			}
-			//重写mui.menu方法，Android版本menu按键按下可自动打开、关闭侧滑菜单；
-			mui.menu = function() {
-				if(showMenu) {
-					closeMenu();
-				} else {
-					openMenu();
-				}
 			}
 			//vue数据
 			var contentData = new Vue({

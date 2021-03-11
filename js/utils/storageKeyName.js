@@ -23,6 +23,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = '? 需连广西开发环境';//学生评语（阮)
 			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -47,6 +48,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8080/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8080/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8080/stuzy/api/stuScore/';//学生成绩（蒙)
+			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -72,7 +74,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
-			
+			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -97,6 +99,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://nwifapp.jiaobaowang.net/stuzy/api/stuScore/';//学生成绩（蒙)
+			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -121,6 +124,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			//七牛上传
 			mod.QN_APPID = 17;//七牛appid
 			mod.QN_APPKEY = "oafor1010";//七牛appkey
@@ -145,6 +149,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://cs1.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -200,6 +205,11 @@ var storageKeyName = (function(mod) {
 	mod.MENULIST = 'menuList'; //获取菜单列表
 	mod.MOREMENU = 'moremenu'; //更多菜单列表
 	mod.CHECKUPDATE = 'CHECK'; //是否检查更新
+	
+	// 智学资源
+	mod.CATALOG = 'catalog';//滑动菜单对象
+	mod.CATALOGOBJ = 'catalogObj';//滑动菜单选择值对象
+	mod.ZJPERCODE = 'zjpercode';//组卷测试 学段选择值对象
 	
 	mod.BADGENUMBER = 'badgeNumber'//app角标
 	mod.PUBLICPARAMETER = 'publicParameter'//共用参数
