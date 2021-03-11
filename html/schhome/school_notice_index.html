@@ -245,6 +245,45 @@
 				margin-top: 0.55rem !important;
 				word-break: break-all !important;
 			}
+			
+			.three-line{
+				overflow: hidden !important;
+				text-overflow: ellipsis !important;
+				display: -webkit-box !important;
+				-webkit-box-orient:vertical !important;
+				-webkit-line-clamp: 3 !important;
+				min-height:22px !important;
+				max-height:70px !important;
+				margin-top: 0.55rem !important;
+				word-break: break-all !important;
+			}
+			
+			.mui-input-row label {
+			    line-height: 1.1;
+			    float: right;
+			    width: 15%;
+				margin:0.3125rem 1% 0.3125rem 1%;
+				background-color: #00CFBD;
+				color: #FFFFFF;
+				height: 40px;
+				border-radius: 0.5rem;
+			    padding: 8px 18px;
+			}
+			
+			.mui-input-row label~input {
+			    float: left;
+			    width: 82%;
+				margin:0.3125rem 0 0.3125rem 1%;
+			    margin-bottom: 0;
+				border-radius: 0.5rem;
+			    padding-left: 10px;
+				background-color: #FFFFFF;
+			    border: 0;
+			}
+			
+			::-webkit-input-placeholder { /* WebKit browsers */
+			  font-size: 14px;
+			}
 
 		</style>
 	</head>
@@ -258,21 +297,22 @@
 		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll" >
+					<div v-cloak class="mui-input-row" style="border-bottom: 1px solid #00cfbd;">
+						<label @tap="selectItem"><span class="mui-icon mui-icon-search"></span></label>
+						<input v-model="inputText" oninput="inputChange(this)" type="text" placeholder="输入内容关键字">
+					</div>
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
 								<a class="mui-navigate-right"><!-- mui-navigate-right -->
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
-											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
 											<div style="margin-top: 0.55rem;">
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
-												</div>
-												<div class="mui-table-cell mui-col-xs-7">
-													<h5 class="mui-ellipsis mui-text-right">{{model.send_time}}</h5>
+												<div class="mui-table-cell mui-col-xs-12">
+													<h5 class="mui-ellipsis mui-text-left " style="font-size: 16px;">{{model.send_time}}</h5>
 												</div>
 											</div>
+											<p class="three-line" v-if="model.msg_content">{{model.msg_content}}</p>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
 											<h5 class="mui-text-right" ></h5>
@@ -322,7 +362,7 @@
 				el: "#tempVue",
 				data: {
 					titleName: '',
-					showAdd: false
+					showAdd: false,
 				},
 				methods: {
 					add: function() {
@@ -330,24 +370,45 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/interaction/school_notice_add.html", model);
-					}
-				}
+							utils.mOpenWithData("../../html/schhome/school_notice_add.html", model);
+					},
+				} 
 			});
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
 					canDelete:false,
 					pageArray: [], //界面总数组
+					inputText:'',//输入的搜索内容
 				},
 				methods: {
 					clickLi: function(model) {
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
-						utils.mOpenWithData("../../html/interaction/school_notice_detail.html", model);
+						utils.mOpenWithData("../../html/schhome/school_notice_detail.html", model);
+					},
+					selectItem:function(){
+						if(datasource.inputText==''){
+							mui.toast('请先输入搜索内容')
+						}else{
+							pageIndex = 1;
+							flagRef = 0;
+							events.showWaiting();
+							getPageDataArray()
+						}
 					},
 				}
 			});
+			
+			function inputChange(input){
+				if(input.value==''){
+					pageIndex = 1;
+					flagRef = 0;
+					events.showWaiting();
+					datasource.inputText=''
+					getPageDataArray();
+				}
+			}
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
@@ -431,20 +492,22 @@
 			function getPageDataArray() {
 				//需要加密的数据
 				comData = {
-					sms_msgtype_code:'school',
-					msg_content:'',
+					get_unit_code:personal.unit_code,
+					msg_type:window.storageKeyName.MSG_SMS.SCHOOL.MSG_TYPE,
+					msg_content:datasource.inputText,
 					dest_user:'',
 					send_time_begin:'1970-01-01',
 					send_time_end:'2051-01-01',
 					send_user:personal.user_code,
 					grd_code:'',
 					cls_code:'',
-					page_number: pageIndex, //当前页数
+					serviced:'0,1,99,100',
+					page_number: pageIndex, //当前页数 
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
-				} 
-				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
+				}  
+				// 1.1.列表页 
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
@@ -468,6 +531,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
+							datasource.pageArray =[]
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}

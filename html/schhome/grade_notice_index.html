@@ -244,6 +244,18 @@
 				position: fixed;
 				z-index: 20;
 			}
+			
+			.three-line{
+				overflow: hidden !important;
+				text-overflow: ellipsis !important;
+				display: -webkit-box !important;
+				-webkit-box-orient:vertical !important;
+				-webkit-line-clamp: 3 !important;
+				min-height:22px !important;
+				max-height:70px !important;
+				margin-top: 0.55rem !important;
+				word-break: break-all !important;
+			}
 
 		</style>
 	</head>
@@ -266,19 +278,23 @@
 					<template v-cloak v-if="pageArray.length>0">
 						<ul v-cloak class="mui-table-view">
 							<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-								<a class="mui-navigate-right">
+								<a class="mui-navigate-right"><!-- mui-navigate-right -->
 									<div class="mui-table">
 										<div class="mui-table-cell mui-col-xs-11">
-											<p class="tow-line" v-if="model.msg_content">{{model.msg_content}}</p>
-											<h5 class="mui-ellipsis" >年级:{{model.grd_names.join("，")}}</h5>
 											<div style="margin-top: 0.55rem;">
-												<div class="mui-table-cell mui-col-xs-5">
-													<h5 class="mui-ellipsis" >发布人:{{model.send_user_tname}}</h5>
-												</div>
-												<div class="mui-table-cell mui-col-xs-7">
-													<h5 class="mui-ellipsis mui-text-right">{{model.send_time}}</h5>
+												<div class="mui-table-cell mui-col-xs-12">
+													<h5 class="mui-ellipsis mui-text-left " style="font-size: 16px;margin-top: -5px;">{{model.send_time}}</h5>
+													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 10px;">接收年级:
+													<span v-for="(item,index) in model.tousers" style="word-break: break-all;word-wrap: break-word;">
+														<template v-if="index < model.tousers.length-1">{{item.grd_name}},</template>
+														<template v-else>{{item.grd_name}}</template>
+													</span>
+													</h5>
 												</div>
 											</div>
+											<!-- <div style="height: 1px;width: 100%;background-color: rgba(0,0,0,0.1);transform: scaleY(.5);margin-bottom: 15px;"></div> -->
+											<div style="margin-bottom: 10px;"></div>
+											<p class="three-line" v-if="model.msg_content">{{model.msg_content}}</p>
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
 											<h5 class="mui-text-right" ></h5>
@@ -336,7 +352,7 @@
 							let index_code = curPage.access.split('#')[1]
 							model.index_code = index_code;
 							model.title=curPage.name
-							utils.mOpenWithData("../../html/interaction/grade_notice_add.html", model);
+							utils.mOpenWithData("../../html/schhome/grade_notice_add.html", model);
 					}
 				}
 			});
@@ -353,7 +369,7 @@
 						let index_code = curPage.access.split('#')[1]
 						model.index_code = index_code;
 						console.log(JSON.stringify(model))
-						utils.mOpenWithData("../../html/interaction/grade_notice_detail.html", model);
+						utils.mOpenWithData("../../html/schhome/grade_notice_detail.html", model);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -501,7 +517,8 @@
 				let grd_code=datasource.grdValue.value
 				//需要加密的数据
 				comData = {
-					sms_msgtype_code:'grade',
+					get_unit_code:personal.unit_code,
+					msg_type:window.storageKeyName.MSG_SMS.GRADE.MSG_TYPE,
 					msg_content:'',
 					dest_user:'',
 					send_time_begin:'1970-01-01',
@@ -509,27 +526,29 @@
 					send_user:personal.user_code,
 					grd_code:grd_code=='-1'?'':grd_code,
 					cls_code:'',
+					serviced:'0,1,99,100',
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
 				} 
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'StuSmsP', {}, comData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
+					console.log("a啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊data.data.list: " + JSON.stringify(data.data.list));
 					if (data.code == 0) {
 						if(data.data!=null){
 							totalPageCount = data.data.total_page;
 							pageIndex++;
 							if (flagRef == 0) { //刷新
-								datasource.pageArray = getGrdNameList(data.data.list)
+								datasource.pageArray = data.data.list
 								if (data.data.list.length == 0) {
 									mui.toast('暂无数据');
 								}
 								mui(".mui-scroll-wrapper").scroll().refresh();
 							} else { //加载更多
 								//合并数组
-								datasource.pageArray = datasource.pageArray.concat(getGrdNameList(data.data.list));
+								datasource.pageArray = datasource.pageArray.concat(data.data.list);
 								if (data.data.list.length == 0) {
 									mui.toast('已加载全部');
 								}
@@ -538,7 +557,7 @@
 								mui(".mui-pull-loading")[0].innerHTML = "";
 							}
 						}else{
-							events.closeWaiting();
+							datasource.pageArray =[]
 							mui.toast('暂无数据');
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}

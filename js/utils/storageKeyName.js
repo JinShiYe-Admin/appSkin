@@ -24,6 +24,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
+			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -49,6 +51,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8080/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8080/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
+			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -75,6 +79,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
+			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -100,6 +106,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://nwifapp.jiaobaowang.net/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
+			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -125,6 +133,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
+			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 17;//七牛appid
 			mod.QN_APPKEY = "oafor1010";//七牛appkey
@@ -150,6 +160,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
+			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -248,6 +260,38 @@ var storageKeyName = (function(mod) {
 	//---七牛---end---
 
 
+	
+	//----------家校互动短信配置---------start
+	mod.MSG_SMS= {
+	    SCHOOL:{
+	      MSG_TYPE: '1-1', //信息类型 - 学校通知
+	      SMS_TYPE: 'jxhd_tz_unit_stugen', //短信类型 - 学校
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    GRADE: {
+	      MSG_TYPE: '1-2', //信息类型 - 年级通知
+	      SMS_TYPE: 'jxhd_tz_grd_stugen', //短信类型 - 年级
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    CLASS: {
+	      MSG_TYPE: '1-3', //信息类型 - 班级通知
+	      SMS_TYPE: 'jxhd_tz_cls_stugen', //短信类型 - 班级
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    HOMEWORK: {
+	      MSG_TYPE: '1-4', //信息类型 - 班级作业
+	      SMS_TYPE: 'jxhd_tz_cls_stugen', //短信类型 - 班级
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	    PERFORMANCE: {
+	      MSG_TYPE: '1-5', //信息类型 - 在线表现
+	      SMS_TYPE: 'jxhd_tz_ps_stugen', //短信类型 - 表现
+	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
+	    },
+	  }
+	
+	//----------家校互动短信配置---------end
+	
 	//---Activity的code---start---
 	mod.CODERECORDVIDEO = 0; //录像
 	mod.CODEPLAYVIDEO = 1; //播放视频
