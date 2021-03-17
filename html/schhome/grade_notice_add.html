@@ -172,10 +172,10 @@
 			   <div style="width: 100%;background: #FFFFFF;">
 				  <ul class="mui-table-view mui-table-view-radio">
 				  	<li class="mui-table-view-cell mui-selected"  @click="JS()"><a class="mui-navigate-right">即时发送</a></li>
-				  	<li class="mui-table-view-cell" @click="YS()"><a class="mui-navigate-right" ><span>延时发送</span><span style="position: absolute;right: 50px;" @click="shouTime()">{{delay_time}}</span></a></li>
+				  	<li class="mui-table-view-cell" @click="YS()"><a class="mui-navigate-right" ><span>延时发送</span><span style="position: absolute;right: 80px;border: 1px solid #00CFBD;color: #FFFFFF;background-color: #00CFBD;border-radius: 5px;padding: 0 3px;" @click="shouTime()">{{delay_time}}<span class="mui-icon mui-icon-compose"></span></span></a></li>
 				  </ul>
 			   </div>
-			   <button type="button" @click="closeMask()" class="mui-btn" style="background: #00cfbd;border: 1px solid #00cfbd;color: #FFFFFF;position: absolute;right: 0;">关闭</button>
+			   <!-- <button type="button" @click="closeMask()" class="mui-btn" style="background: #00cfbd;border: 1px solid #00cfbd;color: #FFFFFF;position: absolute;right: 0;">确定</button> -->
 			</div>
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
@@ -322,6 +322,7 @@
 						picker.show(function(rs) {
 							datasource.delay_time=rs.text.replace(/\-/g,'')
 							datasource.delay_time_data=rs.value 
+							datasource.SHOWTIME=false
 							picker.dispose();
 							picker = null;
 						})
@@ -332,9 +333,9 @@
 					YS:function(){
 						this.is_delay="1"
 					},
-					closeMask:function(){
-						this.SHOWTIME=false
-					},
+					// closeMask:function(){
+					// 	this.SHOWTIME=false
+					// },
 					selectGrade:function(){
 						let model ={};
 						model.access = curPage.index_code;
@@ -435,6 +436,7 @@
 				}
 				if(showToast){
 					mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
+					events.closeWaiting();
 					return 0
 				}
 				if(datasource.SIGN){

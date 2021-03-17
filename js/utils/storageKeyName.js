@@ -79,7 +79,6 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
 			mod.ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
-			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动 学生端（顾)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
