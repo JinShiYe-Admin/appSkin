@@ -366,6 +366,11 @@
 								tempVue.SMS=true
 								callback();
 							}
+						}else{
+							datasource.SHOW=false
+							datasource.SMS=false
+							tempVue.SMS=false
+							callback();
 						}
 					} else {
 						mui.toast(datas.msg);
@@ -421,7 +426,7 @@
 					console.log(delay_times);
 					delayTime=moment().add(delay_times[0], 'days').add(delay_times[1], 'hours').add(delay_times[2], 'minutes').format('YYYY-MM-DD HH:mm:ss');
 				}
-				
+				console.log("datasource.CONFIG: " + JSON.stringify(datasource.CONFIG));
 				comData = {
 					unit_name:personal.unit_name,
 					send_unit_code:personal.unit_code,
@@ -435,7 +440,7 @@
 					sms_msgtype_code:window.storageKeyName.MSG_SMS.SCHOOL.SMS_TYPE,
 					is_delay:datasource.is_delay,
 					delay_time:delayTime,
-					servied:datasource.CONFIG.serviced,
+					servied:JSON.stringify(datasource.CONFIG)==='{}'?'100':datasource.CONFIG.serviced,
 					index_code:curPage.index_code
 				}
 				console.log("comData: " + JSON.stringify(comData));

@@ -346,7 +346,7 @@
 						model.access = curPage.index_code;
 						model.selectData=this.formData.selectData;
 						model.name = '选择学生'; 
-						model.serviced = this.CONFIG.serviced?this.CONFIG.serviced:''; 
+						model.serviced = JSON.stringify(this.CONFIG)==='{}'?'100':this.CONFIG.serviced; 
 						console.log("model: " + JSON.stringify(model));
 						utils.mOpenWithData("../../html/schhome/selectGrdClsStu.html", model);
 					}
@@ -393,6 +393,11 @@
 								tempVue.SMS=true
 								callback();
 							}
+						}else{
+							datasource.SHOW=false
+							datasource.SMS=false
+							tempVue.SMS=false
+							callback();
 						}
 					} else {
 						mui.toast(datas.msg);
@@ -496,42 +501,41 @@
 					obj.user_names=user_names.join(",")
 					touser.push(obj)
 				}
-				console.log("datas: " + JSON.stringify(datasource.DGSTULIST));
-				// comData = {
-				// 	unit_name:personal.unit_name,
-				// 	send_unit_code:personal.unit_code,
-				// 	send_user:personal.user_code,
-				// 	send_user_tname:personal.user_name,
-				// 	msg_content:comment,
-				// 	msg_type:window.storageKeyName.MSG_SMS.PERFORMANCE.MSG_TYPE,
-				// 	send_soure:"schapp#[APP]",
-				// 	tousers:touser,
-				// 	hr_smsid:0,//固定值
-				// 	sms_msgtype_code:window.storageKeyName.MSG_SMS.PERFORMANCE.SMS_TYPE,
-				// 	is_delay:datasource.is_delay,
-				// 	delay_time:delayTime,
-				// 	servied:datasource.CONFIG.serviced,
-				// 	index_code:curPage.index_code
-				// }
-				// console.log("comData: " + JSON.stringify(comData));
-				// postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsa', {}, comData, 2, function(datas) {
-				// 	if (datas.code == 0) {
-				// 		 if(datasource.SMS){
-				// 			 let id=datas.data
-				// 			 sendSms(id,comment)
-				// 		 }else{
-				// 			 events.closeWaiting();
-				// 			  mui.toast(datas.msg);
-				// 			 setTimeout(function(){
-				// 				 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
-				// 				 mui.back()
-				// 			 },1500)
-				// 		 }
-				// 	} else {
-				// 		events.closeWaiting();
-				// 		mui.toast(datas.msg);
-				// 	}
-				// });
+				comData = {
+					unit_name:personal.unit_name,
+					send_unit_code:personal.unit_code,
+					send_user:personal.user_code,
+					send_user_tname:personal.user_name,
+					msg_content:comment,
+					msg_type:window.storageKeyName.MSG_SMS.PERFORMANCE.MSG_TYPE,
+					send_soure:"schapp#[APP]",
+					tousers:touser,
+					hr_smsid:0,//固定值
+					sms_msgtype_code:window.storageKeyName.MSG_SMS.PERFORMANCE.SMS_TYPE,
+					is_delay:datasource.is_delay,
+					delay_time:delayTime,
+					servied:JSON.stringify(datasource.CONFIG)==='{}'?'100':datasource.CONFIG.serviced,
+					index_code:curPage.index_code
+				}
+				console.log("comData: " + JSON.stringify(comData));
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsa', {}, comData, 2, function(datas) {
+					if (datas.code == 0) {
+						 if(datasource.SMS){
+							 let id=datas.data
+							 sendSms(id,comment)
+						 }else{
+							 events.closeWaiting();
+							  mui.toast(datas.msg);
+							 setTimeout(function(){
+								 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+								 mui.back()
+							 },1500)
+						 }
+					} else {
+						events.closeWaiting();
+						mui.toast(datas.msg);
+					}
+				});
 			}
 			
 			//短信发送

@@ -182,7 +182,6 @@
 							return
 						}
 						this.grdSelect=gmodel
-						console.log("gmodel: " + JSON.stringify(gmodel));
 						datasource.pageArray.map(gm=>{
 							gm.clsArray.map(item=>{
 								item.checked=false
@@ -192,19 +191,17 @@
 						this.clsSelect=model
 						this.cClicked=true
 						let pageArray=datasource.pageArray
+						let serviced=curPage.serviced
 						pageArray.map(grdItem=>{							if(grdItem.value===gmodel.value){								grdItem.clsArray.map(clsItem=>{									if(clsItem.value===model.value){
 										if(clsItem.loaded){
 											datasource.stuArray=clsItem.stuArray
 										}else{
-											let serviced=curPage.serviced
-											if(serviced!==''){
-												if(serviced=='99'){
-													getStuArray()
-												}else if(serviced=='0'){
-													getStuUnDGArray()
-												}else if(serviced=='1'){
-													getStuDGArray();
-												}
+											if(serviced==='99'){
+												getStuArray()
+											}else if(serviced==='0'){
+												getStuUnDGArray()
+											}else if(serviced==='1'){
+												getStuDGArray();
 											}else{
 												getStuDGArray();
 											}
@@ -295,16 +292,14 @@
 							}
 						})
 						grd_clss.map(item=>{
-							 if(serviced!==''){
-							 	if(serviced=='99'){//全部学生
-							 		getStuArray(item)
-							 	}else if(serviced=='0'){//只发试用
-									getStuUnDGArray(item);
-								}else if(serviced=='1'){//只发订购
-							 		getStuDGArray(item);
-							 	} 
-							 }else{
-							 	getStuDGArray(item);
+							if(serviced=='99'){//全部学生
+								getStuArray(item)
+							}else if(serviced=='0'){//只发试用
+								getStuUnDGArray(item);
+							}else if(serviced=='1'){//只发订购
+								getStuDGArray(item);
+							}else{
+							 	getStuDGArray(item); 
 							 }
 						})
 					} else {
@@ -391,6 +386,7 @@
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'stu/servStuList', {}, params, 2, function(datas) {
 					events.closeWaiting()
 					if (datas.code == 0) {
+						// console.log("订购学生: " +  JSON.stringify(datas.data.list));
 						datas.data.list.map(item=>{
 							item.grd_name=grdName
 							item.grd_code=grdCode
@@ -480,10 +476,10 @@
 										}
 									}) 
 								})
-								// console.log("所有学生: " +allStu.length+","+ JSON.stringify(allStu));
-								// console.log("订购学生: " +dgStu.length+","+ JSON.stringify(dgStu));
-								// console.log("未订购学生: " +unDGStu.length+","+ JSON.stringify(unDGStu));
-								// console.log("curPage.selectData: " + JSON.stringify(curPage.selectData));
+								console.log("所有学生: " +allStu.length+","+ JSON.stringify(allStu));
+								console.log("订购学生: " +dgStu.length+","+ JSON.stringify(dgStu));
+								console.log("未订购学生: " +unDGStu.length+","+ JSON.stringify(unDGStu));
+								console.log("curPage.selectData: " + JSON.stringify(curPage.selectData));
 								datasource.pageArray.map(grdItem=>{
 									if(grdItem.value===grdCode){
 										grdItem.clsArray.map(clsItem=>{
