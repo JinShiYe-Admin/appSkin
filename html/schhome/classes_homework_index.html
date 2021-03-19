@@ -287,9 +287,9 @@
 												<div class="mui-table-cell mui-col-xs-12">
 													<!-- <h5 class="mui-ellipsis mui-text-left " style="font-size: 16px;">{{model.send_time}}</h5> -->
 													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 3px;">接收年级:
-													<span v-for="(item,index) in model.tousers" style="word-break: break-all;word-wrap: break-word;">
-														<template v-if="index < model.tousers.length-1">{{item.grd_name}},</template>
-														<template v-else>{{item.grd_name}}</template>
+													<span v-for="(item,index) in model.grdNames" style="word-break: break-all;word-wrap: break-word;">
+														<template v-if="index < model.grdNames.length-1">{{item}},</template>
+														<template v-else>{{item}}</template>
 													</span>
 													</h5>
 													<h5 class="mui-text-left " style="font-size: 16px;margin-top: 10px;">接收班级:
@@ -606,6 +606,17 @@
 						if(data.data!=null){
 							totalPageCount = data.data.total_page;
 							pageIndex++;
+							data.data.list.map(item=>{
+								let grdName=[]
+								let push=true;
+								item.tousers.map(titem=>{
+									grdName.map(gitem=>{
+										if(gitem===titem.grd_name){push=false;}
+									})
+									if(push){grdName.push(titem.grd_name)}
+								})
+								item.grdNames=grdName
+							}) 
 							if (flagRef == 0) { //刷新
 								datasource.pageArray = data.data.list
 								if (data.data.list.length == 0) {

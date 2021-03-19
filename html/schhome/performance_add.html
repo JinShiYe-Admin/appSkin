@@ -172,10 +172,10 @@
 			   <div style="width: 100%;background: #FFFFFF;">
 				  <ul class="mui-table-view mui-table-view-radio">
 				  	<li class="mui-table-view-cell mui-selected"  @click="JS()"><a class="mui-navigate-right">即时发送</a></li>
-				  	<li class="mui-table-view-cell" @click="YS()"><a class="mui-navigate-right" ><span>延时发送</span><span style="position: absolute;right: 50px;" @click="shouTime()">{{delay_time}}</span></a></li>
+				  	<li class="mui-table-view-cell" @click="YS()"><a class="mui-navigate-right" ><span>延时发送</span><span style="position: absolute;right: 80px;border: 1px solid #00CFBD;color: #FFFFFF;background-color: #00CFBD;border-radius: 5px;padding: 0 3px;" @click="shouTime()">{{delay_time}}<span class="mui-icon mui-icon-compose"></span></span></a></li>
 				  </ul>
 			   </div>
-			   <button type="button" @click="closeMask()" class="mui-btn" style="background: #00cfbd;border: 1px solid #00cfbd;color: #FFFFFF;position: absolute;right: 0;">关闭</button>
+			   <!-- <button type="button" @click="closeMask()" class="mui-btn" style="background: #00cfbd;border: 1px solid #00cfbd;color: #FFFFFF;position: absolute;right: 0;">确定</button> -->
 			</div>
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div v-cloak class="mui-scroll">
@@ -276,6 +276,7 @@
 					SIGN:false,//是否签名
 					CONFIG:{},//短信配置 对象
 					WORDS:[],//拒绝关键字 对象
+					DGSTULIST:[],//已订购的学生数组，如果没有短信配置，发送在校表现使用这个数组
 					is_delay:'0',
 					delay_time_data:'0-0-5',//延时多长时间,用于时间框赋值用
 					delay_time:'0天0小时5分钟',//延时多长时间
@@ -326,6 +327,7 @@
 						picker.show(function(rs) {
 							datasource.delay_time=rs.text.replace(/\-/g,'')
 							datasource.delay_time_data=rs.value 
+							datasource.SHOWTIME=false
 							picker.dispose();
 							picker = null;
 						})
@@ -336,15 +338,15 @@
 					YS:function(){
 						this.is_delay="1"
 					},
-					closeMask:function(){
-						this.SHOWTIME=false
-					},
+					// closeMask:function(){
+					// 	this.SHOWTIME=false
+					// },
 					selectGrade:function(){
 						let model ={};
 						model.access = curPage.index_code;
 						model.selectData=this.formData.selectData;
 						model.name = '选择学生'; 
-						model.serviced = this.CONFIG.serviced?this.CONFIG.serviced:''; 
+						model.serviced = JSON.stringify(this.CONFIG)==='{}'?'100':this.CONFIG.serviced; 
 						console.log("model: " + JSON.stringify(model));
 						utils.mOpenWithData("../../html/schhome/selectGrdClsStu.html", model);
 					}
@@ -366,7 +368,6 @@
 				events.showWaiting();
 				getConf(()=>{
 					getSmsWords();
-					
 				});
 			});
 			
@@ -392,6 +393,11 @@
 								tempVue.SMS=true
 								callback();
 							}
+						}else{
+							datasource.SHOW=false
+							datasource.SMS=false
+							tempVue.SMS=false
+							callback();
 						}
 					} else {
 						mui.toast(datas.msg);
@@ -421,6 +427,7 @@
 			}
 			
 			
+			
 			// 提交表单数据
 			function submitData(data) {
 				let comment=data.comment
@@ -435,6 +442,7 @@
 				}
 				if(showToast){
 					mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
+					events.closeWaiting();
 					return 0
 				}
 				if(datasource.SIGN){
@@ -506,7 +514,7 @@
 					sms_msgtype_code:window.storageKeyName.MSG_SMS.PERFORMANCE.SMS_TYPE,
 					is_delay:datasource.is_delay,
 					delay_time:delayTime,
-					servied:datasource.CONFIG.serviced,
+					servied:JSON.stringify(datasource.CONFIG)==='{}'?'100':datasource.CONFIG.serviced,
 					index_code:curPage.index_code
 				}
 				console.log("comData: " + JSON.stringify(comData));
