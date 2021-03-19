@@ -55,17 +55,22 @@
 			}
 
 			.catalogs {
-				margin-top: 10px;
+				position: fixed;
+				top: 45px;
+				width: 100%;
+				left: 0;
+				background-color: #FFFFFF;
 			}
 
 			/*滑动菜单行高*/
 
 			.swiper-slide {
-				height: 35px;
+				height: 30px;
 			}
 
 			.swiper-container {
-				margin-left: 20px !important;
+				padding-left: 20px !important;
+				padding-top: 10px !important;
 			}
 
 			.fontcolor {
@@ -84,17 +89,17 @@
 				<a class="mui-icon" style="font-size: 16px;">{{titleName}}<span class="mui-icon-arrowdown"></span></a>
 			</h1>
 		</header>
-		<div class="mui-content mui-scroll-wrapper mui-fullscreen" v-cloak style="background: white;" id="contentData">
-			<div class="swiper-container catalogs" id="ziyuanbao">
+		<div class="mui-content mui-fullscreen" v-cloak style="background: white;" id="contentData">
+			<div class="swiper-container catalogs" id="ziyuanbao" style="z-index: 2 !important;">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" style="font-size: 14px;" :class="cate.ischeck==1?'fontcolor':''"
+					<div class="swiper-slide" style="font-size: 14px; " :class="cate.ischeck==1?'fontcolor':''"
 						v-for="(cate,index) in resCategoryArray" @tap="catalogItemClick(index)">{{cate.title}}
 					</div>
 				</div>
 			</div>
 			<div v-show="showFlag>0">
 				<div class="mui-scroll">
-					<ul class="mui-table-view">
+					<ul class="mui-table-view" style="margin-top: 45px;">
 						<li class="mui-table-view-cell mui-media" v-for="(resourceModel,index) in resourceArray"
 							@click="clickResourceModel(resourceModel,index)">
 							<a href="javascript:;">
@@ -269,6 +274,15 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
 				tempHead.headTitle = curPage.name;
+				
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				mui('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				
+				
 				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
 					var ws = plus.webview.currentWebview();
 					console.log("当前Webview：" + JSON.stringify(ws.preload));
