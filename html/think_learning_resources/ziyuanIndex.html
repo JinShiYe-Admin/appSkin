@@ -4,15 +4,16 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="../../js/swiper/swiper.min.css">
+		<link rel="stylesheet" href="../../js/swiper/swiper-bundle.min.css">
 		<!--<link rel="stylesheet" type="text/css" href="../../css/btlearn/common.css"/>-->
 		<style type="text/css">
 			[v-cloak] {
 				display: none;
 			}
-			
+
 			.comment_inner {
 				/*width: 200px;*/
 				word-break: break-all;
@@ -26,13 +27,13 @@
 				overflow: hidden;
 				/** 隐藏超出的内容 **/
 			}
-			
+
 			.nameTime {
 				font-size: 12px;
 				color: #999999;
 				padding-top: 15px;
 			}
-			
+
 			p {
 				text-overflow: ellipsis;
 				overflow: hidden;
@@ -42,30 +43,31 @@
 				-webkit-box-orient: vertical;
 				margin-right: 10px;
 			}
-			
+
 			.mui-content>.mui-table-view:first-child {
 				margin-top: -1px;
 			}
-			
+
 			.mui-pull-caption {
 				font-size: 14px; //字体大小
 				color: #666666;
 				font-weight: normal;
 			}
-			
+
 			.catalogs {
 				margin-top: 10px;
 			}
+
 			/*滑动菜单行高*/
-			
+
 			.swiper-slide {
 				height: 35px;
 			}
-			
+
 			.swiper-container {
 				margin-left: 20px !important;
 			}
-			
+
 			.fontcolor {
 				color: #00CFBD;
 			}
@@ -85,48 +87,79 @@
 		<div class="mui-content mui-scroll-wrapper mui-fullscreen" v-cloak style="background: white;" id="contentData">
 			<div class="swiper-container catalogs" id="ziyuanbao">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" style="font-size: 14px;" :class="cate.ischeck==1?'fontcolor':''" v-for="(cate,index) in categoryArray" @tap="catalogItemClick(categoryArray,cate)">{{cate.name}}</div>
+					<div class="swiper-slide" style="font-size: 14px;" :class="cate.ischeck==1?'fontcolor':''"
+						v-for="(cate,index) in resCategoryArray" @tap="catalogItemClick(index)">{{cate.title}}
+					</div>
 				</div>
 			</div>
 			<div v-show="showFlag>0">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
-						<li class="mui-table-view-cell mui-media" v-for="(resourceModel,index) in resourceArray" @click="clickResourceModel(resourceModel,index)">
+						<li class="mui-table-view-cell mui-media" v-for="(resourceModel,index) in resourceArray"
+							@click="clickResourceModel(resourceModel,index)">
 							<a href="javascript:;">
 								<div v-if="resourceModel.is_pack">
 									<img class="mui-media-object mui-pull-left" src="../../img/ziyuan/ziyuanPack.png" />
 								</div>
 								<div v-else="">
-									<img v-if="resourceModel.file_ext == 'mp4'" class="mui-media-object mui-pull-left" src="../../img/swiper/mp4.png">
-									<img v-else-if="resourceModel.file_ext == 'doc'" class="mui-media-object mui-pull-left" src="../../img/swiper/doc.png" />
-									<img v-else-if="resourceModel.file_ext == 'docx'" class="mui-media-object mui-pull-left" src="../../img/swiper/docx.png" />
-									<img v-else-if="resourceModel.file_ext == 'mp3'" class="mui-media-object mui-pull-left" src="../../img/swiper/mp3.png">
-									<img v-else-if="resourceModel.file_ext == 'asf'" class="mui-media-object mui-pull-left" src="../../img/swiper/asf.png">
-									<img v-else-if="resourceModel.file_ext == 'avi'" class="mui-media-object mui-pull-left" src="../../img/swiper/avi.png">
-									<img v-else-if="resourceModel.file_ext == 'flv'" class="mui-media-object mui-pull-left" src="../../img/swiper/flv.png">
-									<img v-else-if="resourceModel.file_ext == 'gif'" class="mui-media-object mui-pull-left" src="../../img/swiper/gif.png">
-									<img v-else-if="resourceModel.file_ext == 'ppt'" class="mui-media-object mui-pull-left" src="../../img/swiper/ppt.png">
-									<img v-else-if="resourceModel.file_ext == 'pptx'" class="mui-media-object mui-pull-left" src="../../img/swiper/pptx.png">
-									<img v-else-if="resourceModel.file_ext == 'xls'" class="mui-media-object mui-pull-left" src="../../img/swiper/xls.png">
-									<img v-else-if="resourceModel.file_ext == 'xlsx'" class="mui-media-object mui-pull-left" src="../../img/swiper/xlsx.png">
-									<img v-else-if="resourceModel.file_ext == 'mpg'" class="mui-media-object mui-pull-left" src="../../img/swiper/mpg.png">
-									<img v-else-if="resourceModel.file_ext == 'swf'" class="mui-media-object mui-pull-left" src="../../img/swiper/swf.png">
-									<img v-else-if="resourceModel.file_ext == 'ts'" class="mui-media-object mui-pull-left" src="../../img/swiper/ts.png">
-									<img v-else-if="resourceModel.file_ext == 'wav'" class="mui-media-object mui-pull-left" src="../../img/swiper/wav.png">
-									<img v-else-if="resourceModel.file_ext == 'wma'" class="mui-media-object mui-pull-left" src="../../img/swiper/wma.png">
-									<img v-else-if="resourceModel.file_ext == 'wmv'" class="mui-media-object mui-pull-left" src="../../img/swiper/wmv.png">
-									<img v-else-if="resourceModel.file_ext == 'pdf'" class="mui-media-object mui-pull-left" src="../../img/swiper/pdf.png">
-									<img v-else-if="resourceModel.file_ext == 'exe'" class="mui-media-object mui-pull-left" src="../../img/swiper/exe.png">
-									<img v-else-if="resourceModel.file_ext == 'jpg'" class="mui-media-object mui-pull-left" src="../../img/swiper/jpg.png">
-									<img v-else-if="resourceModel.file_ext == 'png'" class="mui-media-object mui-pull-left" src="../../img/swiper/png.png">
-									<img v-else-if="resourceModel.file_ext == 'rar'" class="mui-media-object mui-pull-left" src="../../img/swiper/rar.png">
-									<img v-else-if="resourceModel.file_ext == 'zip'" class="mui-media-object mui-pull-left" src="../../img/swiper/zip.png">
-									<img v-else-if="resourceModel.file_ext == 'txt'" class="mui-media-object mui-pull-left" src="../../img/swiper/txt.png">
-									<img v-else="" class="mui-media-object mui-pull-left" src="../../img/swiper/other.png">
+									<img v-if="resourceModel.file_ext == 'mp4'" class="mui-media-object mui-pull-left"
+										src="../../img/think_learning_resources/file-icons/mp4.png">
+									<img v-else-if="resourceModel.file_ext == 'doc'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/doc.png" />
+									<img v-else-if="resourceModel.file_ext == 'docx'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/docx.png" />
+									<img v-else-if="resourceModel.file_ext == 'mp3'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/mp3.png">
+									<img v-else-if="resourceModel.file_ext == 'asf'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/asf.png">
+									<img v-else-if="resourceModel.file_ext == 'avi'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/avi.png">
+									<img v-else-if="resourceModel.file_ext == 'flv'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/flv.png">
+									<img v-else-if="resourceModel.file_ext == 'gif'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/gif.png">
+									<img v-else-if="resourceModel.file_ext == 'ppt'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/ppt.png">
+									<img v-else-if="resourceModel.file_ext == 'pptx'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/pptx.png">
+									<img v-else-if="resourceModel.file_ext == 'xls'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/xls.png">
+									<img v-else-if="resourceModel.file_ext == 'xlsx'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/xlsx.png">
+									<img v-else-if="resourceModel.file_ext == 'mpg'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/mpg.png">
+									<img v-else-if="resourceModel.file_ext == 'swf'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/swf.png">
+									<img v-else-if="resourceModel.file_ext == 'ts'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/ts.png">
+									<img v-else-if="resourceModel.file_ext == 'wav'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/wav.png">
+									<img v-else-if="resourceModel.file_ext == 'wma'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/wma.png">
+									<img v-else-if="resourceModel.file_ext == 'wmv'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/wmv.png">
+									<img v-else-if="resourceModel.file_ext == 'pdf'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/pdf.png">
+									<img v-else-if="resourceModel.file_ext == 'exe'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/exe.png">
+									<img v-else-if="resourceModel.file_ext == 'jpg'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/jpg.png">
+									<img v-else-if="resourceModel.file_ext == 'png'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/png.png">
+									<img v-else-if="resourceModel.file_ext == 'rar'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/rar.png">
+									<img v-else-if="resourceModel.file_ext == 'zip'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/zip.png">
+									<img v-else-if="resourceModel.file_ext == 'txt'"
+										class="mui-media-object mui-pull-left" src="../../img/think_learning_resources/file-icons/txt.png">
+									<img v-else="" class="mui-media-object mui-pull-left"
+										src="../../img/think_learning_resources/file-icons/other.png">
 								</div>
 								<div class="mui-media-body" style="font-size: 14px;color: #333;">
 									{{resourceModel.name}}
-									<p class="mui-ellipsis" style="font-size: 12px;color: #999;">{{resourceModel.create_time}} | {{resourceModel.owner_name}}</p>
+									<p class="mui-ellipsis" style="font-size: 12px;color: #999;">
+										{{resourceModel.create_time}} | {{resourceModel.owner_name}}
+									</p>
 								</div>
 							</a>
 						</li>
@@ -140,7 +173,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
@@ -159,7 +192,8 @@
 		<!---->
 		<script src='../../js/libs/crypto-js/require.js'></script>
 		<script src="../../js/utils/store.js"></script>
-		<script src="../../js/utils/publicProtocol-ziyuan.js"></script>
+		<!-- <script src="../../js/utils/publicProtocol-ziyuan.js"></script> -->
+		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/pushPermission.js"></script>
@@ -212,7 +246,7 @@
 				//当前章节
 				contentData.catalogModel = data.detail[0];
 				//资源类型
-				contentData.categoryArray = data.detail[1];
+				contentData.resCategoryArray = data.detail[1];
 				//教材
 				contentData.bookModel = data.detail[2]; //教材
 				mui('#contentData').pullRefresh().setStopped(false); //开启禁止滚动  
@@ -226,8 +260,8 @@
 			function pulldownRefresh() {
 				contentData.flag = 0;
 				contentData.pageIndex = 1;
-				//4.获取资源列表
-				getZiYuanList();
+				// 查询资源列表
+				getResPage();
 			}
 			//首先改变移动标志
 			// slideTogether = true;
@@ -253,8 +287,202 @@
 					tempHead.headImg = data.detail.imgurl;
 				});
 				//4.1.用户已订购套餐及功能扩展栏目
-				getUserBusFunc();
+				// getUserBusFunc();
+				// 查询学段
+				getResPer();
 			});
+
+			// 查询学段
+			function getResPer() {
+				var tempData = {
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resPer', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data.list && data.data.list.length > 0) {
+							contentData.resPerModel = data.data.list[0];
+							// 查询科目
+							getResSub();
+						} else {
+							mui.toast('暂无学段');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 查询科目
+			function getResSub() {
+				var tempData = {
+					per_code: contentData.resPerModel.per_code, //学段代码
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resSub', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data.list && data.data.list.length > 0) {
+							contentData.resSubModel = data.data.list[0];
+							// 查询教版
+							getResMater();
+						} else {
+							mui.toast('暂无科目');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 查询教版
+			function getResMater() {
+				var tempData = {
+					per_code: contentData.resPerModel.per_code, //学段代码
+					sub_code: contentData.resSubModel.sub_code, //科目代码
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resMater', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data.list && data.data.list.length > 0) {
+							contentData.resMaterModel = data.data.list[0];
+							// 查询分册
+							getResFasc();
+						} else {
+							mui.toast('暂无教版');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 查询分册
+			function getResFasc() {
+				var tempData = {
+					per_code: contentData.resPerModel.per_code, //学段代码
+					sub_code: contentData.resSubModel.sub_code, //科目代码
+					mater_code: contentData.resMaterModel.mater_code, //教版代码
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resFasc', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data.list && data.data.list.length > 0) {
+							contentData.resFascModel = data.data.list[0];
+							// 查询目录
+							getResCatalogs();
+						} else {
+							mui.toast('暂无教版');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 查询目录
+			function getResCatalogs() {
+				var tempData = {
+					per_code: contentData.resPerModel.per_code, //学段代码
+					sub_code: contentData.resSubModel.sub_code, //科目代码
+					mater_code: contentData.resMaterModel.mater_code, //教版代码
+					fasc_code: contentData.resFascModel.fasc_code, //分册代码
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resCatalogs', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data) {
+							getCalalogModel(data.data.catalog.children,function(tempData){
+								contentData.resCatalogsModel = tempData;
+								tempHead.titleName = tempData.name; //给标题赋值
+								// 查询资源类型
+								getResCategory();
+							});
+						} else {
+							mui.toast('暂无教版');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 找到第一个可用的目录
+			function getCalalogModel(list,callback) {
+				var tempM = list[0];
+				if (tempM.children) {
+					getCalalogModel(tempM.children,callback);
+				} else {
+					callback(tempM);
+				}
+			}
+
+			// 查询资源类型
+			function getResCategory() {
+				var tempData = {
+					per_code: contentData.resPerModel.per_code, //学段代码
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resCategory', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data.list && data.data.list.length > 0) {
+							for(var i = 0; i < data.data.list.length; i++){
+								var tempM = data.data.list[i];
+								if (i==0) {
+									tempM.ischeck = 1;
+								} else{
+									tempM.ischeck = 0;
+								}
+							}
+							contentData.resCategoryArray = [].concat(data.data.list);
+							contentData.resCategoryModel = data.data.list[0];
+							// 查询资源列表
+							getResPage();
+						} else {
+							mui.toast('暂无资源类型');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+
+			// 查询资源列表
+			function getResPage() {
+				var tempData = {
+					catalog_id: contentData.resCatalogsModel.id, //目录代码
+					category_id: contentData.resCategoryModel.key, //类型代码
+					index_code: curPage.access.split('#')[1]
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'resource/resourcePage', {}, tempData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (data.data.list && data.data.list.length > 0) {
+							if (contentData.flag == 0) { //刷新
+								contentData.resourceArray = [].concat(data.data.list);
+								if (data.data.list.length == 0) {
+									//mui.toast('数据为空');
+								}
+							} else { //加载更多
+								contentData.resourceArray = contentData.resourceArray.concat(data.data.list);
+								if (data.data.list.length == 0) {
+									mui.toast('已加载全部');
+									//mui('#contentData').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
+								}
+							}
+							contentData.showFlag = 1;
+						} else {
+							mui.toast('暂无数据');
+						}
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
 
 			window.addEventListener('refush_count1', function() {
 				console.log('refush_count000');
@@ -277,7 +505,7 @@
 					},
 					clickTitle: function() {
 						console.log('点击标题');
-						if(contentData.showFlag != -1) {
+						if (contentData.showFlag != -1) {
 							utils.mOpenWithData("../../html/think_learning_resources/catalogPage.html", {});
 						}
 					}
@@ -301,15 +529,15 @@
 				postDataEncry('GetUserBusFunc', enData1, comData1, 0, function(data1) {
 					console.log('4.1.GetUserBusFunc:' + JSON.stringify(data1));
 					events.closeWaiting();
-					if(data1.RspCode == 0) {
-						if(data1.RspData) {
+					if (data1.RspCode == 0) {
+						if (data1.RspData) {
 							var tempArray = []; //判断是否有智学课堂套餐
-							for(var i = 0; i < data1.RspData.userbus.length; i++) {
+							for (var i = 0; i < data1.RspData.userbus.length; i++) {
 								var tempM = data1.RspData.userbus[i];
-								if(tempM.funcs != null && tempM.funcs != '') {
-									for(var a = 0; a < tempM.funcs.length; a++) {
+								if (tempM.funcs != null && tempM.funcs != '') {
+									for (var a = 0; a < tempM.funcs.length; a++) {
 										var tempFuncs = tempM.funcs[a];
-										if(tempM.busext != null && tempFuncs.ftype == 'zxkt' && tempM.serstat == 1) {
+										if (tempM.busext != null && tempFuncs.ftype == 'zxkt' && tempM.serstat == 1) {
 											tempArray.push(tempM.servid);
 										}
 									}
@@ -318,7 +546,7 @@
 							personal.userbus = tempArray.join('|'); // 绑定的套餐
 							console.log(JSON.stringify(tempArray));
 							store.set(window.storageKeyName.PERSONALINFO, personal);
-							if(tempArray.length > 0) {
+							if (tempArray.length > 0) {
 								//根据已订购套餐，得到学段、科目
 								var catalogObj = getCatalog(data1.RspData.userbus);
 								//根据学段获取学段下的年级，在智学课堂中，年级不是从订购的套餐中获取的，而是通过协议拿到的。
@@ -353,7 +581,7 @@
 			//获取分册（年级）
 			function getGrdList(catalogObj) {
 				var comData = {};
-				if(catalogObj.prdList.length == 0) {
+				if (catalogObj.prdList.length == 0) {
 					contentData.showFlag = 0;
 					tempHead.titleName = '请切换目录';
 					contentData.noData = '该目录下暂无资源，请切换目录';
@@ -369,13 +597,13 @@
 					wd.close();
 					console.log('获取分册（年级）:' + JSON.stringify(data));
 					console.log('获取分册（年级）2:' + JSON.stringify(catalogObj));
-					if(data.RspCode == 0) {
-						if(data.RspData) {
+					if (data.RspCode == 0) {
+						if (data.RspData) {
 							//分册列表
 							var fence = data.RspData.fasc.list;
 							var fcSelected = data.RspData.fasc.selected;
-							for(var i = 0; i < fence.length; i++) {
-								if(fence[i].fasccode == fcSelected) {
+							for (var i = 0; i < fence.length; i++) {
+								if (fence[i].fasccode == fcSelected) {
 									fence[i].ischeck = 1;
 								} else {
 									fence[i].ischeck = 0;
@@ -383,21 +611,22 @@
 							}
 							catalogObj.grdList = fence;
 
-							if(firstPrd.subFlag == 1) { //需要与广西接口的科目列表合并，并去重
+							if (firstPrd.subFlag == 1) { //需要与广西接口的科目列表合并，并去重
 								var orderSub = firstPrd.subList; //套餐里的科目列表
 								var sub = data.RspData.sub.list; //接口里的科目列表
 								var kmselected = data.RspData.sub.selected;
 								var subList = orderSub.concat(sub); //合并的科目列表
 								var newSubList = subList.length > 0 ? subList.unique('subcode') : [];
 								newSubList.sort(compare('subcode'));
-								for(var i = 0; i < newSubList.length; i++) {
-									if(newSubList[i].subcode == kmselected) {
+								for (var i = 0; i < newSubList.length; i++) {
+									if (newSubList[i].subcode == kmselected) {
 										newSubList[i].ischeck = 1;
 									} else {
 										newSubList[i].ischeck = 0;
 									}
 								}
-								if(newSubList.length > 0 && JSON.stringify(newSubList).indexOf('ischeck:1') == -1) { //如果广西接口传过来的默认勾选值与套餐中的科目勾选值不对应，则默认选中第一个科目
+								if (newSubList.length > 0 && JSON.stringify(newSubList).indexOf('ischeck:1') == -
+									1) { //如果广西接口传过来的默认勾选值与套餐中的科目勾选值不对应，则默认选中第一个科目
 									newSubList[0].ischeck = 1;
 								}
 								catalogObj.subList = newSubList;
@@ -405,14 +634,14 @@
 							} else { //不需要合并广西接口的科目列表
 								var orderSub = firstPrd.subList;
 								var kmselected = data.RspData.sub.selected;
-								for(var i = 0; i < orderSub.length; i++) {
-									if(orderSub[i].subcode == kmselected) {
+								for (var i = 0; i < orderSub.length; i++) {
+									if (orderSub[i].subcode == kmselected) {
 										orderSub[i].ischeck = 1;
 									} else {
 										orderSub[i].ischeck = 0;
 									}
 								}
-								if(orderSub.length > 0 && JSON.stringify(orderSub).indexOf('ischeck:1') == -1) {
+								if (orderSub.length > 0 && JSON.stringify(orderSub).indexOf('ischeck:1') == -1) {
 									orderSub[0].ischeck = 1;
 								}
 								catalogObj.subList = orderSub;
@@ -421,8 +650,8 @@
 							//教版
 							var mater = data.RspData.mater.list;
 							var materSelected = data.RspData.mater.selected;
-							for(var i = 0; i < mater.length; i++) {
-								if(mater[i].matercode == materSelected) {
+							for (var i = 0; i < mater.length; i++) {
+								if (mater[i].matercode == materSelected) {
 									mater[i].ischeck = 1;
 								} else {
 									mater[i].ischeck = 0;
@@ -433,7 +662,7 @@
 							store.set(window.storageKeyName.CATALOG, catalogObj);
 							store.set(window.storageKeyName.ZJPERCODE, catalogObj.prdList[0].percode);
 							console.log('catalogObj:' + JSON.stringify(catalogObj));
-							if(fence.length == 0) {
+							if (fence.length == 0) {
 								contentData.showFlag = 0;
 								tempHead.titleName = '请切换目录';
 								contentData.noData = '该目录下暂无资源，请切换目录';
@@ -453,7 +682,8 @@
 			var getTextBook = function(catalogObj) {
 				var comData = {}
 				comData.percode = catalogObj.prdList[0].percode; //学段代码，取默认第一个 可选
-				if(catalogObj.subList.length > 0 && catalogObj.materList.length > 0 && catalogObj.grdList.length > 0) { //如果科目和学段都不为空的话，取默认第一个
+				if (catalogObj.subList.length > 0 && catalogObj.materList.length > 0 && catalogObj.grdList.length >
+					0) { //如果科目和学段都不为空的话，取默认第一个
 					comData.subcode = catalogObj.subList[0].subcode; //科目代码
 					comData.matercode = catalogObj.materList[0].matercode; //科目代码
 					comData.fasccode = catalogObj.grdList[0].fasccode; //分册（年级），取默认第一个代码 可选
@@ -469,11 +699,11 @@
 				getZiYuanTextbook(comData, function(data) {
 					wd.close();
 					console.log('获取教材:' + JSON.stringify(data));
-					if(data.RspCode == 0) {
-						contentData.textBookDetail = data.RspData;
-						if(data.RspData.catalog.length > 0) {
+					if (data.RspCode == 0) {
+						// contentData.textBookDetail = data.RspData;
+						if (data.RspData.catalog.length > 0) {
 							var tempModel = data.RspData.catalog[0];
-							if(tempModel.childList.length > 0) {
+							if (tempModel.childList.length > 0) {
 								var tempModel2 = tempModel.childList[0];
 								//给标题赋值
 								tempHead.titleName = tempModel2.name;
@@ -487,13 +717,13 @@
 									id: '',
 									ischeck: 1
 								});
-								for(var i = 0; i < cate.length; i++) {
+								for (var i = 0; i < cate.length; i++) {
 									var temp = cate[i];
 									temp.ischeck = 0;
 									newCategory.push(temp);
 								}
 								//资源类型
-								contentData.categoryArray = newCategory;
+								contentData.resCategoryArray = newCategory;
 								//教材
 								contentData.bookModel = data.RspData.book;
 								catalogObj = {
@@ -505,7 +735,7 @@
 								store.set(window.storageKeyName.CATALOGOBJ, catalogObj);
 							}
 						}
-						if(data.RspData.book == null || data.RspData.book == undefined) { //如果没有教材
+						if (data.RspData.book == null || data.RspData.book == undefined) { //如果没有教材
 							contentData.showFlag = 0;
 							tempHead.titleName = '请切换目录';
 							contentData.noData = '该目录下暂无资源，请切换目录';
@@ -524,9 +754,9 @@
 			var getZiYuanList = function() {
 				//资源类型
 				var tempCategoryid = '';
-				for(var i = 0; i < contentData.categoryArray.length; i++) {
-					var tempModel = contentData.categoryArray[i];
-					if(tempModel.ischeck == 1) {
+				for (var i = 0; i < contentData.resCategoryArray.length; i++) {
+					var tempModel = contentData.resCategoryArray[i];
+					if (tempModel.ischeck == 1) {
 						tempCategoryid = tempModel.id;
 					}
 				}
@@ -543,30 +773,29 @@
 					mui('#contentData').pullRefresh().endPullupToRefresh(); //参数为true代表没有更多数据了。
 					mui('#contentData').pullRefresh().endPulldownToRefresh();
 					console.log('获取资源(分页) :' + JSON.stringify(data));
-					if(data.RspCode == 0) {
+					if (data.RspCode == 0) {
 						contentData.pageIndex++;
-						for(var i = 0; i < data.RspData.list.length; i++) {
+						for (var i = 0; i < data.RspData.list.length; i++) {
 							var model = data.RspData.list[i];
 							model.create_time = modifyTimeFormat(model.create_time);
-							if(model.convert_file_url == null || model.convert_file_url.length == 0) {
+							if (model.convert_file_url == null || model.convert_file_url.length == 0) {
 								model.openFileUrl = model.original_file_url;
 							} else {
 								model.openFileUrl = model.convert_file_url;
 							}
 						}
-						if(contentData.flag == 0) { //刷新
+						if (contentData.flag == 0) { //刷新
 							contentData.resourceArray = [].concat(data.RspData.list);
-							if(data.RspData.list.length == 0) {
+							if (data.RspData.list.length == 0) {
 								//									mui.toast('数据为空');
 							}
 						} else { //加载更多
 							contentData.resourceArray = contentData.resourceArray.concat(data.RspData.list);
-							if(data.RspData.list.length == 0) {
+							if (data.RspData.list.length == 0) {
 								mui.toast('已加载全部');
 								//								mui('#contentData').pullRefresh().endPullupToRefresh(true); //参数为true代表没有更多数据了。
 							}
 						}
-						contentData.showNoDataFlag = data.RspData.TotalCnt;
 						contentData.showFlag = 1;
 						$("#contentData").show();
 					} else {
@@ -584,41 +813,50 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					showFlag: 0, //判断有没有订购套餐，进行显示九宫格，1正常显示，0显示的订购提醒
+					showFlag: 0, //1正常显示，0显示暂无数据
 					personal: personal,
-					showNoDataFlag: 9, //是否显示无数据图片
-					textBookDetail: {}, //获取到的教材
+					// textBookDetail: {}, //获取到的教材
 					flag: 0, //0刷新，1加载更多
 					resourceArray: [], //资源列表数组
 					pageIndex: 1, //第几页
-					categoryArray: [], //资源类型数组
+					// categoryArray: [], //资源类型数组
 					bookModel: '', //教材model
 					catalogModel: '', //章节
-					noData: '' //暂无数据
+					noData: '', //暂无数据
+
+					resPerModel: {}, //当前学段
+					resSubModel: {}, //当前科目
+					resMaterModel: {}, //当前教版
+					resFascModel: {}, //当前分册
+					resCatalogsModel: {}, //当前目录
+					resCategoryArray: [], //资源类型列表
+					resCategoryModel: {}, //当前资源类型
 				},
 				methods: {
 					clickResourceModel: function(model) {
 						console.log('点击li：' + JSON.stringify(model));
 						var deadline = getQueryString(model.openFileUrl).e; //得到当前文件过期时间 时间戳
 						var timestamp = Math.round(new Date().getTime() / 1000).toString(); //得到当前时间戳
-						if(timestamp - deadline > 0) { //过期
+						if (timestamp - deadline > 0) { //过期
 							mui.toast('当前文件已过期，请刷新列表重试！')
 							return 0;
 							//TODO 重新获取token
 							//							DownloadUrl = 'https://developer.qiniu.com/kodo/manual/1202/download-token'
 						}
-						if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
+						if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
 							mui.toast('网络异常，请检查网络设置！');
 							return;
 						}
-						if(model.is_pack) { //资源包
+						if (model.is_pack) { //资源包
 							console.log('000000001');
 							utils.mOpenWithData("../../html/catalog/inside_page.html", model);
-						} else if(model.file_ext == 'mp4' || model.file_ext == 'mp3' || model.file_ext == 'wmv' || model.file_ext == 'wma' || model.file_ext == 'mpg' || model.file_ext == 'avi' || model.file_ext == 'flv' || model.file_ext == 'mkv' || model.file_ext == 'asf') { //视频、音频
-							if(model.file_ext == 'mp4' || model.file_ext == 'mp3') {
+						} else if (model.file_ext == 'mp4' || model.file_ext == 'mp3' || model.file_ext == 'wmv' ||
+							model.file_ext == 'wma' || model.file_ext == 'mpg' || model.file_ext == 'avi' || model
+							.file_ext == 'flv' || model.file_ext == 'mkv' || model.file_ext == 'asf') { //视频、音频
+							if (model.file_ext == 'mp4' || model.file_ext == 'mp3') {
 								utils.mOpenWithData("../../html/ziyuan/playVideo.html", model);
 							} else {
-								if(plus.os.name == 'Android') {
+								if (plus.os.name == 'Android') {
 									plus.pushPermission.openFileFromURL(JSON.stringify(model), function(result) {
 										console.log("result>>>>>>" + result[0]);
 									}, function(result) {
@@ -628,10 +866,11 @@
 									plus.runtime.openWeb(model.openFileUrl);
 								}
 							}
-						} else if(model.file_ext == 'jpg' || model.file_ext == 'png' || model.file_ext == 'gif') { //照片
+						} else if (model.file_ext == 'jpg' || model.file_ext == 'png' || model.file_ext ==
+							'gif') { //照片
 							console.log('000000003');
 							//							var imgUrl=model.original_file_url;
-							if(plus.os.name == 'Android') {
+							if (plus.os.name == 'Android') {
 								plus.nativeUI.previewImage([model.openFileUrl]);
 							} else {
 								plus.nativeUI.previewImage(model.openFileUrl, {
@@ -640,8 +879,10 @@
 									indicator: 'number'
 								});
 							}
-						} else if(model.file_ext == 'ppt' || model.file_ext == 'pptx' || model.file_ext == 'doc' || model.file_ext == 'docx' || model.file_ext == 'pdf' || model.file_ext == 'xlsx' || model.file_ext == 'xls') { //文档
-							if(plus.os.name == 'Android') {
+						} else if (model.file_ext == 'ppt' || model.file_ext == 'pptx' || model.file_ext == 'doc' ||
+							model.file_ext == 'docx' || model.file_ext == 'pdf' || model.file_ext == 'xlsx' || model
+							.file_ext == 'xls') { //文档
+							if (plus.os.name == 'Android') {
 								console.log('000000005');
 								plus.pushPermission.openFileFromURL(JSON.stringify(model), function(result) {
 									console.log("result>>>>>>" + result[0]);
@@ -656,15 +897,16 @@
 							mui.toast('不支持查看此类型文件');
 						}
 					},
-					catalogItemClick: function(parent, item) {
-						console.log("选择的是这个:" + JSON.stringify(item) + ",教材：" + JSON.stringify(contentData.bookModel));
-						if(item.ischeck == 0) {
-							for(var i = 0; i < parent.length; i++) {
-								var child = parent[i];
-								child.ischeck = 0;
+					catalogItemClick: function(index) {
+						for(var i = 0; i < contentData.resCategoryArray.length; i++){
+							var tempM = contentData.resCategoryArray[i];
+							if (i==index) {
+								tempM.ischeck = 1;
+								contentData.resCategoryModel = tempM;
+								pulldownRefresh();
+							} else{
+								tempM.ischeck = 0;
 							}
-							item.ischeck = 1;
-							pulldownRefresh();
 						}
 					}
 				},
@@ -679,7 +921,7 @@
 				},
 				computed: {
 					getKm: function() {
-						return this.categoryArray;
+						return this.resCategoryArray;
 					}
 				},
 				watch: {
@@ -706,15 +948,15 @@
 			function getQueryString(url) {
 				try {
 					var theRequest = new Object();
-					if(url.indexOf("?") != -1) {
+					if (url.indexOf("?") != -1) {
 						var str = url.split('?')[1];
 						strs = str.split("&");
-						for(var i = 0; i < strs.length; i++) {
+						for (var i = 0; i < strs.length; i++) {
 							theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
 						}
 					}
 					return theRequest;
-				} catch(e) {
+				} catch (e) {
 					console.error('对userbus字段进行学段去重时发生异常,' + e);
 					console.error('====================')
 					console.error(e.stack);
