@@ -388,14 +388,13 @@
 				data: {
 					pageArray: [], //界面总数组
 					typeList: [ 
-						{text:'全部',value:''},
 						{text:'学校通知',value:window.storageKeyName.MSG_SMS.SCHOOL.MSG_TYPE},
 						{text:'年级通知',value:window.storageKeyName.MSG_SMS.GRADE.MSG_TYPE},
 						{text:'班级通知',value:window.storageKeyName.MSG_SMS.CLASS.MSG_TYPE},
 						{text:'班级作业',value:window.storageKeyName.MSG_SMS.HOMEWORK.MSG_TYPE},
 						{text:'个性表现',value:window.storageKeyName.MSG_SMS.PERFORMANCE.MSG_TYPE},
 					], //下拉选择器
-					type:{text:'全部',value:''}
+					type:{text:'学校通知',value:window.storageKeyName.MSG_SMS.SCHOOL.MSG_TYPE}
 				},
 				methods: {
 					clickLi: function(model) {
