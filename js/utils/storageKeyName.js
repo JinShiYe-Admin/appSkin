@@ -26,7 +26,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
-			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)
+			mod.PARENTS_ATTENDANCE = '? 需连广西开发环境';//学生考勤家长端（阮)
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -82,7 +82,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_ZIYUANURL = "http://139.129.252.49:8080/zxktapi/api/";//资源
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动 学生端（顾)
-			mod.PARENTS_ATTENDANCE = 'http://139.129.252.49:8080/stukq/api/app/';//学生考勤家长端（阮)
+			mod.PARENTS_ATTENDANCE = 'http://139.129.252.49:8180/stukq/api/app/';//学生考勤家长端（阮)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey

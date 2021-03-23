@@ -113,15 +113,9 @@
 		<div v-cloak class="mui-content mui-fullscreen" style="margin-top: 0px;background: white;z-index:0;" id="contentData">
 			<div id="slider" class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-					<a class="mui-control-item mui-active" href="#item1mobile">
-						考勤记录
-					</a>
-					<a class="mui-control-item" href="#item2mobile">
-						请假统计
-					</a>
-					<a class="mui-control-item" href="#item3mobile">
-						考勤统计
-					</a>
+					<a @tap="clickSeg(0)" class="mui-control-item mui-active" href="#item1mobile">考勤记录</a>
+					<a @tap="clickSeg(1)" class="mui-control-item" href="#item2mobile">请假统计</a>
+					<a @tap="clickSeg(2)" class="mui-control-item" href="#item3mobile">考勤统计</a>
 				</div>
 				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
 				<div class="mui-slider-group">
@@ -209,6 +203,8 @@
 		</div>
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
 		<script src="../../js/muiPicker/mui.picker.all.js"></script>
 		<script src="../../js/utils/moment.min.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
@@ -341,6 +337,12 @@
 					}
 				},
 				methods: {
+					clickSeg: function(flag) {
+						if (contentData.semFlag != flag) {
+							contentData.semFlag = flag;
+							console.log(flag);
+						}
+					},
 					clickLeaveDetail: function(model) {
 						utils.mOpenWithData("../../html/parents_attendance/leaveDetail.html", model);
 					},
@@ -383,6 +385,54 @@
 				(function($) {
 					$('.mui-scroll-wrapper').scroll({
 						indicators: true //是否显示滚动条
+					});
+					$.ready(function() {
+						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										self = this;
+										if (contentData.semFlag == 0) {
+											// contentData.singleSubScore.refrushFlag = 0; //0刷新1加载更多
+											// 	contentData.singleSubScore.pageNumber = 1; //
+											// 	// 获取单科成绩列表
+											// 	getSingleSubScore();
+												self.endPullDownToRefresh();
+										} else if (contentData.semFlag == 1) {
+											// contentData.sumSubScore.refrushFlag = 0; //0刷新1加载更多
+											// 	contentData.sumSubScore.pageNumber = 1; //
+											// 	// 获取全科成绩列表
+											// 	getSumSubScore();
+											self.endPullDownToRefresh();
+										} else if (contentData.semFlag == 2) {
+											self.endPullDownToRefresh();
+										} else if (contentData.semFlag == 3) {
+											self.endPullDownToRefresh();
+										}
+									}
+								},
+								up: {
+									callback: function() {
+										self = this;
+										if (contentData.semFlag == 0) {
+											// contentData.singleSubScore.refrushFlag = 1; //0刷新1加载更多
+											// 	// 获取单科成绩列表
+											// 	getSingleSubScore();
+											self.endPullUpToRefresh();
+										} else if (contentData.semFlag == 1) {
+											// contentData.sumSubScore.refrushFlag = 1; //0刷新1加载更多
+											// 	// 获取全科成绩列表
+											// 	getSumSubScore();
+											self.endPullUpToRefresh();
+										} else if (contentData.semFlag == 2) {
+											self.endPullUpToRefresh();
+										} else if (contentData.semFlag == 3) {
+											self.endPullUpToRefresh();
+										}
+									}
+								}
+							});
+						});
 					});
 				})(mui);
 				
@@ -461,7 +511,22 @@
 						}
 					}]
 				});
-			});
+				setTimeout(()=>{
+					getPageData();
+				},3000)
+			}); 
+			 
+			//获取考勤记录
+			function getPageData(){
+				comData = { 
+					page_size:10,
+					page_number:1,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'attendance/page', {}, comData, 2, function(data) {
+					console.log(JSON.stringify(data))
+				});
+			}
 		</script>
 	</body>
 
