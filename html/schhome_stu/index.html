@@ -388,13 +388,14 @@
 				data: {
 					pageArray: [], //界面总数组
 					typeList: [ 
+						{text:'全部',value:''},
 						{text:'学校通知',value:window.storageKeyName.MSG_SMS.SCHOOL.MSG_TYPE},
 						{text:'年级通知',value:window.storageKeyName.MSG_SMS.GRADE.MSG_TYPE},
 						{text:'班级通知',value:window.storageKeyName.MSG_SMS.CLASS.MSG_TYPE},
 						{text:'班级作业',value:window.storageKeyName.MSG_SMS.HOMEWORK.MSG_TYPE},
 						{text:'个性表现',value:window.storageKeyName.MSG_SMS.PERFORMANCE.MSG_TYPE},
 					], //下拉选择器
-					type:{text:'学校通知',value:window.storageKeyName.MSG_SMS.SCHOOL.MSG_TYPE}
+					type:{text:'全部',value:''}
 				},
 				methods: {
 					clickLi: function(model) {
@@ -505,35 +506,20 @@
 					msg_type:datasource.type.value,
 					msg_content:'',
 					dest_user:'',
+					dest_user_code:personal.user_code,
 					send_time_begin:'1970-01-01',
 					send_time_end:'2051-01-01',
 					send_user:'',
-					grd_code:'',
-					cls_code:'',
+					grd_code:personal.grd_code,
+					cls_code:personal.cls_code,
 					serviced:'0,1,99,100',
 					page_number: pageIndex, //当前页数
 					page_size: 10, //每页记录数
 					index_code: curPage.access.split('#')[1],
 				} 
-				if(datasource.type.value===window.storageKeyName.MSG_SMS.GRADE.MSG_TYPE){
-					comData.grd_code=personal.grd_code
-				}
-				if(datasource.type.value===window.storageKeyName.MSG_SMS.CLASS.MSG_TYPE){
-					comData.grd_code=personal.grd_code
-					comData.cls_code=personal.cls_code
-				}
-				if(datasource.type.value===window.storageKeyName.MSG_SMS.HOMEWORK.MSG_TYPE){
-					comData.grd_code=personal.grd_code
-					comData.cls_code=personal.cls_code
-				}
-				if(datasource.type.value===window.storageKeyName.MSG_SMS.PERFORMANCE.MSG_TYPE){
-					comData.dest_user_code=personal.user_code
-					comData.grd_code=personal.grd_code
-					comData.cls_code=personal.cls_code
-				}
 				
 				// 1.1.列表页
-				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsugetp', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {

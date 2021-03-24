@@ -40,18 +40,19 @@
 					<span style="color: #505050;font-size: 12px;">出入总次数：</span><span style="color: #FF3333;font-size: 28px;margin-left: 10px;">99999</span> 
 				</div>
 			</div>
-				<div class="mui-row">
-					<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;padding: 5px 0 0 10px;">
-						 <p style="color: #505050;font-size: 12px;">出入校详情</p>
-					</div>
-					<div>
+			<div class="mui-row">
+				<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;padding: 5px 0 0 10px;">
+					 <p style="color: #505050;font-size: 12px;">出入校详情</p>
+				</div>
+				<div id="scroll1" class="mui-scroll-wrapper" style="margin-top: 176px;">
+					<div class="mui-scroll">
 						<ul class="mui-table-view" style="font-size: 13px;">
-							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in 19">
+							<li class="mui-table-view-cell beauline bg-gray" style="text-align: center;" v-for="(item,index) in 1">
 								<div class="mui-row">
 									<div class="mui-col-xs-1 pstyle">{{++index}}</div>
 									<div class="mui-col-xs-5 pstyle">2021/2/5 15:10:12</div>
 									<div class="mui-col-xs-4 pstyle">哪个门...</div>
-									<template v-if="index<3">
+									<template v-if="index<3"> 
 										<div class="mui-col-xs-2"><p style="margin: 0 auto;width: 40px;padding: 2px;background-color: #FF9900;color: #FFFFFF;border-radius: 7px;font-size: 12px;">出</p></div>
 									</template>
 									<template v-else-if="index>2 && index<6">
@@ -65,9 +66,12 @@
 						</ul>
 					</div>
 				</div>
+			</div>
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
 		<script src="../../js/muiPicker/mui.picker.all.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
@@ -98,6 +102,13 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
+					refrushFlag: 0, //0刷新1加载更多
+					pageNumber: 1,
+					startTime:'',
+					endTime:'',
+					total_page:0,//总页数
+					total_count:'',//次数
+					totalPageCount:0,//总条数
 					personal:store.get(window.storageKeyName.PERSONALINFO),
 					pageData: {},
 				},
@@ -130,13 +141,69 @@
 					}
 				}
 			}); 
+			var pageSize =10;
+			var self = 0;
 			mui.plusReady(function() {
+				(function($) {
+					$('.mui-scroll-wrapper').scroll({
+						indicators: true //是否显示滚动条
+					});
+					$.ready(function() {
+						$.each(document.querySelectorAll('.mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										self = this;
+										contentData.refrushFlag = 0; //0刷新1加载更多
+										contentData.pageNumber = 1; 
+										getPageInOutDetail();
+										setTimeout(function() {
+											//结束下拉刷新
+											self.endPullDownToRefresh();
+										}, 1000);
+									}
+								},
+								up: {
+									callback: function() {
+										self = this;
+										contentData.refrushFlag = 1; //0刷新1加载更多
+										if (contentData.pageNumber <= contentData.total_page) {
+											getPageInOutDetail();
+											setTimeout(function() {
+												//结束下拉刷新
+												self.endPullUpToRefresh();
+												if (mui(".mui-table-view-cell").length < 10) {
+													mui(".mui-pull-loading")[0].innerHTML = "";
+												}
+											}, 1000);
+										} else {
+											//结束下拉刷新
+											self.endPullUpToRefresh();
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}
+								}
+							});
+						});
+					});
+				})(mui);
+				
 				let start_month=moment().format('YYYY年MM月')
 				let end_month=moment().add(5, 'M').format('YYYY年MM月');
 				$('#months').html(start_month+' ~ '+end_month)
-				currentMonth()
+				contentData.startTime=start_month;
+				contentData.endTime=end_month;
+				
+				getPageInOutDetail();
 			});
 			
+			//分页查询出入详情
+			function getPageInOutDetail(){
+				setTimeout(() => {
+					console.log('wocao');
+					self && self.endPullUpToRefresh();
+				}, 1000)
+			}
 			
 			function currentYear(){
 				return moment().format("YYYY")
