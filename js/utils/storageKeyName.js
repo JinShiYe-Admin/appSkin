@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =2; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -24,6 +24,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://139.129.252.49:8080/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '? 需连广西开发环境';//学生考勤家长端（阮)
@@ -52,6 +53,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8080/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8080/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://139.129.252.49:8080/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)
@@ -80,6 +82,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.INTERFACE_ZIYUANURL = "http://139.129.252.49:8180/resstudysubapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://139.129.252.49:8180/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://139.129.252.49:8180/stukq/api/app/';//学生考勤家长端（阮)
@@ -108,6 +111,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://nwifapp.jiaobaowang.net/stuzy/api/stuScore/';//学生成绩（蒙)
 			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://139.129.252.49:8080/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)
@@ -136,6 +140,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://139.129.252.49:8080/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)
@@ -164,6 +169,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
 			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://139.129.252.49:8080/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)
