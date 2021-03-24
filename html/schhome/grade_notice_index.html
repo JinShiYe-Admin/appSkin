@@ -535,7 +535,6 @@
 				postDataEncry(window.storageKeyName.INTERFACE_SCHHOME + 'api/appsms/appsmsp', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
-					console.log("a啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊data.data.list: " + JSON.stringify(data.data.list));
 					if (data.code == 0) {
 						if(data.data!=null){
 							totalPageCount = data.data.total_page;
