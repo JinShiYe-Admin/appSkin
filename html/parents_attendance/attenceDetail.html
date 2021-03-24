@@ -33,26 +33,30 @@
 					<span>上课迟到次数：</span><span style="color: #FF3333;font-size: 18px;">99999</span> 
 				</div>
 			</div>
-			<template v-for="(item,index) in 5">
-				<div class="mui-row">
-					<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
-						<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
-							<div style="color: #FFFFFF;font-size: 14px;font-weight: 600;display: inline-block;margin-top: 5px;">{{++index}}</div>
+			<div class="mui-row">
+				<div id="scroll1" class="mui-scroll-wrapper" style="margin-top: 126px;">
+					<div class="mui-scroll">
+						<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
+							<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
+								<div style="color: #FFFFFF;font-size: 14px;font-weight: 600;display: inline-block;margin-top: 5px;">++index}}</div>
+							</div>
+						</div>
+						<div style="padding: 10px 20px 0;">
+							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">考勤日期：</p><p class="mui-col-xs-8" style="float: left;">2021-02-05</p></div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">星期：</p><p class="mui-col-xs-8" style="float: left;">二</p></div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">节次：</p><p class="mui-col-xs-8" style="float: left;">第二节</p></div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">科目：</p><p class="mui-col-xs-8" style="float: left;">数学</p></div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;"><p class="mui-col-xs-4" style="float: left;">说明：</p><p class="mui-col-xs-8" style="float: left;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa这里有一个很长的请假事由。。。。。。。。。。。。的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由aa按点</p></div>
+							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">记录人：</p><p class="mui-col-xs-8" style="float: left;">吴孟达</p></div>
 						</div>
 					</div>
-					<div style="padding: 10px 20px 0;">
-						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">考勤日期：</p><p class="mui-col-xs-8" style="float: left;">2021-02-05</p></div>
-						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">星期：</p><p class="mui-col-xs-8" style="float: left;">二</p></div>
-						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">节次：</p><p class="mui-col-xs-8" style="float: left;">第二节</p></div>
-						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">科目：</p><p class="mui-col-xs-8" style="float: left;">数学</p></div>
-						<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;"><p class="mui-col-xs-4" style="float: left;">说明：</p><p class="mui-col-xs-8" style="float: left;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa这里有一个很长的请假事由。。。。。。。。。。。。的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由aa按点</p></div>
-						<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">记录人：</p><p class="mui-col-xs-8" style="float: left;">吴孟达</p></div>
-					</div>
 				</div>
-			</template>
+			</div>
 		</div>
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
 		<script src="../../js/muiPicker/mui.picker.all.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
@@ -83,6 +87,13 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
+					refrushFlag: 0, //0刷新1加载更多
+					pageNumber: 1,
+					startTime:'',
+					endTime:'',
+					total_page:0,//总页数
+					total_count:'',//次数
+					totalPageCount:0,//总条数
 					personal:store.get(window.storageKeyName.PERSONALINFO),
 					pageData: {},
 				},
@@ -117,11 +128,69 @@
 				}
 			});  
 
+			var pageSize =10;
+			var self = 0;
 			mui.plusReady(function() {
+				(function($) {
+					$('.mui-scroll-wrapper').scroll({
+						indicators: true //是否显示滚动条
+					});
+					$.ready(function() {
+						$.each(document.querySelectorAll('.mui-scroll-wrapper .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										self = this;
+										contentData.refrushFlag = 0; //0刷新1加载更多
+										contentData.pageNumber = 1; 
+										getPageAttendanceDetail();
+										setTimeout(function() {
+											//结束下拉刷新
+											self.endPullDownToRefresh();
+										}, 1000);
+									}
+								},
+								up: {
+									callback: function() {
+										self = this;
+										contentData.refrushFlag = 1; //0刷新1加载更多
+										if (contentData.pageNumber <= contentData.total_page) {
+											getPageAttendanceDetail();
+											setTimeout(function() {
+												//结束下拉刷新
+												self.endPullUpToRefresh();
+												if (mui(".mui-table-view-cell").length < 10) {
+													mui(".mui-pull-loading")[0].innerHTML = "";
+												}
+											}, 1000);
+										} else {
+											//结束下拉刷新
+											self.endPullUpToRefresh();
+											mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+										}
+									}
+								}
+							});
+						});
+					});
+				})(mui);
+				
 				let start_month=moment().format('YYYY年MM月')
 				let end_month=moment().add(5, 'M').format('YYYY年MM月');
 				$('#months').html(start_month+' ~ '+end_month)
+				contentData.startTime=start_month;
+				contentData.endTime=end_month;
+				
+				getPageAttendanceDetail();
 			});
+			
+			//分页查询考勤项目详情
+			function getPageAttendanceDetail(){
+				setTimeout(() => {
+					console.log('wocao');
+					self && self.endPullUpToRefresh();
+				}, 1000)
+			}
 			
 			function currentYear(){
 				return moment().format("YYYY")
