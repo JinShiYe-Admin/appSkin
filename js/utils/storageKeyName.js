@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =2; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -23,6 +23,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = '? 需连广西开发环境';//学生评语（阮)
 			mod.INTERFACE_DORM = '? 需连广西开发环境';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			mod.INTERFACE_KYCP = 'http://139.129.252.49:8080/resentestsubapi/api';//口语测评（廖）
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -47,6 +48,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8080/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8080/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8080/stuzy/api/stuScore/';//学生成绩（蒙)
+			mod.INTERFACE_KYCP = 'http://139.129.252.49:8080/resentestsubapi/api';//口语测评（廖）
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -71,6 +73,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://139.129.252.49:8180/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://139.129.252.49:8180/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://139.129.252.49:8180/stuzy/api/stuScore/';//学生成绩（蒙)
+			mod.INTERFACE_KYCP = 'http://139.129.252.49:8080/resentestsubapi/api';//口语测评（廖）
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -95,6 +98,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://nwifapp.jiaobaowang.net/stuzy/api/stuScore/';//学生成绩（蒙)
+			mod.INTERFACE_KYCP = 'http://139.129.252.49:8080/resentestsubapi/api';//口语测评（廖）
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -119,6 +123,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			mod.INTERFACE_KYCP = 'http://139.129.252.49:8080/resentestsubapi/api';//口语测评（廖）
 			//七牛上传
 			mod.QN_APPID = 17;//七牛appid
 			mod.QN_APPKEY = "oafor1010";//七牛appkey
@@ -143,6 +148,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://cs1.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://cs1.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = '';//学生成绩（蒙)
+			mod.INTERFACE_KYCP = 'http://139.129.252.49:8080/resentestsubapi/api';//口语测评（廖）
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
