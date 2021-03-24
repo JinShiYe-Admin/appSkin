@@ -317,11 +317,10 @@
 						if (data3.code == 0) {
 							var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
 							tempPerInfo.hrImg_url = data3.data.user_img;
-
 							store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
 							tempFlag++;
 							console.log('tempFlag01:' + tempFlag);
-							if (tempFlag == 2) {
+							if (tempFlag == 3) {
 								//跳转界面
 								gotoPage(tempPW);
 							}
@@ -348,7 +347,7 @@
 								store.set(window.storageKeyName.MENULIST, data4.data);
 								tempFlag++;
 								console.log('tempFlag02:' + tempFlag);
-								if (tempFlag == 2) {
+								if (tempFlag == 3) {
 									//跳转界面
 									gotoPage(tempPW);
 								}
@@ -357,6 +356,55 @@
 							}
 						} else {
 							mui.toast(data4.msg);
+						}
+					});
+					
+					//1.42.根据用户类型及代码查询教师/学生信息
+					var comData5 = {
+						platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+						app_code: window.storageKeyName.APPCODE, //应用系统代码
+						unit_code: data1.data.user.unit_code,
+						user_type_code:data1.data.user.type_code,
+						user_code:data1.data.user.user_code,
+						index_code:'index',
+						access_token: data1.data.access_token //用户令牌
+					};
+					events.showWaiting();
+					//1.42.根据用户类型及代码查询教师/学生信息
+					postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'user/getUserInfoByTypeAndCode', {}, comData5, 0, function(data5) {
+						events.closeWaiting();
+						if (data5.code == '0000') {
+							if (data5.data) {
+								var tempPerInfo = store.get(window.storageKeyName.PERSONALINFO);
+								if (data1.data.user.type_code == 'YHLX0003') {
+									tempPerInfo.tec_name = data5.data.tec_name;
+									tempPerInfo.sch_name = data5.data.sch_name;
+									tempPerInfo.sch_code = data5.data.sch_code;
+									tempPerInfo.tec_code = data5.data.tec_code;
+									tempPerInfo.dpt_name = data5.data.dpt_name;
+									tempPerInfo.dpt_code = data5.data.dpt_code;
+								} else{
+									tempPerInfo.cls_name = data5.data.cls_name;
+									tempPerInfo.sch_name = data5.data.sch_name;
+									tempPerInfo.sch_code = data5.data.sch_code;
+									tempPerInfo.cls_code = data5.data.cls_code;
+									tempPerInfo.grd_name = data5.data.grd_name;
+									tempPerInfo.grd_code = data5.data.grd_code;
+									tempPerInfo.stu_name = data5.data.stu_name;
+									tempPerInfo.stu_code = data5.data.stu_code;
+								}
+								store.set(window.storageKeyName.PERSONALINFO, tempPerInfo);
+								tempFlag++;
+								console.log('tempFlag02:' + tempFlag);
+								if (tempFlag == 3) {
+									//跳转界面
+									gotoPage(tempPW);
+								}
+							} else {
+								mui.toast('应用系统无权限，请联系管理员');
+							}
+						} else {
+							mui.toast(data5.msg);
 						}
 					});
 				} else {

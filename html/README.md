@@ -11,9 +11,13 @@ stu_behavior|学生行为|Liu|Ruan(广西)|正式
 teachercAttendance|教师考勤|Zhao|Kong|正式
 stu_comment|学生评语|Liu|Ruan(广西)|正式
 stu_dorm|学生宿舍|Liu,Zhao|Ruan(广西)|正式
-interaction|家校互动|No!!!|Gu(广西)|开发
+schhome|家校互动 家长端|Liu|Gu(广西)、meng(广西)|开发
+schhome_stu|家校互动 家长端|Liu|Gu(广西)、meng(广西)|开发
 student_performance|学生成绩|Zhao|Meng(广西)|开发 <!-- 有滑动列表切换丢失的解决方法 index.html--> 
 parents_attendance|学生考勤家长端|zhao|未知
+think_learning_resources|智学资源|zhao|廖建鹏
+stu_actionComment|行为与评语|zhao|阮本伟
+
 <!-- 
 打包说明
 1、注释vconsole

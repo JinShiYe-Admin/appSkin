@@ -21,57 +21,50 @@
     },
     {
       "icon_id": "13798404",
-      "name": "物品管理",
-      "font_class": "wupinguanli",
+      "name": "物品管理系统",
+      "font_class": "wupinguanlixitong",
       "unicode": "e616",
       "unicode_decimal": 58902
     },
     {
       "icon_id": "13798405",
       "name": "学生行为",
-      "font_class": "xueshenghangwei",
+      "font_class": "xueshengxingwei",
       "unicode": "e617",
       "unicode_decimal": 58903
-    },
-    {
-      "icon_id": "13798406",
-      "name": "更多",
-      "font_class": "gengduo",
-      "unicode": "e618",
-      "unicode_decimal": 58904
     },
     {
       "icon_id": "13798407",
       "name": "学生量化考评",
       "font_class": "xueshenglianghuakaoping",
-      "unicode": "e619",
-      "unicode_decimal": 58905
+      "unicode": "e618",
+      "unicode_decimal": 58904
     },
     {
       "icon_id": "13798408",
-      "name": "系统考勤",
-      "font_class": "xitongkaoqin",
-      "unicode": "e61a",
-      "unicode_decimal": 58906
+      "name": "考勤系统",
+      "font_class": "kaoqinxitong",
+      "unicode": "e619",
+      "unicode_decimal": 58905
     },
     {
       "icon_id": "13798409",
       "name": "考务系统",
       "font_class": "kaowuxitong",
-      "unicode": "e61b",
-      "unicode_decimal": 58907
+      "unicode": "e61a",
+      "unicode_decimal": 58906
     },
     {
       "icon_id": "13798410",
       "name": "资源管理",
       "font_class": "ziyuanguanli",
-      "unicode": "e61c",
-      "unicode_decimal": 58908
+      "unicode": "e61b",
+      "unicode_decimal": 58907
     },
     {
       "icon_id": "14905434",
-      "name": "老师考勤",
-      "font_class": "laoshikaoqin",
+      "name": "教师考勤",
+      "font_class": "jiaoshikaoqin",
       "unicode": "e628",
       "unicode_decimal": 58920
     },
@@ -91,10 +84,73 @@
     },
     {
       "icon_id": "14905437",
-      "name": "家长互动",
-      "font_class": "jiachanghudong",
+      "name": "家校互动",
+      "font_class": "jiaxiaohudong",
       "unicode": "e62b",
       "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "20168761",
+      "name": "行为与评语",
+      "font_class": "xingweiyupingyu",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "20168765",
+      "name": "口语测评",
+      "font_class": "kouyuceping",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "20168885",
+      "name": "学生成绩",
+      "font_class": "xueshengchengji",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "20168886",
+      "name": "学生考勤",
+      "font_class": "xueshengkaoqin",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "20254987",
+      "name": "错题本",
+      "font_class": "cuotiben",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "20254988",
+      "name": "历史测试",
+      "font_class": "lishiceshi",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "20254990",
+      "name": "智学资源",
+      "font_class": "zhixueziyuan",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "20254991",
+      "name": "组卷测试",
+      "font_class": "zujuanceshi",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "20254992",
+      "name": "学情分析",
+      "font_class": "xueqingfenxi",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
     }
   ]
 }
