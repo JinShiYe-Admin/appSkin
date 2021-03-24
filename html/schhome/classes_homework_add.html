@@ -393,6 +393,11 @@
 								datasource.SMS=true
 								tempVue.SMS=true
 								callback();
+							}else{
+								datasource.SHOW=false
+								datasource.SMS=false
+								tempVue.SMS=false
+								callback();
 							}
 						}else{
 							datasource.SHOW=false
@@ -401,6 +406,7 @@
 							callback();
 						}
 					} else {
+						events.showWaiting();
 						mui.toast(datas.msg);
 					}
 				});
