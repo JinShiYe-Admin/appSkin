@@ -109,7 +109,7 @@
 				<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 				<a id="goRecord" class="mui-btn-link mui-pull-right">测评记录</a>
 			</div>
-			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
+			<h1 v-cloak class="mui-title" style="right: 4em;">{{headTitle}}</h1>
 		</header>
 		
 		<div class="mui-content">
@@ -405,8 +405,9 @@
 				// 保存index_code
 				store.set("kycp_index_code", index_code)
 				
+				//判断录音权限
+				plus.navigator.checkPermission("RECORD"); 
 				// 获取音频目录对象
-				plus.navigator.checkPermission("RECORD"); //判断录音权限
 				plus.io.resolveLocalFileSystemURL('_doc/', function(entry) {
 					entry.getDirectory('audio', {
 						create: true
@@ -550,6 +551,10 @@
 			//获取目录
 			function getCatalog(auto_book) {
 				var data = getBookCodes(auto_book);
+				if(Object.keys(data).length<4) {
+					mui.toast('教材信息不完整');
+					return;
+				}
 				postDataEncry(window.storageKeyName.INTERFACE_KYCP + '/pub/catalog', {}, {
 					...data,
 					index_code,
@@ -959,13 +964,16 @@
 						return;
 					}
 					if(!this.isRecording) {
-						this.isRecording = true;
-						this.startRecord();
 						var _this = this;
-						recorderTimer = setTimeout(function() {
-							_this.isRecording && _this.stopRecord();
-						}, _this.list[_this.index].time_len * 1000 || 5000);
-						touchStart(event.targetTouches[0]);
+						// 检查权限
+						checkPermissionRECORD(function () {
+							_this.isRecording = true;
+							_this.startRecord();
+							recorderTimer = setTimeout(function() {
+								_this.isRecording && _this.stopRecord();
+							}, _this.list[_this.index].time_len * 1000 || 5000);
+							touchStart(event.targetTouches[0]);
+						});
 					}
 				},
 				//开始录音
@@ -1134,13 +1142,15 @@
 					var _this = this;
 					var ele = e.currentTarget;
 					if(!this.isRecording) {
-						ele.classList.add('active');
-						this.isRecording = true;
-						this.startRecord(cur);
-						recorderTimer = setTimeout(function() {
-							_this.isRecording && _this.stopRecord();
-						}, cur.time_len * 1000 || 5000);
-						touchStart(e.targetTouches[0]);
+						checkPermissionRECORD(function () {
+							ele.classList.add('active');
+							_this.isRecording = true;
+							_this.startRecord(cur);
+							recorderTimer = setTimeout(function() {
+								_this.isRecording && _this.stopRecord();
+							}, cur.time_len * 1000 || 5000);
+							touchStart(e.targetTouches[0]);
+						});
 					}
 				},
 				//开始录音
