@@ -332,6 +332,7 @@
 								var newObj=[];
 								newObj.push(model);
 								newObj.push(catalogData.resPerModel);
+								newObj.push(catalogData.resSubModel);
 								//通知上一页，把参数传过去
 								mui.fire(plus.webview.currentWebview().opener(), 'selectCatalog', newObj);
 								mui.back();
