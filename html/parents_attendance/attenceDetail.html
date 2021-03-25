@@ -16,6 +16,14 @@
 				text-align: left;
 				padding-left: 15px;
 			}
+			
+			.mui-table-view-cell:after {
+			    height: 0px;
+			}
+			
+			.mui-pull-top-tips,.mui-pull-top-tips.mui-transitioning,.mui-pull-top-wrapper,.mui-pull-top-canvas {
+			   z-index: 100 !important;
+			}
 		</style>
 	</head>
 
@@ -30,25 +38,29 @@
 			</div>
 			<div class="mui-row">
 				<div class="mui-col-xs-12" style="padding: 0 15px;margin-top: 10px;text-align: center;font-size: 14px;">
-					<span>上课迟到次数：</span><span style="color: #FF3333;font-size: 18px;">99999</span> 
+					<span>{{item_txt}}次数：</span><span style="color: #FF3333;font-size: 18px;">{{total_count}}</span> 
 				</div>
 			</div>
 			<div class="mui-row">
-				<div id="scroll1" class="mui-scroll-wrapper" style="margin-top: 126px;">
+				<div class="mui-scroll-wrapper" style="margin-top: 116px;">
 					<div class="mui-scroll">
-						<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
-							<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
-								<div style="color: #FFFFFF;font-size: 14px;font-weight: 600;display: inline-block;margin-top: 5px;">++index}}</div>
-							</div>
-						</div>
-						<div style="padding: 10px 20px 0;">
-							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">考勤日期：</p><p class="mui-col-xs-8" style="float: left;">2021-02-05</p></div>
-							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">星期：</p><p class="mui-col-xs-8" style="float: left;">二</p></div>
-							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">节次：</p><p class="mui-col-xs-8" style="float: left;">第二节</p></div>
-							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">科目：</p><p class="mui-col-xs-8" style="float: left;">数学</p></div>
-							<div class="mui-col-xs-12" style="margin-top: 10px;word-break: break-all;"><p class="mui-col-xs-4" style="float: left;">说明：</p><p class="mui-col-xs-8" style="float: left;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa这里有一个很长的请假事由。。。。。。。。。。。。的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由的请假事由aa按点</p></div>
-							<div class="mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">记录人：</p><p class="mui-col-xs-8" style="float: left;">吴孟达</p></div>
-						</div>
+						<ul class="mui-table-view no-line" style="font-size: 13px;">
+							<li class="mui-table-view-cell no-bgc" style="padding: 0 0;" v-for="(item,index) in pageData">
+								<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
+									<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
+										<div style="color: #FFFFFF;font-size: 14px;font-weight: 600;display: inline-block;margin-top: 5px;">{{++index}}</div>
+									</div>
+								</div>
+								<div style="padding: 10px 20px 0;">
+									<div class="mui-row mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">考勤日期：</p><p class="mui-col-xs-8" style="float: left;">{{item.attendance_time?item.attendance_time:'暂无'}}</p></div>
+									<div class="mui-row mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">星期：</p><p class="mui-col-xs-8" style="float: left;"> {{item.day?item.day:'暂无'}}</p></div>
+									<div class="mui-row mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">节次：</p><p class="mui-col-xs-8" style="float: left;"> {{item.class_node?item.class_node:'暂无'}}</p></div>
+									<div class="mui-row mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">科目：</p><p class="mui-col-xs-8" style="float: left;">{{item.sub_name?item.sub_name:'暂无'}}</p></div>
+									<div class="mui-row mui-col-xs-12" style="margin-top: 10px;word-break: break-all;"><p class="mui-col-xs-4" style="float: left;">说明：</p><p class="mui-col-xs-8" style="float: left;">{{item.comment?item.comment:'暂无'}}</p></div>
+									<div class="mui-row mui-col-xs-12" style="margin-top: 10px;"><p class="mui-col-xs-4" style="float: left;">记录人：</p><p class="mui-col-xs-8" style="float: left;">{{item.create_user_name?item.create_user_name:'暂无'}}</p></div>
+								</div> 
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -56,7 +68,7 @@
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
 		<script src="../../js/utils/mui.pullToRefresh.js"></script>
-		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script> 
 		<script src="../../js/muiPicker/mui.picker.all.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
@@ -93,9 +105,9 @@
 					endTime:'',
 					total_page:0,//总页数
 					total_count:'',//次数
-					totalPageCount:0,//总条数
+					item_txt:'',//名称
 					personal:store.get(window.storageKeyName.PERSONALINFO),
-					pageData: {},
+					pageData: [],
 				},
 				methods:{
 					months:function(e){
@@ -103,23 +115,36 @@
 						var _self = that;
 						if(_self.picker) {
 							_self.picker.show(function (rs) {
-								let start_month=moment(rs.text).format('YYYY年MM月');
-								let end_month=moment(rs.text).add(5, 'M').format('YYYY年MM月');
-								$('#months').html(start_month+' ~ '+end_month)
+								let start_monthStr=moment(rs.text).format('YYYY年MM月')
+								let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
+								let start_month=moment(rs.text).format('YYYY-MM')
+								let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
+								$('#months').html(start_monthStr+' ~ '+end_monthStr)
+								contentData.startTime=start_month;
+								contentData.endTime=end_month;
+								contentData.refrushFlag = 0; //0刷新1加载更多
+								contentData.pageNumber = 1; 
+								getPageAttendanceDetail();
 								_self.picker.dispose();
 								_self.picker = null;
 							});
 						} else {
-							console.log(that);
 							var optionsJson = that.getAttribute('data-options') || '{}';
 							var options = JSON.parse(optionsJson);
 							options.beginDate=new Date(currentYear(),currentMonth());
 							var id = that.getAttribute('id');
 							_self.picker = new mui.DtPicker(options);
 							_self.picker.show(function(rs) {
-								let start_month=moment(rs.text).format('YYYY年MM月');
-								let end_month=moment(rs.text).add(5, 'M').format('YYYY年MM月');
-								$('#months').html(start_month+' ~ '+end_month)
+								let start_monthStr=moment(rs.text).format('YYYY年MM月')
+								let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
+								let start_month=moment(rs.text).format('YYYY-MM')
+								let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
+								$('#months').html(start_monthStr+' ~ '+end_monthStr)
+								contentData.startTime=start_month;
+								contentData.endTime=end_month;
+								contentData.refrushFlag = 0; //0刷新1加载更多
+								contentData.pageNumber = 1; 
+								getPageAttendanceDetail();
 								_self.picker.dispose();
 								_self.picker = null;
 							});
@@ -130,6 +155,7 @@
 
 			var pageSize =10;
 			var self = 0;
+			let curPage=''
 			mui.plusReady(function() {
 				(function($) {
 					$('.mui-scroll-wrapper').scroll({
@@ -174,10 +200,14 @@
 						});
 					});
 				})(mui);
-				
-				let start_month=moment().format('YYYY年MM月')
-				let end_month=moment().add(5, 'M').format('YYYY年MM月');
-				$('#months').html(start_month+' ~ '+end_month)
+				curPage = utils.getDataFromUrl(window.location.href);
+				contentData.total_count=curPage.num
+				contentData.item_txt=curPage.item_txt
+				let start_monthStr=moment().format('YYYY年MM月')
+				let end_monthStr=moment().add(5, 'M').format('YYYY年MM月');
+				let start_month=moment().format('YYYY-MM')
+				let end_month=moment().add(5, 'M').format('YYYY-MM');
+				$('#months').html(start_monthStr+' ~ '+end_monthStr)
 				contentData.startTime=start_month;
 				contentData.endTime=end_month;
 				
@@ -185,11 +215,51 @@
 			});
 			
 			//分页查询考勤项目详情
-			function getPageAttendanceDetail(){
-				setTimeout(() => {
-					console.log('wocao');
-					self && self.endPullUpToRefresh();
-				}, 1000)
+			function getPageAttendanceDetail(){ 
+				console.log("curPage: " + JSON.stringify(curPage));
+				events.showWaiting();
+				comData = {
+					begintime:contentData.startTime,
+					endtime:contentData.endTime,
+					page_size:pageSize,
+					page_number: contentData.pageNumber,
+					attendance_type:curPage.attendance_type,
+					item_code:curPage.item_code,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'attendance/pageAttendanceDetail', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						 console.log("data.data.list: " + JSON.stringify(data.data.list));
+						 contentData.total_page=data.data.total_page
+						 if (contentData.refrushFlag == 0) {
+						 	contentData.pageData = [].concat(data.data.list);
+						 	setTimeout(() => {
+						 		self && self.endPullDownToRefresh();
+								if(data.data.list.length<pageSize){
+									mui(".mui-pull-loading")[0].style.display="none"
+								}
+						 		if (data.data.page_number >= data.data.total_page) {
+						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+						 		}
+						 	}, 1000)
+						 } else {
+						 	contentData.pageData = contentData.pageData.concat(data.data.list);
+						 	// if(data.data.list.length==0){
+						 	// 	mui.toast('暂无更多数据');
+						 	// }    
+						 	setTimeout(() => {
+						 		self && self.endPullUpToRefresh();
+						 		if (data.data.page_number >= data.data.total_page) {
+						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+						 		}
+						 	}, 1000)
+						 }
+						 contentData.pageNumber++;
+					} else {
+						mui.toast(data.msg);
+					}
+				});
 			}
 			
 			function currentYear(){

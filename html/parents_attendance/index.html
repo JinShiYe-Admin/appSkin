@@ -98,7 +98,6 @@
 			.mui-navigate-right:after, .mui-push-right:after {
 			    color: #00baad;
 			}
-			
 		</style>
 	</head>
 
@@ -186,7 +185,7 @@
 								</div>
 								<h4 class="spaceLine">一、出入校</h4>
 								<ul class="mui-table-view">
-									<li @click="churuxiao()" class="mui-table-view-cell">
+									<li @tap="churuxiao()" class="mui-table-view-cell">
 										<a class="mui-navigate-right">
 											<span style="margin-left: 40px;">出入校记录</span>
 											<span style="margin-left: 40px;">{{semFlag2Data.total_count}}条</span>
@@ -197,15 +196,15 @@
 								<p style="margin: 10px 0 0 20px;font-weight: 900;font-size: 14px;color: #505050;">各月对比</p>
 								<div class="pieChart" id="attendceCount"></div>
 								<p style="margin: -10px 0 0 20px;font-weight: 900;font-size: 14px;color: #505050;">考勤项目统计</p>
-								<ul class="mui-table-view" style="margin-top: 10px;">
-									<li @click="clickAttenceDetail(item)" v-for="(item,index) in semFlag2Data.leaveList" class="mui-table-view-cell">
-										<a class="mui-navigate-right">
-											<span>{{index+1}}</span>
-											<span style="margin-left: 20px;">{{item.item_txt}}</span>
-											<span style="margin-left: 20px;">{{item.num}}次</span>
-										</a>
-									</li>
-								</ul>
+									<ul class="mui-table-view" style="margin-top: 10px;">
+										<li @tap="clickAttenceDetail(item)" v-for="(item,index) in semFlag2Data.leaveList" class="mui-table-view-cell">
+											<a class="mui-navigate-right">
+												<span>{{index+1}}</span>
+												<span style="margin-left: 20px;">{{item.item_txt}}</span>
+												<span style="margin-left: 20px;">{{item.num}}次</span>
+											</a>
+										</li>
+									</ul>
 							</div>
 						</div>
 					</div>
@@ -260,7 +259,7 @@
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",
-				data: {
+				data: { 
 					semFlag: 0, //点击的seg索引
 					semFlag0Data: { //考勤记录
 						refrushFlag: 0, //0刷新1加载更多
@@ -315,19 +314,39 @@
 						utils.mOpenWithData("../../html/parents_attendance/leaveDetail.html", model);
 					},
 					clickAttenceDetail: function(model) {
+						model.access=curPage.access
 						utils.mOpenWithData("../../html/parents_attendance/attenceDetail.html", model);
 					},
 					churuxiao:function(){
-						utils.mOpenWithData("../../html/parents_attendance/churuxiao.html", {});
-					},
+						curPage.count=contentData.semFlag2Data.total_count
+						utils.mOpenWithData("../../html/parents_attendance/churuxiao.html", curPage);
+					}, 
 					months:function(e,id){
 						let that=e.target
 						var _self = that;
 						if(_self.picker) {
 							_self.picker.show(function (rs) {
-								let start_month=moment(rs.text).format('YYYY年MM月');
-								let end_month=moment(rs.text).add(5, 'M').format('YYYY年MM月');
-								$('#'+id).html(start_month+' ~ '+end_month)
+								let start_monthStr=moment(rs.text).format('YYYY年MM月')
+								let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
+								let start_month=moment(rs.text).format('YYYY-MM')
+								let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
+								$('#'+id).html(start_monthStr+' ~ '+end_monthStr)
+								if(id=='months'){
+									contentData.semFlag1Data.startTime=start_month;
+									contentData.semFlag1Data.endTime=end_month;
+									contentData.semFlag1Data.refrushFlag = 0; //0刷新1加载更多
+									contentData.semFlag1Data.pageNumber = 1; 
+									getLeaveStatistics();
+									getLeavePage();
+								}else if(id=='months-a'){
+									contentData.semFlag2Data.startTime=start_month;
+									contentData.semFlag2Data.endTime=end_month;
+									contentData.semFlag2Data.refrushFlag = 0; //0刷新1加载更多
+									contentData.semFlag2Data.pageNumber = 1; 
+									getInOutCount();
+									getAttendanceCountByMonth();
+									getPageAttendanceStatistics();
+								}
 								_self.picker.dispose();
 								_self.picker = null;
 							});
@@ -338,9 +357,27 @@
 							var id = that.getAttribute('id');
 							_self.picker = new mui.DtPicker(options);
 							_self.picker.show(function(rs) {
-								let start_month=moment(rs.text).format('YYYY年MM月');
-								let end_month=moment(rs.text).add(5, 'M').format('YYYY年MM月');
-								$('#'+id).html(start_month+' ~ '+end_month)
+								let start_monthStr=moment(rs.text).format('YYYY年MM月')
+								let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
+								let start_month=moment(rs.text).format('YYYY-MM')
+								let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
+								$('#'+id).html(start_monthStr+' ~ '+end_monthStr)
+								if(id=='months'){
+									contentData.semFlag1Data.startTime=start_month;
+									contentData.semFlag1Data.endTime=end_month;
+									contentData.semFlag1Data.refrushFlag = 0; //0刷新1加载更多
+									contentData.semFlag1Data.pageNumber = 1; 
+									getLeaveStatistics();
+									getLeavePage();
+								}else if(id=='months-a'){
+									contentData.semFlag2Data.startTime=start_month;
+									contentData.semFlag2Data.endTime=end_month;
+									contentData.semFlag2Data.refrushFlag = 0; //0刷新1加载更多
+									contentData.semFlag2Data.pageNumber = 1; 
+									getInOutCount();
+									getAttendanceCountByMonth();
+									getPageAttendanceStatistics();
+								}
 								_self.picker.dispose();
 								_self.picker = null;
 							});
@@ -390,7 +427,7 @@
 													//结束下拉刷新
 													self.endPullUpToRefresh();
 													if (mui(".mui-table-view-cell").length < 10) {
-														mui(".mui-pull-loading")[0].innerHTML = "";
+														mui(".mui-pull-loading")[0].innerHTML=""
 													}
 												}, 1000);
 											} else {
@@ -406,13 +443,13 @@
 													//结束下拉刷新
 													self.endPullUpToRefresh();
 													if (mui(".mui-table-view-cell").length < 10) {
-														mui(".mui-pull-loading")[0].innerHTML = "";
+														mui(".mui-pull-loading")[1].innerHTML=""
 													}
 												}, 1000);
 											} else {
 												//结束下拉刷新
 												self.endPullUpToRefresh();
-												mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+												mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 											}
 										} else if (contentData.semFlag == 2) {
 											contentData.semFlag2Data.refrushFlag = 1; //0刷新1加载更多
@@ -422,13 +459,13 @@
 													//结束下拉刷新
 													self.endPullUpToRefresh();
 													if (mui(".mui-table-view-cell").length < 10) {
-														mui(".mui-pull-loading")[0].innerHTML = "";
+														mui(".mui-pull-loading")[2].innerHTML=""
 													}
 												}, 1000);
 											} else {
 												//结束下拉刷新
 												self.endPullUpToRefresh();
-												mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+												mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
 											}
 										}  
 									}
@@ -486,6 +523,9 @@
 						 	contentData.semFlag0Data.attenceList = [].concat(data.data.list);
 						 	setTimeout(() => {
 						 		self && self.endPullDownToRefresh();
+								if(data.data.list.length<pageSize){
+									mui(".mui-pull-loading")[0].style.display="none"
+								}
 						 		if (data.data.page_number >= data.data.total_page) {
 						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 						 		}
@@ -571,12 +611,16 @@
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'leave/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
+					console.log("data: " + JSON.stringify(data));
 					if (data.code == 0) {
 						 contentData.semFlag1Data.total_page=data.data.total_page
 						 if (contentData.semFlag1Data.refrushFlag == 0) {
 						 	contentData.semFlag1Data.leaveList = [].concat(data.data.list);
 						 	setTimeout(() => {
 						 		self && self.endPullDownToRefresh();
+								if(data.data.list.length<pageSize){
+									mui(".mui-pull-loading")[1].style.display="none"
+								}
 						 		if (data.data.page_number >= data.data.total_page) {
 						 			mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 						 		}
@@ -683,8 +727,11 @@
 						 	contentData.semFlag2Data.leaveList = [].concat(data.data.list);
 						 	setTimeout(() => {
 						 		self && self.endPullDownToRefresh();
+								if(data.data.list.length<pageSize){
+									mui(".mui-pull-loading")[2].style.display="none"
+								}
 						 		if (data.data.page_number >= data.data.total_page) {
-						 			mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+						 			mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
 						 		}
 						 	}, 1000)
 						 } else {
@@ -695,7 +742,7 @@
 						 	setTimeout(() => {
 						 		self && self.endPullUpToRefresh();
 						 		if (data.data.page_number >= data.data.total_page) {
-						 			mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+						 			mui(".mui-pull-loading")[2].innerHTML = "没有更多了";
 						 		}
 						 	}, 1000)
 						 }
