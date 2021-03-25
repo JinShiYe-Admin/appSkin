@@ -298,6 +298,8 @@
 				contentData.resCatalogsModel = data.detail[0];
 				//当前学段
 				contentData.resPerModel = data.detail[1];
+				//当前科目
+				contentData.resSubModel = data.detail[2];
 				//刷新数据
 				contentData.refreshFlag = 0;
 				contentData.pageIndex = 1;
@@ -625,7 +627,8 @@
 				var tempData = {
 					catalog_id: contentData.resCatalogsModel.id, //目录代码
 					category_id: contentData.resCategoryModel.key, //类型代码
-					page_number: contentData.pageIndex, //
+					sub_code: contentData.resSubModel.sub_code, //科目代码
+					page_number: contentData.pageIndex, //科目代码
 					page_size: '10', //
 					index_code: curPage.access.split('#')[1]
 				}
