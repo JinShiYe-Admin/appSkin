@@ -302,21 +302,7 @@ function uploadRecordFile(record, fs, params,callback) {
 
 // 设置录音器
 function setRecorder(touch, success, fail) {
-	var recorder = null;
-	if(mui.os.ios){
-		var rdps = plus.navigator.checkPermission("RECORD");
-		recorder = plus.audio.getRecorder();
-		if(["authorized","notdeny"].indexOf(rdps)==-1){
-			if(rdps=="denied"){
-				mui.toast("录音已被禁用，请设置为允许。");
-			}else{
-				recorder.record({filename:"_doc/audio/"},function(){});
-			}
-			return false;
-		}
-	}else{
-		recorder = plus.audio.getRecorder();
-	}
+	var recorder = plus.audio.getRecorder();
 	
 	//长按是否有效
 	var touchTimer = setTimeout(function(){
@@ -336,15 +322,33 @@ function setRecorder(touch, success, fail) {
 		touch = false;
 	}, function(e){
 		fail&&fail();
-		var msg = e.message;
-		if(plus.navigator.checkPermission("RECORD")=="denied") {
-			msg = "录音已被禁用，请设置为允许。";
-		}
-		mui.toast(msg);
+		checkPermissionRECORD();
 		clearTimeout(touchTimer);
 		touch = false;
 	});
 	return recorder;
+}
+// 检查录音权限
+function checkPermissionRECORD(success) {
+	var rdps = plus.navigator.checkPermission("RECORD");
+	console.log(rdps)
+	if(["authorized","notdeny"].indexOf(rdps)!=-1){
+		success && success()
+	} else {
+		if(rdps=="denied"){
+			plus.nativeUI.confirm("录音已被禁用，请设置为允许。", function(event) {
+				if(event.index===0) {
+					plus.runtime.launchApplication({
+						action: 'App-Prefs:root='
+					}, function(e) {});
+				}
+			}, {buttons: ["去设置","取消"]});
+		}else{
+			var recorder_check = plus.audio.getRecorder();
+			recorder_check.record({filename:"_doc/audio/"},function(){});
+			recorder_check.stop();
+		}
+	}
 }
 
 function netErrorTip() {
@@ -447,8 +451,14 @@ function getAuth() {
 }
 
 // 播放音频
+var plusAudioPlayer = null;
 function audioPlayer(url, callback) {
-	plus.audio.createPlayer(url).play(function() {
+	if(plusAudioPlayer) {
+		// plusAudioPlayer.stop();
+		plusAudioPlayer.close();
+	}
+	plusAudioPlayer = plus.audio.createPlayer(url);
+	plusAudioPlayer.play(function() {
 		callback && callback();
 	}, function() {
 		const urls = url.split('?');
@@ -458,7 +468,8 @@ function audioPlayer(url, callback) {
 			urls: [urls[1] ? urls[0] : url] 
 		}, function(data) {
 			var urlStr = encodeURI(data.Data[0].Value);
-			plus.audio.createPlayer(urlStr).play(function() {
+			plusAudioPlayer = plus.audio.createPlayer(urlStr);
+			plusAudioPlayer.play(function() {
 				callback && callback();
 			}, function() {
 				callback && callback();

@@ -252,13 +252,15 @@
 						var _this = this;
 						var ele = e.currentTarget;
 						if(!this.isRecording) {
-							ele.classList.add('active');
-							this.isRecording = true;
-							this.startRecord(cur);
-							recorderTimer = setTimeout(function(){
-								_this.isRecording && _this.stopRecord();
-							}, cur.time_len?(cur.time_len+4)*1000:5000);
-							touchStart(e.targetTouches[0]);
+							checkPermissionRECORD(function () {
+								ele.classList.add('active');
+								_this.isRecording = true;
+								_this.startRecord(cur);
+								recorderTimer = setTimeout(function(){
+									_this.isRecording && _this.stopRecord();
+								}, cur.time_len?(cur.time_len+4)*1000:5000);
+								touchStart(e.targetTouches[0]);
+							});
 						}
 					},
 					//开始录音
