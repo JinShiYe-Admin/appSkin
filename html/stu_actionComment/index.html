@@ -119,10 +119,10 @@
 		<div v-cloak class="mui-content mui-fullscreen" style="margin-top: 0px;background: white;z-index:0;" id="contentData">
 			<div id="slider" class="mui-slider mui-fullscreen">
 				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-					<a class="mui-control-item mui-active" href="#item1mobile">
+					<a @tap="clickSeg(0)" class="mui-control-item mui-active" href="#item1mobile">
 						行为与谈话
 					</a>
-					<a class="mui-control-item" href="#item2mobile">
+					<a @tap="clickSeg(1)" class="mui-control-item" href="#item2mobile">
 						教师评语
 					</a>
 				</div>
@@ -135,27 +135,30 @@
 									<div v-for="(item,index) in semFlag0Data.semFlag0List" class="cd-timeline-block">
 										<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 										<div class="cd-timeline-content">
-											<div class="divTime">{{item.time}}</div>
-											<div v-if="item.actionFlag == 1" class="divContent" style="height: auto;">
-												<div class="divFlag" style="background: #ff9900;">{{item.flagName}}</div>
-												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.actionTime}}</div>
-												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.actionNote}}</div>
-												<img style="width: 100px;height: 100px;;" src='http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png' />
-												<div style="text-align: right;margin-right: 20px;">
-													<span style="color: red;width: 20px;height: 20px;border: 1px solid red;border-radius: 50%;">记</span>
-													<span style="">{{item.actionName}}</span>
-												</div>
-											</div>
-											<div v-if="item.talkFlag == 1" class="divContent" style="height: auto;">
-												<div class="divFlag">谈话</div>
-												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.talkTime}}</div>
-												<div style="margin: 5px 0 5px 0;padding: 0px;">{{item.talkNote}}</div>
-												<template v-for="(talkItem,index) in item.talkImg">
-													<img style="width: 100px;height: 100px;margin-right: 10px;" :data-preview-src="talkItem" :src=talkItem />
+											<div class="divTime">{{item.order_time}}</div>
+											<div v-if="item.student_behavior_id  !=null" class="divContent" style="height: auto;"><!-- 行为项目文本不为空说明有行为记录 -->
+												<div class="divFlag" style="background: #ff9900;">{{item.item_txt}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.behavior_time}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.day}} {{item.class_node}} {{item.sub_name}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.comment}}</div>
+												<template v-for="aitem in item.aimgs">
+													<img style="width: 100px;height: 100px;;" :data-preview-src="aitem.url" :src=aitem.url />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
-													<span style="color: red;border: 1px solid red;border-radius: 50%;">谈</span>
-													<span style="">{{item.actionName}}</span>
+													<span style="color: red;width: 25px;height: 20px;border: 1px solid red;border-radius: 50%;padding: 2px;">记</span>
+													<span style="">{{item.behavior_recorder}}</span>
+												</div>
+											</div>
+											<div v-if="item.id !=null" class="divContent" style="height: auto;"><!-- 谈话文本不为空说明有谈话记录 -->
+												<div class="divFlag">谈话</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.chat_time&&item.chat_time.split(' ')[0]}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;">{{item.chat_detail}}</div>
+												<template v-for="bitem in item.bimgs">
+													<img style="width: 100px;height: 100px;margin-right: 10px;" :data-preview-src="bitem.url" :src=bitem.url />
+												</template>
+												<div style="text-align: right;margin-right: 20px;">
+													<span style="color: red;width: 25px;height: 20px;border: 1px solid red;border-radius: 50%;padding: 2px;">谈</span>
+													<span style="">{{item.create_user_name}}</span>
 												</div>
 											</div>
 										</div>
@@ -169,15 +172,23 @@
 							<div class="mui-scroll">
 								<ul class="mui-table-view" style="margin-top: 10px;">
 									<li v-for="(item,index) in semFlag1Data.semFlag1List" class="mui-table-view-cell">
-										<div class="divFlag divTime" style="background: #ff9900;margin-left: 0px;">{{item.name}}</div>
+										<template v-if="item.remark_type=='termRemark'"><!-- 期评 -->
+											<div class="divFlag divTime" style="background: #FF6666;margin-left: 0px;">{{item.remark_type_txt}}</div>
+										</template>
+										<template v-if="item.remark_type=='monthRemark'"><!-- 月评 -->
+											<div class="divFlag divTime" style="background: #5BBA5B;margin-left: 0px;">{{item.remark_type_txt}}</div>
+										</template>
+										<template v-if="item.remark_type=='weekRemark'"><!-- 周评 -->
+											<div class="divFlag divTime" style="background: #00CFBD;margin-left: 0px;">{{item.remark_type_txt}}</div>
+										</template>
 										<div class="divContentComment" style="height: auto;">
 											<div>
-												<span>{{item.time}}</span>
-												<span>{{item.xueqi}}</span>
+												<span>{{item.year}} 学年</span>
+												<span>{{item.term_name}}</span>
 											</div>
-											<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.content}}</div>
-											<div style="text-align: right;">{{item.personName}}</div>
-											<div style="text-align: right;">{{item.commentTime}}</div>
+											<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.remark}}</div>
+											<div style="text-align: right;">{{item.create_user_name}}</div>
+											<div style="text-align: right;">{{item.create_time}}</div>
 										</div>
 									</li>
 								</ul>
@@ -189,6 +200,8 @@
 		</div>
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
 		<script src="../../js/muiPicker/mui.picker.all.js"></script>
 		<script src="../../js/utils/moment.min.js"></script>
 		<script src="../../js/utils/storageKeyName.js"></script>
@@ -230,7 +243,8 @@
 					}
 				}
 			});
-
+			
+			var pageSize =10;	
 			//vue数据
 			var contentData = new Vue({
 				el: "#contentData",
@@ -239,116 +253,101 @@
 					semFlag0Data: { //行为与谈话
 						refrushFlag: 0, //0刷新1加载更多
 						pageNumber: 1,
-						pageSize: 10,
-						semFlag0List: [{
-							time: '2020/07/06 08:30:15',
-							actionFlag: 1,
-							flagName: '上课睡觉',
-							actionTime: '2020/07/06 星期二 第二节 语文',
-							actionNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医',
-							actionImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'],
-							actionName: '李大山',
-							talkFlag: 1,
-							talkTime: '2020/07/06',
-							talkNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
-							talkImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png',
-								'http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png','http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'
-							],
-							talkName: '李大山',
-						}, {
-							time: '2020/07/06 08:30:15',
-							actionFlag: 0,
-							flagName: '上课睡觉',
-							actionTime: '2020/07/06 星期二 第二节 语文',
-							actionNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医',
-							actionImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'],
-							actionName: '李大山',
-							talkFlag: 1,
-							talkTime: '2020/07/06',
-							talkNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
-							talkImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png',
-								'http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png','http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'
-							],
-							talkName: '李大山',
-						}, {
-							time: '2020/07/06 08:30:15',
-							actionFlag: 1,
-							flagName: '上课睡觉',
-							actionTime: '2020/07/06 星期二 第二节 语文',
-							actionNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医',
-							actionImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'],
-							actionName: '李大山',
-							talkFlag: 0,
-							talkTime: '2020/07/06',
-							talkNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
-							talkImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png',
-								'http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'
-							],
-							talkName: '李大山',
-						}, {
-							time: '2020/07/06 08:30:15',
-							actionFlag: 1,
-							flagName: '上课睡觉',
-							actionTime: '2020/07/06 星期二 第二节 语文',
-							actionNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医',
-							actionImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'],
-							actionName: '李大山',
-							talkFlag: 1,
-							talkTime: '2020/07/06',
-							talkNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
-							talkImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png',
-								'http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'
-							],
-							talkName: '李大山',
-						}, {
-							time: '2020/07/06 08:30:15',
-							actionFlag: 0,
-							flagName: '上课睡觉',
-							actionTime: '2020/07/06 星期二 第二节 语文',
-							actionNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医',
-							actionImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'],
-							actionName: '李大山',
-							talkFlag: 1,
-							talkTime: '2020/07/06',
-							talkNote: '肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。肚子疼，去医院看病。',
-							talkImg: ['http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png',
-								'http://jbsch-pb.zhuxue101.net/test/headImg/headimage1227874212933271552.png'
-							],
-							talkName: '李大山',
-						}, ],
+						total_page:0,//总页数
+						semFlag0List: [],
 					},
 					semFlag1Data: { //教师评语
-						semFlag1List: [{
-							name: '期评',
-							time: '2020-2021学年',
-							xueqi: '上学期',
-							content: '我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容',
-							personName: '王明',
-							commentTime: '2020/07/06'
-						}, {
-							name: '月评',
-							time: '2020-2021学年',
-							xueqi: '上学期',
-							content: '我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容',
-							personName: '王明',
-							commentTime: '2020/07/06'
-						}, {
-							name: '期评',
-							time: '2020-2021学年',
-							xueqi: '上学期',
-							content: '我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容我是内容',
-							personName: '王明',
-							commentTime: '2020/07/06'
-						}]
+						refrushFlag: 0, //0刷新1加载更多
+						pageNumber: 1,
+						total_page:0,//总页数
+						semFlag1List: []
 					}
 				},
-				methods: {},
+				methods: {
+					clickSeg: function(flag) {
+						if (contentData.semFlag != flag) {
+							contentData.semFlag = flag;
+							console.log(flag);
+							if(flag==0){
+								contentData.semFlag0Data.refrushFlag = 0; //0刷新1加载更多
+								contentData.semFlag0Data.pageNumber = 1; 
+								getBehavior();
+							}else if(flag==1){
+								contentData.semFlag1Data.refrushFlag = 0; //0刷新1加载更多
+								contentData.semFlag1Data.pageNumber = 1; 
+								getRemark();
+							}
+						}
+					},
+				},
 			});
 			var self = 0;
 			mui.plusReady(function() {
 				(function($) {
 					$('.mui-scroll-wrapper').scroll({
 						indicators: true //是否显示滚动条
+					});
+					$.ready(function() {
+						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										self = this;
+										if (contentData.semFlag == 0) {
+											contentData.semFlag0Data.refrushFlag = 0; //0刷新1加载更多
+											contentData.semFlag0Data.pageNumber = 1; 
+											getBehavior();
+										} else if (contentData.semFlag == 1) {
+											contentData.semFlag1Data.refrushFlag = 0; //0刷新1加载更多
+											contentData.semFlag1Data.pageNumber = 1; //
+											getRemark();
+										}  
+										setTimeout(function() {
+											//结束下拉刷新
+											self.endPullDownToRefresh();
+										}, 1000);
+									}
+								},
+								up: {
+									callback: function() {
+										self = this;
+										if (contentData.semFlag == 0) {
+											contentData.semFlag0Data.refrushFlag = 1; //0刷新1加载更多
+											if (contentData.semFlag0Data.pageNumber <= contentData.semFlag0Data.total_page) {
+												getBehavior();
+												setTimeout(function() {
+													//结束下拉刷新
+													self.endPullUpToRefresh();
+													if (mui(".mui-table-view-cell").length < 10) {
+														mui(".mui-pull-loading")[0].innerHTML = "";
+													}
+												}, 1000);
+											} else {
+												//结束下拉刷新
+												self.endPullUpToRefresh();
+												mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+											}
+										} else if (contentData.semFlag == 1) {
+											contentData.semFlag1Data.refrushFlag = 1; //0刷新1加载更多
+											if (contentData.semFlag1Data.pageNumber <= contentData.semFlag1Data.total_page) {
+												getRemark();
+												setTimeout(function() {
+													//结束下拉刷新
+													self.endPullUpToRefresh();
+													if (mui(".mui-table-view-cell").length < 10) {
+														mui(".mui-pull-loading")[1].innerHTML = "";
+													}
+												}, 1000);
+											} else {
+												//结束下拉刷新
+												self.endPullUpToRefresh();
+												mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+											}
+										}  
+									}
+								}
+							});
+						});
 					});
 				})(mui);
 
@@ -368,7 +367,128 @@
 				} else {
 					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
 				}
+				getBehavior();
 			});
+			
+			//分页查询行为谈话记录
+			function getBehavior(){
+				events.showWaiting();
+				comData = {
+					page_size:pageSize,
+					page_number: contentData.semFlag0Data.pageNumber,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'behavior/page', {}, comData, 2, function(data) {
+					if (data.code == 0) {
+						 contentData.semFlag0Data.total_page=data.data.total_page
+						 if (contentData.semFlag0Data.refrushFlag == 0) {
+							 //png、jpg、gif/bmp/jpeg
+							data.data.list.map(item=>{
+								let aimgs=[],bimgs=[];
+								item.asset_ids.map(aitem=>{
+									if(aitem.ext=='png' ||aitem.ext=='jpg'||aitem.ext=='jpeg'||aitem.ext=='gif'||aitem.ext=='bmp'){
+										aimgs.push(aitem)
+									}
+								})
+								item.aimgs=aimgs;
+								item.behavior_asset_ids.map(bitem=>{
+									if(bitem.ext=='png' ||bitem.ext=='jpg'||bitem.ext=='jpeg'||bitem.ext=='gif'||bitem.ext=='bmp'){
+										bimgs.push(bitem)
+									}
+								})
+								item.bimgs=bimgs;
+							})
+						 	contentData.semFlag0Data.semFlag0List = [].concat(data.data.list);
+						 	setTimeout(() => {
+								events.closeWaiting();
+								self && self.endPullDownToRefresh();
+								if(data.data.list.length<pageSize){
+									mui(".mui-pull-loading")[0].style.display="none"
+								}
+						 		if (data.data.page_number >= data.data.total_page) {
+						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+						 		}
+						 	}, 1000)
+						 } else {
+							 //png、jpg、gif/bmp/jpeg
+							 data.data.list.map(item=>{
+							 	let aimgs=[],bimgs=[];
+							 	item.asset_ids.map(aitem=>{
+							 		if(aitem.ext=='png' ||aitem.ext=='jpg'||aitem.ext=='jpeg'||aitem.ext=='gif'||aitem.ext=='bmp'){
+							 			aimgs.push(aitem)
+							 		}
+							 	})
+							 	item.aimgs=aimgs;
+							 	item.behavior_asset_ids.map(bitem=>{
+							 		if(bitem.ext=='png' ||bitem.ext=='jpg'||bitem.ext=='jpeg'||bitem.ext=='gif'||bitem.ext=='bmp'){
+							 			bimgs.push(bitem)
+							 		}
+							 	})
+							 	item.bimgs=bimgs;
+							 })
+						 	contentData.semFlag0Data.semFlag0List = contentData.semFlag0Data.semFlag0List.concat(data.data.list);
+						 	// if(data.data.list.length==0){
+						 	// 	mui.toast('暂无更多数据');
+						 	// }    
+						 	setTimeout(() => {
+								events.closeWaiting();
+						 		self && self.endPullUpToRefresh();
+						 		if (data.data.page_number >= data.data.total_page) {
+						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
+						 		}
+						 	}, 1000)
+						 }
+						 contentData.semFlag0Data.pageNumber++;
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			//分页查询行为评语记录
+			function getRemark(){
+				events.showWaiting();
+				comData = {
+					page_size:pageSize,
+					page_number: contentData.semFlag1Data.pageNumber,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'remark/page', {}, comData, 2, function(data) {
+					if (data.code == 0) {
+						 contentData.semFlag1Data.total_page=data.data.total_page
+						 if (contentData.semFlag1Data.refrushFlag == 0) {
+						 	contentData.semFlag1Data.semFlag1List = [].concat(data.data.list);
+						 	setTimeout(() => {
+								events.closeWaiting();
+								self && self.endPullDownToRefresh();
+								if(data.data.list.length<pageSize){
+									mui(".mui-pull-loading")[1].style.display="none"
+								}
+						 		if (data.data.page_number >= data.data.total_page) {
+						 			mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+						 		}
+						 	}, 1000)
+						 } else {
+						 	contentData.semFlag1Data.semFlag1List = contentData.semFlag1Data.semFlag1List.concat(data.data.list);
+						 	// if(data.data.list.length==0){
+						 	// 	mui.toast('暂无更多数据');
+						 	// }    
+						 	setTimeout(() => {
+								events.closeWaiting();
+						 		self && self.endPullUpToRefresh();
+						 		if (data.data.page_number >= data.data.total_page) {
+						 			mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
+						 		}
+						 	}, 1000)
+						 }
+						 contentData.semFlag1Data.pageNumber++;
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
 		</script>
 	</body>
 
