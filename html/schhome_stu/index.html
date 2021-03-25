@@ -354,6 +354,7 @@
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/utils/mui.picker.min.js"></script>
 		<script src="../../js/utils/mui.poppicker.js"></script>
@@ -382,6 +383,11 @@
 					showBack: 0,
 					headImg: setImg(personal.img_url, 9)
 				},
+				methods: {
+					clickLeftImg: function() {
+						appPay.openMenu();
+					}
+				}
 			});
 			var datasource = new Vue({
 				el: "#datasource",

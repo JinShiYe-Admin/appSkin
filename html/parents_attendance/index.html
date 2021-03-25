@@ -255,6 +255,7 @@
 					}
 				}
 			});
+			var loading=true,loading2=true,loading3=true;
 			var pageSize =10;
 			//vue数据
 			var contentData = new Vue({
@@ -508,14 +509,15 @@
 			 
 			//获取考勤记录
 			function getAttendancePage(){
-				events.showWaiting();
+				if(loading){events.showWaiting();}
 				comData = { 
 					page_size:pageSize,
 					page_number: contentData.semFlag0Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'attendance/page', {}, comData, 2, function(data) {
-					events.closeWaiting();
+					events.closeWaiting(); 
+					loading=false;
 					if (data.code == 0) {
 						 console.log("data.data.list: " + JSON.stringify(data.data.list));
 						 contentData.semFlag0Data.total_page=data.data.total_page
@@ -551,7 +553,7 @@
 			
 			//获取请假统计
 			function getLeaveStatistics(){
-				events.showWaiting();
+				if(loading2){events.showWaiting();}
 				comData = { 
 					begintime:contentData.semFlag1Data.startTime,
 					endtime:contentData.semFlag1Data.endTime,
@@ -611,6 +613,7 @@
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'leave/page', {}, comData, 2, function(data) {
 					events.closeWaiting();
+					loading2=false;
 					console.log("data: " + JSON.stringify(data));
 					if (data.code == 0) {
 						 contentData.semFlag1Data.total_page=data.data.total_page
@@ -646,7 +649,7 @@
 			
 			//获取统计出入数量
 			function getInOutCount(){
-				events.showWaiting();
+				if(loading3){events.showWaiting();}
 				comData = { 
 					begintime:contentData.semFlag2Data.startTime,
 					endtime:contentData.semFlag2Data.endTime,
@@ -721,6 +724,7 @@
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'attendance/pageAttendanceStatistics', {}, comData, 2, function(data) {
 					events.closeWaiting();
+					loading3=false;
 					if (data.code == 0) {
 						 contentData.semFlag2Data.total_page=data.data.total_page
 						 if (contentData.semFlag2Data.refrushFlag == 0) {
