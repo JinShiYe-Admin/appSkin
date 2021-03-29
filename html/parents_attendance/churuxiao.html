@@ -91,6 +91,7 @@
 		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<script type="text/javascript">
 			mui.init();
+			var loading =true;
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
@@ -215,7 +216,7 @@
 			
 			//分页查询出入详情
 			function getPageInOutDetail(){
-				events.showWaiting();
+				if(loading){events.showWaiting();}
 				comData = {
 					begintime:contentData.startTime,
 					endtime:contentData.endTime,
@@ -225,6 +226,7 @@
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'attendance/pageInOutDetail', {}, comData, 2, function(data) {
 					events.closeWaiting();
+					loading=false;
 					if (data.code == 0) {
 						 console.log("data.data.list: " + JSON.stringify(data.data.list));
 						 contentData.total_page=data.data.total_page

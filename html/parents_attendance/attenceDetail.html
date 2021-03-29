@@ -152,7 +152,7 @@
 					}
 				}
 			});  
-
+			var loading=true;
 			var pageSize =10;
 			var self = 0;
 			let curPage=''
@@ -216,8 +216,7 @@
 			
 			//分页查询考勤项目详情
 			function getPageAttendanceDetail(){ 
-				console.log("curPage: " + JSON.stringify(curPage));
-				events.showWaiting();
+				if(loading){events.showWaiting();}
 				comData = {
 					begintime:contentData.startTime,
 					endtime:contentData.endTime,
@@ -229,6 +228,7 @@
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'attendance/pageAttendanceDetail', {}, comData, 2, function(data) {
 					events.closeWaiting();
+					loading=false;
 					if (data.code == 0) {
 						 console.log("data.data.list: " + JSON.stringify(data.data.list));
 						 contentData.total_page=data.data.total_page
