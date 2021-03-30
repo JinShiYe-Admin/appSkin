@@ -118,39 +118,11 @@
       "unicode_decimal": 58928
     },
     {
-      "icon_id": "20254987",
-      "name": "错题本",
-      "font_class": "cuotiben",
-      "unicode": "e638",
-      "unicode_decimal": 58936
-    },
-    {
-      "icon_id": "20254988",
-      "name": "历史测试",
-      "font_class": "lishiceshi",
-      "unicode": "e639",
-      "unicode_decimal": 58937
-    },
-    {
-      "icon_id": "20254990",
-      "name": "智学资源",
-      "font_class": "zhixueziyuan",
-      "unicode": "e63a",
-      "unicode_decimal": 58938
-    },
-    {
-      "icon_id": "20254991",
-      "name": "组卷测试",
-      "font_class": "zujuanceshi",
+      "icon_id": "20694980",
+      "name": "智学课堂",
+      "font_class": "zhixueketang",
       "unicode": "e63b",
       "unicode_decimal": 58939
-    },
-    {
-      "icon_id": "20254992",
-      "name": "学情分析",
-      "font_class": "xueqingfenxi",
-      "unicode": "e63c",
-      "unicode_decimal": 58940
     }
   ]
 }
