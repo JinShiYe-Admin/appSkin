@@ -131,7 +131,7 @@
 						} else {
 							var optionsJson = that.getAttribute('data-options') || '{}';
 							var options = JSON.parse(optionsJson);
-							options.beginDate=new Date(currentYear(),currentMonth());
+							options.endDate=new Date(currentYear(),currentMonth());
 							var id = that.getAttribute('id');
 							_self.picker = new mui.DtPicker(options);
 							_self.picker.show(function(rs) {
@@ -203,10 +203,10 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				contentData.total_count=curPage.num
 				contentData.item_txt=curPage.item_txt
-				let start_monthStr=moment().format('YYYY年MM月')
-				let end_monthStr=moment().add(5, 'M').format('YYYY年MM月');
-				let start_month=moment().format('YYYY-MM')
-				let end_month=moment().add(5, 'M').format('YYYY-MM');
+				let end_monthStr=moment().format('YYYY年MM月')
+				let start_monthStr=moment().subtract(5, 'M').format('YYYY年MM月');
+				let end_month=moment().format('YYYY-MM')
+				let start_month=moment().subtract(5, 'M').format('YYYY-MM');
 				$('#months').html(start_monthStr+' ~ '+end_monthStr)
 				contentData.startTime=start_month;
 				contentData.endTime=end_month;
