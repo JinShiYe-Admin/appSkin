@@ -283,7 +283,7 @@
 					var wvs = plus.webview.all();
 					for (var i = 0, len = wvs.length; i < len; i++) {
 						//关闭除login页面外的其他页面
-						if (wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+						if (wvs[i]&& wvs[i].getURL() && wvs[i].getURL().indexOf('loginIndex.html') != -1) {
 							continue;
 						}
 						plus.webview.close(wvs[i]);
