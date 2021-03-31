@@ -42,7 +42,7 @@
 				</div>
 			</div>
 			<div class="mui-row">
-				<div class="mui-scroll-wrapper" style="margin-top: 116px;">
+				<div class="mui-scroll-wrapper" style="margin-top: 118px;">
 					<div class="mui-scroll">
 						<ul class="mui-table-view no-line" style="font-size: 13px;">
 							<li class="mui-table-view-cell no-bgc" style="padding: 0 0;" v-for="(item,index) in pageData">
@@ -92,7 +92,7 @@
 				el: "#tempHead",
 				data: {
 					showBack: 1,
-					headTitle: '详情',
+					headTitle: '',
 				}
 			});
 			//vue数据 
@@ -203,6 +203,7 @@
 				curPage = utils.getDataFromUrl(window.location.href);
 				contentData.total_count=curPage.num
 				contentData.item_txt=curPage.item_txt
+				tempHead.headTitle=curPage.item_txt +'详情';
 				let start_monthStr=moment().format('YYYY年MM月')
 				let end_monthStr=moment().add(5, 'M').format('YYYY年MM月');
 				let start_month=moment().format('YYYY-MM')

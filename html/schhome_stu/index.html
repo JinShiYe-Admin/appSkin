@@ -1,7 +1,6 @@
 <!doctype html>
 <html>
-	<!-- 考勤模块  课堂考勤记录 
-	列表页
+	<!-- 家校互动
 	-->
 	<head>
 		<meta charset="UTF-8">
@@ -203,6 +202,7 @@
 				border: 0px;
 				color: #666;
 				font-size: 12px;
+				text-align: left;
 			}
 			
 			.mui-segmented-control .mui-control-item.mui-active {
@@ -213,7 +213,7 @@
 			
 			.mui-segmented-control .mui-control-item span {
 				font-size: 12px;
-				padding: 0 0 0 5px;
+				padding: 0 0 0 20px;
 				color: #666;
 			}
 			
@@ -304,7 +304,7 @@
 			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div class="select">
 					<div v-cloak class="mui-segmented-control" v-cloak>
-						<a v-cloak class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showType()"><span>{{type.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a v-cloak class="mui-control-item" style="margin-left: 20px;" v-cloak href="javascript:void(0)" @tap="showType()"><span>{{type.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 				</div>
@@ -329,7 +329,10 @@
 												<h5 class="mui-text-right" style="font-size: 13px;">{{model.send_time}}</h5>
 											</div>
 											<!-- <div style="height: 1px;width: 100%;background-color: rgba(0,0,0,0.1);transform: scaleY(.5);margin-bottom: 15px;"></div> -->
-											<p class="three-line" style="text-indent: 2.8em;margin-top: -10px !important;" v-if="model.msg_content">{{model.msg_content}}</p>
+											<div style="margin-left: 40px;">
+												<p class="three-line" style="margin-top: -10px !important;" v-if="model.msg_content">{{model.msg_content}}</p>
+											</div>
+											
 										</div>
 										<div class="mui-table-cell mui-col-xs-1">
 											<h5 class="mui-text-right" ></h5>

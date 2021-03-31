@@ -85,7 +85,7 @@
 			<div class="mui-row" style="margin-top: 44px;">
 				<div class="user-info">
 					<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
-					<p class="user-text">{{userName}}<span v-if="userModel.type_code =='YHLX0004'">(家长)</span></p>
+					<p class="user-text">{{userName}}</p>
 					<p style="text-align: center;">{{userMsg}}</p>
 				</div>
 			</div>
@@ -240,13 +240,14 @@
 						}
 					}
 				});
-				
+				mine.userName = personal.user_name;
 				if(personal.type_code == 'YHLX0003'){
-					mine.userName = personal.tec_name;
 					mine.userMsg = personal.sch_name+' '+personal.dpt_name;
 				}else{
-					mine.userName = personal.stu_name;
 					mine.userMsg = personal.sch_name+' '+personal.grd_name+' '+personal.cls_name;
+					if(personal.type_code == 'YHLX0004'){
+						mine.userMsg = mine.userMsg +' '+ personal.stu_name +"(家长)";
+					}
 				}
 
 				function quitLogin() {

@@ -320,6 +320,9 @@
 					},
 					churuxiao:function(){
 						curPage.count=contentData.semFlag2Data.total_count
+						if(curPage.count==0){
+							return;
+						}
 						utils.mOpenWithData("../../html/parents_attendance/churuxiao.html", curPage);
 					}, 
 					months:function(e,id){
