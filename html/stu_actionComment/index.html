@@ -145,7 +145,7 @@
 													<img style="width: 100px;height: 100px;;" :data-preview-src="aitem.url" :src=aitem.url />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
-													<span style="color: red;width: 25px;height: 20px;border: 1px solid red;border-radius: 50%;padding: 2px;">记</span>
+													<span style="color: red;border: 1px solid red;border-radius: 50%;padding: 0.21875rem 5px ;">记</span>
 													<span style="">{{item.behavior_recorder}}</span>
 												</div>
 											</div>
@@ -157,7 +157,7 @@
 													<img style="width: 100px;height: 100px;margin-right: 10px;" :data-preview-src="bitem.url" :src=bitem.url />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
-													<span style="color: red;width: 25px;height: 20px;border: 1px solid red;border-radius: 50%;padding: 2px;">谈</span>
+													<span style="color: red;border: 1px solid red;border-radius: 50%;padding: 0.21875rem 5px ;">谈</span>
 													<span style="">{{item.create_user_name}}</span>
 												</div>
 											</div>
@@ -235,7 +235,7 @@
 				data: {
 					showBack: 0,
 					headTitle: '',
-					headImg: setImg(personal.img_url, 9)
+					// headImg: setImg(personal.img_url, 9)
 				},
 				methods: {
 					clickLeftImg: function() {
