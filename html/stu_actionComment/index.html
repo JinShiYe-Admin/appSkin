@@ -105,6 +105,11 @@
 			.mui-push-right:after {
 				color: #00baad;
 			}
+			
+			.mui-dtpicker-header button:last-child{
+				background-color:#00CFBD;
+				border-color:#00CFBD ;
+			}
 		</style>
 	</head>
 
@@ -140,7 +145,7 @@
 												<div class="divFlag" style="background: #ff9900;">{{item.item_txt}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.behavior_time}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.day}} {{item.class_node}} {{item.sub_name}}</div>
-												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.comment}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px; word-break: break-all;" class="divNote">{{item.comment}}</div>
 												<template v-for="aitem in item.aimgs">
 													<img style="width: 100px;height: 100px;;" :data-preview-src="aitem.url" :src=aitem.url />
 												</template>
@@ -152,7 +157,7 @@
 											<div v-if="item.id !=null" class="divContent" style="height: auto;"><!-- 谈话文本不为空说明有谈话记录 -->
 												<div class="divFlag">谈话</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.chat_time&&item.chat_time.split(' ')[0]}}</div>
-												<div style="margin: 5px 0 5px 0;padding: 0px;">{{item.chat_detail}}</div>
+												<div style="margin: 5px 0 5px 0;padding: 0px;word-break: break-all;">{{item.chat_detail}}</div>
 												<template v-for="bitem in item.bimgs">
 													<img style="width: 100px;height: 100px;margin-right: 10px;" :data-preview-src="bitem.url" :src=bitem.url />
 												</template>
@@ -243,7 +248,7 @@
 					}
 				}
 			});
-			
+			var loading=true,loading2=true;
 			var pageSize =10;	
 			//vue数据
 			var contentData = new Vue({
@@ -372,13 +377,14 @@
 			
 			//分页查询行为谈话记录
 			function getBehavior(){
-				events.showWaiting();
+				if(loading){events.showWaiting();}
 				comData = {
 					page_size:pageSize,
 					page_number: contentData.semFlag0Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'behavior/page', {}, comData, 2, function(data) {
+					loading=false;
 					if (data.code == 0) {
 						 contentData.semFlag0Data.total_page=data.data.total_page
 						 if (contentData.semFlag0Data.refrushFlag == 0) {
@@ -448,13 +454,14 @@
 			
 			//分页查询行为评语记录
 			function getRemark(){
-				events.showWaiting();
+				if(loading2){events.showWaiting();}
 				comData = {
 					page_size:pageSize,
 					page_number: contentData.semFlag1Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
 				}
 				postDataEncry(window.storageKeyName.PARENTS_ATTENDANCE + 'remark/page', {}, comData, 2, function(data) {
+					loading2=false;
 					if (data.code == 0) {
 						 contentData.semFlag1Data.total_page=data.data.total_page
 						 if (contentData.semFlag1Data.refrushFlag == 0) {
