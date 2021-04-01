@@ -402,6 +402,11 @@
 					index_code = curPage.access.split('#')[1];
 					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
 				}
+				
+				self.addEventListener('hide', function(e){
+					endPlayAudio();
+				}, false);
+				
 				// 保存index_code
 				store.set("kycp_index_code", index_code)
 				
@@ -650,6 +655,7 @@
 						break;
 				}
 				activeTab = targetTab;
+				endPlayAudio();
 			});
 
 		//副标题
@@ -663,13 +669,10 @@
 			methods: {
 				//选择教材
 				bookSelect: function() {
-					resultVue.audioStop();
-					if(!audioEle.ended) {
-						audioEle.pause();
-					}
 					if(testVue.state == 4 && (activeTab == "word" || activeTab == "sentence")) {
 						layerBeforeLeave("您还没有提交，确定要离开吗？", ["确定", "取消"], goBook);
 					} else {
+						endPlayAudio();
 						goBook();
 					}
 				},
@@ -769,9 +772,23 @@
 		var currentAudioUrl = '';
 		var audioPlayCounter = 0;
 		function endPlayAudio() {
-			testVue.playingAudio = false;
-			testVue.playingRecord = false;
-			resultVue.audioStop && resultVue.audioStop();
+			if(testVue.playingAudio) {
+				testVue.playingAudio = false;
+				stopAudioPlaying();
+			}else if(testVue.playingRecord) {
+				testVue.playingRecord = false;
+				stopAudioPlaying();
+			}else if(resultVue.isPlaying) {
+				resultVue.audioStop && resultVue.audioStop();
+				stopAudioPlaying();
+			}
+		}
+		function stopAudioPlaying() {
+			if(mui.os.android) {
+				!audioEle.ended && audioEle.pause();
+			}else{
+				plusAudioPlayer.close();
+			}
 		}
 		audioEle.onpause = function() {
 			endPlayAudio();
@@ -896,6 +913,7 @@
 						user_code: userInfo.user_code
 					}, 2, function(res) {
 						if(res.state=="ok") {
+							endPlayAudio();
 							//添加单词句子列表
 							res.data.list.forEach(function(v) {
 								//成绩清零
@@ -922,6 +940,7 @@
 					var f_index = this.index + d;
 					if(f_index >= 0 && f_index < this.list.length) {
 						this.index = f_index;
+						endPlayAudio();
 					}
 				},
 				//播放音频
@@ -933,8 +952,10 @@
 						});
 						return;
 					}
-					if(this.playingAudio || this.playingRecord) {
+
+					if((this.playingAudio || this.playingRecord) && currentAudioUrl==url) {
 						endPlayAudio();
+						return;
 					}
 					
 					if(type == "audio") {
@@ -943,9 +964,9 @@
 						this.playingRecord = true;
 					}
 					
+					currentAudioUrl = url;
 					if(mui.os.android) {
 						audioPlayCounter = 0;
-						currentAudioUrl = url;
 						audioEle.src = url;
 						audioEle.play();
 					}else{
@@ -1024,6 +1045,7 @@
 				},
 				//提交
 				submit: function() {
+					endPlayAudio();
 					var _this = this;
 					plus.nativeUI.showWaiting("正在提交");
 					postDataEncry(window.storageKeyName.INTERFACE_KYCP + '/orals/save', {}, {
@@ -1110,15 +1132,19 @@
 						});
 						return false;
 					}
-					this.audioStop();
+					
+					if(this.isPlaying && currentAudioUrl==url) {
+						endPlayAudio();
+						return;
+					}
 					
 					var ele = e.currentTarget;
 					ele.classList.add('active');
 					this.isPlaying = true;
 
+					currentAudioUrl = url;
 					if(mui.os.android) {
 						audioPlayCounter = 0;
-						currentAudioUrl = url;
 						audioEle.src = url;
 						audioEle.play();
 					}else{
@@ -1129,7 +1155,6 @@
 				},
 				audioStop: function() {
 					this.isPlaying = false;
-					!audioEle.ended && audioEle.pause();
 					var playBtns = document.querySelectorAll('.btns .btn-voice, .btns .btn-play');
 					for(var i=0;i<playBtns.length;i++){
 						if(playBtns[i].classList.contains('active')) {

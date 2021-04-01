@@ -209,7 +209,8 @@
 					isRecording: false,
 					valid_touch: false,
 					openLi: {index: -1, i: -1},
-					key: ""
+					key: "",
+					isPlaying: false
 				},
 				methods: {
 					setScore: setWordsScore,
@@ -224,14 +225,19 @@
 							mui.toast('没有录音', { duration:'short', type:'div' });
 							return false;
 						}
-						this.audioStop();
+						if(this.isPlaying && currentAudioUrl == url) {
+							this.audioStop();
+							return;
+						}
+						
 						
 						var ele = e.currentTarget;
 						ele.classList.add('active');
+						this.isPlaying = true;
 						
+						currentAudioUrl = url;
 						if(mui.os.android) {
 							audioPlayCounter = 0;
-							currentAudioUrl = url;
 							audioEle.src = url;
 							audioEle.play();
 						}else{
@@ -241,10 +247,17 @@
 						}
 					},
 					audioStop: function() {
-						!audioEle.ended && audioEle.pause();
-						var audioBtns = document.querySelectorAll('.btns .btn-voice, .btns .btn-play');
-						for(var i=0;i<audioBtns.length;i++) {
-							if(audioBtns[i].classList.contains('active')) audioBtns[i].classList.remove('active');
+						if(this.isPlaying) {
+							if(mui.os.android) {
+								!audioEle.ended && audioEle.pause();
+							} else {
+								plusAudioPlayer.close();
+							}
+							this.isPlaying = false;
+							var audioBtns = document.querySelectorAll('.btns .btn-voice, .btns .btn-play');
+							for(var i=0;i<audioBtns.length;i++) {
+								if(audioBtns[i].classList.contains('active')) audioBtns[i].classList.remove('active');
+							}
 						}
 					},
 					//点击录音
