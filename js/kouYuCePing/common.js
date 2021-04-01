@@ -331,9 +331,9 @@ function setRecorder(touch, success, fail) {
 // 检查录音权限
 function checkPermissionRECORD(success) {
 	var rdps = plus.navigator.checkPermission("RECORD");
-	console.log(rdps)
+	// console.log(rdps)
 	if(["authorized","notdeny"].indexOf(rdps)!=-1){
-		success && success()
+		success && success();
 	} else {
 		if(rdps=="denied"){
 			plus.nativeUI.confirm("录音已被禁用，请设置为允许。", function(event) {
