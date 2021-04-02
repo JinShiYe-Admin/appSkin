@@ -136,7 +136,7 @@
 					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
 						<div id="scroll1" class="mui-scroll-wrapper">
 							<div class="mui-scroll">
-								<section id="cd-timeline" class="cd-container" v-cloak>
+								<section id="cd-timeline" class="cd-container" v-cloak style="min-height: calc(100vh - 100px);">
 									<div v-for="(item,index) in semFlag0Data.semFlag0List" class="cd-timeline-block">
 										<div class="cd-timeline-img" :class="[index==0?'cd-picture':'cd-movie']"></div>
 										<div class="cd-timeline-content">
@@ -146,8 +146,8 @@
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.behavior_time}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.day}} {{item.class_node}} {{item.sub_name}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px; word-break: break-all;" class="divNote">{{item.comment}}</div>
-												<template v-for="aitem in item.aimgs">
-													<img style="width: 100px;height: 100px;;" :data-preview-src="aitem.url" :src=aitem.url />
+												<template v-for="bitem in item.bimgs">
+													<img style="width: 100px;height: 100px;;" :data-preview-src="bitem.url" :src=bitem.url />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
 													<span style="color: red;border: 1px solid red;border-radius: 50%;padding: 0.21875rem 5px ;">记</span>
@@ -158,8 +158,8 @@
 												<div class="divFlag">谈话</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.chat_time&&item.chat_time.split(' ')[0]}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;word-break: break-all;">{{item.chat_detail}}</div>
-												<template v-for="bitem in item.bimgs">
-													<img style="width: 100px;height: 100px;margin-right: 10px;" :data-preview-src="bitem.url" :src=bitem.url />
+												<template v-for="aitem in item.aimgs">
+													<img style="width: 100px;height: 100px;margin-right: 10px;" :data-preview-src="aitem.url" :src=aitem.url />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
 													<span style="color: red;border: 1px solid red;border-radius: 50%;padding: 0.21875rem 5px ;">谈</span>
@@ -175,8 +175,8 @@
 					<div id="item2mobile" class="mui-slider-item mui-control-content">
 						<div id="scroll2" class="mui-scroll-wrapper">
 							<div class="mui-scroll">
-								<ul class="mui-table-view" style="margin-top: 10px;">
-									<li v-for="(item,index) in semFlag1Data.semFlag1List" class="mui-table-view-cell">
+								<ul class="mui-table-view no-line" style="margin-top: 10px;min-height: calc(100vh - 100px);">
+									<li v-for="(item,index) in semFlag1Data.semFlag1List" class="mui-table-view-cell no-bgc">
 										<template v-if="item.remark_type=='termRemark'"><!-- 期评 -->
 											<div class="divFlag divTime" style="background: #FF6666;margin-left: 0px;">{{item.remark_type_txt}}</div>
 										</template>
@@ -191,7 +191,7 @@
 												<span>{{item.year}} 学年</span>
 												<span>{{item.term_name}}</span>
 											</div>
-											<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.remark}}</div>
+											<div style="margin: 5px 0 5px 0;padding: 0px;word-break: break-all;" class="divNote">{{item.remark}}</div>
 											<div style="text-align: right;">{{item.create_user_name}}</div>
 											<div style="text-align: right;">{{item.create_time}}</div>
 										</div>
@@ -405,12 +405,12 @@
 								item.bimgs=bimgs;
 							})
 						 	contentData.semFlag0Data.semFlag0List = [].concat(data.data.list);
+							if(data.data.list.length<pageSize){
+								mui(".mui-pull-loading")[0].style.display="none"
+							}
 						 	setTimeout(() => {
 								events.closeWaiting();
 								self && self.endPullDownToRefresh();
-								if(data.data.list.length<pageSize){
-									mui(".mui-pull-loading")[0].style.display="none"
-								}
 						 		if (data.data.page_number >= data.data.total_page) {
 						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 						 		}
@@ -466,12 +466,12 @@
 						 contentData.semFlag1Data.total_page=data.data.total_page
 						 if (contentData.semFlag1Data.refrushFlag == 0) {
 						 	contentData.semFlag1Data.semFlag1List = [].concat(data.data.list);
+							if(data.data.list.length<pageSize){
+								mui(".mui-pull-loading")[1].style.display="none"
+							}
 						 	setTimeout(() => {
 								events.closeWaiting();
 								self && self.endPullDownToRefresh();
-								if(data.data.list.length<pageSize){
-									mui(".mui-pull-loading")[1].style.display="none"
-								}
 						 		if (data.data.page_number >= data.data.total_page) {
 						 			mui(".mui-pull-loading")[1].innerHTML = "没有更多了";
 						 		}
