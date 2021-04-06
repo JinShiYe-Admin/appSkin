@@ -278,8 +278,7 @@
 					 <template v-cloak v-if="pageArray.length>0">
 					 	<ul v-cloak class="mui-table-view">
 					 		<li v-cloak v-for="model in pageArray" class="mui-table-view-cell" @tap="clickLi(model)">
-					 			<a class="">
-					 				<!-- mui-navigate-right -->
+					 			<a class="mui-navigate-right">
 					 				<div class="mui-table">
 					 					<div class="mui-table-cell mui-col-xs-11">
 					 						<div class="mui-ellipsis">
@@ -288,10 +287,10 @@
 											<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">{{model.year}}&nbsp;&nbsp;{{model.term_name}}&nbsp;&nbsp;{{model.remark_type_txt}}</h5>
 											<p style="margin-top: 0.75rem;word-break: break-all;" v-if="model.remark">内容:{{model.remark}}</p>
 											<div class="mui-row">
-												<div class="mui-table-cell mui-col-xs-5">
+												<div class="mui-table-cell mui-col-xs-7">
 													<h5 class="mui-ellipsis" style="margin-top: 0.55rem;">撰写人:{{model.create_user_name}}</h5>
 												</div>
-												<div class="mui-table-cell mui-col-xs-7" style="text-align: right;">
+												<div class="mui-table-cell mui-col-xs-5" style="text-align: right;">
 													<h5 class="mui-ellipsis mui-text-right" style="margin-top: 0.55rem;">{{model.create_time}}</h5>
 												</div>
 											</div>

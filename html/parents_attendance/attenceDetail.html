@@ -24,6 +24,11 @@
 			.mui-pull-top-tips,.mui-pull-top-tips.mui-transitioning,.mui-pull-top-wrapper,.mui-pull-top-canvas {
 			   z-index: 100 !important;
 			}
+			
+			.mui-dtpicker-header button:last-child{
+				background-color:#00CFBD;
+				border-color:#00CFBD ;
+			}
 		</style>
 	</head>
 
@@ -44,7 +49,7 @@
 			<div class="mui-row">
 				<div class="mui-scroll-wrapper" style="margin-top: 120px;">
 					<div class="mui-scroll">
-						<ul class="mui-table-view no-line" style="font-size: 13px;">
+						<ul class="mui-table-view no-line" style="font-size: 13px;min-height: calc(100vh - 100px);">
 							<li class="mui-table-view-cell no-bgc" style="padding: 0 0;" v-for="(item,index) in pageData">
 								<div style="height: 30px;background-color: #F3EDDB;margin-top:15px;">
 									<div style="margin-left: 5px;text-align: center;background-color: #FF9900;border-radius: 50%;width: 30px;height: 30px;">
@@ -113,42 +118,26 @@
 					months:function(e){
 						let that=e.target
 						var _self = that;
-						if(_self.picker) {
-							_self.picker.show(function (rs) {
-								let start_monthStr=moment(rs.text).format('YYYY年MM月')
-								let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
-								let start_month=moment(rs.text).format('YYYY-MM')
-								let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
-								$('#months').html(start_monthStr+' ~ '+end_monthStr)
-								contentData.startTime=start_month;
-								contentData.endTime=end_month;
-								contentData.refrushFlag = 0; //0刷新1加载更多
-								contentData.pageNumber = 1; 
-								getPageAttendanceDetail();
-								_self.picker.dispose();
-								_self.picker = null;
-							});
-						} else {
-							var optionsJson = that.getAttribute('data-options') || '{}';
-							var options = JSON.parse(optionsJson);
-							options.endDate=new Date(currentYear(),currentMonth());
-							var id = that.getAttribute('id');
-							_self.picker = new mui.DtPicker(options);
-							_self.picker.show(function(rs) {
-								let start_monthStr=moment(rs.text).format('YYYY年MM月')
-								let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
-								let start_month=moment(rs.text).format('YYYY-MM')
-								let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
-								$('#months').html(start_monthStr+' ~ '+end_monthStr)
-								contentData.startTime=start_month;
-								contentData.endTime=end_month;
-								contentData.refrushFlag = 0; //0刷新1加载更多
-								contentData.pageNumber = 1; 
-								getPageAttendanceDetail();
-								_self.picker.dispose();
-								_self.picker = null;
-							});
-						}
+						var optionsJson = that.getAttribute('data-options') || '{}';
+						var options = JSON.parse(optionsJson);
+						options.endDate=new Date(currentYear(),currentMonth());
+						options.value=contentData.startTime
+						var id = that.getAttribute('id');
+						var picker = new mui.DtPicker(options);
+						picker.show(function(rs) {
+							let start_monthStr=moment(rs.text).format('YYYY年MM月')
+							let end_monthStr=moment(rs.text).add(5, 'M').format('YYYY年MM月');
+							let start_month=moment(rs.text).format('YYYY-MM')
+							let end_month=moment(rs.text).add(5, 'M').format('YYYY-MM');
+							$('#months').html(start_monthStr+' ~ '+end_monthStr)
+							contentData.startTime=start_month;
+							contentData.endTime=end_month;
+							contentData.refrushFlag = 0; //0刷新1加载更多
+							contentData.pageNumber = 1; 
+							getPageAttendanceDetail();
+							picker.dispose();
+							picker = null;
+						});
 					}
 				}
 			});  
@@ -233,13 +222,14 @@
 					if (data.code == 0) {
 						 console.log("data.data.list: " + JSON.stringify(data.data.list));
 						 contentData.total_page=data.data.total_page
+						 contentData.total_count=data.data.total_row
 						 if (contentData.refrushFlag == 0) {
 						 	contentData.pageData = [].concat(data.data.list);
+							if(data.data.list.length<pageSize){
+								mui(".mui-pull-loading")[0].style.display="none"
+							}
 						 	setTimeout(() => {
 						 		self && self.endPullDownToRefresh();
-								if(data.data.list.length<pageSize){
-									mui(".mui-pull-loading")[0].style.display="none"
-								}
 						 		if (data.data.page_number >= data.data.total_page) {
 						 			mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
 						 		}
