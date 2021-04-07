@@ -73,7 +73,7 @@
 		
 		<div class="mui-content">
 			<!--学情分析-->
-			<div id="bl-analysis" class="mui-control-content">
+			<div id="bl-analysis" class="mui-control-content mui-active">
 				<div id="analysisTab">
 					<div class="als-title mui-text-center mui-ellipsis">{{user_name}}学情分析报告<span v-if="pername">（{{pername}}）</span></div>
 					<div style="padding: .2rem .22rem .15rem;">学科均衡:</div>
@@ -109,8 +109,9 @@
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/showMenu.js"></script>
-		<script src="../../js/utils/echarts-all.js"></script>
-		<script src="../../js/echarts/echarts-en.min.js"></script>
+		<script src="../../js/utils/echarts.min.js" ></script>
+		<!-- <script src="../../js/utils/echarts-all.js"></script> -->
+		<!-- <script src="../../js/echarts/echarts-en.min.js"></script> -->
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -137,6 +138,7 @@
 				self = plus.webview.currentWebview();
 				
 				// getAnalysisData();
+				getSubRadar();
 			});
 			
 			
@@ -157,12 +159,12 @@
 					// 学情分析详情
 					goDetail: function(item) {
 						mui.openWindow({
-							url:"analysisDetail.html",
+							url:"xueqingfx_detail.html",
 							id: "bl-analysis-detail",
 							extras: {
 								subcode: item.subcode,
 								subname: item.subname,
-								percode: header.grade.selected||"",
+								// percode: header.grade.selected||"",
 								prdLimit: prdLimit //学段限权
 							}
 						})
@@ -207,6 +209,8 @@
 					indicator = [{name:"科目", max: 100}];
 					radar_value = [0];
 				}
+				console.log(JSON.stringify(indicator))
+				console.log(JSON.stringify(radar_value))
 				subRadar.setOption({
 					radar:[
 						{
@@ -259,6 +263,8 @@
 					]
 				});
 			}
+			
+			analysis.alsList = [{"subname":"语文","count":52,"subcode":"01","remark":"-1","avg_score":24},{"subname":"数学","count":92,"subcode":"02","remark":"0","avg_score":54},{"subname":"英语","count":82,"subcode":"03","remark":"0","avg_score":64}];
 		</script>
 	</body>
 

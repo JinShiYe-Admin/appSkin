@@ -67,17 +67,17 @@
 
 	<body style="background: white;">
 		<header id="header" class="mui-bar mui-bar-nav theme">
-			<a v-show="!title" class="mui-icon mui-pull-right grade" @tap.stop="showTopPannel(1)" v-cloak>{{gradeItem?(gradeItem.pername||"学段"):"学段"}}<span class="mui-icon-arrowdown"></span></a>
+			<a v-show="!title" class="mui-icon mui-pull-right grade" @tap.stop="showTopPannel(1)" v-cloak>{{gradeItem?(gradeItem.per_name||"学段"):"学段"}}<span class="mui-icon-arrowdown"></span></a>
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title" v-if="title" v-text="title"></h1>
 			<h1 class="mui-title" v-else>
-				<a class="subject mui-icon" @tap.stop="showTopPannel(2)" v-cloak>{{subjectItem?(subjectItem.subname||"科目"):"科目"}}<span class="mui-icon-arrowdown"></span></a>
+				<a class="subject mui-icon" @tap.stop="showTopPannel(2)" v-cloak>{{subjectItem?(subjectItem.sub_name||"科目"):"科目"}}<span class="mui-icon-arrowdown"></span></a>
 			</h1>
 			<transition name="slide-down">	
 				<div class="options-pannel mui-clearfix" v-show="showItem" v-cloak>
 					<div v-for="(v, i) in item.list" class="radio-wrap">
-						<label :class="{selected:v.percode==item.selected||v.subcode==item.selected}" @click="selectItem">
-							<input type="radio" v-model="item.selected" name="item"  :value="v.percode||v.subcode" />{{v.pername||v.subname||"未命名"}}
+						<label :class="{selected:v.per_code==item.selected||v.sub_code==item.selected}" @click="selectItem">
+							<input type="radio" v-model="item.selected" name="item"  :value="v.per_code||v.sub_code" />{{v.per_name||v.sub_name||"未命名"}}
 						</label>
 					</div>
 				</div>
@@ -138,12 +138,36 @@
 			mui.plusReady(function() {
 				self = plus.webview.currentWebview();
 				
+				var curPage = utils.getDataFromUrl(window.location.href);
+				if (curPage && JSON.stringify(curPage) == '{}') { 
+					index_code = self.preload.access.split('#')[1];
+				} else {
+					index_code = curPage.access.split('#')[1];
+				}
+				
 				//开始测试页
 				test_start = mui.preload({
-					url: 'testStart.html',
+					url: 'zujuancs_start.html',
 					id: 'bl-test-start'
 				});
 				
+				// 刷新数据
+				window.addEventListener("refresh", function(e){
+					// 检测目录是否完成
+					console.log(JSON.stringify(e.detail))
+					if(e.detail.hasOwnProperty("isFinish")){
+						e.detail.isFinish && readTree(testMenu.menu, function(node){
+							if(node.id==e.detail.nodeId){
+								node.is_finish=1;
+							}
+						});
+					}else{
+						// header.setMenu({percode: header.per.selected, subcode: header.subject.selected});
+					}
+				});
+				
+				//最初数据，获取目录
+				header.getPer();
 				
 			});
 			
@@ -151,7 +175,7 @@
 			var header = new Vue({
 				el: "#header",
 				data: {
-					grade: {selected: 0, list: []},
+					per: {selected: 0, list: []},
 					subject: {selected: 0, list: []},
 					topPannel: 0, //1-grade，2-subject
 					title: "",
@@ -161,7 +185,7 @@
 					// 下拉列表选项
 					item: function() {
 						if(this.topPannel==1){
-							return this.grade;
+							return this.per;
 						}else if(this.topPannel==2) {
 							return this.subject;
 						}else{
@@ -170,12 +194,12 @@
 					},
 					// 已选年级
 					gradeItem: function() {
-						var selected = this.grade.list?filterArray(this.grade.list, "percode", this.grade.selected)[0]:null;
+						var selected = this.per.list?filterArray(this.per.list, "per_code", this.per.selected)[0]:null;
 						return selected;
 					},
 					// 已选科目
 					subjectItem: function() {
-						var selected = this.subject.list?filterArray(this.subject.list, "subcode", this.subject.selected)[0]:null;
+						var selected = this.subject.list?filterArray(this.subject.list, "sub_code", this.subject.selected)[0]:null;
 						return selected;
 					}
 				},
@@ -191,46 +215,73 @@
 							mask.show();
 						}
 					},
-					// 设置目录
-					setMenu: function(data) {
+					// 获取学段
+					getPer: function() {
+						var _this = this;
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resPer", {}, {
+							index_code,
+							user_code: userInfo.user_code,
+						}, 2, function(res) {
+							if(res.state=="ok") {
+								var firstPer = res.data.list[0];
+								var per_code = firstPer ? firstPer.per_code : "";
+								_this.per = {
+									selected: per_code,
+									list: res.data.list,
+								}
+								_this.getSub(per_code);
+							}else{
+								plus.nativeUI.closeWaiting();
+								if(res.code!=404) mui.toast(res.msg);
+							}
+						});
+					},
+					// 获取科目
+					getSub: function(per_code) {
+						if(!per_code) return;
+						var _this = this;
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resSub", {}, {
+							per_code,
+							index_code,
+							user_code: userInfo.user_code,
+						}, 2, function(res) {
+							if(res.state=="ok") {
+								var firstSub = res.data.list[0];
+								var sub_code = firstSub ? firstSub.sub_code : "";
+								_this.subject = {
+									selected: sub_code,
+									list: res.data.list,
+								}
+								_this.setMenu(per_code, sub_code);
+							}else{
+								plus.nativeUI.closeWaiting();
+								if(res.code!=404) mui.toast(res.msg);
+							}
+						});
+					},
+					// 设置知识点目录
+					setMenu: function(per_code, sub_code) {
 						// testMenu.isLoaded = false;
 						testMenu.emptyMsg = "";
 						plus.nativeUI.showWaiting();
 						var _this = this;
-						console.log("获取目录参数："+JSON.stringify(data||{}));
-						//获取目录
-						commonAjax("/Ycyx/Practice/index", {
-							data: data||{},
-							timeout: 5000,
-							type: 'post',
-							success: function(res){
-								console.log("设置目录: "+res.data)
-								var rdata = JSON.parse(res.data);
-								//科目
-								_this.subject = {
-									selected: rdata.subcode,
-									list: rdata.subs||[]
-								};
-								//学段
-								_this.grade = {
-									selected: rdata.percode,
-									list: prdLimit,
-									// list: rdata.pers||[]
-								}
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/catalogs", {}, {
+							per_code,
+							sub_code,
+							index_code,
+							user_code: userInfo.user_code,
+						}, 2, function(res) {
+							if(res.state=="ok") {
 								//设置test-menu目录
-								testMenu.menu = rdata.catalogs||[];
+								testMenu.menu =  res.data.catalog.children || [];
 								// testMenu.isLoaded = true;
 								_this.$nextTick(function(){
 									plus.nativeUI.closeWaiting();
 									mui('.mui-scroll-wrapper').scroll().scrollTo(0,0);//滚动到顶
 								});
-							},
-							fail: function(res){
+							} else {
 								plus.nativeUI.closeWaiting();
-							},
-							error: function(){
-								plus.nativeUI.closeWaiting();
-								pageError();
+								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
 					},
@@ -240,9 +291,11 @@
 						mask.close();
 						this.$nextTick(function () {
 							if(this.topPannel==1){
-								this.setMenu({percode: this.grade.selected});
+								this.getSub(this.per.selected);
+								// this.setMenu({percode: this.per.selected});
 							}else if(this.topPannel==2){
-								this.setMenu({percode: this.grade.selected, subcode: this.subject.selected});
+								this.setMenu(this.per.selected, this.subject.selected);
+								// this.setMenu({percode: this.per.selected, subcode: this.subject.selected});
 							}
 						});
 					}
@@ -273,33 +326,47 @@
 					selectNode: function(model) {
 						plus.nativeUI.showWaiting();
 						// 向 开始页 传递数据
-						commonAjax("/Ycyx/Practice/schedule", {
-							data: {
-								catalogId: model.id
-							},
-							type: 'get',
-							timeout: 5000,
-							success: function(res) {
-								console.log("难度等级："+JSON.stringify(res.data));
-								var res_data = res.data;
-								mui.fire(test_start, "getData", {
-									title: model.name, 
-									catalogId: model.id,
-									difficulty: res_data
-								});
-								test_start.show("slide-in-right");
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resSub", {}, {
+							per_code,
+							index_code,
+							user_code: userInfo.user_code,
+						}, 2, function(res) {
+							if(res.state=="ok") {
+								
+							} else {
 								plus.nativeUI.closeWaiting();
-							},
-							fail: function(res) {
-								plus.nativeUI.closeWaiting();
-							},
-							error: function() {
-								plus.nativeUI.closeWaiting();
+								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
+						// commonAjax("/Ycyx/Practice/schedule", {
+						// 	data: {
+						// 		catalogId: model.id
+						// 	},
+						// 	type: 'get',
+						// 	timeout: 5000,
+						// 	success: function(res) {
+						// 		console.log("难度等级："+JSON.stringify(res.data));
+						// 		var res_data = res.data;
+						// 		mui.fire(test_start, "getData", {
+						// 			title: model.name, 
+						// 			catalogId: model.id,
+						// 			difficulty: res_data
+						// 		});
+						// 		test_start.show("slide-in-right");
+						// 		plus.nativeUI.closeWaiting();
+						// 	},
+						// 	fail: function(res) {
+						// 		plus.nativeUI.closeWaiting();
+						// 	},
+						// 	error: function() {
+						// 		plus.nativeUI.closeWaiting();
+						// 	}
+						// });
 					}
 				}
 			});
+			
+			// header.subject = {"selected":"03","list":[{"subname":"英语","subcode":"03"},{"subname":"计算机应用基础","subcode":"25"}]};
 		</script>
 	</body>
 

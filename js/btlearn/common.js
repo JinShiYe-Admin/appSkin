@@ -135,7 +135,7 @@ function newTest(catalogId, title) {
 //			console.log(res);
 			var data = JSON.parse(res.data);
 			if(data.questions&&data.questions.length){
-				var new_test = plus.webview.create( "testing.html", "bl-testing", {}, {
+				var new_test = plus.webview.create( "zujuancs_testing.html", "bl-testing", {}, {
 					isTested: false,
 					catalogId: catalogId,
 					title: title,
