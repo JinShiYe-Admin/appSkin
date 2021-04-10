@@ -131,7 +131,7 @@
 					<div class="lv-bar">
 						<div class="lv-item" v-for="(v,i) in levels" :class="{'active': v<=difficulty_level_id}">
 							<div class="lv-icon-box"><span class="lv-icon">LV.{{v}}</span></div>
-							<div class="lv-msg">{{lv}}<span v-if="v==difficulty_level_id">(当前)</span></div>
+							<div class="lv-msg">{{v==3?'提升':v==2?'巩固':'基础'}}<span v-if="v==difficulty_level_id">(当前)</span></div>
 						</div>
 					</div>
 				</div>
@@ -176,6 +176,7 @@
 			
 			mui.plusReady(function(){
 				self = plus.webview.currentWebview();
+				
 				//首次进入报告页
 				setResult(self.report, self.detailInfo, self.nodeTitle, self.levels);
 				
@@ -184,6 +185,12 @@
 					var bl_submit = plus.webview.getWebviewById('bl-test-submit');
 					bl_submit && bl_submit.close('none');
 				});
+				
+				if(mui.os.android) {
+					//关闭提交页
+					var bl_submit = plus.webview.getWebviewById('bl-test-submit');
+					bl_submit && bl_submit.close('none');
+				}
 			});
 			
 			//再次进入报告页
@@ -205,17 +212,18 @@
 					difficulty_level_id: 0,
 					isLoaded: false
 				},
-				computed: {
-					lv: function() {
-						if(this.current_id==3) {
-							return "提升";
-						}else if(this.current_id==2) {
-							return "巩固";
-						}else {
-							return "基础";
-						}
-					}
-				},
+				// computed: {
+				// 	lv: function() {
+				// 		console.log(this.current_id)
+				// 		if(this.current_id==3) {
+				// 			return "提升";
+				// 		}else if(this.current_id==2) {
+				// 			return "巩固";
+				// 		}else {
+				// 			return "基础";
+				// 		}
+				// 	}
+				// },
 				methods: {
 					anserJudge: function(answer, stu_answer){
 						if(stu_answer=="[]"){
@@ -235,9 +243,6 @@
 					},
 					//继续学习
 					newTest: function() {
-						//关闭提交页
-						var bl_submit = plus.webview.getWebviewById('bl-test-submit');
-						bl_submit && bl_submit.close('none');
 						newTest(self.report.book_catalog_id, self.nodeTitle);
 					}
 				}
@@ -267,7 +272,7 @@
 					});
 				}else{
 					tested = mui.preload({
-						url: "testing.html",
+						url: "zujuancs_testing.html",
 						id: "bl-tested",
 						extras: {
 							isTested: true,

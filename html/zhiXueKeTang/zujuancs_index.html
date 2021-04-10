@@ -124,7 +124,7 @@
 
 		<script type="text/javascript" src="../../js/btlearn/common.js"></script>
 		<script type="text/javascript">
-			var self, test_start;
+			var self, test_start, index_code;
 			var prdLimit = []; //学段限权
 			
 			var userInfo = store.get(window.storageKeyName.PERSONALINFO) || {};
@@ -145,6 +145,9 @@
 					index_code = curPage.access.split('#')[1];
 				}
 				
+				// 保存index_code
+				store.set("zxkt_current_index_code", index_code);
+				
 				//开始测试页
 				test_start = mui.preload({
 					url: 'zujuancs_start.html',
@@ -154,15 +157,13 @@
 				// 刷新数据
 				window.addEventListener("refresh", function(e){
 					// 检测目录是否完成
-					console.log(JSON.stringify(e.detail))
+					// console.log(JSON.stringify(e.detail))
 					if(e.detail.hasOwnProperty("isFinish")){
 						e.detail.isFinish && readTree(testMenu.menu, function(node){
 							if(node.id==e.detail.nodeId){
 								node.is_finish=1;
 							}
 						});
-					}else{
-						// header.setMenu({percode: header.per.selected, subcode: header.subject.selected});
 					}
 				});
 				
@@ -218,10 +219,12 @@
 					// 获取学段
 					getPer: function() {
 						var _this = this;
+						plus.nativeUI.showWaiting();
 						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resPer", {}, {
 							index_code,
 							user_code: userInfo.user_code,
 						}, 2, function(res) {
+							plus.nativeUI.closeWaiting();
 							if(res.state=="ok") {
 								var firstPer = res.data.list[0];
 								var per_code = firstPer ? firstPer.per_code : "";
@@ -231,7 +234,6 @@
 								}
 								_this.getSub(per_code);
 							}else{
-								plus.nativeUI.closeWaiting();
 								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
@@ -240,11 +242,13 @@
 					getSub: function(per_code) {
 						if(!per_code) return;
 						var _this = this;
+						plus.nativeUI.showWaiting();
 						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resSub", {}, {
 							per_code,
 							index_code,
 							user_code: userInfo.user_code,
 						}, 2, function(res) {
+							plus.nativeUI.closeWaiting();
 							if(res.state=="ok") {
 								var firstSub = res.data.list[0];
 								var sub_code = firstSub ? firstSub.sub_code : "";
@@ -254,7 +258,6 @@
 								}
 								_this.setMenu(per_code, sub_code);
 							}else{
-								plus.nativeUI.closeWaiting();
 								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
@@ -271,16 +274,15 @@
 							index_code,
 							user_code: userInfo.user_code,
 						}, 2, function(res) {
+							plus.nativeUI.closeWaiting();
 							if(res.state=="ok") {
 								//设置test-menu目录
-								testMenu.menu =  res.data.catalog.children || [];
+								testMenu.menu =  res.data.catalog&&res.data.catalog.children ? res.data.catalog.children : [];
 								// testMenu.isLoaded = true;
 								_this.$nextTick(function(){
-									plus.nativeUI.closeWaiting();
 									mui('.mui-scroll-wrapper').scroll().scrollTo(0,0);//滚动到顶
 								});
 							} else {
-								plus.nativeUI.closeWaiting();
 								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
@@ -326,42 +328,24 @@
 					selectNode: function(model) {
 						plus.nativeUI.showWaiting();
 						// 向 开始页 传递数据
-						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resSub", {}, {
-							per_code,
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/test/schedule", {}, {
+							catalog_id: model.id,
 							index_code,
 							user_code: userInfo.user_code,
 						}, 2, function(res) {
+							plus.nativeUI.closeWaiting();
 							if(res.state=="ok") {
-								
+								mui.fire(test_start, "getData", {
+									title: model.name, 
+									catalogId: model.id,
+									difficulty: res.data
+								});
+								test_start.show("slide-in-right");
 							} else {
-								plus.nativeUI.closeWaiting();
 								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
-						// commonAjax("/Ycyx/Practice/schedule", {
-						// 	data: {
-						// 		catalogId: model.id
-						// 	},
-						// 	type: 'get',
-						// 	timeout: 5000,
-						// 	success: function(res) {
-						// 		console.log("难度等级："+JSON.stringify(res.data));
-						// 		var res_data = res.data;
-						// 		mui.fire(test_start, "getData", {
-						// 			title: model.name, 
-						// 			catalogId: model.id,
-						// 			difficulty: res_data
-						// 		});
-						// 		test_start.show("slide-in-right");
-						// 		plus.nativeUI.closeWaiting();
-						// 	},
-						// 	fail: function(res) {
-						// 		plus.nativeUI.closeWaiting();
-						// 	},
-						// 	error: function() {
-						// 		plus.nativeUI.closeWaiting();
-						// 	}
-						// });
+						
 					}
 				}
 			});

@@ -9,10 +9,10 @@
 		<link rel="stylesheet" type="text/css" href="../../css/btlearn/common.css"/>
 		<style type="text/css">
 			.mui-bar {
-				background-color: #FFFFFF;
+				/* background-color: #FFFFFF; */
 			}
 			.mui-action-back {
-				color: #222222;
+				/* color: #222222; */
 			}
 			.question-header {
 				padding: .45rem .2rem .3rem;
@@ -40,7 +40,7 @@
 				border-bottom: 1px solid #DDDDDD;
 			}
 			.time {
-				color: #666666;
+				/* color: #666666; */
 			}
 			.question-box {
 				font-size: 0.28rem;
@@ -75,7 +75,8 @@
 			}
 			.question-box img {
 				max-width: 100%;
-				background: url(../../img/loading.svg) center/contain no-repeat;
+				/* background: url(../../img/zhiXueKeTang/loading.svg) center/contain no-repeat; */
+				background: #F6F6F6;
 			}
 			.answer-detail {
 				color: #222222;
@@ -86,14 +87,15 @@
 				height: 100%;
 			}
 			.mui-scroll-wrapper {
-				top: 1.24rem;
+				/* top: 1.24rem; */
+				top: 44px;
 			}
 		</style>
 	</head>
 
 	<body>
 		<div id="testing" v-cloak :class="{tested: isTested}">
-			<header class="mui-bar mui-bar-nav">
+			<header class="mui-bar mui-bar-nav theme">
 				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 				<span class="mui-icon mui-pull-right time" v-if="isTested">用时：{{time}}</span>
 				<span class="mui-icon mui-pull-right time" v-else>{{timeStr}}</span>
@@ -182,9 +184,9 @@
 						return false;
 					}else{
 						if(self.isTested){
-							isImmer&&plus.navigator.setStatusBarStyle('light');
+							// isImmer&&plus.navigator.setStatusBarStyle('light');
 						}else{
-							isImmer&&plus.navigator.setStatusBarStyle('light');
+							// isImmer&&plus.navigator.setStatusBarStyle('light');
 							self.close(); //返回时,关闭页面
 							return false;
 						}
@@ -195,14 +197,14 @@
 			mui.plusReady(function(){
 				
 				self = plus.webview.currentWebview();
-				isImmer = plus.navigator.isImmersedStatusbar();
+				// isImmer = plus.navigator.isImmersedStatusbar();
 				
 				//状态栏样式
-				if(isImmer){
-					self.addEventListener("show", function(e){
-						plus.navigator.setStatusBarStyle('dark');
-					});
-				}
+				// if(isImmer){
+				// 	self.addEventListener("show", function(e){
+				// 		plus.navigator.setStatusBarStyle('dark');
+				// 	});
+				// }
 				
 				
 				// 获取题目
@@ -215,7 +217,6 @@
 					testing.questions = self.detailInfo;
 					testing.time = self.used_time;
 				}else{ 
-					console.log("试题："+JSON.stringify(self.data.questions));
 					// 排除题目异常
 					var isWrongOpt=false;
 					for(var i=0;i<self.data.questions.length;i++) {
@@ -249,7 +250,7 @@
 						plus.nativeUI.toast("题目异常，请重新做题或换个知识点");
 					}
 					//新测试
-					testing.paperName = self.data.paperName;
+					testing.paperName = self.data.paper_name;
 					testing.questions = self.data.questions;
 					testing.diskey = self.data.diskey;
 					//计时
@@ -265,7 +266,7 @@
 			
 			//设置测试结果
 			window.addEventListener("setTested", function(e){
-				console.log("测试结果: "+JSON.stringify(e.detail.detailInfo));
+				// console.log("测试结果: "+JSON.stringify(e.detail.detailInfo));
 				testing.isTested = true;
 				testing.headerTitle = self.title;
 				testing.paperName = e.detail.paperName;

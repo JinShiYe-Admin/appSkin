@@ -338,20 +338,30 @@ ul li.navigate-right:before {
 }
 
 /*动画*/
-.slide-down-enter-active, .slide-down-leave-active {
+/* .slide-down-enter-active, .slide-down-leave-active {
 	-webkit-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
-	-webkit-transition: transform .25s ease;
-	transition: transform .25s ease;
+	-webkit-transition: all .25s;
+	transition: all .25s;
 }
 .slide-down-enter, .slide-down-leave-to {
 	-webkit-transform: translateY(-100%);
 }
 .fade-in-enter-active, .fade-in-leave-active {
-  transition: all .8s;
+  transition: all .25s;
 }
 .fade-in-enter, .fade-in-leave-to {
   opacity: 0;
+} */
+.slide-down-enter-active {
+	animation: menu-slid-down .25s;
+}
+.slide-down-leave-active {
+	animation: menu-slid-down .2s reverse;
+}
+@keyframes menu-slid-down {
+	from { transform: translateY(-100%); }
+	to { transform: translate3d(0, 0, 0); }
 }
 
 @keyframes rotate {
@@ -545,6 +555,7 @@ ul li.navigate-right:before {
 	left: 0;
 	top: 100%;
 	min-width: 100%;
+	min-height: 1rem;
 	background-color: #FFFFFF;
 	margin-right: -0.26rem;
 	padding: 0.5rem 0.2rem 0.4rem;

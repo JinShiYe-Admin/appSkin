@@ -1,91 +1,4 @@
 
-//common ajax
-function commonAjax(url, ops) {
-	if(plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
-		mui.toast("网络异常，请检查网络设置！");
-		pageError();
-		plus.nativeUI.closeWaiting();
-		return false;
-	}
-	var times = 0;
-	sendAjax(window.storageKeyName.YCYXHOST+url, ops, times);
-}
-function sendAjax(url, ops, times) {
-	var publicParameter = store.get(window.storageKeyName.PUBLICPARAMETER);
-	var personal = store.get(window.storageKeyName.PERSONALINFO);
-	var data = mui.extend(ops.data, {
-		token: personal.utoken,
-		uuid: publicParameter.uuid,
-		uid: personal.uid
-	});
-	jQuery.ajax(url, {
-		data: data,
-		type: ops.type||"post",
-		timeout: ops.timeout||5000,
-		// dataType: 'json',
-		success: function(res) {
-			if(res.state=="ok") {
-				ops.success && ops.success(res);
-			}else{
-				if(res.code==6){
-					//续订令牌
-					console.log("token reset");
-					//需要参数
-					var comData = {
-						uuid: publicParameter.uuid,
-						utid: personal.utid,
-						utoken: personal.utoken,
-						appid: publicParameter.appid,
-						schid: personal.schid,
-						utp: personal.utp,
-						utname: personal.utname
-					};
-					//令牌续订
-					postDataEncry('TokenReset', {}, comData, 0, function(data1) {
-						if(data1.RspCode == 0) {
-							personal.utoken = data1.RspData;
-							store.set(window.storageKeyName.PERSONALINFO, personal);
-							if(times>5) {
-								plus.nativeUI.closeWaiting();
-								plus.nativeUI.toast("令牌过期，请重新登录");
-							}else{
-								times++;
-								sendAjax(url, ops, times);
-							}
-						}
-					});
-				}else{
-					var f = ops.fail && ops.fail(res);
-					if(f!="noToast"){
-						plus.nativeUI.toast( res.msg||'操作失败');
-					}
-				}
-			}
-		},
-		error:function(xhr,type,errorThrown){
-			if(times>3) {
-				plus.nativeUI.toast( '服务器异常：'+type );
-				ops.error && ops.error(xhr,type,errorThrown);
-			}else{
-				times++;
-				sendAjax(url, ops, times);
-			}
-		}
-	});
-}
-
-//断网监听
-document.addEventListener("netchange", function(){
-	isNetAbort = (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE);
-	if(plus.webview.currentWebview().isVisible()) {
-		if(isNetAbort) {
-			mui.toast("网络异常，请检查网络设置！", {duration:'long', type:'div'});
-		} else {
-			mui.toast("已接入网络", {duration:'short', type:'div'});
-		}
-	}
-}, false);
-
 function pageError() {
 	var net_abort_html = '<div class="net-error-box">'+
 		'<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon-net-error"></use></svg>'+
@@ -119,22 +32,21 @@ function getPrdName(ext, fcodes) {
     return  names;
 }
 
-// 套餐价格
-function orderPrice(fee) {
-	return fee/100;
-}
 
 //打开新测试页
 function newTest(catalogId, title) {
 	plus.nativeUI.showWaiting();
-	commonAjax("/Ycyx/Practice/createPaper", {
-		data: {
-			catalogId: catalogId
-		},
-		success: function(res){
-//			console.log(res);
-			var data = JSON.parse(res.data);
-			if(data.questions&&data.questions.length){
+	var current_index_code = store.get('zxkt_current_index_code');
+	var userInfo = store.get(window.storageKeyName.PERSONALINFO) || {};
+	postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/test/createPaper", {}, {
+		catalog_id: catalogId,
+		index_code: current_index_code,
+		user_code: userInfo.user_code,
+	}, 2, function(res) {
+		plus.nativeUI.closeWaiting();
+		if(res.state=="ok") {
+			var data = res.data;
+			if(data && data.questions && data.questions.length){
 				var new_test = plus.webview.create( "zujuancs_testing.html", "bl-testing", {}, {
 					isTested: false,
 					catalogId: catalogId,
@@ -148,16 +60,10 @@ function newTest(catalogId, title) {
 					}
 				});
 			}else{
-				plus.nativeUI.toast( "没有题目");
-				plus.nativeUI.closeWaiting();
+				plus.nativeUI.toast( "暂无题目");
 			}
-		},
-		fail: function(res) {
-			console.log(res);
-			plus.nativeUI.closeWaiting();
-		},
-		error: function() {
-			plus.nativeUI.closeWaiting();
+		} else {
+			if(res.code!=404) mui.toast(res.msg);
 		}
 	});
 }
@@ -257,10 +163,10 @@ function readTree(tree, callback) {
 			toggleChildren: function() {
 				this.showChildren = !this.showChildren;
 				//关闭其它层
-				if(this.showChildren) {
-					var parent = this.$parent;
-					parent && this.closeChild(parent);
-				}
+				// if(this.showChildren) {
+				// 	var parent = this.$parent;
+				// 	parent && this.closeChild(parent);
+				// }
 			},
 			nodeClick: function(model){
                 this.$emit('node-click', model);
