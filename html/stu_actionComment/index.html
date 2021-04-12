@@ -147,7 +147,7 @@
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.day}} {{item.class_node}} {{item.sub_name}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px; word-break: break-all;" class="divNote">{{item.comment}}</div>
 												<template v-for="bitem in item.bimgs">
-													<img style="width: 100px;height: 100px;margin-right: 10px;object-fit: cover;" :data-preview-src=bitem.url+'?imageView2/3/w/720/h/720/q/75/format/png' :src=bitem.url+'?imageView2/3/w/100/h/100/q/75/format/png' />
+													<img style="width: 100px;height: 100px;margin-right: 10px;object-fit: cover;" :data-preview-src=bitem.url+'?imageView2/3/w/360/h/360/q/55/format/png' :src=bitem.url+'?imageView2/3/w/100/h/100/q/55/format/png' />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
 													<span style="color: red;border: 1px solid red;border-radius: 50%;padding: 0.21875rem 5px ;">记</span>
@@ -159,7 +159,7 @@
 												<div style="margin: 5px 0 5px 0;padding: 0px;" class="divNote">{{item.chat_time&&item.chat_time.split(' ')[0]}}</div>
 												<div style="margin: 5px 0 5px 0;padding: 0px;word-break: break-all;">{{item.chat_detail}}</div>
 												<template v-for="aitem in item.aimgs">
-													<img style="width: 100px;height: 100px;margin-right: 10px; object-fit: cover;" :data-preview-src=aitem.url+'?imageView2/3/w/720/h/720/q/75/format/png' :src=aitem.url+'?imageView2/3/w/100/h/100/q/75/format/png' />
+													<img style="width: 100px;height: 100px;margin-right: 10px; object-fit: cover;" :data-preview-src=aitem.url+'?imageView2/3/w/360/h/360/q/55/format/png' :src=aitem.url+'?imageView2/3/w/100/h/100/q/55/format/png' />
 												</template>
 												<div style="text-align: right;margin-right: 20px;">
 													<span style="color: red;border: 1px solid red;border-radius: 50%;padding: 0.21875rem 5px ;">谈</span>
@@ -277,10 +277,12 @@
 								contentData.semFlag0Data.refrushFlag = 0; //0刷新1加载更多
 								contentData.semFlag0Data.pageNumber = 1; 
 								getBehavior();
+								mui('#scroll1').scroll().scrollTo(0, 0) 
 							}else if(flag==1){
 								contentData.semFlag1Data.refrushFlag = 0; //0刷新1加载更多
 								contentData.semFlag1Data.pageNumber = 1; 
 								getRemark();
+								mui('#scroll2').scroll().scrollTo(0, 0) 
 							}
 						}
 					},
