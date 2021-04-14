@@ -644,7 +644,7 @@
 					if (data.code == 0) {
 						if (data.data.list.length < 10) {
 							mui(".mui-pull-loading")[0].innerHTML = "没有更多了";
-						}else {
+						} else {
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 						contentData.showFlag = 1;
@@ -682,63 +682,65 @@
 					}
 				});
 			}
+			mui.plusReady(function() {
+				(function($) {
+					curPage = utils.getDataFromUrl(window.location.href);
 
-			(function($) {
-				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('2222:' + JSON.stringify(curPage));
-				tempHead.headTitle = curPage.name;
+					console.log('2222:' + JSON.stringify(curPage));
+					tempHead.headTitle = curPage.name;
 
-				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
-					var ws = plus.webview.currentWebview();
-					console.log("当前Webview：" + JSON.stringify(ws.preload));
-					if (ws.preload) {
-						curPage = ws.preload;
-						tempHead.headTitle = ws.preload.name;
+					if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
+						var ws = plus.webview.currentWebview();
+						console.log("当前Webview：" + JSON.stringify(ws.preload));
+						if (ws.preload) {
+							curPage = ws.preload;
+							tempHead.headTitle = ws.preload.name;
+						}
+						if (ws.preload.index == 0) {
+							tempHead.showBack = 2;
+						}
+					} else {
+						tempHead.showBack = 1; //更多页面打开时，显示返回按钮
 					}
-					if (ws.preload.index == 0) {
-						tempHead.showBack = 2;
-					}
-				} else {
-					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
-				}
 
-				window.addEventListener('home_setHeadImg', function(data) {
-					tempHead.headImg = data.detail.imgurl;
-				});
-				// 查询学段
-				getResPer();
-				//阻尼系数
-				var deceleration = mui.os.ios ? 0.003 : 0.0009;
-				$('.mui-scroll-wrapper').scroll({
-					bounce: false,
-					indicators: true, //是否显示滚动条
-					deceleration: deceleration
-				});
-				$.ready(function() {
-					//循环初始化所有下拉刷新，上拉加载。
-					$.each(document.querySelectorAll('.mui-scroll'), function(index, pullRefreshEl) {
-						$(pullRefreshEl).pullToRefresh({
-							down: {
-								callback: function() {
-									var self = this;
-									contentData.refreshFlag = 0; //0刷新，1加载更多
-									contentData.pageIndex = 1;
-									// 查询资源列表
-									getResPage(self);
+					window.addEventListener('home_setHeadImg', function(data) {
+						tempHead.headImg = data.detail.imgurl;
+					});
+					// 查询学段
+					getResPer();
+					//阻尼系数
+					var deceleration = mui.os.ios ? 0.003 : 0.0009;
+					$('.mui-scroll-wrapper').scroll({
+						bounce: false,
+						indicators: true, //是否显示滚动条
+						deceleration: deceleration
+					});
+					$.ready(function() {
+						//循环初始化所有下拉刷新，上拉加载。
+						$.each(document.querySelectorAll('.mui-scroll'), function(index, pullRefreshEl) {
+							$(pullRefreshEl).pullToRefresh({
+								down: {
+									callback: function() {
+										var self = this;
+										contentData.refreshFlag = 0; //0刷新，1加载更多
+										contentData.pageIndex = 1;
+										// 查询资源列表
+										getResPage(self);
+									}
+								},
+								up: {
+									callback: function() {
+										var self = this;
+										contentData.refreshFlag = 1; //0刷新，1加载更多
+										// 查询资源列表
+										getResPage(self);
+									}
 								}
-							},
-							up: {
-								callback: function() {
-									var self = this;
-									contentData.refreshFlag = 1; //0刷新，1加载更多
-									// 查询资源列表
-									getResPage(self);
-								}
-							}
+							});
 						});
 					});
-				});
-			})(mui);
+				})(mui);
+			});
 
 			function getQueryString(url) {
 				try {
