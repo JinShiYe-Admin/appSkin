@@ -241,7 +241,7 @@
 					<div id="testMenu" class="mui-content vue-tree">
 						<div class="kn-menu" v-cloak>
 							<tree-menu v-for="(model, i) in resCatalogsArray" :model="model" :key="i" :depth="0" @node-click="selectNode"></tree-menu>
-							<p v-if="!resCatalogsArray.length"  style="padding: 0.3rem;">暂无目录</p>
+							<p v-if="!resCatalogsArray.length"  style="padding: 0.3rem;margin-top: 20px;">暂无目录</p>
 						</div>
 					</div>
 				</div>
@@ -391,6 +391,11 @@
 							// 查询科目
 							getResSub();
 						} else {
+							catalogData.resPerArray = [].concat([]);
+							catalogData.resSubArray = [].concat([]);
+							catalogData.resMaterArray = [].concat([]);
+							catalogData.resFascArray = [].concat([]);
+							catalogData.resCatalogsArray = [].concat([]);
 							mui.toast('暂无学段');
 						}
 					} else {
@@ -422,6 +427,10 @@
 							// 查询教版
 							getResMater();
 						} else {
+							catalogData.resSubArray = [].concat([]);
+							catalogData.resMaterArray = [].concat([]);
+							catalogData.resFascArray = [].concat([]);
+							catalogData.resCatalogsArray = [].concat([]);
 							mui.toast('暂无科目');
 						}
 					} else {
@@ -454,6 +463,9 @@
 							// 查询分册
 							getResFasc();
 						} else {
+							catalogData.resMaterArray = [].concat([]);
+							catalogData.resFascArray = [].concat([]);
+							catalogData.resCatalogsArray = [].concat([]);
 							mui.toast('暂无教版');
 						}
 					} else {
@@ -487,7 +499,9 @@
 							// 查询目录
 							getResCatalogs();
 						} else {
-							mui.toast('暂无教版');
+							catalogData.resFascArray = [].concat([]);
+							catalogData.resCatalogsArray = [].concat([]);
+							mui.toast('暂无分册');
 						}
 					} else {
 						mui.toast(data.msg);
@@ -510,6 +524,7 @@
 						if (data.data) {
 							catalogData.resCatalogsArray = [].concat(data.data.catalog.children);
 						} else {
+							catalogData.resCatalogsArray = [].concat([]);
 							mui.toast('暂无目录');
 						}
 					} else {

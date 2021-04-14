@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -111,11 +111,11 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://nwifapp.jiaobaowang.net/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://nwifapp.jiaobaowang.net/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://nwifapp.jiaobaowang.net/stuzy/api/stuScore/';//学生成绩（蒙)
-			mod.INTERFACE_ZIYUANURL = "https://gxcs.jiaobaowang.net/zxzyapi/api/";//资源
-			mod.INTERFACE_KYCP = "http://139.129.252.49:8080/resentestsubapi/api"; //口语测评（廖）
+			mod.INTERFACE_ZIYUANURL = "http://nwifapp.jiaobaowang.net/resstudysubapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://nwifapp.jiaobaowang.net/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/hsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/hsservsubapi/';//家校互动 学生端（顾)
-			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)、行为与评语
+			mod.PARENTS_ATTENDANCE = 'http://nwifapp.jiaobaowang.net/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -140,8 +140,8 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_STUPYSUB = 'http://apps.108800.com/stuxwsubapi/comment/';//学生评语（阮)
 			mod.INTERFACE_DORM = 'http://apps.108800.com/stusssubapi/api/app/';//学生宿舍（阮)
 			mod.INTERFACE_STUSCORE = 'http://apps.108800.com/stuzy/api/stuScore/';//学生成绩（蒙)
-			mod.INTERFACE_ZIYUANURL = "http://apps.108800.com/resstudysubapi/api/";//资源
-			mod.INTERFACE_KYCP = "http://apps.108800.com/resentestsubapi/api"; //口语测评（廖）
+			mod.INTERFACE_ZIYUANURL = "http://res.108800.com/resstudysubapi/api/";//资源
+			mod.INTERFACE_KYCP = "http://res.108800.com/resentestsubapi/api"; //口语测评（廖）
 			mod.INTERFACE_SCHHOME = 'http://apps.108800.com:8080/hsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://apps.108800.com:8080/hsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://apps.108800.com/stukq/api/app/';//学生考勤家长端（阮)、行为与评语

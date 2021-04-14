@@ -384,7 +384,7 @@
 					sch_code:personal.unit_code,
 					index_code:curPage.index_code
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + '/smsConf/getConf', {}, comData, 2, function(datas) {
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsConf/getConf', {}, comData, 2, function(datas) {
 					if (datas.code == 0) {
 						if(datas.data){
 							if(datas.data.user_types && datas.data.user_types.indexOf(window.storageKeyName.MSG_SMS.HOMEWORK.USER_TYPE)!==-1){
@@ -423,7 +423,7 @@
 					type:2,
 					index_code:curPage.index_code
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + '/smsWords/page', {}, comData, 2, function(datas) {
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsWords/page', {}, comData, 2, function(datas) {
 					events.closeWaiting();
 					if (datas.code == 0) {
 						datasource.WORDS=datas.data.list
@@ -564,7 +564,7 @@
 					list:touser,
 					index_code:curPage.index_code
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + '/smsRecord/save', {}, comData, 2, function(datas) {
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsRecord/save', {}, comData, 2, function(datas) {
 					if (datas.code == 0) {
 						console.log("datas: " + JSON.stringify(datas));
 						let hr_id=datas.data.id
