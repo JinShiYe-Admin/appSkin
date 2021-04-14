@@ -112,13 +112,19 @@
 						}, 2, function(res) {
 							plus.nativeUI.closeWaiting();
 							if(res.state=="ok") {
-								//刷新其他页面数据
+								//刷新组卷测试数据
 								if(res.data.report.is_finish) {
 									mui.fire(plus.webview.getWebviewById('zujuancs_index.html'), "refresh", {
 										nodeId: res.data.report.book_catalog_id,
 										isFinish: true
 									});
 								}
+								// 刷新历史测试数据
+								var lishics = plus.webview.getWebviewById('lishics_index.html');
+								lishics && mui.fire(lishics, "refresh");
+								// 刷新历史测试详情数据
+								var lishics_detail = plus.webview.getWebviewById('bl-lishics-detail');
+								lishics_detail && mui.fire(lishics_detail, "refresh");
 								//关闭开始页
 								var test_start = plus.webview.getWebviewById('bl-test-start');
 								test_start && test_start.hide("none");
