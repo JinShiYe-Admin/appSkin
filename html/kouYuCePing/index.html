@@ -386,7 +386,7 @@
 				mui.init();
 				
 				var self = plus.webview.currentWebview();
-				curPage = utils.getDataFromUrl(window.location.href);
+				var curPage = utils.getDataFromUrl(window.location.href);
 				tempHead.headTitle = curPage.name;
 				
 				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮

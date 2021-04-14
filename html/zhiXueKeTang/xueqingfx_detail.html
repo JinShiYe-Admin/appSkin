@@ -28,7 +28,7 @@
 			}
 			#testLine {
 				/*min-height: 4rem;*/
-				padding-left: 1.1rem;
+				padding-left: 0.8rem;
 				padding-bottom: 0.3rem;
 				position: relative;
 				margin-bottom: 1rem;
@@ -42,7 +42,7 @@
 			}
 			#testLine:before {
 				content: "分值";
-				left: .5rem;
+				left: .3rem;
 				top: 5px;
 			}
 			#testLine:after {
@@ -112,28 +112,34 @@
 			</div>
 		</div>
 		
-		<script src="../../js/mui.min.js"></script>
-		<script type="text/javascript" src="../../js/utils/vue.js" ></script>
-		<!-- <script type="text/javascript" src="../../js/utils/vconsole.min.js" ></script> -->
-		<script type="text/javascript" src="../../js/libs/echarts.min.js" ></script>
-		<script src='../../js/libs/jquery.js'></script>
-		
-		<!--加密-->
-		<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/utils/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
 		<!---->
-		<script src='../../js/libs/crypto-js/require.js'></script>
-		<script src='../../js/utils/signHmacSHA1.js'></script>
-		<script src="../../js/publicProtocolNew.js"></script>
-		<script src="../../js/storageKeyName.js"></script>
-		<script src="../../js/utils/store.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
+		<script src="../../js/utils/echarts.min.js" ></script>
+		<!-- <script src="../../js/utils/echarts-all.js"></script>
+		<script src="../../js/echarts/echarts-en.min.js"></script> -->
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 			
 		<script type="text/javascript" src="../../js/btlearn/common.js" ></script>
 		<script type="text/javascript">
 			var self, testLine;
+			var current_index_code = store.get('zxkt_current_index_code');
+			var userInfo = store.get(window.storageKeyName.PERSONALINFO) || {};
 			
 			mui.init({
 				beforeback: function() {
@@ -165,24 +171,6 @@
 				methods: {
 					//练习
 					goTest: function(item) {
-//						mui.openWindow({
-//							url: "testing.html",
-//							id: "bl-testing",
-//							extras: {
-//								isTested: false,
-//								catalogId: item.book_catalog_id,
-//								title: item.name
-//							}
-//						});
-						var userbus = store.get(window.storageKeyName.PERSONALINFO).userbus;
-						if(!userbus.length) {
-							mui.toast("未订购套餐，订购后才能练习");
-							return false;
-						}
-						if(!self.prdLimit.length) {
-							mui.toast("当前套餐不可用");
-							return false;
-						}
 						newTest(item.book_catalog_id, item.name);
 					}
 				}
@@ -201,18 +189,22 @@
 			
 			//获取分析数据
 			function getSubDetail() {
-				commonAjax("/Ycyx/Analysis/subDetail", {
-					data: {
-						subcode: self.subcode,
-						percode: self.percode||""
-					},
-					success: function(res){
-						var data = JSON.parse(res.data);
-						analysisDetail.subScores = data.subScores;
-						analysisDetail.avgScore = data.avgScore;
-						analysisDetail.failCatalogInfo = data.failCatalogInfo;
+				plus.nativeUI.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/analysis/subDetail", {}, {
+					sub_code: self.subcode,
+					per_code: self.percode||"",
+					index_code: current_index_code,
+					user_code: userInfo.user_code,
+				}, 2, function(res) {
+					plus.nativeUI.closeWaiting();
+					if(res.state=="ok") {
+						analysisDetail.subScores = res.data.sub_scores;
+						analysisDetail.avgScore = res.data.avg_score;
+						analysisDetail.failCatalogInfo = res.data.fail_catalog_info;
 						analysisDetail.isLoaded = true;
 						getLine();
+					}else{
+						if(res.code!=404) mui.toast(res.msg);
 					}
 				});
 			}
@@ -267,13 +259,13 @@
 				});
 			}
 			
-// 			analysisDetail.subname = "语文";
-// 			analysisDetail.subScores = [10,20,20,20,0,10,0,40,10,40,40];
-// 			analysisDetail.avgScore = 19;
-// 			analysisDetail.failCatalogInfo = [{"name":"多音字","book_catalog_id":4468,"avg_score":16.666666666666668},{"name":"易误读常见字","book_catalog_id":4469,"avg_score":10.0},{"name":"注音","book_catalog_id":4470,"avg_score":26.0}];
-// 			setTimeout(function(){
-// 				getLine();
-// 			}, 200);
+			// analysisDetail.subname = "语文";
+			// analysisDetail.subScores = [10,20,20,20,0,10,0,40,10,40,40];
+			// analysisDetail.avgScore = 19;
+			// analysisDetail.failCatalogInfo = [{"name":"多音字","book_catalog_id":4468,"avg_score":16.666666666666668},{"name":"易误读常见字","book_catalog_id":4469,"avg_score":10.0},{"name":"注音","book_catalog_id":4470,"avg_score":26.0}];
+			// setTimeout(function(){
+			// 	getLine();
+			// }, 200);
 			
 		</script>
 	</body>

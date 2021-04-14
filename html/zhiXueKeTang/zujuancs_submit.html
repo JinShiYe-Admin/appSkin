@@ -54,27 +54,34 @@
 			</div>
 		</div>
 		
-		<script src="../../js/mui.min.js"></script>
-		<script type="text/javascript" src="../../js/utils/vue.js" ></script>
-		<!-- <script type="text/javascript" src="../../js/utils/vconsole.min.js" ></script> -->
-		<script src='../../js/libs/jquery.js'></script>
-		
-		<!--加密-->
-		<script src="../../js/libs/RSA/Barrett.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/libs/RSA/BigInt.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/libs/RSA/RSA.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../js/utils/RSAEncrypt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<script src="../../js/utils/vconsole.min.js"></script>
+		<script src="../../js/utils/vue.js"></script>
 		<!---->
-		<script src='../../js/libs/crypto-js/require.js'></script>
-		<script src='../../js/utils/signHmacSHA1.js'></script>
-		<script src="../../js/publicProtocolNew.js"></script>
-		<script src="../../js/storageKeyName.js"></script>
-		<script src="../../js/utils/store.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
+		<!-- <script src="../../js/utils/echarts-all.js"></script> -->
+		<!-- <script src="../../js/echarts/echarts-en.min.js"></script> -->
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
 		
 		<script type="text/javascript" src="../../js/btlearn/common.js" ></script>
 		<script type="text/javascript">
 			var self;
+			var current_index_code = store.get('zxkt_current_index_code');
+			var userInfo = store.get(window.storageKeyName.PERSONALINFO) || {};
+			
 			var anserCard = new Vue({
 				el: "#anserCard",
 				data:{
@@ -94,27 +101,24 @@
 						sbData.answerArray.forEach(function(v){
 							answerJson[v.question_id] = v.stu_answer;
 						});
-						var submit_data = {
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/test/savePaper", {}, {
 							diskey: sbData.diskey,
 							catalogId: sbData.catalogId,
 							name: sbData.name,
 							usedTime: sbData.usedTime,
-							answerJson: JSON.stringify(answerJson)
-						}
-						console.log("提交测试："+JSON.stringify(submit_data));
-						commonAjax("/Ycyx/Practice/savePaper", {
-							data: submit_data,
-							success: function(res) {
-								plus.nativeUI.closeWaiting();
-								var res_data = JSON.parse(res.data);
-								console.log("测试结果："+res.data)
-								
+							answerJson: answerJson,
+							index_code: current_index_code,
+							user_code: userInfo.user_code,
+						}, 2, function(res) {
+							plus.nativeUI.closeWaiting();
+							if(res.state=="ok") {
 								//刷新其他页面数据
-								mui.fire(plus.webview.getWebviewById('bl-index'), "refresh", {
-									nodeId: res_data.report.book_catalog_id,
-									isFinish: res_data.report.is_finish
-								});
-								
+								if(res.data.report.is_finish) {
+									mui.fire(plus.webview.getWebviewById('zujuancs_index.html'), "refresh", {
+										nodeId: res.data.report.book_catalog_id,
+										isFinish: true
+									});
+								}
 								//关闭开始页
 								var test_start = plus.webview.getWebviewById('bl-test-start');
 								test_start && test_start.hide("none");
@@ -123,14 +127,14 @@
 								bl_testing && bl_testing.close('none');
 								//echarts 重新绘图
 								var als_detail = plus.webview.getWebviewById('bl-analysis-detail');
-								als_detail && mui.fire(als_detail, "rePain");
+								als_detail && mui.fire(als_detail, "refresh");
 								
 								//结果页
 								var bl_result = plus.webview.getWebviewById('bl-test-result');
 								var result_data = {
-									report: res_data.report,
-									detailInfo: res_data.detailInfo,
-									levels: res_data.levels,
+									report: res.data.report,
+									detailInfo: res.data.detail_info,
+									levels: res.data.levels,
 									nodeTitle: sbData.title
 								};
 								if(bl_result){
@@ -142,21 +146,16 @@
 									});
 								}else{
 									mui.openWindow({
-										url: "testResult.html",
+										url: "zujuancs_result.html",
 										id: "bl-test-result",
-										extras: result_data
+										extras: result_data,
+										waiting: {
+											autoShow: true
+										}
 									});
 								}
-							},
-							fail: function(res) {
-								console.log(res);
-								plus.nativeUI.closeWaiting();
-							},
-							error: function(xhr,type,errorThrown) {
-								console.log(xhr);
-								console.log(type);
-								console.log(errorThrown);
-								plus.nativeUI.closeWaiting();
+							} else {
+								if(res.code!=404) mui.toast(res.msg);
 							}
 						});
 					}
@@ -164,10 +163,10 @@
 			});
 			
 			mui.plusReady(function(){
-				var isImmer = plus.navigator.isImmersedStatusbar();
+				// var isImmer = plus.navigator.isImmersedStatusbar();
 				mui.init({
 					beforeback: function() {
-						isImmer&&plus.navigator.setStatusBarStyle('dark');
+						// isImmer&&plus.navigator.setStatusBarStyle('dark');
 						//echarts 重新绘图
 						var als_detail = plus.webview.getWebviewById('bl-analysis-detail');
 						als_detail && mui.fire(als_detail, "rePain");
@@ -177,7 +176,7 @@
 				});
 
 				self = plus.webview.currentWebview();
-				isImmer&&plus.navigator.setStatusBarStyle('light');
+				// isImmer&&plus.navigator.setStatusBarStyle('light');
 				anserCard.answer = self.submitData.answerArray;
 			});
 			

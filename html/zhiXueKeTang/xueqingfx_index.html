@@ -69,16 +69,26 @@
 		<header id="header" class="mui-bar mui-bar-nav theme">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">学情分析</h1>
+			<a class="mui-icon mui-pull-right grade" @tap.stop="showTopPannel" v-cloak>{{perSeleted?(perSeleted.per_name||"学段"):"学段"}}<span class="mui-icon-arrowdown"></span></a>
+			<transition name="slide-down">
+				<div class="options-pannel mui-clearfix" v-show="showItem" v-cloak>
+					<div v-for="(v, i) in per.list" class="radio-wrap">
+						<label :class="{selected:v.per_code==per.selected}" @click="selectItem">
+							<input type="radio" v-model="per.selected" name="item"  :value="v.per_code" />{{v.per_name||""}}
+						</label>
+					</div>
+				</div>
+			</transition>
 		</header>
 		
 		<div class="mui-content">
 			<!--学情分析-->
-			<div id="bl-analysis" class="mui-control-content">
+			<div id="bl-analysis" class="mui-control-content mui-active">
 				<div id="analysisTab">
-					<div class="als-title mui-text-center mui-ellipsis">{{user_name}}学情分析报告<span v-if="pername">（{{pername}}）</span></div>
-					<div style="padding: .2rem .22rem .15rem;">学科均衡:</div>
+					<div class="als-title mui-text-center mui-ellipsis" v-cloak>{{user_name}}学情分析报告<span v-if="pername">（{{pername}}）</span></div>
+					<div style="padding: .2rem .22rem .15rem;" v-cloak>学科均衡:</div>
 					<div id="subRadar"></div>
-					<ul class="mui-table-view als-list same-line-list" v-if="alsList.length">
+					<ul class="mui-table-view als-list same-line-list" v-if="alsList.length" v-cloak>
 					    <li class="mui-table-view-cell" style="background-color: transparent;">
 					        <div class="sub">科目</div>
 					        <div class="times">学习次数</div>
@@ -94,7 +104,7 @@
 					        <div class="score">{{item.avg_score}}分/100分</div>
 					    </li>
 					</ul>
-					<p v-else class="mui-text-center" v-show="isShowed">您还未提交过试题</p>
+					<p v-else class="mui-text-center" v-show="isShowed" v-cloak>您还未提交过试题</p>
 				</div>
 			</div>
 		</div>
@@ -109,8 +119,9 @@
 		<script src="../../js/libs/jquery.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/showMenu.js"></script>
-		<script src="../../js/utils/echarts-all.js"></script>
-		<script src="../../js/echarts/echarts-en.min.js"></script>
+		<script src="../../js/utils/echarts.min.js" ></script>
+		<!-- <script src="../../js/utils/echarts-all.js"></script> -->
+		<!-- <script src="../../js/echarts/echarts-en.min.js"></script> -->
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -122,8 +133,7 @@
 
 		<script type="text/javascript" src="../../js/btlearn/common.js"></script>
 		<script type="text/javascript">
-			var self;
-			var prdLimit = []; //学段限权
+			var self, index_code;
 			
 			var userInfo = store.get(window.storageKeyName.PERSONALINFO) || {};
 			
@@ -136,7 +146,81 @@
 			mui.plusReady(function() {
 				self = plus.webview.currentWebview();
 				
+				var curPage = utils.getDataFromUrl(window.location.href);
+				if (curPage && JSON.stringify(curPage) == '{}') { 
+					index_code = self.preload.access.split('#')[1];
+				} else {
+					index_code = curPage.access.split('#')[1];
+				}
+				
+				// 保存index_code
+				store.set("zxkt_current_index_code", index_code);
+				
 				// getAnalysisData();
+				// getSubRadar();
+				header.getPer();
+			});
+			
+			//头部
+			var header = new Vue({
+				el: "#header",
+				data: {
+					per: {selected: 0, list: []},
+					showItem: false
+				},
+				computed: {
+					// 已选学段
+					perSeleted: function() {
+						var selected = this.per.list?filterArray(this.per.list, "per_code", this.per.selected)[0]:null;
+						return selected;
+					},
+				},
+				methods: {
+					//显示头部选项
+					showTopPannel: function() {
+						if(this.showItem) {
+							this.showItem = false;
+							mask.close();
+						}else{
+							this.showItem = true;
+							mask.show();
+						}
+					},
+					// 获取学段
+					getPer: function() {
+						var _this = this;
+						plus.nativeUI.showWaiting();
+						postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/pub/resPer", {}, {
+							index_code,
+							user_code: userInfo.user_code,
+						}, 2, function(res) {
+							plus.nativeUI.closeWaiting();
+							if(res.state=="ok") {
+								var firstPer = res.data.list[0];
+								var per_code = firstPer ? firstPer.per_code : "";
+								_this.per = {
+									selected: per_code,
+									list: res.data.list,
+								}
+								
+								_this.$nextTick(function () {
+									getAnalysisData();
+								});
+							}else{
+								if(res.code!=404) mui.toast(res.msg);
+							}
+						});
+					},
+					//选择选项
+					selectItem: function(){
+						this.showItem = false;
+						mask.close();
+						
+						this.$nextTick(function () {
+							getAnalysisData();
+						});
+					}
+				}
 			});
 			
 			
@@ -157,13 +241,12 @@
 					// 学情分析详情
 					goDetail: function(item) {
 						mui.openWindow({
-							url:"analysisDetail.html",
+							url:"xueqingfx_detail.html",
 							id: "bl-analysis-detail",
 							extras: {
 								subcode: item.subcode,
 								subname: item.subname,
-								percode: header.grade.selected||"",
-								prdLimit: prdLimit //学段限权
+								percode: header.per.selected||"",
 							}
 						})
 					}
@@ -173,24 +256,19 @@
 			//获取分析数据
 			function getAnalysisData() {
 				plus.nativeUI.showWaiting();
-				commonAjax("/Ycyx/Analysis/index", {
-					data: {
-						percode: header.grade.selected||""
-					},
-					success: function(res){
-						console.log(res.data);
-						var res_data = JSON.parse(res.data);
-						analysis.alsList = res_data.analysis;
-						analysis.pername = header.gradeItem?header.gradeItem.pername:"";
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + "/analysis", {}, {
+					per_code: header.per.selected,
+					index_code,
+					user_code: userInfo.user_code,
+				}, 2, function(res) {
+					plus.nativeUI.closeWaiting();
+					if(res.state=="ok") {
+						analysis.alsList = res.data.analysis;
+						analysis.pername = header.perSeleted?header.perSeleted.pername:"";
 						getSubRadar();
 						if(!analysis.isShowed) analysis.isShowed = true;
-						plus.nativeUI.closeWaiting();
-					},
-					fail: function() {
-						plus.nativeUI.closeWaiting();
-					},
-					error: function() {
-						plus.nativeUI.closeWaiting();
+					}else{
+						if(res.code!=404) mui.toast(res.msg);
 					}
 				});
 			}
@@ -259,6 +337,8 @@
 					]
 				});
 			}
+			
+			// analysis.alsList = [{"subname":"语文","count":52,"subcode":"01","remark":"-1","avg_score":24},{"subname":"数学","count":92,"subcode":"02","remark":"0","avg_score":54},{"subname":"英语","count":82,"subcode":"03","remark":"0","avg_score":64}];
 		</script>
 	</body>
 
