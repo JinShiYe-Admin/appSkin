@@ -134,8 +134,8 @@
 					menubutton: false
 				}
 			});
-			var personal = store.get(window.storageKeyName.PERSONALINFO);
-			console.log('personal:' + JSON.stringify(personal));
+			// var personal = store.get(window.storageKeyName.PERSONALINFO);
+			// console.log('personal:' + JSON.stringify(personal));
 			var main = null;
 			mui.plusReady(function() {
 				main = plus.webview.currentWebview().opener();
@@ -156,10 +156,10 @@
 				var mine = new Vue({
 					el: "#mine",
 					data: {
-						userModel:personal,
+						userModel:store.get(window.storageKeyName.PERSONALINFO),
 						userName: '',
 						userMsg:'',
-						userImg: setImg(personal.img_url, 9),
+						userImg: setImg(store.get(window.storageKeyName.PERSONALINFO).img_url, 9),
 						settings: [{
 								name: "密码修改",
 								icon: "",
@@ -206,6 +206,7 @@
 							}else if (setting.tempID == 1) { //注销账号
 								mui.confirm("注销后账号将不可使用，与账号相关的数据也会一并删除，确定注销吗？", '确定注销？', ['确定', '取消'], function(e) {
 										if (e.index == 0) {
+											var personal = store.get(window.storageKeyName.PERSONALINFO);
 											var enData0 = {};
 											//不需要加密的数据
 											var comData0 = {
@@ -240,6 +241,7 @@
 						}
 					}
 				});
+				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				mine.userName = personal.user_name;
 				if(personal.type_code == 'YHLX0003'){
 					mine.userMsg = personal.sch_name+' '+personal.dpt_name;
@@ -268,6 +270,7 @@
 					store.set(window.storageKeyName.BADGENUMBER, 0);
 					//解绑个推
 					var tool = new igexinTool();
+					var personal = store.get(window.storageKeyName.PERSONALINFO);
 					tool.unbindAlias(personal.user_code);
 
 					store.remove(window.storageKeyName.PERSONALINFO);
@@ -295,6 +298,7 @@
 				//			window.addEventListener("swiperight", hideMenu);
 
 				document.getElementById("close-btn").addEventListener('tap', function() {
+					var personal = store.get(window.storageKeyName.PERSONALINFO);
 					var enData0 = {};
 					//不需要加密的数据
 					var comData0 = {
