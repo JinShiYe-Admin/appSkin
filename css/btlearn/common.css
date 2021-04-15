@@ -137,6 +137,13 @@ body, .mui-content {
 	width: 20%;
 }
 
+.list-end {
+	text-align: center;
+	color: #999999;
+	padding: 0.25rem;
+	font-size: 12px;
+}
+
 .option-label {
 	color: #2CA97F;
 	border: 1px solid #2CA97F;
@@ -275,6 +282,7 @@ ul li.navigate-right:before {
 .sub-list li {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	padding: .35rem .6rem .33rem .4rem;
 	line-height: 150%;
 }
