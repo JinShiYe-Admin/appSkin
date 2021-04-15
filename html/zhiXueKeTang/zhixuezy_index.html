@@ -145,8 +145,8 @@
 				<a class="mui-icon" style="font-size: 16px;">{{titleName}}<span class="mui-icon-arrowdown"></span></a>
 			</h1>
 		</header>
-		<div class="mui-content" id="contentData">
-			<div id="slider" class="mui-slider mui-fullscreen">
+		<div v-cloak class="mui-content" id="contentData">
+			<div v-cloak id="slider" class="mui-slider mui-fullscreen">
 				<div
 					class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted swiper-container catalogs">
 					<div class="swiper-wrapper">
@@ -155,11 +155,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="mui-slider-group">
-					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
-						<div id="scroll1" class="mui-scroll-wrapper">
-							<div class="mui-scroll">
-								<ul class="mui-table-view">
+				<div v-cloak class="mui-slider-group">
+					<div v-cloak id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div v-cloak id="scroll1" class="mui-scroll-wrapper">
+							<div v-cloak class="mui-scroll">
+								<ul v-cloak class="mui-table-view">
 									<li class="mui-table-view-cell mui-media"
 										v-for="(resourceModel,index) in resourceArray"
 										@tap="clickResourceModel(resourceModel,index)">
@@ -361,39 +361,70 @@
 						if (model.is_pack) { //资源包
 							console.log('000000001');
 							utils.mOpenWithData("../../html/zhiXueKeTang/inside_page.html", model);
-						} else if (model.file_ext == 'mp4' || model.file_ext == 'mp3' || model.file_ext == 'wmv' ||
-							model.file_ext == 'wma' || model.file_ext == 'mpg' || model.file_ext == 'avi' || model
-							.file_ext == 'flv' || model.file_ext == 'mkv' || model.file_ext == 'asf') { //视频、音频
-							if (model.file_ext == 'mp4' || model.file_ext == 'mp3') {
-								utils.mOpenWithData("../../html/zhiXueKeTang/playVideo.html", model);
-							} else {
+						} else {
+							// 判断文件是否存在
+							// var xmlhttp;
+							// if (window.XMLHttpRequest) {
+							// 	xmlhttp = new XMLHttpRequest(); //其他浏览器   
+							// } else if (window.ActiveXObject) {
+							// 	try {
+							// 		xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); //旧版IE   
+							// 	} catch (e) {}
+							// 	try {
+							// 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); //新版IE   
+							// 	} catch (e) {}
+							// 	if (!xmlhttp) {
+							// 		window.alert("不能创建XMLHttpRequest对象");
+							// 	}
+							// }
+							// xmlhttp.open("GET", model.openFileUrl, false);
+							// xmlhttp.send();
+							// if (xmlhttp.readyState == 4) {
+							// 	if (xmlhttp.status == 200)
+							// 		console.log('文件存在');
+							// 	else {
+							// 		mui.toast('当前文件已不存在');
+							// 		console.log('文件不存在');
+							// 		return;
+							// 	}
+							// }
+							if (model.file_ext == 'mp4' || model.file_ext == 'mp3' || model.file_ext == 'wmv' ||
+								model.file_ext == 'wma' || model.file_ext == 'mpg' || model.file_ext == 'avi' ||
+								model
+								.file_ext == 'flv' || model.file_ext == 'mkv' || model.file_ext == 'asf') { //视频、音频
+								if (model.file_ext == 'mp4' || model.file_ext == 'mp3') {
+									utils.mOpenWithData("../../html/zhiXueKeTang/playVideo.html", model);
+								} else {
+									if (plus.os.name == 'Android') {
+										plus.runtime.openURL(model.openFileUrl);
+									} else {
+										plus.runtime.openWeb(model.openFileUrl);
+									}
+								}
+							} else if (model.file_ext == 'jpg' || model.file_ext == 'png' || model.file_ext ==
+								'gif') { //照片
+								if (plus.os.name == 'Android') {
+									plus.nativeUI.previewImage([model.openFileUrl]);
+								} else {
+									plus.nativeUI.previewImage(model.openFileUrl, {
+										current: 0,
+										loop: false,
+										indicator: 'number'
+									});
+								}
+							} else if (model.file_ext == 'ppt' || model.file_ext == 'pptx' || model.file_ext ==
+								'doc' ||
+								model.file_ext == 'docx' || model.file_ext == 'pdf' || model.file_ext == 'xlsx' ||
+								model
+								.file_ext == 'xls') { //文档
 								if (plus.os.name == 'Android') {
 									plus.runtime.openURL(model.openFileUrl);
 								} else {
 									plus.runtime.openWeb(model.openFileUrl);
 								}
-							}
-						} else if (model.file_ext == 'jpg' || model.file_ext == 'png' || model.file_ext ==
-							'gif') { //照片
-							if (plus.os.name == 'Android') {
-								plus.nativeUI.previewImage([model.openFileUrl]);
 							} else {
-								plus.nativeUI.previewImage(model.openFileUrl, {
-									current: 0,
-									loop: false,
-									indicator: 'number'
-								});
+								mui.toast('不支持查看此类型文件');
 							}
-						} else if (model.file_ext == 'ppt' || model.file_ext == 'pptx' || model.file_ext == 'doc' ||
-							model.file_ext == 'docx' || model.file_ext == 'pdf' || model.file_ext == 'xlsx' || model
-							.file_ext == 'xls') { //文档
-							if (plus.os.name == 'Android') {
-								plus.runtime.openURL(model.openFileUrl);
-							} else {
-								plus.runtime.openWeb(model.openFileUrl);
-							}
-						} else {
-							mui.toast('不支持查看此类型文件');
 						}
 					},
 					catalogItemClick: function(index) {
