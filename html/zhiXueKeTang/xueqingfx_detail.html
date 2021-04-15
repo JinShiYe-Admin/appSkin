@@ -138,12 +138,17 @@
 		<script type="text/javascript" src="../../js/btlearn/common.js" ></script>
 		<script type="text/javascript">
 			var self, testLine;
+			var isRefresh = false;
 			var current_index_code = store.get('zxkt_current_index_code');
 			var userInfo = store.get(window.storageKeyName.PERSONALINFO) || {};
 			
 			mui.init({
 				beforeback: function() {
-					self.opener().evalJS("subRadar.resize();");
+					if(isRefresh) {
+						self.opener().evalJS("getAnalysisData();");
+					}else{
+						self.opener().evalJS("subRadar.resize();");
+					}
 					self.close();
 				}
 			});
@@ -178,6 +183,7 @@
 			
 			//更新数据
 			window.addEventListener("refresh", function(){
+				isRefresh = true;
 				analysisDetail.isLoaded = false;
 				getSubDetail();
 			});
