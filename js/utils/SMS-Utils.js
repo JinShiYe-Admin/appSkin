@@ -27,8 +27,18 @@ var SMSUtils = (function(mod) {
 		postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsConf/getConf', {}, comData, 2, function(datas) {
 			if (datas.code == 0) {
 				if (datas.data) {
-					if (datas.data.user_types && datas.data.user_types.indexOf(_this.USER_TYPE) !== -1) {
-						callback({SMS: true,CONFIG: datas.data});
+					if (datas.data.user_types) {
+						let config_types=datas.data.user_types.split(",");
+						let local_types=_this.USER_TYPE.split(",");
+						let send=false;
+						config_types.map(citem=>{
+							local_types.map(litem=>{
+								if(citem==litem){
+									send=true
+								}
+							})
+						})
+						callback({SMS: send,CONFIG: datas.data});
 					} else {
 						callback({SMS: false});
 					}

@@ -306,8 +306,19 @@ var storageKeyName = (function(mod) {
 	      USER_TYPE: 'YHLX0004', //目标用户类型 - 家长
 	    },
 	  }
-	
 	//----------家校互动短信配置---------end
+	
+	//----------OA短信配置---------start
+	mod.OA_MSG_SMS= {
+	     USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+	 }
+	//----------OA短信配置---------end
+	
+	//----------学生考勤、评语、行为 短信配置---------start
+	mod.STUKQ_PREMARK_ACTION_MSG_SMS= {
+	    USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	}
+	//----------学生考勤、评语、行为 短信配置---------end
 	
 	//---Activity的code---start---
 	mod.CODERECORDVIDEO = 0; //录像

@@ -350,7 +350,11 @@
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
 				// tempVue.titleName = '添加'+curPage.title;
-
+				SMSUtils.INDEX_CODE=curPage.index_code;
+				SMSUtils.MSG_TYPE=window.storageKeyName.MSG_SMS.SCHOOL.MSG_TYPE;
+				SMSUtils.USER_TYPE=window.storageKeyName.MSG_SMS.SCHOOL.USER_TYPE;
+				SMSUtils.SMS_TYPE=window.storageKeyName.MSG_SMS.SCHOOL.SMS_TYPE;
+				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
 
 				//阻尼系数、初始化刷新加载更多
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
@@ -360,10 +364,25 @@
 					deceleration: deceleration
 				});
 				events.showWaiting();
-				getConf(()=>{
-					getSmsWords();
-					
-				});
+				SMSUtils.getConfig((msg)=>{
+					if(msg.SMS){
+						datasource.CONFIG=msg.CONFIG
+						SMSUtils.getSmsWords((msg2)=>{
+							events.closeWaiting();
+							datasource.WORDS=msg2.WORDS
+						},2)
+						//页面按钮控制，控制逻辑自己定义
+						datasource.SMS=true
+						datasource.SHOW=true
+						tempVue.SMS=true
+					}else{
+						//页面按钮控制，控制逻辑自己定义
+						datasource.SHOW=false
+						datasource.SMS=false
+						tempVue.SMS=false
+						events.closeWaiting();
+					}
+				})
 			});
 			
 			window.addEventListener('refreshStudent', function(data) {
@@ -376,63 +395,6 @@
 				datasource.formData.selectGradeClassesNames=selectGradeClassesNames
 				datasource.formData.selectData=data.detail
 			});
-			
-			//获取短信配置
-			function getConf(callback){
-				comData = {
-					msg_type:window.storageKeyName.MSG_SMS.HOMEWORK.MSG_TYPE,
-					sch_code:personal.unit_code,
-					index_code:curPage.index_code
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsConf/getConf', {}, comData, 2, function(datas) {
-					if (datas.code == 0) {
-						if(datas.data){
-							if(datas.data.user_types && datas.data.user_types.indexOf(window.storageKeyName.MSG_SMS.HOMEWORK.USER_TYPE)!==-1){
-								datasource.CONFIG=datas.data
-								datasource.SHOW=true
-								datasource.SMS=true
-								tempVue.SMS=true
-								callback();
-							}else{
-								datasource.SHOW=false
-								datasource.SMS=false
-								tempVue.SMS=false
-								callback();
-							}
-						}else{
-							datasource.SHOW=false
-							datasource.SMS=false
-							tempVue.SMS=false
-							callback();
-						}
-					} else {
-						events.showWaiting();
-						mui.toast(datas.msg);
-					}
-				});
-			}
-			
-			
-			//获取敏感词
-			function getSmsWords(){
-				comData = {
-					page_size:100000,
-					page_number:1,
-					status:1,
-					keyword:'',
-					type:2,
-					index_code:curPage.index_code
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsWords/page', {}, comData, 2, function(datas) {
-					events.closeWaiting();
-					if (datas.code == 0) {
-						datasource.WORDS=datas.data.list
-					} else {
-						mui.toast(datas.msg);
-					}
-				});
-			}
-			
 			
 			// 提交表单数据
 			function submitData(data) {
@@ -505,7 +467,32 @@
 					if (datas.code == 0) {
 						 if(datasource.SMS){
 							 let id=datas.data
-							 sendSms(id,comment)
+							 let selectData=datasource.formData.selectData
+							 let touser=[]
+							 for (var i = 0; i < selectData.length; i++) {
+							 	let cls=selectData[i].children
+							 	let grdCode=selectData[i].value
+							 	let grdName=selectData[i].name
+							 	for (var z = 0; z < cls.length; z++) {
+							 		let obj={
+							 			gen_type:window.storageKeyName.MSG_SMS.HOMEWORK.USER_TYPE,
+							 			dpt_code:'',
+							 			dpt_name:'',
+							 			grd_code:grdCode,
+							 			grd_name:grdName,
+							 			cls_code:cls[z].value,
+							 			cls_name:cls[z].name,
+							 			stu_code:'',
+							 			stu_name:'',
+							 			gen_code:'',
+							 			gen_name:'',
+							 		}
+							 		touser.push(obj)
+							 	}
+							 }
+							 SMSUtils.sendSMS((msg)=>{
+							 	refreshID(id,msg.hr_id)
+							 },datasource.is_delay,datasource.delay_time,comment,datasource.CONFIG.serviced,0,touser);
 						 }else{
 							 events.closeWaiting();
 							  mui.toast(datas.msg);
@@ -517,61 +504,6 @@
 					} else {
 						events.closeWaiting();
 						mui.toast(datas.msg);
-					}
-				});
-			}
-			
-			//短信发送
-			function sendSms(id,comment){
-				let selectData=datasource.formData.selectData
-				let touser=[]
-				for (var i = 0; i < selectData.length; i++) {
-					let cls=selectData[i].children
-					let grdCode=selectData[i].value
-					let grdName=selectData[i].name
-					for (var z = 0; z < cls.length; z++) {
-						let obj={
-							gen_type:window.storageKeyName.MSG_SMS.HOMEWORK.USER_TYPE,
-							dpt_code:'',
-							dpt_name:'',
-							grd_code:grdCode,
-							grd_name:grdName,
-							cls_code:cls[z].value,
-							cls_name:cls[z].name,
-							stu_code:'',
-							stu_name:'',
-							gen_code:'',
-							gen_name:'',
-						}
-						touser.push(obj)
-					}
-				}
-				comData = {
-					send_unit_code:personal.unit_code,
-					send_user:personal.user_code,
-					send_user_tname:personal.user_name,
-					send_soure:'schapp#[APP]',
-					send_time:moment().format('YYYY-MM-DD HH:mm:ss'),
-					is_delay:datasource.is_delay,
-					delay_time:datasource.delay_time,
-					msg_content:comment,
-					msg_type:window.storageKeyName.MSG_SMS.HOMEWORK.MSG_TYPE,
-					serviced:datasource.CONFIG.serviced,
-					is_short:0,
-					sms_msgtype_code:window.storageKeyName.MSG_SMS.HOMEWORK.SMS_TYPE,
-					sch_code:personal.unit_code,
-					sch_name:personal.unit_name,
-					list:touser,
-					index_code:curPage.index_code
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'smsRecord/save', {}, comData, 2, function(datas) {
-					if (datas.code == 0) {
-						console.log("datas: " + JSON.stringify(datas));
-						let hr_id=datas.data.id
-						refreshID(id,hr_id)
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
 					}
 				});
 			}
