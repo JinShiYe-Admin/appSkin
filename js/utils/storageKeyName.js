@@ -29,6 +29,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '? 需连广西开发环境';//学生考勤家长端（阮)、行为与评语
 			//七牛上传
+			
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
 			break;
@@ -87,6 +88,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://139.129.252.49:8180/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_ZXKT = 'http://139.129.252.49:8180/resstudysubapi/api';//智学课堂（廖）
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -116,6 +118,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/hsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/hsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://nwifapp.jiaobaowang.net/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_ZXKT = 'http://nwifapp.jiaobaowang.net/resstudysubapi/api';//智学课堂（廖）
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -145,6 +148,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = 'http://apps.108800.com:8080/hsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://apps.108800.com:8080/hsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://apps.108800.com/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_ZXKT = 'http://res.108800.com/resstudysubapi/api';//智学课堂（廖）
 			//七牛上传
 			mod.QN_APPID = 17;//七牛appid
 			mod.QN_APPKEY = "oafor1010";//七牛appkey
@@ -174,6 +178,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_ZXKT = 'http://cs1.108800.com/resstudysubapi/api';//智学课堂（廖）
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
