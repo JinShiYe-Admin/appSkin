@@ -287,7 +287,7 @@
 					pid: curPage.id, //资源包id
 					index_code: curPage.access
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'resource/packageList', {}, tempData, 2, function(
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + '/resource/packageList', {}, tempData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
