@@ -374,7 +374,7 @@
 				var tempData = {
 					index_code: curPage.access
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resPer', {}, tempData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + '/pub/resPer', {}, tempData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (data.data.list && data.data.list.length > 0) {
@@ -410,7 +410,7 @@
 					per_code: catalogData.resPerModel.per_code, //学段代码
 					index_code: curPage.access
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resSub', {}, tempData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + '/pub/resSub', {}, tempData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (data.data.list && data.data.list.length > 0) {
@@ -446,7 +446,7 @@
 					sub_code: catalogData.resSubModel.sub_code, //科目代码
 					index_code: curPage.access
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resMater', {}, tempData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + '/pub/resMater', {}, tempData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (data.data.list && data.data.list.length > 0) {
@@ -482,7 +482,7 @@
 					mater_code: catalogData.resMaterModel.mater_code, //教版代码
 					index_code: curPage.access
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resFasc', {}, tempData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + '/pub/resFasc', {}, tempData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (data.data.list && data.data.list.length > 0) {
@@ -518,7 +518,7 @@
 					fasc_code: catalogData.resFascModel.fasc_code, //分册代码
 					index_code: curPage.access
 				}
-				postDataEncry(window.storageKeyName.INTERFACE_ZIYUANURL + 'pub/resCatalogs', {}, tempData, 2, function(data) {
+				postDataEncry(window.storageKeyName.INTERFACE_ZXKT + '/pub/resCatalogs', {}, tempData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (data.data) {
