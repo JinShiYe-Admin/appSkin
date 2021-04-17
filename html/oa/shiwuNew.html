@@ -45,6 +45,10 @@
 					</div>
 				</div>
 				<div id="MultiMedia">
+					<div class="mui-input-row mui-checkbox mui-left" id="senMSN" style="float: right;margin-top: 3px;display: none;">
+						<label style="font-size: 14px;color: #333333;">发送短信</label>
+						<input v-model="smsSend" name="checkbox1" type="checkbox">
+					</div>
 				</div>
 				<form class="mui-input-group">
 					<div @click="selectPeopleFun()" class="mui-input-row" style="height: 50px;">
@@ -114,6 +118,7 @@
 		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
 		<script src='../../js/libs/jquery.js'></script>
 		<script src='../../js/libs/encryption/sortSign.js'></script>
+		<script src="../../js/utils/SMS-Utils.js"></script>
 		<script type="text/javascript">
 			var tempVue = new Vue({
 				el: "#tempVue",
@@ -177,7 +182,10 @@
 					showSelectPeople: '',
 					title: '',
 					content: '',
-					selectPeople: []
+					selectPeople: [],
+					smsConfig:{},//短信配置
+					smsWords:[],//拒绝关键字
+					smsSend:0,//是否发送短信
 				},
 				methods: {
 					selectPeopleFun: function() {
@@ -201,6 +209,21 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				init(); //初始化控件
 				message.dataFlag = 1;
+				
+				SMSUtils.INDEX_CODE=curPage.access.split('#')[1];
+				SMSUtils.USER_TYPE=window.storageKeyName.OA_MSG_SMS.USER_TYPE;
+				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
+				// 获取短信权限
+				SMSUtils.getConfig((msg)=>{
+					if(msg.SMS){
+						message.smsConfig=msg.CONFIG;
+						SMSUtils.getSmsWords((msg2)=>{
+							message.smsWords=msg2.WORDS;
+						},2);
+						//显示发送短信按钮
+						document.getElementById('senMSN').style.display = 'inherit';
+					}
+				})
 			});
 
 			//多媒体控件
@@ -224,44 +247,6 @@
 				//图片查看控件
 				mui.previewImage();
 				multiMedia.initEvent();
-
-				//设置底部卡片上边距-15px→10px;
-				//				document.getElementById("bootom-card").style.marginTop = "10px";
-				/**
-				 * 播放视频
-				 * @param {Object} data
-				 */
-				// multiMedia.videoPlayCallBack = function(data) {
-				// 	//console.log("videoPlayCallBack")
-				// 	ShowVideoUtil.showVideo(document.getElementById("video"), 'videoPopover', data.path, data.localthumb);
-				// }
-
-				// /**
-				//  * 播放音频
-				//  * @param {Object} data
-				//  */
-				// multiMedia.audioPlayCallBack = function(data) {
-				// 	//console.log('audioPlayCallBack ' + JSON.stringify(data));
-				// 	ShowAudioUtil.initAudio(data, 1);
-				// }
-
-				// //初始化视频播放器
-				// ShowVideoUtil.initVideo(document.getElementById("video"));
-				// //初始化音频播放器
-				// audio_option = {
-				// 	x: localStorage.getItem('resolutionWidth') * 1.4, //圆心的x轴坐标值
-				// 	y: (plus.screen.resolutionHeight / 3 * 2), //圆心的y轴坐标值
-				// 	r: plus.screen.resolutionHeight * 0.25 * 1.5 //圆的半径
-				// };
-				// ShowAudioUtil.initAudioPopover({
-				// 	show: document.getElementById("audio_show"),
-				// 	icon: document.getElementById("audio_icon"),
-				// 	canvas: document.getElementById("audio_canvas"),
-				// 	play: document.getElementById("audio_play"),
-				// 	pause: document.getElementById("audio_pause"),
-				// 	time: document.getElementById("audio_time"),
-				// 	audio: document.getElementById("audio_audio")
-				// });
 				//获取配置信息
 				hideOption = events.initHideKeyBoard();
 				
