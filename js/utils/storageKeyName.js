@@ -304,15 +304,85 @@ var storageKeyName = (function(mod) {
 	
 	//----------OA短信配置---------start
 	mod.OA_MSG_SMS= {
-	     USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+		PAYSLIP: {
+		  MSG_TYPE: 'oa-payslip', //信息类型 - OA工资条
+		  USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+		},
+	     BULLETIN: {
+	       MSG_TYPE: 'oa-bulletin', //信息类型 - 公告
+	       USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+	     },
+		 NOTICE: {
+		   MSG_TYPE: 'oa-notice', //信息类型 - 通知
+		   USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+		 },
+		 AFFAIR: {
+		   MSG_TYPE: 'oa-affair', //信息类型 - 事务
+		   USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+		 },
+		 WORKFLOW: {
+		   MSG_TYPE: 'oa-workflow', //信息类型 - 工作流
+		   USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+		 },
+		 INFOCOLLECT: {
+		   MSG_TYPE: 'oa-data', //信息类型 - 资料收集
+		   USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
+		 },
 	 }
 	//----------OA短信配置---------end
 	
-	//----------学生考勤、评语、行为 短信配置---------start
-	mod.STUKQ_PREMARK_ACTION_MSG_SMS= {
-	    USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	//----------学生考勤 短信配置---------start
+	mod.STUKQ_MSG_SMS= {
+		INOUTSCH: {
+		   MSG_TYPE: 'ac-inoutsch', //信息类型 - 出入校
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
+		INCLS: {
+		   MSG_TYPE: 'ac-incls', //信息类型 - 课堂
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
+		OUTCLS: {
+		   MSG_TYPE: 'ac-outcls', //信息类型 - 课外
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
+		ASKLEAVE: {
+		   MSG_TYPE: 'ac-askleave', //信息类型 - 请假
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
+		DORM: {
+		   MSG_TYPE: 'ac-dorm', //信息类型 - 宿舍
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
+		INOUTDORM: {
+		   MSG_TYPE: 'ac-inoutdorm', //信息类型 - 出入宿舍
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
 	}
-	//----------学生考勤、评语、行为 短信配置---------end
+	//----------学生考勤 短信配置---------end
+	//----------学生评语 短信配置---------start
+	mod.REMARK_MSG_SMS= {
+		REMARK: {
+		   MSG_TYPE: 'ac-remark', //信息类型 - 评语
+		   USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+		},
+	}
+	//----------学生评语 短信配置---------end
+	//----------学生行为 短信配置---------start
+	mod.ACTION_MSG_SMS= {
+	   CLSBEHAVIOR: {
+	      MSG_TYPE: 'ac-clsbehavior', //信息类型 - 课堂行为
+	      USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	   },
+	   OUTCLSBEHAVIOR: {
+	      MSG_TYPE: 'ac-outclsbehavior', //信息类型 - 课外行为
+	      USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	   },
+	   DORMBEHAVIOR: {
+	      MSG_TYPE: 'ac-dormbehavior', //信息类型 - 宿舍行为
+	      USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	   },
+	}
+	//----------学生行为 短信配置---------end
 	
 	//---Activity的code---start---
 	mod.CODERECORDVIDEO = 0; //录像
