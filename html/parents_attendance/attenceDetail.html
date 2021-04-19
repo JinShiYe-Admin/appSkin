@@ -207,7 +207,12 @@
 			//分页查询考勤项目详情
 			function getPageAttendanceDetail(){ 
 				if(loading){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = {
+					stu_code:user_code,
 					begintime:contentData.startTime,
 					endtime:contentData.endTime,
 					page_size:pageSize,

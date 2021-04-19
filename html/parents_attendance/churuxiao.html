@@ -205,7 +205,12 @@
 			//分页查询出入详情
 			function getPageInOutDetail(){
 				if(loading){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = {
+					stu_code:user_code,
 					begintime:contentData.startTime,
 					endtime:contentData.endTime,
 					page_size:pageSize,

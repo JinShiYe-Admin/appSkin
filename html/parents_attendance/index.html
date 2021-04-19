@@ -501,7 +501,12 @@
 			//获取考勤记录
 			function getAttendancePage(){
 				if(loading){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = { 
+					stu_code:user_code,
 					page_size:pageSize,
 					page_number: contentData.semFlag0Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
@@ -545,7 +550,12 @@
 			//获取请假统计
 			function getLeaveStatistics(){
 				if(loading2){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = { 
+					stu_code:user_code,
 					begintime:contentData.semFlag1Data.startTime,
 					endtime:contentData.semFlag1Data.endTime,
 					index_code: curPage.access.split('#')[1],
@@ -595,7 +605,12 @@
 			}
 			//获取请假记录
 			function getLeavePage(){
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = { 
+					stu_code:user_code,
 					begintime:contentData.semFlag1Data.startTime,
 					endtime:contentData.semFlag1Data.endTime,
 					page_size:pageSize,
@@ -641,7 +656,12 @@
 			//获取统计出入数量
 			function getInOutCount(){
 				if(loading3){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = { 
+					stu_code:user_code,
 					begintime:contentData.semFlag2Data.startTime,
 					endtime:contentData.semFlag2Data.endTime,
 					index_code: curPage.access.split('#')[1],
@@ -658,7 +678,12 @@
 			
 			//按月统计考勤项目
 			function getAttendanceCountByMonth(){
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = {
+					stu_code:user_code,
 					begintime:contentData.semFlag2Data.startTime,
 					endtime:contentData.semFlag2Data.endTime,
 					index_code: curPage.access.split('#')[1],
@@ -706,10 +731,15 @@
 			
 			//分页查询考勤项目统计
 			function getPageAttendanceStatistics(){
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = {
 					begintime:contentData.semFlag2Data.startTime,
 					endtime:contentData.semFlag2Data.endTime,
 					page_size:pageSize,
+					stu_code:user_code,
 					page_number: contentData.semFlag2Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
 				}

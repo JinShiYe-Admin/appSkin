@@ -366,20 +366,23 @@
 			
 			// 提交表单数据
 			function submitData(data) {
-				let comment=data.comment
-				let showToast=false
-				let words=[]
-				for (var i = 0; i < datasource.WORDS.length; i++) {
-					let word=datasource.WORDS[i].word
-					if(comment.indexOf(word)!==-1){
-						showToast=true
-						words.push(word)
+				let comm=data.comment
+				let comment=comm.replace(/\s+/g, '').replace(/\n/g, '').replace(/\t/g, '').replace(/\r/g, '')
+				if(datasource.SMS){
+					let showToast=false
+					let words=[]
+					for (var i = 0; i < datasource.WORDS.length; i++) {
+						let word=datasource.WORDS[i].word
+						if(comment.indexOf(word)!==-1){
+							showToast=true
+							words.push(word)
+						}
 					}
-				}
-				if(showToast){
-					mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
-					events.closeWaiting();
-					return 0
+					if(showToast){
+						mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
+						events.closeWaiting();
+						return 0
+					}
 				}
 				if(datasource.SIGN){
 					comment+='[发送人：'+ personal.user_name+']'

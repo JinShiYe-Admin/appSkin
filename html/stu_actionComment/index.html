@@ -380,7 +380,12 @@
 			//分页查询行为谈话记录
 			function getBehavior(){
 				if(loading){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = {
+					stu_code:user_code,
 					page_size:pageSize,
 					page_number: contentData.semFlag0Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
@@ -457,7 +462,12 @@
 			//分页查询行为评语记录
 			function getRemark(){
 				if(loading2){events.showWaiting();}
+				let user_code=personal.user_code;
+				if(personal.type_code=='YHLX0004'){
+					user_code=personal.stu_code;
+				}
 				comData = {
+					stu_code:user_code,
 					page_size:pageSize,
 					page_number: contentData.semFlag1Data.pageNumber,
 					index_code: curPage.access.split('#')[1],
