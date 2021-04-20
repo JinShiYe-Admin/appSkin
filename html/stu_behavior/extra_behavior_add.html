@@ -176,6 +176,15 @@
 							<label class="aCss">行为说明</label>
 							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
 						</div>
+						<template v-if="SHOW">
+							<div class="line"></div>
+							<div v-cloak class="mui-input-row">
+								<label class="aCss" style="width: 7.5rem;">是否发送短信</label>
+								<div class="mui-switch mui-switch-mini" :class="SMS?'mui-active':''" style="margin-right: 8px;">
+									<div class="mui-switch-handle"></div>
+								</div>
+							</div>
+						</template>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
 							<label class="aCss">附件</label>
@@ -220,6 +229,7 @@
 		<script src="../../js/qiniu/cloudutil.js"></script>
 		<script src="../../js/utils/mui.picker.min.js"></script>
 		<script src="../../js/utils/mui.poppicker.js"></script>
+		<script src="../../js/utils/SMS-Utils.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -286,6 +296,10 @@
 					clsList: [], //班级数组
 					stuList: [], //学生数组
 					xwList: [], //行为细项数组
+					CONFIG:{},//短信配置 对象
+					WORDS:[],//拒绝关键字 对象
+					SHOW:false,//是否显示发送短信
+					SMS:false,//是否发送短信
 				},
 				methods: {
 					showGrd: function() {
@@ -418,7 +432,30 @@
 					datasource.formData.stu=obj
 				});
 
+				SMSUtils.INDEX_CODE=curPage.index_code;
+				SMSUtils.MSG_TYPE=window.storageKeyName.ACTION_MSG_SMS.OUTCLSBEHAVIOR.MSG_TYPE;
+				SMSUtils.USER_TYPE=window.storageKeyName.ACTION_MSG_SMS.OUTCLSBEHAVIOR.USER_TYPE;
+				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
+				
 				events.showWaiting();
+				//获取短信配置和屏蔽关键字
+				SMSUtils.getConfig((msg)=>{
+					if(msg.SMS){
+						datasource.CONFIG=msg.CONFIG
+						SMSUtils.getSmsWords((msg2)=>{
+							// events.closeWaiting();
+							datasource.WORDS=msg2.WORDS
+						},2)
+						//页面按钮控制，控制逻辑自己定义
+						datasource.SMS=true
+						datasource.SHOW=true
+					}else{
+						//页面按钮控制，控制逻辑自己定义
+						datasource.SHOW=false
+						datasource.SMS=false
+						// events.closeWaiting();
+					}
+				})
 				//获取数据范围授权：年级
 				getGrdList();
 				// 获取当前日期
@@ -594,8 +631,26 @@
 			
 			// 提交表单数据
 			function submitData(wd,data,type,encAddrStr,encImgrStr,encLen,encNameStr) {
-				console.log(encNameStr)
-				console.log(encNameStr)
+				let comm=data.comment
+				let comment=comm.replace(/\s+/g, '').replace(/\n/g, '').replace(/\t/g, '').replace(/\r/g, '')
+				let flag=0;
+				if(datasource.SMS){
+					flag=1;
+					let showToast=false
+					 let words=[]
+					 for (var i = 0; i < datasource.WORDS.length; i++) {
+					 	let word=datasource.WORDS[i].word
+					 	if(comment.indexOf(word)!==-1){
+					 		showToast=true
+					 		words.push(word)
+					 	}
+					 }
+					 if(showToast){
+					 	mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
+					 	events.closeWaiting();
+					 	return 0
+					 }
+				}
 				let asset_ids=[]
 				if(encNameStr){
 					let names=encNameStr.split('|')
@@ -614,9 +669,10 @@
 					cls_code: data.cls.value,
 					stu_ids: data.stu.value,
 					item_code: data.xw.value,
-					comment: data.comment?data.comment:'',
+					comment: comment,
 					behavior_time: data.time,
 					asset_ids:asset_ids,
+					sms_parent_stu_flag:flag,
 					index_code: curPage.index_code,
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'ExtraBehavior/saveExtra', {}, comData, 2, function(data) {
