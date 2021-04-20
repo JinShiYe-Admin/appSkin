@@ -373,12 +373,20 @@
 								}
 								touser.push(obj);
 							}
+							var tempContent = '';
+							if(message.smsConfig.content_type == 't'){
+								tempContent = message.title;
+							}else if(message.smsConfig.content_type == 'c'){
+								tempContent = message.content;
+							}else if(message.smsConfig.content_type == 'tc'){
+								tempContent = '【'+message.title+'】'+message.content;
+							}
 							SMSUtils.sendSMS((msg)=>{
 								setTimeout(function() {
 									mui.back();
 								}, 1000);
 								mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
-							},0,moment().format('YYYY-MM-DD HH:mm:ss'),message.content,message.smsConfig.serviced,0,touser);
+							},0,moment().format('YYYY-MM-DD HH:mm:ss'),tempContent,message.smsConfig.serviced,0,touser);
 						}else{
 							setTimeout(function() {
 								mui.back();
