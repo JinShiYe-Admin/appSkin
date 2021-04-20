@@ -180,8 +180,15 @@
 			// 获取接收人列表
 			var getPeopleList = function() {
 				events.showWaiting();
+				var tempServ  = 0;
+				if(curPage.serviced==99){
+					tempServ = -1;
+				}else{
+					tempServ = curPage.serviced;
+				}
 				var temp = curPage.access.split('#');
 				var comData = {
+					serv_stat:tempServ,//
 					unit_code: personal.unit_code, //
 					index_code: temp[1] //
 				}

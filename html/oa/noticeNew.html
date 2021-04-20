@@ -45,6 +45,10 @@
 					</div>
 				</div>
 				<div id="MultiMedia">
+					<div class="mui-input-row mui-checkbox mui-left" id="senMSN" style="float: right;margin-top: 3px;display: none;">
+						<label style="font-size: 14px;color: #333333;">发送短信</label>
+						<input v-model="smsSend" name="checkbox1" type="checkbox">
+					</div>
 				</div>
 				<form class="mui-input-group">
 					<div @click="selectPeopleFun()" class="mui-input-row" style="height: 50px;">
@@ -85,6 +89,9 @@
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/publicProtocol.js"></script>
+		<!--  -->
+		<script src="../../js/utils/moment.min.js"></script>
+		<script src="../../js/utils/SMS-Utils.js"></script>
 		<!--  -->
 		<script src="../../js/picVideoAudio/MultiMedia.js"></script>
 		<script src="../../js/cloud/AndroidFileSystem.js"></script>
@@ -177,13 +184,17 @@
 					showSelectPeople: '',
 					title: '',
 					content: '',
-					selectPeople: []
+					selectPeople: [],
+					smsConfig:{},//短信配置
+					smsWords:[],//拒绝关键字
+					smsSend:false,//是否发送短信
 				},
 				methods: {
 					selectPeopleFun: function() {
 						var data = {
 							flag: 1, //1 事务
 							needOrder:0,
+							serviced:message.smsConfig.serviced,//
 							access:curPage.access,
 							selectPeople: message.selectPeople
 						}
@@ -200,6 +211,23 @@
 				console.log('2222:' + JSON.stringify(curPage));
 				init(); //初始化控件
 				message.dataFlag = 1;
+				
+				SMSUtils.INDEX_CODE=curPage.access.split('#')[1];
+				SMSUtils.MSG_TYPE=window.storageKeyName.OA_MSG_SMS.AFFAIR.MSG_TYPE;
+				SMSUtils.USER_TYPE=window.storageKeyName.OA_MSG_SMS.AFFAIR.USER_TYPE;
+				SMSUtils.SMS_TYPE=window.storageKeyName.OA_MSG_SMS.SMS_TYPE;
+				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
+				// 获取短信权限
+				SMSUtils.getConfig((msg)=>{
+					if(msg.SMS){
+						message.smsConfig=msg.CONFIG;
+						SMSUtils.getSmsWords((msg2)=>{
+							message.smsWords=msg2.WORDS;
+						},2);
+						//显示发送短信按钮
+						document.getElementById('senMSN').style.display = 'inherit';
+					}
+				});
 			});
 
 			//多媒体控件
@@ -241,7 +269,35 @@
 				//				console.log('encAddr:' + encAddr);
 				//				console.log('encImg:' + encImg);
 				//				console.log('encLen:' + encLen);
-
+				//先判断有没有勾选短信按钮，如果勾选，判断内容是否有敏感词
+				if(message.smsSend){
+					let showToast=false;
+					let words=[];
+					let tempTitle = message.title.replace(/\n/g,'');
+					tempTitle = tempTitle.replace(' ','');
+					for (var i = 0; i < message.smsWords.length; i++) {
+						let word=message.smsWords[i].word;
+						if(tempTitle.indexOf(word)!==-1){
+							showToast=true;
+							words.push(word);
+						}
+					}
+					let comment = message.content.replace(/\n/g,'');
+					comment = comment.replace(' ','');
+					for (var i = 0; i < message.smsWords.length; i++) {
+						let word=message.smsWords[i].word;
+						if(comment.indexOf(word)!==-1){
+							showToast=true;
+							words.push(word);
+						}
+					}
+					if(showToast){
+						mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
+						events.closeWaiting();
+						sendFlag = 0;
+						return 0
+					}
+				}
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				var ids = [];//接收人ID
 				var codes = [];//接收人账号
@@ -265,6 +321,11 @@
 					sendFlag = 0;
 					return;
 				}
+				if(message.smsSend) {
+					message.smsSend = 1;
+				} else {
+					message.smsSend = 0;
+				}
 				console.log('message.content:'+message.content);
 				events.showWaiting();
 				var tempData = {
@@ -273,7 +334,7 @@
 					noticeContent: message.content.replace(/\n/g,'<br>'), //内容
 					noticeEncName: encName, //附件名称
 					noticeEncAddr: encAddr, //附件地址
-					smsSync:0,//是否短信同步
+					smsSync:message.smsSend,//是否短信同步
 					sendManId: personal.user_code, //发布人ID
 					sendManCode: personal.login_name, //发布人账号
 					sendManName: personal.user_name, //发布人姓名
@@ -291,10 +352,37 @@
 					events.closeWaiting();
 					if (data.code == 0) {
 						mui.toast("发布成功")
-						setTimeout(function() {
-							mui.back();
-						}, 1000);
-						mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
+						if(message.smsSend == 1) {
+							let selectData=message.selectPeople;
+							let touser=[];
+							for (var i = 0; i < selectData.length; i++) {
+								let obj={
+									gen_type:SMSUtils.USER_TYPE,
+									dpt_code:selectData[i].dpt_code,
+									dpt_name:selectData[i].dpt_name,
+									grd_code:'',
+									grd_name:'',
+									cls_code:'',
+									cls_name:'',
+									stu_code:'',
+									stu_name:'',
+									gen_code:selectData[i].user_code,
+									gen_name:selectData[i].user_name,
+								}
+								touser.push(obj);
+							}
+							SMSUtils.sendSMS((msg)=>{
+								setTimeout(function() {
+									mui.back();
+								}, 1000);
+								mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
+							},0,moment().format('YYYY-MM-DD HH:mm:ss'),message.content,message.smsConfig.serviced,0,touser);
+						}else{
+							setTimeout(function() {
+								mui.back();
+							}, 1000);
+							mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
+						}
 					} else {
 						mui.toast(data.msg)
 						sendFlag = 0;
