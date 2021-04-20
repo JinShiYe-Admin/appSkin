@@ -304,6 +304,7 @@ var storageKeyName = (function(mod) {
 	
 	//----------OA短信配置---------start
 	mod.OA_MSG_SMS= {
+		SMS_TYPE:'oa_tz_ps_tec',
 		PAYSLIP: {
 		  MSG_TYPE: 'oa-payslip', //信息类型 - OA工资条
 		  USER_TYPE: 'YHLX0003', //目标用户类型 - 教师
