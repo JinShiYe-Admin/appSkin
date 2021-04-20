@@ -192,7 +192,7 @@
 							<div class="line"></div>
 							<div v-cloak class="mui-input-row">
 								<label class="aCss" style="width: 7.5rem;">是否发送短信</label>
-								<div class="mui-switch mui-switch-mini" :class="SMS?'mui-active':''" style="margin-right: 8px;">
+								<div class="mui-switch mui-switch-mini" @click="checkSMS()" :class="SMS?'mui-active':''" style="margin-right: 8px;z-index: 20 !important;">
 									<div class="mui-switch-handle"></div>
 								</div>
 							</div>
@@ -322,6 +322,9 @@
 					SMS:false,//是否发送短信
 				},
 				methods: {
+					checkSMS:function(){
+						this.SMS=!this.SMS
+					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
 						userPicker.setData(datasource.grdList);
@@ -500,13 +503,9 @@
 							// events.closeWaiting();
 							datasource.WORDS=msg2.WORDS
 						},2)
-						//页面按钮控制，控制逻辑自己定义
-						datasource.SMS=true
 						datasource.SHOW=true
 					}else{
-						//页面按钮控制，控制逻辑自己定义
 						datasource.SHOW=false
-						datasource.SMS=false
 						// events.closeWaiting();
 					}
 				})
