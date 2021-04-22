@@ -419,9 +419,29 @@
 								tempContent = '【'+message.title+'】'+message.content;
 							}
 							SMSUtils.sendSMS((msg)=>{
-								setTimeout(function() {
-									mui.back();
-								}, 1000);
+								// 86.设置资料收集的短信返回值
+								events.showWaiting();
+								var dosetData = {
+									infoCollectId: data.data.Result, //信息收集ID
+									msgType: SMSUtils.MSG_TYPE, //信息类型
+									smsMsgtypeCode: SMSUtils.SMS_TYPE, //信息类型代码
+									servied: message.smsConfig.serviced, //订购状态
+									hrSmsid: msg.hr_id, //人事短信接口码
+									isCheck:'1',//是否已审核
+									checkTime: '', //审核时间
+									checkUser: '', //审核人代码
+									checkUserTname: '', //审核人姓名
+									checkUserUnit: '', //审核人单位
+									index_code:curPage.access.split('#')[1],
+								}
+								console.log('dosetData:'+JSON.stringify(dosetData));
+								postDataEncry(window.storageKeyName.INTERFACE_OA + 'infoCollect/doSetSms4InfoCollect', {}, dosetData, 2,function(doData) {
+									events.closeWaiting();
+									setTimeout(function() {
+										mui.back();
+									}, 1000);
+									mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
+								});
 								mui.fire(plus.webview.currentWebview().opener(), 'refreshMinePage', {});
 							},0,moment().format('YYYY-MM-DD HH:mm:ss'),tempContent,message.smsConfig.serviced,0,touser);
 						}else{

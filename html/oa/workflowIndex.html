@@ -480,14 +480,12 @@
 				}
 				// 获取收到的协同事务列表（接收人为单人）
 				postDataEncry(url, {}, comData0, 2, function(data) {
-					events.closeWaiting();
-					console.log('data:' + JSON.stringify(data));
+					events.closeWaiting();;
 					if (data.code != 0) {
 						mui.toast(data.msg);
 						return;
 					}
 					getUserInfo(data.data.list, curPage.access.split('#')[1], 'ApplyManId','ApplyManPic', function(callData) {
-						console.log('callData:' + JSON.stringify(callData));
 						if (self) {
 							if (flag == 0) {
 								self.endPullDownToRefresh();

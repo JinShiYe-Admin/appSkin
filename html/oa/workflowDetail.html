@@ -179,6 +179,9 @@
 		<script src="../../js/utils/storageKeyName.js"></script>
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
+		<!--  -->
+		<script src="../../js/utils/moment.min.js"></script>
+		<script src="../../js/utils/SMS-Utils.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -210,6 +213,21 @@
 				noticeDetailData.pageFlag = curPage.flag;
 				//获取详情
 				getNoticeByReceiveId_sendId_Detail(curPage.flag);
+				// 如果是接收的，需要发送短信
+				if(curPage.flag == 0&&curPage.SmsSync == 1){
+					SMSUtils.INDEX_CODE = curPage.access.split('#')[1];
+					SMSUtils.MSG_TYPE = window.storageKeyName.OA_MSG_SMS.WORKFLOW.MSG_TYPE;
+					SMSUtils.USER_TYPE = window.storageKeyName.OA_MSG_SMS.WORKFLOW.USER_TYPE;
+					SMSUtils.SMS_TYPE = window.storageKeyName.OA_MSG_SMS.SMS_TYPE;
+					SMSUtils.PERSONAL = store.get(window.storageKeyName.PERSONALINFO);
+					// 获取短信权限
+					SMSUtils.getConfig((msg) => {
+						if (msg.SMS) {
+							noticeDetailData.smsConfig = msg.CONFIG;
+							noticeDetailData.smsFlag = true;
+						}
+					});
+				}
 			});
 
 			var tempVue = new Vue({
@@ -246,6 +264,8 @@
 			var noticeDetailData = new Vue({
 				el: "#noticeDetailData",
 				data: {
+					smsConfig:{},//短信配置
+					smsFlag:false,//批复时是否发送短信
 					tag: '', //我的标签
 					pageFlag: curPage.flag, //0接收 1我发送的
 					flag: 0,
@@ -336,9 +356,57 @@
 						postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/doSetAffairApprove', {}, tempData1, 2, function(data) {
 							events.closeWaiting();
 							if (data.code == 0) {
-								noticeDetailData.content = '';
-								mui.toast('成功');
-								getNoticeByReceiveId_sendId_Detail(curPage.flag);
+								if(flag==1&&noticeDetailData.smsFlag){
+									// 110.获取下一级审批人
+									var tempData2 = {
+										approveId: curPage.ApproveId, //审批ID
+										index_code: curPage.access.split('#')[1],
+									}
+									postDataEncry(window.storageKeyName.INTERFACE_OA + 'approve/getNextAffairApproveMan', {}, tempData2, 2, function(manData) {
+										events.closeWaiting();
+										if (manData.code == 0) {
+											if(manData.data.list&&manData.data.list.length>0){
+												// let selectData=message.selectPeople;
+												let touser=[];
+												// for (var i = 0; i < selectData.length; i++) {
+													let obj={
+														gen_type:SMSUtils.USER_TYPE,
+														dpt_code:manData.data.list[0].ManDeptId,
+														dpt_name:manData.data.list[0].ManDept,
+														grd_code:'',
+														grd_name:'',
+														cls_code:'',
+														cls_name:'',
+														stu_code:'',
+														stu_name:'',
+														gen_code:manData.data.list[0].ManId,
+														gen_name:manData.data.list[0].ManName,
+													}
+													touser.push(obj);
+												// }
+												var tempContent = '';
+												if(noticeDetailData.smsConfig.content_type == 't'){
+													tempContent = noticeDetailData.detailModel.ApplyTitle;
+												}else if(noticeDetailData.smsConfig.content_type == 'c'){
+													tempContent = noticeDetailData.detailModel.ApplyContent;
+												}else if(noticeDetailData.smsConfig.content_type == 'tc'){
+													tempContent = '【'+noticeDetailData.detailModel.ApplyTitle+'】'+noticeDetailData.detailModel.ApplyContent;
+												}
+												SMSUtils.sendSMS((msg)=>{
+													noticeDetailData.content = '';
+													mui.toast('成功');
+													getNoticeByReceiveId_sendId_Detail(curPage.flag);
+												},0,moment().format('YYYY-MM-DD HH:mm:ss'),tempContent,noticeDetailData.smsConfig.serviced,0,touser);
+											}
+										} else {
+											mui.toast(data.msg);
+										}
+									});
+								}else{
+									noticeDetailData.content = '';
+									mui.toast('成功');
+									getNoticeByReceiveId_sendId_Detail(curPage.flag);
+								}
 							} else {
 								mui.toast(data.msg);
 							}
