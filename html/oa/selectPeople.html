@@ -181,10 +181,10 @@
 			var getPeopleList = function() {
 				events.showWaiting();
 				var tempServ  = 0;
-				if(curPage.serviced==99){
-					tempServ = -1;
-				}else{
+				if(curPage.serviced==0||curPage.serviced==1){
 					tempServ = curPage.serviced;
+				}else{
+					tempServ = -1;
 				}
 				var temp = curPage.access.split('#');
 				var comData = {

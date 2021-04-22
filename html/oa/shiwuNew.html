@@ -194,9 +194,13 @@
 						var data = {
 							flag: 1, //1 事务
 							needOrder:0,
-							serviced:message.smsConfig.serviced,//
 							access:curPage.access,
 							selectPeople: message.selectPeople
+						}
+						if(message.smsConfig.serviced){
+							data.serviced = message.smsConfig.serviced;
+						}else{
+							data.serviced = 99;
 						}
 						utils.mOpenWithData("../../html/oa/selectPeople.html", data);
 					}

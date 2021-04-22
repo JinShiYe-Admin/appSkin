@@ -224,9 +224,13 @@
 						var data = {
 							needOrder: 1, //需要按照选择人的顺便给值，无全选、反选
 							// flag: 1, //1 事务
-							serviced:message.smsConfig.serviced,//
 							access: curPage.access,
 							selectPeople: []
+						}
+						if(message.smsConfig.serviced){
+							data.serviced = message.smsConfig.serviced;
+						}else{
+							data.serviced = 99;
 						}
 						utils.mOpenWithData("../../html/oa/selectPeople.html", data);
 					},
@@ -294,8 +298,8 @@
 				});
 				
 				SMSUtils.INDEX_CODE=curPage.access.split('#')[1];
-				SMSUtils.MSG_TYPE=window.storageKeyName.OA_MSG_SMS.AFFAIR.MSG_TYPE;
-				SMSUtils.USER_TYPE=window.storageKeyName.OA_MSG_SMS.AFFAIR.USER_TYPE;
+				SMSUtils.MSG_TYPE=window.storageKeyName.OA_MSG_SMS.WORKFLOW.MSG_TYPE;
+				SMSUtils.USER_TYPE=window.storageKeyName.OA_MSG_SMS.WORKFLOW.USER_TYPE;
 				SMSUtils.SMS_TYPE=window.storageKeyName.OA_MSG_SMS.SMS_TYPE;
 				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
 				// 获取短信权限
