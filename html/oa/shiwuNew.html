@@ -385,6 +385,8 @@
 							}else if(message.smsConfig.content_type == 'tc'){
 								tempContent = '【'+message.title+'】'+message.content;
 							}
+							tempContent = tempContent.replace(/\n/g,'');
+							tempContent = tempContent.replace(' ','');
 							SMSUtils.sendSMS((msg)=>{
 								// 85.设置协同事务的短信返回值
 								events.showWaiting();

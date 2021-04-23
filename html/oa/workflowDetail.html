@@ -392,11 +392,13 @@
 												}else if(noticeDetailData.smsConfig.content_type == 'tc'){
 													tempContent = '【'+noticeDetailData.detailModel.ApplyTitle+'】'+noticeDetailData.detailModel.ApplyContent;
 												}
+												tempContent = tempContent.replace(/\n/g,'');
+												tempContent = tempContent.replace(' ','');
 												SMSUtils.sendSMS((msg)=>{
 													noticeDetailData.content = '';
 													mui.toast('成功');
 													getNoticeByReceiveId_sendId_Detail(curPage.flag);
-												},0,moment().format('YYYY-MM-DD HH:mm:ss'),tempContent,noticeDetailData.smsConfig.serviced,0,touser);
+												},0,moment().format('YYYY-MM-DD HH:mm:ss'),tempContent,noticeDetailData.smsConfig.serviced,0,touser,noticeDetailData.detailModel.ApplyManId,noticeDetailData.detailModel.ApplyManName);
 											}
 										} else {
 											mui.toast(data.msg);

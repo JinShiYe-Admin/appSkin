@@ -418,6 +418,8 @@
 							}else if(message.smsConfig.content_type == 'tc'){
 								tempContent = '【'+message.title+'】'+message.content;
 							}
+							tempContent = tempContent.replace(/\n/g,'');
+							tempContent = tempContent.replace(' ','');
 							SMSUtils.sendSMS((msg)=>{
 								// 86.设置资料收集的短信返回值
 								events.showWaiting();

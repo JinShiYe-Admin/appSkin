@@ -91,11 +91,11 @@ var SMSUtils = (function(mod) {
 	 * 
 	 * callback   hr_id 记录ID
 	 */
-	mod.sendSMS=function sendSms(callback,is_delay,delay_time,msg_content,serviced,is_short,list){
+	mod.sendSMS=function sendSms(callback,is_delay,delay_time,msg_content,serviced,is_short,list,tempCode,tempUser){
 		comData = {
 			send_unit_code:this.PERSONAL.unit_code,
-			send_user:this.PERSONAL.user_code,
-			send_user_tname:this.PERSONAL.user_name,
+			send_user:tempCode?tempCode:this.PERSONAL.user_code,
+			send_user_tname:tempUser?tempUser:this.PERSONAL.user_name,
 			send_soure:'schapp#[APP]',
 			send_time:moment().format('YYYY-MM-DD HH:mm:ss'),
 			is_delay:is_delay,
