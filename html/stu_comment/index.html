@@ -259,7 +259,10 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
-			<a v-cloak v-if="showBack==1"  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
+				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
+			</a>
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
@@ -318,6 +321,7 @@
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/utils/mui.picker.min.js"></script>
 		<script src="../../js/utils/mui.poppicker.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -341,9 +345,13 @@
 				data: {
 					titleName: '',
 					showBack:0,
-					showAdd: false
+					showAdd: false,
+					headImg: setImg(personal.img_url, 9)
 				},
 				methods: {
+					clickLeftImg: function() {
+						appPay.openMenu();
+					},
 					add: function() {
 						if (datasource.grd.length == 0) {
 							mui.toast('无法获取年级数据，不能进行添加操作')
@@ -472,18 +480,16 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.titleName = curPage.name;
 				if(curPage&&JSON.stringify(curPage)=='{}'){//前四个页面时，不显示返回按钮
 					var ws = plus.webview.currentWebview();
-					console.log("当前Webview：" + JSON.stringify(ws.preload));
 					if (ws.preload) {
 						curPage = ws.preload;
 						tempVue.titleName = ws.preload.name;
 					}
-					// if (ws.preload.childList.length>0) {
-					// 	tempVue.showBack = 1;
-					// }
+					if (ws.preload.index == 0) {
+						tempVue.showBack = 2;
+					}
 				}else{
 					tempVue.showBack = 1;//更多页面打开时，显示返回按钮
 				}

@@ -282,16 +282,21 @@
 						}
 					});
 					// utils.mOpenWithData("../../html/login/loginIndex.html", {});
-					var curr = plus.webview.currentWebview();
-					var wvs = plus.webview.all();
-					for (var i = 0, len = wvs.length; i < len; i++) {
-						//关闭除login页面外的其他页面
-						if (wvs[i]&& wvs[i].getURL() && wvs[i].getURL().indexOf('loginIndex.html') != -1) {
-							continue;
+						var curr = plus.webview.currentWebview();
+						var wvs = plus.webview.all();
+						if(wvs){
+							for (var i = 0, len = wvs.length; i < len; i++) {
+								//关闭除login页面外的其他页面
+								if (wvs[i]&& wvs[i].getURL() && wvs[i].getURL().indexOf('loginIndex.html') != -1) {
+									continue;
+								}
+								if (wvs[i]&& wvs[i].getURL() && wvs[i].getURL().indexOf('mine.html') != -1) {
+									continue;
+								}
+								plus.webview.close(wvs[i]);
+							}
 						}
-						plus.webview.close(wvs[i]);
-					}
-					curr.close();
+						curr.close();
 				}
 
 				//左滑显示出来的菜单，只需监听右滑，然后将菜单关闭即可；在该菜单上左滑，不做任何操作；

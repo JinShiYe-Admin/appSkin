@@ -35,9 +35,10 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempHead">
-			<a v-cloak @click="clickLeftImg" class="mui-icon mui-pull-left">
+			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
 				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
 			</a>
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;" id="contentData">
@@ -58,6 +59,7 @@
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -93,10 +95,6 @@
 				//获取个人信息
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				console.log('personal:' + JSON.stringify(personal));
-				var main, menu, mask = mui.createMask(_closeMenu);
-				var showMenu = false,
-					mode = 'all-move';
-
 				function back() {
 					if (showMenu) {
 						//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
@@ -143,156 +141,6 @@
 					}
 				}
 
-				/**
-				 * 显示菜单菜单
-				 */
-				function openMenu() {
-					if (!showMenu) {
-						var wvs = plus.webview.getDisplayWebview();
-						for (var i = 0; i < wvs.length; i++) {
-							var url = wvs[i].getURL();
-							if (url.indexOf('/mine/mine') == -1) {
-								if (plus.os.name == 'Android') {
-									wvs[i].setStyle({
-										mask: "rgba(0,0,0,0.1)"
-									});
-								} else {
-									wvs[i].setStyle({
-										mask: "rgba(0,0,0,0.3)"
-									});
-								}
-								wvs[i].addEventListener("maskClick", function() {
-									closeMenu();
-								}, false);
-							}
-						}
-						//侧滑菜单处于隐藏状态，则立即显示出来；
-						//显示完毕后，根据不同动画效果移动窗体；
-						if (menu) {
-							menu.show('none', 0, function() {
-								switch (mode) {
-									case 'main-move':
-										//主窗体开始侧滑；
-										main.setStyle({
-											left: '70%',
-											transition: {
-												duration: 150
-											}
-										});
-										break;
-									case 'menu-move':
-										menu.setStyle({
-											left: '0%',
-											transition: {
-												duration: 10
-											}
-										});
-										break;
-									case 'all-move':
-										main.setStyle({
-											left: '70%',
-											transition: {
-												duration: 150
-											}
-										});
-										menu.setStyle({
-											left: '0%',
-											transition: {
-												duration: 10
-											}
-										});
-										break;
-								}
-								//显示遮罩
-								mask.show();
-								showMenu = true;
-							});
-						}
-						//通知index页隐藏tab栏
-					}
-				}
-				/**
-				 * 关闭侧滑菜单
-				 */
-				function closeMenu() {
-					_closeMenu();
-					//关闭遮罩
-					mask.close();
-				}
-
-				/**
-				 * 关闭侧滑菜单（业务部分）
-				 */
-				function _closeMenu() {
-					if (showMenu) {
-						var wvs = plus.webview.getDisplayWebview();
-						for (var i = 0; i < wvs.length; i++) {
-							wvs[i].setStyle({
-								mask: "none"
-							});
-						}
-						//关闭遮罩；
-						switch (mode) {
-							case 'main-move':
-								//主窗体开始侧滑；
-								main.setStyle({
-									left: '0',
-									transition: {
-										duration: 150
-									}
-								});
-								break;
-							case 'menu-move':
-								//主窗体开始侧滑；
-								menu.setStyle({
-									left: '-70%',
-									transition: {
-										duration: 150
-									}
-								});
-								break;
-							case 'all-move':
-								//主窗体开始侧滑；
-								main.setStyle({
-									left: '0',
-									transition: {
-										duration: 150
-									}
-								});
-								//menu页面同时移动
-								menu.setStyle({
-									left: '-70%',
-									transition: {
-										duration: 150
-									}
-								});
-
-								break;
-						}
-
-						//等窗体动画结束后，隐藏菜单webview，节省资源；
-						setTimeout(function() {
-							menu.hide();
-						}, 200);
-						//改变标志位
-						showMenu = false;
-						//通知index页显示tab栏
-					}
-				}
-				//重写mui.menu方法，Android版本menu按键按下可自动打开、关闭侧滑菜单；
-				mui.menu = function() {
-					if (showMenu) {
-						closeMenu();
-					} else {
-						openMenu();
-					}
-				}
-				// var slider = mui("#slider");
-				// //轮播开始
-				// slider.slider({
-				// 	interval: 5000
-				// });
-
 				window.addEventListener('home_setHeadImg', function(data) {
 					tempHead.headImg = data.detail.img_url;
 				});
@@ -325,11 +173,12 @@
 					el: "#tempHead",
 					data: {
 						headTitle: '',
-						headImg: setImg(personal.img_url)
+						headImg: setImg(personal.img_url),
+						showBack: 0,
 					},
 					methods: {
 						clickLeftImg: function() {
-							openMenu();
+							appPay.openMenu();
 						}
 					}
 				});
@@ -350,14 +199,22 @@
 					},
 				});
 				// mui.plusReady(function() {
-				var ws = plus.webview.currentWebview();
-				console.log("当前Webview窗口：" + JSON.stringify(ws.preload));
-				if (ws.preload) {
-					tempHead.headTitle = ws.preload.name;
-					contentData.showArray = ws.preload.childList;
-					contentData.pageUrl = ws.preload.url;
-					//获取未读数
-					getUnReadCntFun();
+				curPage = utils.getDataFromUrl(window.location.href);
+				tempHead.headTitle = curPage.name;
+				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
+					var ws = plus.webview.currentWebview();
+					if (ws.preload) {
+						tempHead.headTitle = ws.preload.name;
+						contentData.showArray = ws.preload.childList;
+						contentData.pageUrl = ws.preload.url;
+						//获取未读数
+						getUnReadCntFun();
+					}
+					if (ws.preload.index == 0) {
+						tempHead.showBack = 2;
+					}
+				} else {
+					tempHead.showBack = 1; //更多页面打开时，显示返回按钮
 				}
 
 				//安卓的连续点击两次退出程序
