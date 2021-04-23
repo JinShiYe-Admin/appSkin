@@ -480,11 +480,9 @@
 				contentData.semFlag2Data.endTime=end_month;
 				
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('2222:' + JSON.stringify(curPage));
 				tempHead.headTitle = curPage.name;
 				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
 					var ws = plus.webview.currentWebview();
-					console.log("当前Webview：" + JSON.stringify(ws.preload));
 					if (ws.preload) {
 						curPage = ws.preload;
 						tempHead.headTitle = ws.preload.name;

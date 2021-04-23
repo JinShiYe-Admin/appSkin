@@ -40,6 +40,8 @@
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src="../../js/utils/vue.js"></script>
 		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/showMenu.js"></script>
 		<!---->
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/events.js"></script>
@@ -47,11 +49,18 @@
 		
 		<script type="text/javascript">
 			mui.init();
+			var curPage = {};
 			var tempHead = new Vue({
 				el: "#tempHead",
 				data: {
-					showBack: 0,
-					headTitle: ''
+					headTitle: '',
+					showBack:0,
+					headImg: setImg(personal.img_url, 9)
+				},
+				methods: {
+					clickLeftImg: function() {
+						appPay.openMenu();
+					}
 				}
 			});
 			//vue数据
@@ -70,14 +79,20 @@
 			
 			
 			mui.plusReady(function() {
-				
-				var ws = plus.webview.currentWebview(); 
-				console.log("当前Webview：" + JSON.stringify(ws.preload));
-				if (ws.preload) { 
-					tempHead.headTitle = ws.preload.name;
-					contentData.showArray=ws.preload.childList;
-				} else {
-					tempHead.showBack = 1;
+				curPage = utils.getDataFromUrl(window.location.href);
+				tempHead.headTitle = curPage.name;
+				if(curPage&&JSON.stringify(curPage)=='{}'){//前四个页面时，不显示返回按钮
+					var ws = plus.webview.currentWebview();
+					if (ws.preload) {
+						curPage = ws.preload;
+						tempHead.headTitle = ws.preload.name;
+						contentData.showArray=ws.preload.childList;
+					}
+					if (ws.preload.index == 0) {
+						tempHead.showBack = 2;
+					}
+				}else{
+					tempHead.showBack = 1;//更多页面打开时，显示返回按钮
 				}
 			});
 			

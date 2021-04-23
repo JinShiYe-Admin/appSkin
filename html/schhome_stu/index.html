@@ -435,11 +435,9 @@
 
 			mui.plusReady(function() {
 				curPage = utils.getDataFromUrl(window.location.href);
-				console.log('2222:' + JSON.stringify(curPage));
 				tempVue.headTitle = curPage.name;
 				if (curPage && JSON.stringify(curPage) == '{}') { //前四个页面时，不显示返回按钮
 					var ws = plus.webview.currentWebview();
-					console.log("Webview：" + JSON.stringify(ws.preload));
 					if (ws.preload) {
 						curPage = ws.preload;
 						tempVue.headTitle = ws.preload.name;
