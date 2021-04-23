@@ -259,7 +259,10 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav" id="tempVue">
-			<a v-cloak v-if="showBack==1"  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
+				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
+			</a>
+			<a v-cloak v-if="showBack==1" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{titleName}}</h1>
 			<a v-if="showAdd" @click="add()" class="mui-pull-right" style="font-size: 1.5625rem;margin-top: 0px;">+</a>
 		</header>
