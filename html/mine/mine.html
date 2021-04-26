@@ -284,41 +284,48 @@
 					// utils.mOpenWithData("../../html/login/loginIndex.html", {});
 						var curr = plus.webview.currentWebview();
 						var wvs = plus.webview.all();
-						if(wvs){
-							for (var i = 0, len = wvs.length; i < len; i++) {
-								//关闭除login页面外的其他页面
-								if (wvs[i]&& wvs[i].getURL() && wvs[i].getURL().indexOf('loginIndex.html') != -1) {
-									continue;
+						try{
+							if(wvs){
+								for (var i = 0, len = wvs.length; i < len; i++) {
+									//关闭除login 页面外的其他页面
+									if (wvs[i].getURL()!=null && wvs[i].getURL()!=undefined){
+										if(wvs[i].getURL().indexOf('loginIndex.html')!=-1) {
+											continue;
+										}else{
+											plus.webview.close(wvs[i]);
+										}
+									}
 								}
-								if (wvs[i]&& wvs[i].getURL() && wvs[i].getURL().indexOf('mine.html') != -1) {
-									continue;
-								}
-								plus.webview.close(wvs[i]);
 							}
+						}catch(e){
+							console.log("这有一个退出异常！！！！！！！！！！: " + JSON.stringify(e));
 						}
+						//关闭mine页面
 						curr.close();
 				}
 
 				//左滑显示出来的菜单，只需监听右滑，然后将菜单关闭即可；在该菜单上左滑，不做任何操作；
 				//			window.addEventListener("swiperight", hideMenu);
-
 				document.getElementById("close-btn").addEventListener('tap', function() {
-					var personal = store.get(window.storageKeyName.PERSONALINFO);
-					var enData0 = {};
-					//不需要加密的数据
-					var comData0 = {
-						platform_code: personal.platform_code, //平台代码
-						app_code: personal.app_code, //应用系统代码
-						unit_code: personal.unit_code, //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
-						index_code:'index',
-						access_token: personal.access_token
-					};
-					events.showWaiting();
-					//发送网络请求，data为网络返回值
-					postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'session/removeSession', enData0, comData0, 0, function(data) {
-						events.closeWaiting();
-						quitLogin();
-					});
+						var personal = store.get(window.storageKeyName.PERSONALINFO);
+						if(personal){//多次点击按钮，personal为null
+							console.log("personal: " + JSON.stringify(personal));
+							var enData0 = {};
+							//不需要加密的数据
+							var comData0 = {
+								platform_code: personal.platform_code, //平台代码
+								app_code: personal.app_code, //应用系统代码
+								unit_code: personal.unit_code, //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+								index_code:'index',
+								access_token: personal.access_token
+							};
+							events.showWaiting();
+							//发送网络请求，data为网络返回值
+							postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'session/removeSession', enData0, comData0, 0, function(data) {
+								events.closeWaiting();
+								quitLogin();
+							});
+						}
 				});
 			});
 		</script>
