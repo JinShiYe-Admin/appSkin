@@ -188,6 +188,15 @@
 							<label class="aCss">说明</label>
 							<textarea style="border: 1px solid rgba(0,0,0,.2);"  maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
 						</div>
+						<template v-if="SHOW">
+							<div class="line"></div>
+							<div v-cloak class="mui-input-row">
+								<label class="aCss" style="width: 7.5rem;">是否发送短信</label>
+								<div class="mui-switch mui-switch-mini" @click="checkSMS()" :class="SMS?'mui-active':''" style="margin-right: 8px;z-index: 200 !important;">
+									<div class="mui-switch-handle"></div>
+								</div>
+							</div>
+						</template>
 					</div>
 				</div>
 			</div>
@@ -205,6 +214,7 @@
 		<script src="../../js/qiniu/cloudutil.js"></script>
 		<script src="../../js/utils/mui.picker.min.js"></script>
 		<script src="../../js/utils/mui.poppicker.js"></script>
+		<script src="../../js/utils/SMS-Utils.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -268,8 +278,15 @@
 					bedList: [], //床位号数组
 					attendanceList: [], //考勤细项数组
 					restTimeList: [], //休息时间数组
+					CONFIG:{},//短信配置 对象
+					WORDS:[],//拒绝关键字 对象
+					SHOW:false,//是否显示发送短信
+					SMS:false,//是否发送短信
 				},
 				methods: {
+					checkSMS:function(){
+						this.SMS=!this.SMS
+					},
 					showBuilding: function() {
 						var userPicker = new $M.PopPicker();
 						userPicker.setData(datasource.buildingList);
@@ -418,7 +435,25 @@
 
 
 
+				SMSUtils.INDEX_CODE=curPage.index_code;
+				SMSUtils.MSG_TYPE=window.storageKeyName.DORM_MSG_SMS.DORM.MSG_TYPE;
+				SMSUtils.USER_TYPE=window.storageKeyName.DORM_MSG_SMS.DORM.USER_TYPE;
+				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
 				events.showWaiting();
+				//获取短信配置和屏蔽关键字
+				SMSUtils.getConfig((msg)=>{
+					if(msg.SMS){
+						datasource.CONFIG=msg.CONFIG
+						SMSUtils.getSmsWords((msg2)=>{
+							// events.closeWaiting();
+							datasource.WORDS=msg2.WORDS
+						},2)
+						datasource.SHOW=true
+					}else{
+						datasource.SHOW=false
+						// events.closeWaiting();
+					} 
+				})
 				getBuildingList();
 				// 获取常量
 				getDict();
@@ -545,6 +580,26 @@
 			
 			// 提交表单数据
 			function submitData() {
+				let comm=datasource.formData.comment
+				let comment=comm.replace(/\s+/g, '').replace(/\n/g, '').replace(/\t/g, '').replace(/\r/g, '')
+				let flag=0;
+				if(datasource.SMS){
+					flag=1;
+					let showToast=false
+					 let words=[]
+					 for (var i = 0; i < datasource.WORDS.length; i++) {
+					 	let word=datasource.WORDS[i].word
+					 	if(comment.indexOf(word)!==-1){
+					 		showToast=true
+					 		words.push(word)
+					 	}
+					 }
+					 if(showToast){
+					 	mui.toast('含有禁止使用的关键词	‘'+words.join("/")+'’	请编辑后再尝试发送')
+					 	events.closeWaiting();
+					 	return 0
+					 }
+				}
 				comData = {
 					attendance_date:datasource.formData.time,
 					bed_nums:datasource.formData.bed.value,
@@ -552,10 +607,11 @@
 					floor_num:''+datasource.formData.floor.value,
 					item_name:datasource.formData.attendance.value,
 					register_type:'room',
-					remark:datasource.formData.comment,
+					remark:comment,
 					rest_code:datasource.formData.restTime.value, 
 					room_name:datasource.formData.dorm.value,
 					index_code: curPage.index_code,
+					sms_parent_stu_flag:flag
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_DORM + 'dormAttendance/add', {}, comData, 2, function(data) {
 					console.log("data: " + JSON.stringify(data));
