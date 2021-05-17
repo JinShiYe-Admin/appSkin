@@ -517,6 +517,34 @@
 						childList: [
 						]
 					},
+					{
+						name: "markingPapers",//阅卷--老师
+						href: "../../html/markingPapers/index.html",
+						img_href: "../../img/markingPapers/interaction_tab.png",
+						tempID: 'markingPapers',
+						cls: 'mui-icon iconfont icon-jiaxiaohudong',
+						url: 'schapp_markingPapers',
+						childList: [
+							{
+								name:'周测', 
+								icon:'../../img/markingPapers/school_notice.png',
+								href: "../../html/markingPapers/weekTest_index.html",
+								url:'schapp_markingPapers_weekTest'
+							},
+							{
+								name:'月考',
+								icon:'../../img/markingPapers/grade_notice.png',
+								href: "../../html/markingPapers/monthTest_index.html",
+								url:'schapp_markingPapers_monthTest'
+							},
+							{
+								name:'期中期末',
+								icon:'../../img/markingPapers/class_notice.png',
+								href: "../../html/markingPapers/termTest_index.html",
+								url:'schapp_markingPapers_termTest'
+							},
+						]
+					},
 					]
 				}
 			});
