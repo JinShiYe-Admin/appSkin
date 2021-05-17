@@ -145,9 +145,13 @@
 			mui.init({
 				beforeback: function() {
 					if(isRefresh) {
-						self.opener().evalJS("getAnalysisData();");
+						if(self.opener()){//按钮多次点击，opener为null
+							self.opener().evalJS("getAnalysisData();");
+						}
 					}else{
-						self.opener().evalJS("subRadar.resize();");
+						if(self.opener()){//按钮多次点击，opener为null
+							self.opener().evalJS("subRadar.resize();");
+						}
 					}
 					self.close();
 				}

@@ -89,23 +89,11 @@
 				mui.init({
 					statusBarBackground: '#00CFBD',
 					swipeBack: false,
-					beforeback: back
 				});
 
 				//获取个人信息
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				console.log('personal:' + JSON.stringify(personal));
-				function back() {
-					if (showMenu) {
-						//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
-						closeMenu();
-						return false;
-					} else {
-						//菜单处于隐藏状态，执行返回时，要先close菜单页面，然后继续执行mui.back逻辑关闭主窗口；
-						menu.close('none');
-						return true;
-					}
-				}
 				// 获取未读数
 				getUnReadCntFun = function() {
 					for (var a = 0; a < contentData.showArray.length; a++) {
@@ -149,25 +137,6 @@
 					//获取未读数
 					getUnReadCntFun();
 				});
-				//关闭侧滑
-				window.addEventListener('closeMinePage', function(data) {
-					closeMenu();
-				});
-
-				window.addEventListener('hideMenu', function(data) {
-					console.log('侧滑执行方法')
-					mask.close();
-					menu.hide();
-					showMenu = false;
-					var wvs = plus.webview.getDisplayWebview();
-					for (var i = 0; i < wvs.length; i++) {
-						wvs[i].setStyle({
-							mask: "none"
-						});
-					}
-				});
-
-
 
 				var tempHead = new Vue({
 					el: "#tempHead",

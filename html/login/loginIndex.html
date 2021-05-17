@@ -105,6 +105,7 @@
 		});
 
 		mui.plusReady(function() {
+			
 			//判断是否是第一次使用APP start
 			var firstOpen = store.get(window.storageKeyName.FIRSTOPEN);
 			if(firstOpen == null){
@@ -197,21 +198,24 @@
 				}
 			});
 		}
-		
+		var login=true;
 		document.getElementById("login").addEventListener('tap', function(event) {
-			console.log("登录");
-			var tempName = document.getElementById("account").value;
-			var tempPW = document.getElementById("password").value;
-			console.log('tempName111:' + tempName + ',tempPW' + tempPW);
-			//判断输入是否符合要求
-			if (checkInput(tempName)) {
-				if (checkInput(tempPW)) {
-					getEncryptKeyLogin(tempName, tempPW);
+			if(login){
+				login=false;
+				console.log("登录");
+				var tempName = document.getElementById("account").value;
+				var tempPW = document.getElementById("password").value;
+				console.log('tempName111:' + tempName + ',tempPW' + tempPW);
+				//判断输入是否符合要求
+				if (checkInput(tempName)) {
+					if (checkInput(tempPW)) {
+						getEncryptKeyLogin(tempName, tempPW);
+					} else {
+						login=true;
+					}
 				} else {
-		
+					login=true;
 				}
-			} else {
-		
 			}
 		});
 
@@ -263,6 +267,7 @@
 					store.set(window.storageKeyName.SHAKEHAND, data.data);
 					loginPro(tempName, tempPW, data.data);
 				} else {
+					login=true;
 					if (plus.networkinfo.getCurrentType() == plus.networkinfo.CONNECTION_NONE) {
 						mui.toast('网络异常，请检查网络设置！');
 					} else {
@@ -408,6 +413,7 @@
 						}
 					});
 				} else {
+					login=true;
 					mui.toast(data1.msg);
 				}
 			});

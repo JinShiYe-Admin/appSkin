@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试
+	mod.key =5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试   
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -378,12 +378,20 @@ var storageKeyName = (function(mod) {
 	      MSG_TYPE: 'ac-outclsbehavior', //信息类型 - 课外行为
 	      USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
 	   },
-	   // DORMBEHAVIOR: {
-	   //    MSG_TYPE: 'ac-dormbehavior', //信息类型 - 宿舍行为
-	   //    USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
-	   // },
 	}
 	//----------学生行为 短信配置---------end
+	//----------学生宿舍 短信配置---------start
+	mod.DORM_MSG_SMS= {
+	   DORM: {
+	      MSG_TYPE: 'ac-dorm', //信息类型 - 宿舍考勤
+	      USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	   },
+	   DORMBEHAVIOR: {
+	      MSG_TYPE: 'ac-dormbehavior', //信息类型 - 宿舍行为
+	      USER_TYPE: 'YHLX0004,YHLX0005', //目标用户类型 - 学生家长
+	   },
+	}
+	//----------学生宿舍 短信配置---------end
 	
 	//---Activity的code---start---
 	mod.CODERECORDVIDEO = 0; //录像
