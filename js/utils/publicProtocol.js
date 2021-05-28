@@ -208,6 +208,9 @@ var postDataEncry1 = function(encryData, commonData, flag) {
 		if (commonData[item] instanceof Array) {
 			console.log('000');
 			arr1.push(item + '=' + JSON.stringify(commonData[item]) + '');
+		}else if(commonData[item] instanceof Object){
+			console.log('000');
+			arr1.push(item + '=' + JSON.stringify(commonData[item]) + '');
 		} else {
 			arr1.push(item + '=' + commonData[item]);
 		}
@@ -256,6 +259,7 @@ var xhrPost = function(url, commonData, callback) {
 		console.log('传递的参数' + urlArr[urlArr.length - 1] + ':', tempData);
 
 		var tempStr = JSON.stringify(tempData).replace(/\\/g, "");
+		console.log('tempStrtempStr:'+tempStr);
 		jQAjaxPost(url, tempStr, callback);
 	});
 }
@@ -323,6 +327,7 @@ var jQAjaxPost = function(url, data, callback) {
 				});
 			} else if (success_data.code == 'sup_0015') {
 				mui.toast(success_data.msg);
+				plus.screen.lockOrientation('portrait-primary');
 				setTimeout(function() {
 					//获取个人信息
 					var personal = store.get(window.storageKeyName.PERSONALINFO);

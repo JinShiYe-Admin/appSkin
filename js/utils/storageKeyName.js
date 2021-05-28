@@ -1,7 +1,7 @@
 //此js用于保存本地存储时，用到的key值
 
 var storageKeyName = (function(mod) {
-	mod.key =5; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试   
+	mod.key =3; //1:山东开发 2:广西开发 3:联测 4:云测 5:正式 6性能测试   
 	switch(mod.key) {
 		case 1: //山东开发
 			mod.PLATFORMCODE = 'PT0002'; //平台代码
@@ -28,6 +28,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '? 需连广西开发环境';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_MARKINGPAPERS = '? 需连广西开发环境';//考务--阅卷，（蒙)
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -57,6 +58,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)、行为与评语
 			mod.INTERFACE_ZXKT = 'http://192.168.0.114:6925/resstudysubapi/api';//智学课堂（廖）
+			mod.INTERFACE_MARKINGPAPERS = '? 需连广西开发环境';//考务--阅卷，（蒙)
 			//七牛上传
 			mod.QN_APPID = 15;//七牛appid
 			mod.QN_APPKEY = "oakf1010";//七牛appkey
@@ -86,6 +88,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/testhsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://139.129.252.49:8180/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_MARKINGPAPERS = 'http://139.129.252.49:8180/stuzysubapi/api/admin/';//考务--阅卷，（蒙)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -115,6 +118,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = 'http://nwifapp.jiaobaowang.net/hsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://nwifapp.jiaobaowang.net/hsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://nwifapp.jiaobaowang.net/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_MARKINGPAPERS = 'http://nwifapp.jiaobaowang.net/stuzysubapi/api/admin/';//考务--阅卷，（蒙)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey
@@ -144,6 +148,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = 'http://apps.108800.com:8080/hsservsubapi/';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = 'http://apps.108800.com:8080/hsservsubapi/';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = 'http://apps.108800.com/stukq/api/app/';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_MARKINGPAPERS = 'http://apps.108800.com/stuzysubapi/api/admin/';//考务--阅卷，（蒙)
 			//七牛上传
 			mod.QN_APPID = 17;//七牛appid
 			mod.QN_APPKEY = "oafor1010";//七牛appkey
@@ -173,6 +178,7 @@ var storageKeyName = (function(mod) {
 			mod.INTERFACE_SCHHOME = '';//家校互动（顾)
 			mod.INTERFACE_SCHHOME_STU = '';//家校互动 学生端（顾)
 			mod.PARENTS_ATTENDANCE = '';//学生考勤家长端（阮)、行为与评语
+			mod.INTERFACE_MARKINGPAPERS = 'http://139.129.252.49:8180/stuzysubapi/api/admin/';//考务--阅卷，（蒙)
 			//七牛上传
 			mod.QN_APPID = 16;//七牛appid
 			mod.QN_APPKEY = "oatest1010";//七牛appkey

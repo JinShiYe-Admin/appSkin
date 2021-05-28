@@ -123,6 +123,13 @@
       "font_class": "zhixueketang",
       "unicode": "e63b",
       "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "21637652",
+      "name": "阅卷",
+      "font_class": "yuejuan",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
     }
   ]
 }

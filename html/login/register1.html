@@ -321,21 +321,58 @@
 								var tempUrl = 'register';
 								if(register.curPage.status == 1){
 									tempUrl = 'register/resetPwd';
+									//发送网络请求，data为网络返回值
+									postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + tempUrl, {}, comData0, 0, function(data) {
+										console.log('register:' + JSON.stringify(data));
+										events.closeWaiting();
+										if (data.code == 0) {
+											mui.toast(data.msg);
+											register.refresh();
+										} else {
+											mui.toast(data.msg);
+										}
+									});
 								}else{
 									comData0.unit_code = register.curPage.unit_code;
 									comData0.login_name = register.uaccount;
+									
+									var enData1 = {};
+									var publicPar = store.get(window.storageKeyName.PUBLICPARAMETER);
+									//不需要加密的数据
+									var comData1 = {
+										uuid: publicPar.uuid, //设备唯一识别码,防同一应用在不同机器上登录互串,验证码校检用
+										webid: publicPar.webid, //浏览器识别码,防不同浏览器登录同一应用互串,验证码校检用（web用浏览器类型加版本，app用操作系统+版本））
+										shaketype: '1', //
+										login_name: '00000000000', //登录名
+										password: '', //
+										device_type: '1', //登录设备类型，0：WEB、1：APP、2：客户端
+										platform_code: window.storageKeyName.PLATFORMCODE, //平台代码
+										app_code: window.storageKeyName.APPCODE, //应用系统代码
+										unit_code: register.curPage.unit_code, //单位代码，如应用系统需限制本单位用户才允许登录，则传入单位代码，否则传“-1”
+										verify_code: ''
+									};
+									//登录
+									postDataEncry(window.storageKeyName.INTERFACE_SSO_SKIN + 'login', enData1, comData1, 0, function(data1) {
+										if(data1.code == 0) {
+											comData0.access_token = data1.data.access_token;
+											//发送网络请求，data为网络返回值
+											postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + tempUrl, {}, comData0, 0, function(data) {
+												console.log('register:' + JSON.stringify(data));
+												events.closeWaiting();
+												if (data.code == 0) {
+													mui.toast(data.msg);
+													register.refresh();
+												} else {
+													mui.toast(data.msg);
+												}
+											});
+										} else {
+											mui.toast(data1.RspTxt);
+										}
+									});
 								}
-								//发送网络请求，data为网络返回值
-								postDataEncry(window.storageKeyName.INTERFACE_HR_SKIN + tempUrl, {}, comData0, 0, function(data) {
-									console.log('register:' + JSON.stringify(data));
-									events.closeWaiting();
-									if (data.code == 0) {
-										mui.toast(data.msg);
-										register.refresh();
-									} else {
-										mui.toast(data.msg);
-									}
-								});
+								
+								
 							}
 						}
 					}

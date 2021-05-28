@@ -105,7 +105,7 @@
 		});
 
 		mui.plusReady(function() {
-			
+			plus.screen.lockOrientation('portrait-primary');
 			//判断是否是第一次使用APP start
 			var firstOpen = store.get(window.storageKeyName.FIRSTOPEN);
 			if(firstOpen == null){
