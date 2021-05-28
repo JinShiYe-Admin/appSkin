@@ -549,7 +549,7 @@
 						name: "stuLeave",//学生请假
 						href: "../../html/leave/stuLeaveIndex.html",
 						img_href: "../../img/schapp_examination/kaowu_tab.png",
-						tempID: 'kaowu',
+						tempID: 'leave-student',
 						cls: 'mui-icon iconfont icon-kaowuxitong',
 						url: 'schapp_stuLeave',
 						childList: []
@@ -558,7 +558,7 @@
 						name: "parLeave",//家长代请假
 						href: "../../html/leave/parLeaveIndex.html",
 						img_href: "../../img/schapp_examination/kaowu_tab.png",
-						tempID: 'kaowu',
+						tempID: 'leave-parent',
 						cls: 'mui-icon iconfont icon-kaowuxitong',
 						url: 'schapp_parLeave',
 						childList: []
@@ -567,10 +567,23 @@
 						name: "teaLeave",//教师代请假
 						href: "../../html/leave/teaLeaveIndex.html",
 						img_href: "../../img/schapp_examination/kaowu_tab.png",
-						tempID: 'kaowu',
+						tempID: 'leave-teacher',
 						cls: 'mui-icon iconfont icon-kaowuxitong',
 						url: 'schapp_teaLeave',
-						childList: []
+						childList: [
+							{
+								name:'教师代请假', 
+								icon:'../../img/markingPapers/zhouce.png',
+								href: "../../html/leave/teaLeaveAsk.html",
+								url:'schapp_teaLeave_askForLeave'
+							},
+							{
+								name:'代请假查询',
+								icon:'../../img/markingPapers/yuekao.png',
+								href: "../../html/leave/teaLeaveQuery.html",
+								url:'schapp_teaLeave_leaveSelect'
+							},
+						]
 					},
 					]
 				}
