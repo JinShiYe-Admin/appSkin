@@ -104,18 +104,6 @@
 				border-radius: 2px;
 				border: 1px solid #00CFBD;
 			}
-			
-			.top-btn{
-				font-size: 15px;
-				border:1px solid #FFFFFF;
-				border-radius: 6px;
-				padding: 1px 5px;
-				line-height: 2.1;
-				height: 35px;
-				position: fixed;
-				top: 5px;
-				right: 10px;
-			}
 		</style>
 	</head>
 
@@ -123,7 +111,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempHead">
 			<a v-cloak class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
-			<a  @click="add()" class="mui-pull-right top-btn">+代学生请假</a>
+			<a  @click="add()" class="mui-pull-right" style="font-size: 15px;margin-top: 0px;">+代学生请假</a>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div style="padding: 10px 10px;">
@@ -136,27 +124,20 @@
 			</div>
 			<div class="mui-slider-group">
 				<div id="item1" class="mui-control-content mui-active">
-					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
+					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
 						<div class="mui-scroll">
-							 
-							<template v-for="item in 100">
-								<div class="mui-row" @tap="toDetails(0)" style="padding: 10px 0 0;">
-									<div class="mui-col-sm-11">
-										<div >
-											<div  class="leaveContent">请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假</div>
-											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 28px 0px 15px;"></div>
-											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">2012-04-26 10:00 ~ 2012-04-26 11:00</div>
-											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
-												<span>4天5小时</span>
-												<span style="margin-left: 20px;">一年级1901班  某某某</span>
-												<span class="leaveType" style="margin-left: 20px;">事假</span>
-											</div>
-											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
-										</div>
-									</div>
-									<div class="mui-col-sm-1 mui-navigate-right" style="height: 95px;"></div>
+							<div class="mui-navigate-right">
+								<div class="leaveContent">请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假请假</div>
+								<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 28px 0px 15px;"></div>
+								<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">2012-04-26 10:00 ~ 2012-04-26 11:00</div>
+								<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
+									<span>4天5小时</span>
+									<span style="margin-left: 20px;">一年级1901班  某某某</span>
+									<span class="leaveType" style="margin-left: 20px;">事假</span>
 								</div>
-							</template>
+								<div style="height: 0.5px;background-color: #999;margin: 5px 0px 0px 0px;"></div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div id="item2" class="mui-control-content">
@@ -211,10 +192,7 @@
 				methods: {
 					clickLeftImg: function() {
 						appPay.openMenu();
-					},
-					add:function(){
-						utils.mOpenWithData("../../html/leave/teaLeaveAsk_Add.html", {});
-					},
+					}
 				}
 			});
 
@@ -267,12 +245,6 @@
 							} else if (flag == 3 && contentData.receive3.data.length == 0) {
 								
 							}
-						}
-					},
-					toDetails:function(semFlag){
-						console.log(semFlag);
-						if(semFlag===0){
-							utils.mOpenWithData("../../html/leave/teaLeaveAsk_Detail.html", {});
 						}
 					},
 				},

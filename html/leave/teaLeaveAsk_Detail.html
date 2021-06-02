@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+	<!-- 考勤模块  课堂考勤记录 
+	列表页
+	-->
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/common.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<style>
+			[v-cloak] {
+				visibility: hidden;
+				display:none !important;
+			}
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.mui-bar~.mui-content .mui-fullscreen {
+				top: 44px;
+				height: auto;
+			}
+			
+			.line-green{
+				background-color: #00CFBD;
+				margin-bottom: 0.3125rem;
+				height: 1px;
+			}
+			
+			.line {
+				right: 0;
+				bottom: 0;
+				left: 0;
+				height: 1px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #e4e4e4;
+			}
+			
+			.double-line{
+				height: 10px;
+				background-color: #EAEAEA;
+			}
+			.aCss {
+				font-size: 15px;
+				color: #333;
+				width: 5rem;
+			}
+			
+			.iCss{
+				word-break: break-all !important;
+				word-wrap: break-word !important;
+			}
+			.iCss-right{
+				text-align: right;
+			}
+			
+			.mui-input-row label~input,.mui-input-row label~select, .mui-input-row label~textarea ,
+			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+				color: #999;
+				/* placeholder字体大小  */
+				font-size: 14px;
+			}
+			
+			.leaveType {
+				color: #00CFBD;
+				padding: 3px;
+				font-size: 13px;
+				border-radius: 2px;
+				border: 1px solid #00CFBD;
+			}
+			
+			.leaveType-cr {
+				color: #FF5733;
+				padding: 3px;
+				font-size: 13px;
+				border-radius: 2px;
+				border: 1px solid #FF5733;
+			}
+			.mui-btn-bottom,.mui-btn-bottom-success{
+				width: 45%;
+				margin:0 2%;
+				color: #FFFFFF;
+				height: 45px;
+				font-size: 16px;
+				background: #ED4C51;
+				border: 0;
+			}
+			.mui-btn-bottom-success{
+				background: #00CFBD;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="tempVue">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 v-cloak class="mui-title">{{titleName}}</h1>
+		</header>
+		<div v-cloak id="datasource" class="mui-content mui-fullscreen" style="z-index:0">
+			<div v-cloak class="mui-scroll-wrapper" style="margin-top: 44px;background-color: #FFFFFF;">
+				<div v-cloak class="mui-scroll">
+					<div v-cloak class="mui-input-row" style="margin-top: 0.425rem;">
+						<label class="aCss" >请假申请人</label>
+						<input type="text" class="iCss-right" placeholder="暂无数据" value="一年级1901班 王凯" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >请假时间</label>
+						<input type="text" class="iCss-right" placeholder="暂无数据" value="共计 1天 0小时 0分钟" readonly>
+						<input type="text" style="width:100%" class="iCss-right" placeholder="暂无数据" value="2021-05-31 09:46 至 2021-05-31 09:46" readonly>
+					</div>
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >请假事由</label>
+						<textarea maxlength="300" :rows="testtta.length>40?testtta.length/12:testtta.length/10" readonly>{{testtta}}</textarea>
+					</div>
+					<div v-cloak class="mui-input-row" style="padding:0 0 10px;">
+						<span class="leaveType" style="margin:0 0 0 15px;">事假</span>
+						<span class="leaveType-cr" style="margin:0 0 0 15px;">申请出入校园</span>
+					</div>
+					
+					<div class="double-line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >抄送人</label>
+					</div>
+					<div class="line-green"></div>
+					<div v-cloak class="mui-input-row">
+						<label style="width: 100%;font-size: 14px;">张三 李四  王老五 翠花 蔬菜 胡萝卜 张三 李四  王老五 翠花 蔬菜 胡萝卜 张三 李四  王老五 翠花 蔬菜 胡萝卜 张三 李四  王老五 翠花 蔬菜 胡萝卜 </label>
+					</div>
+					<div class="double-line"></div>
+					<div style="padding: 10px;">
+						<textarea maxlength="120" style="border: 1px solid rgba(0,207,189,0.3);" rows="6" placeholder="批复内容(选填)"></textarea>
+					</div>
+					<div style="text-align: center;">
+						<button type="button" class="mui-btn mui-btn-bottom">
+							拒 绝
+						</button>
+						<button type="button" class="mui-btn mui-btn-bottom-success">
+							通 过
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<!-- <script src="../../js/utils/vconsole.min.js"></script> -->
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/utils/mui.picker.min.js"></script>
+		<script src="../../js/utils/mui.poppicker.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src="../../js/libs/crypto-js/require.js"></script>
+		<script src="../../js/libs/encryption/signHmacSHA1.js"></script>
+		<script src="../../js/libs/jquery.js"></script>
+		<script src="../../js/libs/encryption/sortSign.js"></script>
+		<script type="text/javascript">
+			var $M = mui.init();
+			//获取个人信息
+			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			console.log('personal:' + JSON.stringify(personal));
+			var curPage = {};
+			var pageIndex = 1; //请求数据页面
+			var totalPageCount; //总页码
+			var flagRef = 0; //是刷新0，还是加载更多1
+			var tempVue = new Vue({
+				el: "#tempVue",
+				data: {
+					titleName: '',
+				},
+			});
+			var datasource = new Vue({
+				el: "#datasource",
+				data: {
+					testtta:'啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆啊呀吆',
+					detailData: [], //详情
+				}
+			});
+
+			mui.plusReady(function() {
+				curPage = utils.getDataFromUrl(window.location.href);
+				console.log('2222:' + JSON.stringify(curPage));
+				tempVue.titleName = '请假审批';
+				let note=curPage.note;
+				if(note){
+					let newNote=note.replace(/\n/g,'<br>')
+					curPage.note=newNote
+					datasource.rudDetail=curPage
+				}else{
+					curPage.note='暂无'
+					datasource.rudDetail=curPage
+				}
+				
+				//阻尼系数、初始化刷新加载更多
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				mui('.mui-scroll-wrapper').scroll({
+					bounce: false,
+					indicators: true, //是否显示滚动条
+					deceleration: deceleration
+				});
+				
+				// events.showWaiting();
+				// 获取数据
+				// getPageDataArray(curPage.purchasingInId)
+			});
+
+
+			//获取课堂考勤列表数据  
+			// function getPageDataArray(id) {
+			// 		comData = {
+			// 			purchasingInId:id,
+			// 			op_code:'index',
+			// 			index_code: curPage.index_code,
+			// 		} 
+			// 		postDataEncry(window.storageKeyName.INTERFACE_ITEM + 'purchasingIn/getPurchasingInById', {}, comData, 2, function(data) {
+			// 			// events.closeWaiting();
+			// 			console.log(JSON.stringify(data))
+			// 			if (data.code == 0) {
+			// 			} else {
+			// 				// events.closeWaiting();
+			// 				mui.toast(data.msg);
+			// 			}
+			// 		});
+			// };
+			
+		</script>
+	</body>
+
+</html>
