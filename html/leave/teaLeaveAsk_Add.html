@@ -173,7 +173,7 @@
 					<div class="" v-cloak style="margin-top: 0.625rem;">
 						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showGrd()">年级</label>
-							<input type="text" @tap="showGrd()" placeholder="请选择" value="123332" readonly>
+							<input type="text" @tap="showGrd()" placeholder="请选择" v-model="formData.grd.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
@@ -186,31 +186,36 @@
 						<div v-cloak class="mui-input-row">
 							<label class="aCss" @tap="showStu()">姓名</label>
 							<input  type="text" @tap="showStu()" rows="1" placeholder="请选择" v-model="formData.stu.text" readonly>
-								<h6 style=" float: right; width: 68%;line-height: 1.25rem;margin-right: 2%" v-if="formData.stu.text">已选择:	{{formData.stu.text}}</h6>
+							<!-- <h6 style=" float: right; width: 68%;line-height: 1.25rem;margin-right: 2%" v-if="formData.stu.text">已选择:	{{formData.stu.text}}</h6> -->
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showKqlx()">行为细项</label>
+							<label class="aCss" @tap="showBeginDate()">开始时间</label>
+							<input  type="text" @tap="showBeginDate()" placeholder="请选择" v-model="formData.begin_time" readonly>
+							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
+						</div>
+						<div class="line"></div>
+						<div v-cloak class="mui-input-row">
+							<label class="aCss" @tap="showEndDate()">结束时间</label>
+							<input  type="text" @tap="showEndDate()" placeholder="请选择" v-model="formData.end_time" readonly>
+							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
+						</div>
+						<div class="line"></div>
+						<div v-cloak class="mui-input-row">
+							<label class="aCss" @tap="showKqlx()">请假时长</label>
+							<input  type="text" @tap="showXw()" v-model="formData.diff_times" readonly>
+						</div>
+						<div class="line"></div>
+						<div v-cloak class="mui-input-row">
+							<label class="aCss" @tap="showKqlx()">请假类别</label>
 							<input  type="text" @tap="showXw()" placeholder="请选择" v-model="formData.xw.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showDate()">发生日期</label>
-							<input  type="text" @tap="showDate()" placeholder="请选择" v-model="formData.time" readonly>
-							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
-						</div>
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showJc()">节次</label>
-							<input  type="text" @tap="showJc()" placeholder="请选择" v-model="formData.jc.text" readonly>
-							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
-						</div>
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showKm()">科目</label>
-							<input  type="text" @tap="showKm()" placeholder="请选择" v-model="formData.sub.text" readonly>
+							<label class="aCss" @tap="showKqlx()">出入权限</label>
+							<input  type="text" @tap="showXw()" placeholder="请选择" v-model="formData.xw.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
@@ -218,15 +223,13 @@
 							<label class="aCss">行为说明</label>
 							<textarea   maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
 						</div>
-						<template v-if="!SHOW">
-							<div class="line"></div>
-							<div v-cloak class="mui-input-row">
-								<label class="aCss" style="width: 7.5rem;">是否发送短信</label>
-								<div class="mui-switch mui-switch-mini" @click="checkSMS()" :class="SMS?'mui-active':''" style="margin-right: 8px;z-index: 20 !important;">
-									<div class="mui-switch-handle"></div>
-								</div>
+						<div class="line"></div>
+						<div v-cloak class="mui-input-row">
+							<label class="aCss" style="width: 7.5rem;">是否发送短信</label>
+							<div class="mui-switch mui-switch-mini" @click="checkSMS()" :class="SMS?'mui-active':''" style="margin-right: 8px;z-index: 20 !important;">
+								<div class="mui-switch-handle"></div>
 							</div>
-						</template>
+						</div>
 						<div class="double-line"></div>
 						<div v-cloak class="mui-input-row">
 						 	<label class="aCss">抄送人</label>
@@ -266,9 +269,9 @@
 		<script src="../../js/utils/vconsole.min.js"></script>
 		<script src='../../js/picVideoAudio/compressVideo.js'></script>
 		<script src="../../js/qiniu/cloudutil.js"></script>
-		<script src="../../js/utils/mui.picker.min.js"></script>
-		<script src="../../js/utils/mui.poppicker.js"></script>
+		<script src="../../js/utils/mui.picker.js"></script>
 		<script src="../../js/utils/SMS-Utils.js"></script>
+		<script src="../../js/utils/moment.min.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -285,13 +288,10 @@
 			console.log('personal:' + JSON.stringify(personal));
 			var curPage = {};
 			
-			var hideOption; //隐藏键盘的数据
-			var multiMedia; //多媒体控件
-			
 			var tempVue = new Vue({
 				el: "#tempVue",
 				data: {
-					titleName: '新建课堂行为'
+					titleName: '新建请假申请'
 				},
 				methods:{
 					submit:function(){//表单提交
@@ -331,6 +331,10 @@
 						grd:{text:'',value:''},//年级选择值
 						cls:{text:'',value:''},//班级选择值
 						stu:{text:'',value:''},//学生选择值
+						begin_time:'',//请假开始时间
+						end_time:'',//请假结束时间
+						diff_times:'',//时间差
+						apply_time:'',//
 						xw:{text:'',value:''},//行为细项选择值
 						jc:{text:'',value:''},//节次选择值
 						sub:{text:'',value:''},//科目选择值
@@ -395,28 +399,21 @@
 						});
 					},
 					showStu: function() {
-						let stuChecked=datasource.formData.stu;
-						let stuCheckedIds=[];
-						if(datasource.formData.stu.value!=''){
-							stuCheckedIds=datasource.formData.stu.value.split(",");
-						}
-						let stuList= datasource.stuList;
-						stuList.map(function(currStu){
-							currStu.isChecked=false;
-							let currStuId=currStu.value
-							stuCheckedIds.map(function(id){
-								if(currStuId==id){
-									currStu.isChecked=true;
-								}
-							})
-						})
-						if(stuList.length==0){
-							mui.toast('学生数据为空')
-						}else{
-							console.log("stuList: " + JSON.stringify(stuList));
-							let model = stuList
-							utils.mOpenWithData("../../html/schapp_work/studentSelect.html", model);
-						}
+						 var userPicker = new $M.PopPicker();
+						 userPicker.setData(datasource.stuList);
+						 setTimeout(function() {
+						 	userPicker.pickers[0].setSelectedValue(datasource.formData.stu.value);
+						 }, 100);
+						 userPicker.show(function(items) {
+						 	console.log(JSON.stringify(items[0]))
+						 	if(JSON.stringify(items[0]) =='{}'){
+						 		mui.toast('未选择学生')
+						 	}else{
+						 		datasource.formData.stu = items[0]
+						 		userPicker.dispose();
+						 		userPicker = null;
+						 	}
+						 });
 					},
 					showXw: function() {
 						var userPicker = new $M.PopPicker();
@@ -433,7 +430,7 @@
 								userPicker.dispose();
 								userPicker = null;
 							}
-						});
+						}); 
 					},
 					showJc: function() {
 						var userPicker = new $M.PopPicker();
@@ -469,18 +466,66 @@
 							}
 						});
 					},
-					showDate: function() {
+					showBeginDate: function() {
 						let myDate=new Date()
 						var year = myDate.getFullYear();
 						var month = myDate.getMonth() + 1;
-						var date = myDate.getDate();
-						let dtObj={value:datasource.formData.time,endYear:year,endMonth:month,endDay:date,type:"date"}
+						var date = myDate.getDate(); 
+						let defauleValue=datasource.formData.begin_time?datasource.formData.begin_time:moment().format("YYYY-MM-DD HH:mm")
+						let dtObj={value:defauleValue,title:'开始时间'}
 						var datePicker=new $M.DtPicker(dtObj);
 						datePicker.show(function(rs) {
-							datasource.formData.time=rs.text
+							datasource.formData.begin_time=rs.text
 							datePicker.dispose();
 							datePicker = null;
 						});
+					},
+					showEndDate: function() {
+						let _begin_time=this.formData.begin_time;
+						if(_begin_time){
+							let begin_time = moment(_begin_time).add(10,'minute').format("YYYY-MM-DD HH:mm")
+							let defauleValue=datasource.formData.end_time?datasource.formData.end_time:begin_time
+							let dtObj={
+								value:defauleValue,
+								beginYear:parseInt(begin_time.split(' ')[0].split('-')[0]),
+								beginMonth:parseInt(begin_time.split(' ')[0].split('-')[1]),
+								beginDay:parseInt(begin_time.split(' ')[0].split('-')[2]),
+								beginHours:parseInt(begin_time.split(' ')[1].split(':')[0]),
+								beginMinutes:parseInt(begin_time.split(' ')[1].split(':')[1]),
+								endYear:2050,
+								title:'结束时间'}
+							var datePicker=new $M.DtPicker(dtObj);
+							datePicker.show(function(rs) {
+								datasource.formData.end_time=rs.text
+								let difftimesFromMinute=moment(rs.text).diff(moment(_begin_time),'minutes')
+								let difftimesFromHours=moment(rs.text).diff(moment(_begin_time),'hours')
+								let difftimesFromDays=moment(rs.text).diff(moment(_begin_time),'days')
+								let difftimesFromMonths=moment(rs.text).diff(moment(_begin_time),'months')
+								if(difftimesFromHours){
+									if(difftimesFromDays){
+										if(difftimesFromMonths){
+											let days=moment(rs.text).subtract(difftimesFromMonths,'months').diff(moment(_begin_time),'days')
+											let hours=moment(rs.text).subtract(difftimesFromMonths,'months').subtract(days,'days').diff(moment(_begin_time),'hours')
+											let minutes=moment(rs.text).subtract(difftimesFromMonths,'months').subtract(days,'days').subtract(hours,'hours').diff(moment(_begin_time),'minutes')
+											datasource.formData.diff_times=difftimesFromMonths+'月 '+days+'天 '+hours+'小时 '+minutes+'分钟'
+										}else{ 
+											let hours=moment(rs.text).subtract(difftimesFromDays,'days').diff(moment(_begin_time),'hours')
+											let minutes=moment(rs.text).subtract(difftimesFromDays,'days').subtract(hours,'hours').diff(moment(_begin_time),'minutes')
+											datasource.formData.diff_times=difftimesFromDays+'天 '+hours+'小时 '+minutes+'分钟'
+										}
+									}else{
+										let minutes=moment(rs.text).subtract(difftimesFromHours,'hours').diff(moment(_begin_time),'minutes')
+										datasource.formData.diff_times=difftimesFromHours+'小时 '+minutes+'分钟'
+									}
+								}else{
+									datasource.formData.diff_times=difftimesFromMinute+'分钟'
+								}
+								datePicker.dispose();
+								datePicker = null;
+							});
+						}else{
+							mui.toast('请先选择开始时间')
+						}
 					},
 					selectPeople:function(){
 						console.log('666')
@@ -520,8 +565,8 @@
 				});
 				
 				SMSUtils.INDEX_CODE=curPage.index_code;
-				SMSUtils.MSG_TYPE=window.storageKeyName.ACTION_MSG_SMS.CLSBEHAVIOR.MSG_TYPE;
-				SMSUtils.USER_TYPE=window.storageKeyName.ACTION_MSG_SMS.CLSBEHAVIOR.USER_TYPE;
+				SMSUtils.MSG_TYPE=window.storageKeyName.STUKQ_MSG_SMS.ASKLEAVE.MSG_TYPE;
+				SMSUtils.USER_TYPE=window.storageKeyName.STUKQ_MSG_SMS.ASKLEAVE.USER_TYPE;
 				SMSUtils.PERSONAL=store.get(window.storageKeyName.PERSONALINFO);
 
 				events.showWaiting();
@@ -541,48 +586,10 @@
 				})
 				//获取数据范围授权：年级
 				getGrdList();
-				// 获取常量数组
-				getXwList();
-				// 获取当前日期
-				getCurrentDate();
-				init(); //初始化控件
+				//获取请假设置
+				getLeaveSet();
 			});
 			
-			//多媒体控件
-			multiMedia = MultiMedia.multiMedia({
-				MultiMediaId: 'MultiMedia', //存放多媒体对象控件的id
-				Key: store.get(window.storageKeyName.PERSONALINFO).user_code, //
-				Picture: true, //是否显示图片图标
-				PictureTuku:true,//是否显示图库图标，默认显示
-				Audio: false, //是否显示音频图标
-				Video: false, //是否显示视频图标
-				TotalPicture: 5, //图片的个数
-				TotalAudio: 1, //音频的个数
-				TotalVideo: 1, //视频的个数
-			});
-			
-			/*
-			 * 初始化控件
-			 */
-			function init() {
-				events.blurBack();
-			
-				//图片查看控件
-				mui.previewImage();
-				multiMedia.initEvent();
-			 
-				//获取配置信息
-				hideOption = events.initHideKeyBoard();
-				// 初始化七牛上传参数
-				var tempM = {
-					qn_appId:window.storageKeyName.QN_APPID,
-					qn_appKey:window.storageKeyName.QN_APPKEY,
-					qn_mainSpace:window.storageKeyName.QN_PB_NAME,
-					qn_uploadSpace:window.storageKeyName.QN_XSXW_KTXW,
-					qn_multiMedia:multiMedia,
-				}
-				qn_upload.uploadInit(tempM);
-			}
 			
 			// 获取数据范围授权：年级
 			function getGrdList() {
@@ -643,8 +650,6 @@
 							datasource.formData.cls=clssList[0];
 							//获取数据范围授权：学生
 							getStuList(grd_id,cls_id) 
-							//获取数据范围授权：科目
-							getKmList(grd_id,cls_id);
 						}else{
 							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
@@ -666,6 +671,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						let stu = data.data.stu_list;
 						let stuList=[];
@@ -678,80 +684,34 @@
 						if(stuList.length>0 ){
 							datasource.stuList=stuList;
 						}else{
-							events.closeWaiting();
 							mui.toast('无数据授权 无法获取学生');
 						}
-						
+					}else{
+						mui.toast(data.msg);
+					}
+				});
+			}
+			  
+			//获取请假设置
+			function getLeaveSet(){
+				const params = {
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'set/qrySetLeave', {}, params, 2, function(data) {
+					console.log(JSON.stringify(data))
+					if (data.code == 0) {
+						 
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
 			}
-			// 获取数据范围授权：科目
-			function getKmList(grd_id,cls_id) {
-				comData = {
-					op_code:'add',
-					grd_code: grd_id,
-					cls_code: cls_id,
-					get_sub:true,
-					index_code: curPage.index_code,
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
-					console.log(JSON.stringify(data))
-					if (data.code == 0) {
-						let subs = data.data.sub_list;
-						let subList=[];
-						subs.map(function(currentValue) {
-							let obj = {};
-							obj.value = currentValue.value;
-							obj.text = currentValue.name;
-							subList.push(obj)
-						})
-						if(subList.length>0 ){
-							events.closeWaiting();
-							datasource.subList=subList;
-						}else{
-							events.closeWaiting();
-							mui.toast('无数据授权 无法获取科目');
-						}
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					}
-				});
+			//获取额外审批人
+			function getLeaveFlows(){
+				
 			}
 			
-			// 获取行为细项，节次数组
-			function getXwList() {
-				events.showWaiting();
-				comData = {
-					op_code: 'index',
-					index_code: curPage.index_code,
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_STUXWSUB + 'StudentBehavior/getDict', {}, comData, 2,
-					function(data) {
-						if (data.code == 0) {
-							let jcList = data.data.timeArray;
-							if (jcList.length > 0) {
-								datasource.jcList=jcList
-							}else{
-								events.closeWaiting();
-								mui.toast('无法获取节次');
-							}
-							if (data.data.qbArray.length > 0) {
-								events.closeWaiting();
-								datasource.xwList = data.data.qbArray;
-							} else {
-								events.closeWaiting();
-								mui.toast('无法获取行为细项');
-							}
-						} else {
-							events.closeWaiting();
-							mui.toast(data.msg);
-						}
-					});
-			}
 			
 			// 提交表单数据
 			function submitData(wd,data,type,encAddrStr,encImgrStr,encLen,encNameStr) {
