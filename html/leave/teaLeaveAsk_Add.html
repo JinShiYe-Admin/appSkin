@@ -1,7 +1,10 @@
 <!doctype html>
 <html>
 	<!-- 考务模块  列表页
-
+学生请假，抄送人：家长 教师
+家长请假，抄送人：教师
+教师代请假，抄送人：家长，教师
+抄送人非必选
  -->
 	<head>
 		<meta charset="UTF-8">
@@ -203,25 +206,25 @@
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showKqlx()">请假时长</label>
-							<input  type="text" @tap="showXw()" v-model="formData.diff_times" readonly>
+							<label class="aCss">请假时长</label>
+							<input  type="text" v-model="formData.diff_times" readonly>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showKqlx()">请假类别</label>
-							<input  type="text" @tap="showXw()" placeholder="请选择" v-model="formData.xw.text" readonly>
+							<label class="aCss" @tap="showQjlb()">请假类别</label>
+							<input  type="text" @tap="showQjlb()" placeholder="请选择" v-model="formData.qjlb.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss" @tap="showKqlx()">出入权限</label>
-							<input  type="text" @tap="showXw()" placeholder="请选择" v-model="formData.xw.text" readonly>
+							<label class="aCss" @tap="showCrqx()">出入权限</label>
+							<input  type="text" @tap="showCrqx()" placeholder="请选择" v-model="formData.crqx.text" readonly>
 							<span class="mui-icon mui-icon-arrowdown icon-right"></span>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
-							<label class="aCss">行为说明</label>
-							<textarea   maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入内容"></textarea>
+							<label class="aCss">请假事由</label>
+							<textarea   maxlength="100" v-model="formData.comment" rows="5" placeholder="请输入请假事由"></textarea>
 						</div>
 						<div class="line"></div>
 						<div v-cloak class="mui-input-row">
@@ -238,7 +241,9 @@
 						</div>
 						<div class="line-green"></div>
 						<div v-cloak class="mui-input-row">
-							<label style="width: 100%;font-size: 14px;">张三 李四  王老五 翠花 蔬菜 胡萝卜 张三 李四  王老五 翠花 蔬菜 胡萝卜 张三 李四  王老五 翠花 蔬菜 胡萝卜 张三 李四  王老五 翠花 蔬菜 胡萝卜 </label>
+							<label style="width: 100%;font-size: 14px;">
+								<template v-for="(item,index) in formData.copy_list"><template v-if="index < formData.copy_list.length-1">{{item.text}},</template><template v-else>{{item.text}}</template></template>
+							</label>
 						</div>
 					</div>
 				</div>
@@ -327,6 +332,7 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
+					userType:3,//用户类型 0 学生  1家长  2班主任  3非班主任
 					formData: {
 						grd:{text:'',value:''},//年级选择值
 						cls:{text:'',value:''},//班级选择值
@@ -334,23 +340,25 @@
 						begin_time:'',//请假开始时间
 						end_time:'',//请假结束时间
 						diff_times:'',//时间差
-						apply_time:'',//
-						xw:{text:'',value:''},//行为细项选择值
-						jc:{text:'',value:''},//节次选择值
-						sub:{text:'',value:''},//科目选择值
-						time:'',//发生日期择值
+						qjlb:{text:'',value:''},//请假类别选择值
+						crqx:{text:'',value:''},//出入权限选择值
 						comment:'',//说明
+						default_copy_list:[],//默认的抄送人选择对象，当选择年级、班级、学生时，需要将copy_list重置为该数组状态，该数组状态中会根据是否为代课老师默认抄送班主任、学生请假默认抄送家长的配置，赋值必须要抄送的对象人员
+						copy_list:[],//抄送人选择对象
 					}, //表单内容
 					grdList: [], //年级数组
 					clsList: [], //班级数组
 					stuList: [], //学生数组
-					xwList: [], //行为细项数组
-					jcList: [], //节次数组
-					subList:[], //科目数组
+					qjlbList: [{text:'病假',value:'sickLeave'},{text:'事假',value:'absenceLeave'}], //请假类别数组
+					crqxList: [{text:'可回宿舍',value:'backDorm'},{text:'可出入校园',value:'outSchool'}], //出入权限数组
+					clsTecList: [], //年级任教数组
+					clsTecAndPar:[],//年级任教和家长数组
+					approve_list:[],//额外的审批人列表
 					CONFIG:{},//短信配置 对象
 					WORDS:[],//拒绝关键字 对象
 					SHOW:false,//是否显示发送短信
 					SMS:false,//是否发送短信
+					LEAVESET:{},//请假设置
 				},
 				methods: {
 					checkSMS:function(){
@@ -372,7 +380,8 @@
 								datasource.stuList=[]
 								datasource.formData.cls={text:'',value:''}
 								datasource.formData.stu={text:'',value:''}
-								getClsList( items[0].value) 
+								datasource.clsTecAndPar=[]
+								getClsList(items[0].value)
 								userPicker.dispose();
 								userPicker = null;
 							}
@@ -392,7 +401,11 @@
 								datasource.formData.cls = items[0]
 								datasource.stuList=[]
 								datasource.formData.stu={text:'',value:''}
-								getStuList(datasource.formData.grd.value,items[0].value) 
+								datasource.clsTecAndPar=[]
+								events.showWaiting();
+								getLeaveFlows(datasource.formData.grd.value,items[0].value);
+								getClsMaster(datasource.formData.grd.value,items[0].value);
+								getStuList(datasource.formData.grd.value,items[0].value)
 								userPicker.dispose();
 								userPicker = null;
 							}
@@ -410,57 +423,42 @@
 						 		mui.toast('未选择学生')
 						 	}else{
 						 		datasource.formData.stu = items[0]
+								datasource.clsTecAndPar=[]
+								datasource.formData.copy_list=datasource.formData.default_copy_list
 						 		userPicker.dispose();
 						 		userPicker = null;
 						 	}
 						 });
 					},
-					showXw: function() {
+					showQjlb: function() {
 						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.xwList);
+						userPicker.setData(datasource.qjlbList);
 						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.formData.xw.value);
+							userPicker.pickers[0].setSelectedValue(datasource.formData.qjlb.value);
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							if(JSON.stringify(items[0]) =='{}'){
-								mui.toast('未选择行为细项')
+								mui.toast('未选择请假类别')
 							}else{
-								datasource.formData.xw = items[0]
+								datasource.formData.qjlb = items[0]
 								userPicker.dispose();
 								userPicker = null;
 							}
 						}); 
 					},
-					showJc: function() {
+					showCrqx: function() {
 						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.jcList);
+						userPicker.setData(datasource.crqxList);
 						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.formData.jc.value);
+							userPicker.pickers[0].setSelectedValue(datasource.formData.crqx.value);
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
 							if(JSON.stringify(items[0]) =='{}'){
-								mui.toast('未选择节次')
+								mui.toast('未选择出入权限')
 							}else{
-							datasource.formData.jc = items[0]
-							userPicker.dispose();
-							userPicker = null;
-							}
-						});
-					},
-					showKm: function() {
-						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.subList);
-						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.formData.sub.value);
-						}, 100);
-						userPicker.show(function(items) {
-							console.log(JSON.stringify(items[0]))
-							if(JSON.stringify(items[0]) =='{}'){
-								mui.toast('未选择科目')
-							}else{
-							datasource.formData.sub = items[0]
+							datasource.formData.crqx = items[0]
 							userPicker.dispose();
 							userPicker = null;
 							}
@@ -528,7 +526,7 @@
 						}
 					},
 					selectPeople:function(){
-						console.log('666')
+						toSelectPage();
 					}
 				}
 			});
@@ -548,20 +546,16 @@
 
 
 				window.addEventListener('refreshStudent', function(data) {
-					datasource.formData.stu={}
-					console.log("data: " + JSON.stringify(data.detail));
-					let checkedStudents=data.detail;
-					let names=[]
-					let ids=[]
-					checkedStudents.map(function(currentValue){
-						names.push(currentValue.name)
-						ids.push(currentValue.value)
+					console.log("data.detail: " + JSON.stringify(data.detail));
+					datasource.formData.copy_list=data.detail
+					datasource.clsTecAndPar.map(item=>{
+						item.isChecked=false
+						data.detail.map(ditem=>{
+							if(item.value===ditem.value){
+								item.isChecked=true
+							}
+						})
 					})
-					let obj={}
-					obj.text=names.join(",")
-					obj.value=ids.join(",")
-					console.log("obj: " + JSON.stringify(obj));
-					datasource.formData.stu=obj
 				});
 				
 				SMSUtils.INDEX_CODE=curPage.index_code;
@@ -600,6 +594,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						let grds = data.data.grd_list;
 						let grdList=[];
@@ -611,22 +606,21 @@
 						})
 						if(grdList.length>0 ){
 							datasource.grdList=grdList;
-							let grd_id=grdList[0].value; 
-							datasource.formData.grd=grdList[0];
-							//获取数据范围授权：班级
-							getClsList(grd_id) 
+							// let grd_id=grdList[0].value; 
+							// datasource.formData.grd=grdList[0];
+							// //获取数据范围授权：班级
+							// getClsList(grd_id) 
 						}else{
-							events.closeWaiting();
 							mui.toast('无数据授权 无法获取年级');
 						}
 					} else {
-						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
 			}
 			//获取数据范围授权：班级
 			function getClsList(grd_id) {
+				events.showWaiting();
 				const params = {
 					op_code:'add',
 					grd_code:grd_id,
@@ -635,6 +629,7 @@
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
 					console.log(JSON.stringify(data))
+					events.closeWaiting();
 					if (data.code == 0) {
 						let clss = data.data.cls_list;
 						let clssList=[];
@@ -646,16 +641,14 @@
 						})
 						if(clssList.length>0 ){
 							datasource.clsList=clssList;
-							let cls_id=clssList[0].value;
-							datasource.formData.cls=clssList[0];
-							//获取数据范围授权：学生
-							getStuList(grd_id,cls_id) 
+							// let cls_id=clssList[0].value;
+							// datasource.formData.cls=clssList[0];
+							// //获取数据范围授权：学生  
+							// getStuList(grd_id,cls_id) 
 						}else{
-							events.closeWaiting();
 							mui.toast('无数据授权 无法获取班级');
 						}
 					}else{
-						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -698,9 +691,8 @@
 					index_code: curPage.index_code,
 				}
 				postDataEncry(window.storageKeyName.STULEAVE_API + 'set/qrySetLeave', {}, params, 2, function(data) {
-					console.log(JSON.stringify(data))
 					if (data.code == 0) {
-						 
+						 datasource.LEAVESET=data.data
 					}else{
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -708,10 +700,134 @@
 				});
 			}
 			//获取额外审批人
-			function getLeaveFlows(){
-				
+			function getLeaveFlows(grd_id,cls_id){
+				comData = {
+					grd_code:grd_id,
+					cls_code:cls_id,
+					page_number:1,
+					page_size:9999,
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'workflow/qryFlows', {}, comData, 2, function(data) {
+					if (data.code == 0) {
+						datasource.approve_list=data.data.list
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
 			}
 			
+			//获取班主任并添加到默认抄送人
+			function getClsMaster(grd_id,cls_id){
+				comData = {
+					grd_codes:grd_id,
+					cls_codes:cls_id,
+					index_code: curPage.index_code,
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'clsTec', {}, comData, 2, function(data) {
+					if (data.code == 0) {
+						let list =data.data.list
+						if(list.length>0){
+							//合并重复人员
+							let newList=[]
+							list.map(item=>{
+								item.value=item.user_code
+								item.text=item.user_name
+								item.isChecked=false
+								let push=true
+								newList.map(nitem=>{
+									if(nitem.value===item.value){//如果新数组中已存在该用户id则不push
+										push=false
+									}
+								})
+								if(push){
+									newList.push(item)
+								}
+							})
+							let user_code=personal.user_code
+							let userType=3;
+							let master=''
+							list.map(item=>{
+								if(user_code==item.user_code && item.is_master==1){
+									userType=2
+								}
+								if(item.is_master==1){
+									item.isChecked=true
+									master=item
+								}
+							})
+							datasource.userType=userType;//设置用户类型
+							datasource.clsTecList=newList
+							if(userType==3 && datasource.LEAVESET.teacher_is_copy_head_teacher){//非班主任 且 配置了 非班主任代请假默认抄送班主任
+								if(master){
+									datasource.formData.copy_list=[master]
+									datasource.formData.default_copy_list=[master]
+								}else{
+									mui.toast('无法获取班主任信息，不能设置默认的抄送人')
+								}
+							}
+						}else{
+							if(datasource.LEAVESET.teacher_is_copy_head_teacher){
+								mui.toast('无法获取任教老师信息')
+							}
+							datasource.formData.copy_list=[]
+							datasource.formData.default_copy_list=[]
+						}
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			//获取班级任教和家长 并跳转选人页面
+			function toSelectPage(){
+				if(datasource.formData.stu.text){
+					if(datasource.clsTecAndPar.length>0){
+						if(datasource.clsTecAndPar.length>0){
+							utils.mOpenWithData("../../html/leave/people_select.html",[datasource.clsTecAndPar,datasource.LEAVESET.teacher_is_copy_head_teacher,datasource.userType]);
+						}else{
+							mui.toast('班级无任教老师，学生没有绑定家长信息，无法选择抄送人')
+						}
+					}else{
+						events.showWaiting();
+						comData = {
+							sch_code:personal.unit_code,
+							stu_codes:datasource.formData.stu.value,
+							index_code: curPage.index_code,
+						}
+						postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'parent', {}, comData, 2, function(data) {
+							console.log(JSON.stringify(data))
+							events.closeWaiting();
+							if (data.code == 0) {
+								let list =data.data.list
+								let newList=[]
+								data.data.list.map(item=>{
+									item.value=item.par_code
+									item.text=item.par_name
+									item.isChecked=false
+									item.is_master=0
+									newList.push(item)
+								})
+								let clsTecList=[].concat(datasource.clsTecList)
+								let clsTecAndPar=clsTecList.concat(newList)
+								datasource.clsTecAndPar=clsTecAndPar
+								if(clsTecAndPar.length>0){
+									utils.mOpenWithData("../../html/leave/people_select.html",[clsTecAndPar,datasource.LEAVESET.teacher_is_copy_head_teacher,datasource.userType]);
+								}else{
+									mui.toast('班级无任教老师，学生没有绑定家长信息，无法选择抄送人')
+								}
+							} else {
+								mui.toast(data.msg);
+							}
+						});
+					}
+				}else{
+					events.closeWaiting();
+					mui.toast('选择抄送人前请先选择学生')
+				}
+			}
 			
 			// 提交表单数据
 			function submitData(wd,data,type,encAddrStr,encImgrStr,encLen,encNameStr) {
@@ -775,22 +891,6 @@
 						mui.toast(data.msg);
 					}
 				});
-			}
-			
-			// 获取当前日期
-			function getCurrentDate(){
-				var myDate=new Date()
-			    var year = myDate.getFullYear();
-			    var month = myDate.getMonth() + 1;
-				var date = myDate.getDate();
-				var hours = myDate.getHours();
-				var minutes = myDate.getMinutes();
-				var now = year + '-' + conver(month) + "-" + conver(date)
-				// + " " + hours + ":" + minutes
-				datasource.formData.time=now;
-			}
-			function conver(s) {
-				return s < 10 ? '0' + s : s;
 			}
 			
 		</script>
