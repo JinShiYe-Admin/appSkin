@@ -431,6 +431,27 @@
 
 				curPage = utils.getDataFromUrl(window.location.href);
 				tempHead.headTitle = '学生请假';
+				
+				window.addEventListener('refreshList', function(data) {
+					events.showWaiting();
+					// contentData.receive0.refrushFlag = 0; //0刷新1加载更多
+					// contentData.receive0.pageNumber = 1; 
+					// contentData.receive0.TotalPage = 0; 
+					// getLeaveList();
+					// contentData.receive1.refrushFlag = 0; //0刷新1加载更多
+					// contentData.receive1.pageNumber = 1; 
+					// contentData.receive1.TotalPage = 0; 
+					// getLeaveList();
+					// contentData.receive2.refrushFlag = 0; //0刷新1加载更多
+					// contentData.receive2.pageNumber = 1; 
+					// contentData.receive2.TotalPage = 0; 
+					// getLeaveList();
+					// contentData.receive3.refrushFlag = 0; //0刷新1加载更多
+					// contentData.receive3.pageNumber = 1; 
+					// contentData.receive3.TotalPage = 0; 
+					// getLeaveCopyList();
+				});
+				
 				//获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
