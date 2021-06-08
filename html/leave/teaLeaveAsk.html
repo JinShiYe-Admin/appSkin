@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -98,17 +97,37 @@
 				font-size: 14px;
 			}
 			.leaveType {
+				color: #2A82E4;
+				padding: 3px;
+				font-size: 13px;
+				border-radius: 2px;
+				border: 1px solid #2A82E4;
+			}
+			.leaveType0 {
+				color: #FF8D1A;
+				padding: 3px;
+				font-size: 13px;
+				border-radius: 2px;
+				border: 1px solid #FF8D1A;
+			}
+			.leaveType1 {
 				color: #00CFBD;
 				padding: 3px;
 				font-size: 13px;
 				border-radius: 2px;
 				border: 1px solid #00CFBD;
 			}
-			
+			.leaveType2 {
+				color: #D4308D;
+				padding: 3px;
+				font-size: 13px;
+				border-radius: 2px;
+				border: 1px solid #D4308D;
+			}
 			.top-btn{
 				font-size: 15px;
 				border:1px solid #FFFFFF;
-				border-radius: 6px;
+				border-radius: 9px;
 				padding: 1px 5px;
 				line-height: 2.1;
 				height: 35px;
@@ -123,7 +142,7 @@
 		<header class="mui-bar mui-bar-nav" id="tempHead">
 			<a v-cloak class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
-			<a v-show="showAdd" @click="add()" class="mui-pull-right top-btn">+代学生请假</a>
+			<a v-show="showAdd" @tap="add()" class="mui-pull-right top-btn">+代学生请假</a>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div style="padding: 10px 10px;">
@@ -138,88 +157,97 @@
 				<div id="item1" class="mui-control-content mui-active">
 					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
 						<div class="mui-scroll">
-							<template v-for="item in receive0.data">
-								<div class="mui-row" @tap="toDetails(0,item)" style="padding: 10px 0 0;">
-									<div class="mui-col-sm-11">
-										<div  class="leaveContent">{{item.comment}}</div>
-										<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 28px 0px 15px;"></div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
-											<span>{{item.apply_time}}</span>
-											<span style="margin-left: 20px;">{{item.grd_name}}{{item.cls_name}}  {{stu_name}}</span>
-											<span class="leaveType" style="margin-left: 20px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}事假</span>
+							<div class="mui-row">
+								<template v-for="item in receive0.data">
+									<div class="mui-row" @tap="toDetails(0,item)" style="padding: 10px 0 0;">
+										<div class="mui-col-xs-11">
+											<div class="leaveContent">{{item.comment}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
+												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span> 
+												<span>{{item.apply_time}}</span>
+												<span class="leaveType" style="margin-left: 5px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}</span>
+											</div>
+											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
-										<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
+										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
 									</div>
-									<div class="mui-col-sm-1 mui-navigate-right" style="height: 95px;"></div>
-								</div>
-							</template>
+								</template>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div id="item2" class="mui-control-content">
-					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
+					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
 						<div class="mui-scroll">
-							<template v-for="item in receive0.data">
-								<div class="mui-row" @tap="toDetails(1,item)" style="padding: 10px 0 0;">
-									<div class="mui-col-sm-11">
-										<div  class="leaveContent">{{item.comment}}</div>
-										<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 28px 0px 15px;"></div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
-											<span>{{item.apply_time}}</span>
-											<span style="margin-left: 20px;">{{item.grd_name}}{{item.cls_name}}  {{stu_name}}</span>
-											<span class="leaveType" style="margin-left: 20px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}事假</span>
+							<div class="mui-row">
+								<template v-for="item in receive1.data">
+									<div class="mui-row" @tap="toDetails(1,item)" style="padding: 10px 0 0;">
+										<div class="mui-col-xs-11">
+											<div class="leaveContent">{{item.comment}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
+												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span>
+												<span>{{item.apply_time}}</span>
+												<span class="leaveType" style="margin-left: 5px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}</span>
+											</div>
+											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
-										<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
+										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
 									</div>
-									<div class="mui-col-sm-1 mui-navigate-right" style="height: 95px;"></div>
-								</div>
-							</template>
+								</template>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div id="item3" class="mui-control-content">
-					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
+					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
 						<div class="mui-scroll">
-							<template v-for="item in receive0.data">
-								<div class="mui-row" @tap="toDetails(2,item)" style="padding: 10px 0 0;">
-									<div class="mui-col-sm-11">
-										<div  class="leaveContent">{{item.comment}}</div>
-										<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 28px 0px 15px;"></div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
-											<span>{{item.apply_time}}</span>
-											<span style="margin-left: 20px;">{{item.grd_name}}{{item.cls_name}}  {{stu_name}}</span>
-											<span class="leaveType" style="margin-left: 20px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}事假</span>
+							<div class="row">
+								<template v-for="item in receive2.data">
+									<div class="mui-row" @tap="toDetails(2,item)" style="padding: 10px 0 0;">
+										<div class="mui-col-xs-11">
+											<div class="leaveContent">{{item.comment}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
+												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span><br/>
+												<span>{{item.apply_time}}</span>
+												<span class="leaveType" style="margin-left: 5px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}</span>
+												<span :class="[item.status==0?'leaveType0':item.status==1?'leaveType1':item.status==2?'leaveType2':'']" style="margin-left: 5px;">{{item.status==0?'待审':item.status==1?'通过':item.status==2?'拒绝':''}}</span>
+											</div>
+											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
-										<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
+										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
 									</div>
-									<div class="mui-col-sm-1 mui-navigate-right" style="height: 95px;"></div>
-								</div>
-							</template>
+								</template>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div id="item4" class="mui-control-content">
-					<div class="mui-scroll-wrapper" style="margin-top: 110px;">
+					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
 						<div class="mui-scroll">
-							<template v-for="item in receive0.data">
-								<div class="mui-row" @tap="toDetails(3,item)" style="padding: 10px 0 0;">
-									<div class="mui-col-sm-11">
-										<div  class="leaveContent">{{item.comment}}</div>
-										<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 28px 0px 15px;"></div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
-										<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
-											<span>{{item.apply_time}}</span>
-											<span style="margin-left: 20px;">{{item.grd_name}}{{item.cls_name}}  {{stu_name}}</span>
-											<span class="leaveType" style="margin-left: 20px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}事假</span>
+							<div class="mui-row">
+								<template v-for="item in receive3.data">
+									<div class="mui-row" @tap="toDetails(3,item)" style="padding: 10px 0 0;">
+										<div class="mui-col-xs-11">
+											<div class="leaveContent">{{item.comment}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
+												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span><br/>
+												<span>{{item.apply_time}}</span>
+												<span class="leaveType" style="margin-left: 5px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}</span>
+											</div>
+											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
-										<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
+										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
 									</div>
-									<div class="mui-col-sm-1 mui-navigate-right" style="height: 95px;"></div>
-								</div>
-							</template>
+								</template>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -261,9 +289,6 @@
 					headImg: setImg(personal.img_url, 9)
 				},
 				methods: {
-					clickLeftImg: function() {
-						appPay.openMenu();
-					},
 					add:function(){
 						utils.mOpenWithData("../../html/leave/teaLeaveAsk_Add.html", {index_code:curPage.access.split('#')[1]});
 					},
@@ -303,25 +328,26 @@
 				},
 				methods: {
 					clickSeg: function(flag) {
+						console.log(contentData.semFlag+'___'+flag);
 						if (contentData.semFlag != flag) {
 							contentData.semFlag = flag;
-							if (flag == 0 && contentData.receive0.data.length == 0) {
+							if (flag == 0 ) {
 								contentData.receive0.refrushFlag = 0; //0刷新1加载更多
 								contentData.receive0.pageNumber = 1; 
 								contentData.receive0.TotalPage = 0; 
 								events.showWaiting();
-								getLeaveList();
-							} else if (flag == 1 && contentData.receive1.data.length == 0) {
+								getLeaveApproveList();
+							} else if (flag == 1 ) {
 								contentData.receive1.refrushFlag = 0; //0刷新1加载更多								contentData.receive1.pageNumber = 1; 								contentData.receive1.TotalPage = 0; 
 								events.showWaiting();
-								getLeaveList();
-							} else if (flag == 2 && contentData.receive2.data.length == 0) {
+								getLeaveApproveList();
+							} else if (flag == 2 ) {
 								contentData.receive2.refrushFlag = 0; //0刷新1加载更多
 								contentData.receive2.pageNumber = 1; 
 								contentData.receive2.TotalPage = 0;
 								events.showWaiting();
 								getLeaveList();
-							} else if (flag == 3 && contentData.receive3.data.length == 0) {
+							} else if (flag == 3) {
 								contentData.receive3.refrushFlag = 0; //0刷新1加载更多
 								contentData.receive3.pageNumber = 1; 
 								contentData.receive3.TotalPage = 0;
@@ -331,17 +357,8 @@
 						}
 					},
 					toDetails:function(semFlag,item){
-						console.log(semFlag);
-						console.log("item: " + JSON.stringify(item));
-						if(semFlag===0){
-							utils.mOpenWithData("../../html/leave/teaLeaveAsk_Detail.html", {});
-						}else if(semFlag===1){
-							
-						}else if(semFlag===2){
-							
-						}else if(semFlag===3){
-							
-						}
+						console.log(JSON.stringify(item));
+						utils.mOpenWithData("../../html/leave/teaLeaveAsk_Detail.html", [semFlag,item,curPage.access.split('#')[1]]);
 					},
 				},
 			});
@@ -365,12 +382,12 @@
 											contentData.receive0.refrushFlag = 0; //0刷新1加载更多
 											contentData.receive0.pageNumber = 1; 
 											contentData.receive0.TotalPage = 0; 
-											getLeaveList();
+											getLeaveApproveList();
 										} else if (contentData.semFlag == 1) {
 											contentData.receive1.refrushFlag = 0; //0刷新1加载更多
 											contentData.receive1.pageNumber = 1; 
 											contentData.receive1.TotalPage = 0; 
-											getLeaveList();
+											getLeaveApproveList();
 										} else if (contentData.semFlag == 2) {
 											contentData.receive2.refrushFlag = 0; //0刷新1加载更多
 											contentData.receive2.pageNumber = 1; 
@@ -390,7 +407,7 @@
 										if (contentData.semFlag == 0) {
 											contentData.receive0.refrushFlag = 1; //0刷新1加载更多
 											if (contentData.receive0.pageNumber <= contentData.receive0.total_page) {
-												getLeaveList();
+												getLeaveApproveList();
 											}else{
 												setTimeout(()=>{
 													self.endPullUpToRefresh();
@@ -400,7 +417,7 @@
 										} else if (contentData.semFlag == 1) {
 											contentData.receive1.refrushFlag = 1; //0刷新1加载更多
 											if (contentData.receive1.pageNumber <= contentData.receive1.total_page) {
-												getLeaveList();
+												getLeaveApproveList();
 											}else{
 												self.endPullUpToRefresh();
 												showPullDownTitle(1,"没有更多了")
@@ -434,22 +451,25 @@
 				
 				window.addEventListener('refreshList', function(data) {
 					events.showWaiting();
-					// contentData.receive0.refrushFlag = 0; //0刷新1加载更多
-					// contentData.receive0.pageNumber = 1; 
-					// contentData.receive0.TotalPage = 0; 
-					// getLeaveList();
-					// contentData.receive1.refrushFlag = 0; //0刷新1加载更多
-					// contentData.receive1.pageNumber = 1; 
-					// contentData.receive1.TotalPage = 0; 
-					// getLeaveList();
-					// contentData.receive2.refrushFlag = 0; //0刷新1加载更多
-					// contentData.receive2.pageNumber = 1; 
-					// contentData.receive2.TotalPage = 0; 
-					// getLeaveList();
-					// contentData.receive3.refrushFlag = 0; //0刷新1加载更多
-					// contentData.receive3.pageNumber = 1; 
-					// contentData.receive3.TotalPage = 0; 
-					// getLeaveCopyList();
+					if(contentData.semFlag==0){
+						contentData.receive0.refrushFlag = 0; //0刷新1加载更多
+						contentData.receive0.pageNumber = 1; 
+						contentData.receive0.TotalPage = 0; 
+						getLeaveApproveList();
+					}else{
+						contentData.receive1.refrushFlag = 0; //0刷新1加载更多
+						contentData.receive1.pageNumber = 1; 
+						contentData.receive1.TotalPage = 0; 
+						getLeaveApproveList();
+					}
+					contentData.receive2.refrushFlag = 0; //0刷新1加载更多
+					contentData.receive2.pageNumber = 1; 
+					contentData.receive2.TotalPage = 0; 
+					getLeaveList();
+					contentData.receive3.refrushFlag = 0; //0刷新1加载更多
+					contentData.receive3.pageNumber = 1; 
+					contentData.receive3.TotalPage = 0; 
+					getLeaveCopyList();
 				});
 				
 				//获取权限
@@ -460,22 +480,12 @@
 					}
 				});
 				events.showWaiting();
-				getLeaveList();
+				getLeaveApproveList();
 			});
 			
-			//上下拉刷新测试
-			var test=function(){
-				setTimeout(()=>{
-						self && self.endPullDownToRefresh();
-						if (mui(".mui-table-view-cell").length < 10) {
-							hidePullDownTitle(0)
-						}
-					events.closeWaiting();
-				},600)
-			}
 			
 			function hidePullDownTitle(index){
-				mui(".mui-pull-loading")[index].style.display="none"
+				mui(".mui-pull-loading")[index].style.height="none"
 				mui(".mui-pull-bottom-tips")[index].style.display="none"
 			}
 			
@@ -485,8 +495,8 @@
 				mui(".mui-pull-loading")[index].innerHTML = text;
 			}
 			
-			// 获取请假申请列表数据
-			var getLeaveList = function() {
+			// 获取审批列表
+			function getLeaveApproveList() {
 				let receiveObj='receive'+contentData.semFlag
 				comData = {
 					page_size: contentData.pageSize,
@@ -494,13 +504,11 @@
 					index_code: curPage.access.split('#')[1],
 				}
 				if(contentData.semFlag===0){
-					comData.status=0
-				}else if(contentData.semFlag===1){
 					comData.status=1
-				}else if(contentData.semFlag===2){
-					comData.status=''
+				}else if(contentData.semFlag===1){
+					comData.status=2
 				} 
-				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryApply', {}, comData, 2, function(data) {
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryApprove', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (contentData[receiveObj].refrushFlag == 0) {
@@ -521,6 +529,42 @@
 							}, 1000)
 						}
 						contentData[receiveObj].pageNumber++;
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			//获取申请列表
+			function getLeaveList(){
+				let receiveObj='receive'+contentData.semFlag
+				comData = {
+					page_size: contentData.pageSize,
+					page_number:contentData.receive2.pageNumber,
+					status:'',
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryApply', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (contentData.receive2.refrushFlag == 0) {
+							contentData.receive2.data = [].concat(data.data.list);
+							if(data.data.list.length<contentData.pageSize){
+								hidePullDownTitle(contentData.semFlag)
+							}
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+							}, 1000)
+						} else {
+							contentData.receive2.data = contentData.receive2.data.concat(data.data.list);
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
+									showPullDownTitle(contentData.semFlag,"没有更多了")
+								}
+							}, 1000)
+						}
+						contentData.receive2.pageNumber++;
 					} else {
 						mui.toast(data.msg);
 					}
