@@ -2,16 +2,11 @@
 <html>
 	<!-- 需求整理
 	教师代请假：
-	1、抄送人：家长，教师（任教老师和班主任）  如果开启了‘非班主任请假默认抄送班主任’，那么非班主任代请时，抄送人默认要有选择班级的班主任，且不可取消。
-	2、如果选择的学生无家长，同时学生所在班级也没有班主任，任教老师，那么抄送人不能选择，没有抄送人！此时，如果开启了‘非班主任请假默认抄送班主任’，非班主任代请时，无法设置班主任为默认抄送人
+	1、抄送人：全校所有有账号的而老师
 	3、短信发送的前置条件：获取到短信配置；验证发送内容无敏感词；
-	3、短信发送与抄送人没有关系，只与额外审批人及学生请假时选择的审批人，学生家长有关系
-	4、如果没有开启‘应用额外的审批人规则’，即使选择了发送短信，也不发。
-	5、教师（任教老师和班主任）  代请假，默认自己审批通过，如果开启了‘应用额外的审批人规则’，当请假超过规则限定的天数时，教师代请先自己审批通过后，由额外的审批人再进行审批，都审批通过后，请假才算通过。如果勾选了发送短信，那么会按顺序向额外审批人发送短信通知，收信人为处在审批流程前位且审核状态为未审核的审批人。
+	3、短信发送与额外审批人 与抄送人没有关系， 
+	5、教师（任教老师和班主任）  代请假，默认自己审批通过，如果开启了‘应用额外的审批人规则’，当请假超过规则限定的天数时，教师代请先自己审批通过后，由额外的审批人再进行审批，都审批通过后，请假才算通过。 
 	6、抄送人非必选
-	学生请假，抄送人：家长 教师
-	
-	家长请假，抄送人：教师
 
  -->
 	<head>
@@ -243,6 +238,18 @@
 								</div>
 							</div>
 						</template>
+						<template v-if="approve_list.length>0">
+							<div class="line"></div>
+							<div v-cloak class="mui-input-row">
+							 	<label style="width: 100%;font-size: 14px;">额外审核人<span style="font-size: 12px; color:#A3A3A3;">(由于请假天数超过限制，需要有额外审核人审核)</span></label>
+							</div>
+							<div class="line-green"></div>
+							<div v-cloak class="mui-input-row">
+								<label style="width: 100%;font-size: 14px;">
+									<template v-for="(item,index) in approve_list"><template v-if="index < approve_list.length-1">{{item.approve_user_name}} => </template><template v-else>{{item.approve_user_name}}</template></template>
+								</label>
+							</div>
+						</template>
 						<div class="double-line"></div>
 						<div v-cloak class="mui-input-row">
 						 	<label class="aCss">抄送人</label>
@@ -355,7 +362,8 @@
 					stuList: [], //学生数组
 					qjlbList: [{text:'病假',value:'sickLeave'},{text:'事假',value:'absenceLeave'}], //请假类别数组
 					crqxList: [{text:'可回宿舍',value:'backDorm'},{text:'可出入校园',value:'outSchool'}], //出入权限数组
-					approve_list:[],//额外的审批人列表
+					approve_rules:[],//额外的审批人规则列表
+					approve_list:[],//额外的审批人列表 
 					SMS:false,//是否向家长发送短信
 					CONFIG:{},//短信配置 对象
 					WORDS:[],//拒绝关键字 对象
@@ -381,6 +389,10 @@
 								datasource.stuList=[]
 								datasource.formData.cls={text:'',value:''}
 								datasource.formData.stu={text:'',value:''}
+								datasource.formData.begin_time=''
+								datasource.formData.end_time=''
+								datasource.formData.diff_times_text=''
+								datasource.formData.diff_times_days=''
 								getClsList(items[0].value)
 								userPicker.dispose();
 								userPicker = null;
@@ -401,6 +413,12 @@
 								datasource.formData.cls = items[0]
 								datasource.stuList=[]
 								datasource.formData.stu={text:'',value:''}
+								datasource.formData.begin_time=''
+								datasource.formData.end_time=''
+								datasource.formData.diff_times_text=''
+								datasource.formData.diff_times_days=''
+								datasource.approve_rules=[]
+								datasource.approve_list=[]
 								events.showWaiting();
 								getLeaveFlows(datasource.formData.grd.value,items[0].value);
 								getStuList(datasource.formData.grd.value,items[0].value)
@@ -462,18 +480,22 @@
 						});
 					},
 					showBeginDate: function() {
-						let myDate=new Date()
-						var year = myDate.getFullYear();
-						var month = myDate.getMonth() + 1;
-						var date = myDate.getDate(); 
-						let defauleValue=datasource.formData.begin_time?datasource.formData.begin_time:moment().format("YYYY-MM-DD HH:mm")
-						let dtObj={value:defauleValue,title:'开始时间'}
-						var datePicker=new $M.DtPicker(dtObj);
-						datePicker.show(function(rs) {
-							datasource.formData.begin_time=rs.text
-							datePicker.dispose();
-							datePicker = null;
-						});
+						if(this.formData.cls.value){
+							let myDate=new Date()
+							var year = myDate.getFullYear();
+							var month = myDate.getMonth() + 1;
+							var date = myDate.getDate(); 
+							let defauleValue=datasource.formData.begin_time?datasource.formData.begin_time:moment().format("YYYY-MM-DD HH:mm")
+							let dtObj={value:defauleValue,title:'开始时间'}
+							var datePicker=new $M.DtPicker(dtObj);
+							datePicker.show(function(rs) {
+								datasource.formData.begin_time=rs.text
+								datePicker.dispose();
+								datePicker = null;
+							});
+						}else{
+							 mui.toast('请先选择年级和班级')
+						}
 					},
 					showEndDate: function() {
 						let _begin_time=this.formData.begin_time;
@@ -527,6 +549,35 @@
 					selectPeople:function(){
 						toSelectPage();
 					}
+				},
+				watch:{
+					formData:{
+						 handler(val, oldVal){
+							 let approve_list=[];
+							 let approve_obj={};
+							 let max=0
+							 datasource.approve_rules.map(item=>{
+							 	if(val.diff_times_days>=item.max_day && item.max_day>max){
+							 		max=item.max_day
+							 		approve_obj=item
+							 	}
+							 })
+							 if(approve_obj.approve_list){
+							 	approve_obj.approve_list.map(pitem=>{
+							 		let approve_obj={
+							 			approve_user_code:pitem.approve_user_code,
+							 			approve_user_name:pitem.approve_user_name,
+							 			approve_user_dept_code:pitem.approve_user_dept_code,
+							 			approve_user_dept:pitem.approve_user_dept,
+							 		 }
+							 		approve_list.push(approve_obj)
+							 	})
+							 }
+							 datasource.approve_list=approve_list
+							 
+						 },
+						 deep:true //true 深度监听
+					}
 				}
 			});
 
@@ -544,7 +595,7 @@
 				});
 
 
-				window.addEventListener('refreshStudent', function(data) {
+				window.addEventListener('refreshCopy', function(data) {
 					console.log("data.detail: " + JSON.stringify(data.detail));
 					datasource.formData.copy_list=data.detail
 				});
@@ -617,7 +668,6 @@
 					index_code: curPage.index_code,
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
-					console.log(JSON.stringify(data))
 					events.closeWaiting();
 					if (data.code == 0) {
 						let clss = data.data.cls_list;
@@ -685,7 +735,7 @@
 				}
 				postDataEncry(window.storageKeyName.STULEAVE_API + 'workflow/qryFlows', {}, comData, 2, function(data) {
 					if (data.code == 0) {
-						datasource.approve_list=data.data.list
+						datasource.approve_rules=data.data.list
 					} else {
 						events.closeWaiting();
 						mui.toast(data.msg);
@@ -695,7 +745,7 @@
 			
 			//获取班级任教跳转选人页面
 			function toSelectPage(){
-				utils.mOpenWithData("../../html/leave/selectDptUser.html",{index_code:curPage.index_code});
+				utils.mOpenWithData("../../html/leave/selectDptUser.html",{copy_list:datasource.formData.copy_list,index_code:curPage.index_code});
 			}
 			
 			// 提交表单数据
@@ -708,26 +758,7 @@
 						approve_user_name:personal.user_name,
 						approve_user_dept_code:personal.dpt_code,
 						approve_user_dept:personal.dpt_name,
-					 }]
-					let approve_obj={};
-					let max=0
-					datasource.approve_list.map(item=>{
-						if(datasource.formData.diff_times_days>=item.max_day && item.max_day>max){
-							max=item.max_day
-							approve_obj=item
-						}
-					})
-					if(approve_obj.approve_list){
-						approve_obj.approve_list.map(pitem=>{
-							let approve_obj={
-								approve_user_code:pitem.approve_user_code,
-								approve_user_name:pitem.approve_user_name,
-								approve_user_dept_code:pitem.approve_user_dept_code,
-								approve_user_dept:pitem.approve_user_dept,
-							 }
-							_approve_list.push(approve_obj)
-						})
-					}
+					}].concat(datasource.approve_list)
 					//抄送人
 					let _copy_list=[]
 					data.copy_list.map(item=>{
@@ -739,14 +770,10 @@
 					})
 					
 					let smsFlag=0;
-					if(datasource.SMS){
-						smsFlag=1;
-					}
 					let comm=data.comment
 					let comment=comm.replace(/\s+/g, '').replace(/\n/g, '').replace(/\t/g, '').replace(/\r/g, '')
-					let flag=0;
 					if(datasource.SMS){
-						flag=1;
+						smsFlag=1;
 						let showToast=false
 						 let words=[]
 						 for (var i = 0; i < datasource.WORDS.length; i++) {
@@ -782,6 +809,7 @@
 						copy_list:_copy_list,
 						index_code: curPage.index_code,
 					}
+					console.log(": " + JSON.stringify(comData));
 					postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/addApply', {}, comData, 2, function(data) {
 						if (data.code == 0) {
 							approveLeave(data.data.id,function(){
@@ -805,7 +833,7 @@
 			function approveLeave(_id,callback){
 				comData = {
 					id:_id,
-					approve_content:'教师本人自动审批通过',
+					approve_content:'同意',
 					status:1,
 					index_code:curPage.index_code
 				}

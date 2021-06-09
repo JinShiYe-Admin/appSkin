@@ -8,6 +8,8 @@
 			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/common.css" rel="stylesheet" />
+		<link href="../../js/layui/css/layui.css" rel="stylesheet" />
+		<link href="layu" rel="stylesheet" />
 		<style>
 			[v-cloak] {
 				visibility: hidden;
@@ -36,6 +38,13 @@
 			.mui-table-view:before,.mui-table-view:after,.mui-table-view-cell:before,.mui-table-view-cell:after,.mui-input-group .mui-input-row:after,.mui-input-group:before,.mui-input-group:after {
 			    height: 0px;
 			}
+			
+			.layui-tree-entry{
+				background-color: #FFF;
+				margin: 3px 0 0;
+				padding: 6px 0;
+				height: 35px;
+			}
 		</style>
 	</head>
 
@@ -51,19 +60,7 @@
 					<div class="mui-scroll-wrapper" :style="{height:windowHeight}" v-cloak>
 						<div class="mui-scroll">
 							<div class="scroll-body" >
-								 <ul class="mui-table-view" v-cloak>
-								 	<li class="mui-table-view-cell mui-collapse" v-for="model in pageArray" @tap="clickGrdLi($event,model)">
-								 		<a class="mui-navigate-right" href="#">{{model.dpt_name}}</a>
-								 		<div class="mui-collapse-content">
-								 			<ul v-else class="mui-table-view" style="margin-top: -7px;margin-left: -30px;" v-cloak>
-								 				<li v-for="clsmodel in model.children" class="mui-table-view-cell"  @tap.stop="clickClsLi($event,model,clsmodel)">
-								 					<span v-if="clsmodel.checked" style="color: #00CFBD !important;padding-left: 10px;">{{clsmodel.dpt_name}}</span>
-													<span v-else style="padding-left: 10px;">{{clsmodel.dpt_name}}</span> 
-								 				</li>
-								 			</ul>
-								 		</div>
-								 	</li>
-								 </ul>
+								  <div id="left-tree"></div>
 							</div>
 						</div>
 					</div>
@@ -72,24 +69,24 @@
 					<div class="mui-scroll-wrapper" :style="{height:windowHeight}" v-cloak>
 						<div class="mui-scroll">
 							<div class="scroll-body" >
-								<!-- <template v-if="cClicked">
-									<template v-if="stuArray.length>0">
+								<template v-if="dptClicked">
+									<template v-if="tecArray.length>0">
 										<form class="mui-input-group">
-											<template v-for="item in stuArray">
+											<template v-for="item in tecArray">
 												<div class="mui-input-row mui-checkbox mui-left">
-													<label>{{item.stu_name}}</label>
-													<input name="checkbox" :value="item.stu_code" type="checkbox" :checked="item.checked" @click="stuClick(item)">
+													<label>{{item.user_name}}</label>
+													<input name="checkbox" :value="item.stu_code" type="checkbox" :checked="item.checked" @click="userClick(item)">
 												</div>
 											</template>
 										</form>
 									</template>
 									<template v-else>
-										<div style="margin:10px 10px 0;">暂无学生</div>
+										<div style="margin:10px 10px 0;">暂无人员</div>
 									</template>
 								</template>
 								<template v-else>
-									<div style="margin:10px 10px 0;">请选择班级</div>
-								</template> -->
+									<div style="margin:10px 10px 0;">请选择部门</div>
+								</template>
 							</div>
 						</div>
 					</div>
@@ -104,6 +101,7 @@
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/utils.js"></script>
 		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/layui/layui.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -128,25 +126,11 @@
 				},
 				methods: {
 					sure: function() {
-						let checkedStu=[]
-						let checkedStuNames=[]
-						datasource.pageArray.map(grdItem=>{
-							let gname=grdItem.name
-							grdItem.clsArray.map(clsItem=>{
-								let cname=clsItem.name
-								let names=[]
-								clsItem.stuArray.map(stuItem=>{
-									if(stuItem.checked){
-										checkedStu.push(stuItem)
-										names.push(stuItem.stu_name)
-									}
-								})
-								if(names.length>0){
-									checkedStuNames.push(gname+" "+cname+":"+names.join(","))	
-								}
-							})
+						let checkTec=[]
+						datasource.selectPeoples.forEach((value,key)=>{
+							checkTec.push({text:value.user_name,value:value.user_code})
 						})
-						mui.fire(plus.webview.currentWebview().opener(), 'refreshStudent', [checkedStu,checkedStuNames]);
+						mui.fire(plus.webview.currentWebview().opener(), 'refreshCopy', checkTec);
 						setTimeout(function() {
 							mui.back()
 						}, 100)
@@ -159,47 +143,19 @@
 					windowHeight: '0', //窗口高度
 					grdSelect:{},
 					clsSelect:{},
-					cClicked:false,
+					dptClicked:false,
 					pageArray: [] ,//界面年级班级总数组
-					stuArray:[],//学生数组
+					tecArray:[],//部门下的人员数组
+					selectPeoples:new Map(),//选择的人员
 				},
 				methods: {
-					clickGrdLi: function(e,model) {
-						this.grdSelect=model
-					},
-					clickClsLi:function(e,gmodel,model){
-						if(this.clsSelect.value===model.value){
-							return
+					userClick:function(user){
+						user.checked=!user.checked
+						if(user.checked){
+							this.selectPeoples.set(user.user_code,user)
+						}else{
+							this.selectPeoples.delete(user.user_code)
 						}
-						this.grdSelect=gmodel
-						datasource.pageArray.map(gm=>{
-							gm.clsArray.map(item=>{
-								item.checked=false
-							})
-						})
-						model.checked=true
-						this.clsSelect=model
-						this.cClicked=true
-						let pageArray=datasource.pageArray
-						let serviced=curPage.serviced
-						console.log(JSON.stringify(curPage));
-						pageArray.map(grdItem=>{							if(grdItem.value===gmodel.value){								grdItem.clsArray.map(clsItem=>{									if(clsItem.value===model.value){
-										if(clsItem.loaded){
-											datasource.stuArray=clsItem.stuArray
-										}else{
-											if(serviced=='99'){
-												getStuArray()
-											}else if(serviced=='0'){
-												getStuUnDGArray()
-											}else if(serviced=='1'){
-												getStuDGArray();
-											}else{
-												getStuDGArray();
-											}
-										}									}								})							}						})
-					},
-					stuClick:function(stu){
-						stu.checked=!stu.checked
 					}
 				}
 			});
@@ -210,6 +166,12 @@
 				// console.log('2222:' + JSON.stringify(curPage));
 				datasource.windowHeight = document.body.clientHeight-45  + 'px'
 				tempVue.titleName = curPage.name;
+				let copy_list=curPage.copy_list;
+				let copy_map=new Map();
+				copy_list.map(item=>{ 
+					copy_map.set(item.value,item)
+				})
+				datasource.selectPeoples=copy_map
 				var deceleration = mui.os.ios ? 0.003 : 0.0009;
 				mui('.mui-scroll-wrapper').scroll({
 					bounce: false,
@@ -229,7 +191,25 @@
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dpt', {}, params, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						 datasource.pageArray=getDptTree(data.data.list);
+						 let list=data.data.list
+						 list.map(item=>{
+							 item.title=item.dpt_name
+						 })
+						 let treeList=getDptTree(list);
+						 datasource.pageArray=treeList
+						 layui.use('tree', function(){
+						     var tree = layui.tree;
+						     //渲染
+						     var inst1 = tree.render({
+						       elem: '#left-tree' 
+						       ,data: treeList
+							   ,showLine: false 
+							   ,click: function(obj){
+								    datasource.dptClicked=true
+									getDptUser(obj.data.dpt_code)
+							    }
+						     }); 
+						   });
 					}else{
 						mui.toast(data.msg);
 					}
@@ -248,10 +228,16 @@
 					index_code: curPage.index_code,
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'dptUser', {}, params, 2, function(data) {
-					console.log('啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊：'+JSON.stringify(data))
 					events.closeWaiting();
 					if (data.code == 0) {
-						
+						 datasource.selectPeoples.forEach((value,key)=>{
+							data.data.list.map(item=>{
+								if(key===item.user_code){
+									item.checked=true
+								}
+							})
+						 })
+						  datasource.tecArray=data.data.list
 					}else{
 						mui.toast(data.msg);
 					}

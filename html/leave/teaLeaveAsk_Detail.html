@@ -124,7 +124,36 @@
 						<span class="leaveType" style="margin:0 0 0 15px;">{{detailData.item_code=='sickLeave'?'病假':detailData.item_code=='absenceLeave'?'事假':''}}</span>
 						<span class="leaveType-cr" style="margin:0 0 0 15px;">{{detailData.in_out_permission_code=='outSchool'?'可以出校':detailData.in_out_permission_code=='backDorm'?'可回宿舍':''}}</span>
 					</div>
-					
+					<div class="double-line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >审批人</label>
+					</div>
+					<div class="line-green"></div>
+					<div v-cloak class="mui-input-row" style="font-size: 15px;">
+						<ul v-cloak class="mui-table-view no-line">
+							<li v-cloak v-for="(item,index) in detailData.approve_list" class="mui-table-view-cell no-bgc">
+								<a class=""> <!-- mui-navigate-right -->
+									<div class="mui-ellipsis">{{item.approve_user_name}}</div>
+									<p style="margin-top: 0.75rem ;font-size: 13px;">{{item.approve_content}}</p>
+									<template v-if="item.lstatus==0">
+										<div style="position: absolute; right: 10px;top: 15px;">
+											<img src="../../img/stuleave/pass.png" style="width: 15px;height: 15px;">
+										</div>
+									</template>
+									<template v-else-if="item.lstatus==1"><!-- 审批人的审批状态为已批 -->
+										<div style="position: absolute; right: 10px;top: 15px;">
+											<img src="../../img/stuleave/req.png" style="width: 15px;height: 15px;">
+										</div>
+									</template>
+									<template v-else-if="item.lstatus==2"><!-- 审批人的审批状态为已批 -->
+										<div style="position: absolute; right: 10px;top: 15px;">
+											<img src="../../img/stuleave/ref.png" style="width: 15px;height: 15px;">
+										</div>
+									</template>
+								</a>
+							</li>
+						</ul>
+					</div>
 					<div class="double-line"></div>
 					<div v-cloak class="mui-input-row">
 						<label class="aCss" >抄送人</label>
@@ -280,7 +309,13 @@
 				postDataEncry(url, {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						 datasource.detailData=data.data
+						let leave=data.data
+						let approveList=leave.approve_list
+						if(approveList){
+							approveList.map(item=>{
+								// datasource.detailData=data.data
+							})
+						}
 					} else {
 						mui.toast(data.msg);
 					}
@@ -292,9 +327,17 @@
 				if(datasource.canSub){
 					datasource.canSub=false
 					events.showWaiting();
+					let comment=comm.replace(/\s+/g, '').replace(/\n/g, '').replace(/\t/g, '').replace(/\r/g, '')
+					if(!comment){
+						if(status==1){
+							comment="同意"
+						}else{
+							comment="不同意"
+						}
+					}
 					comData = {
 						id:datasource.detailData.id,
-						approve_content:datasource.detailData.approve_comment,
+						approve_content:comment,
 						status:status,
 						index_code:curPage[2]
 					}
