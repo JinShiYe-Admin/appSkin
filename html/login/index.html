@@ -540,8 +540,8 @@
 							name: "stuLeave", //学生请假
 							href: "../../html/leave/stuLeaveIndex.html",
 							img_href: "../../img/schapp_examination/kaowu_tab.png",
-							tempID: 'kaowu',
-							cls: 'mui-icon iconfont icon-xueshengqingjia',
+							tempID: 'leave-student',
+							cls: 'mui-icon iconfont icon-kaowuxitong',
 							url: 'schapp_stuLeave',
 							childList: []
 						},
@@ -549,8 +549,8 @@
 							name: "parLeave", //家长代请假
 							href: "../../html/leave/parLeaveIndex.html",
 							img_href: "../../img/schapp_examination/kaowu_tab.png",
-							tempID: 'kaowu',
-							cls: 'mui-icon iconfont icon-jiachangdaiqingjia',
+							tempID: 'leave-parent',
+							cls: 'mui-icon iconfont icon-kaowuxitong',
 							url: 'schapp_parLeave',
 							childList: []
 						},
@@ -558,10 +558,22 @@
 							name: "teaLeave", //教师代请假
 							href: "../../html/leave/teaLeaveIndex.html",
 							img_href: "../../img/schapp_examination/kaowu_tab.png",
-							tempID: 'kaowu',
-							cls: 'mui-icon iconfont icon-jiaoshidaiqingjia',
+							tempID: 'leave-teacher',
+							cls: 'mui-icon iconfont icon-kaowuxitong',
 							url: 'schapp_teaLeave',
-							childList: []
+							childList: [{
+									name: '教师代请假',
+									icon: '../../img/markingPapers/zhouce.png',
+									href: "../../html/leave/teaLeaveAsk.html",
+									url: 'schapp_teaLeave_askForLeave'
+								},
+								{
+									name: '代请假查询',
+									icon: '../../img/markingPapers/yuekao.png',
+									href: "../../html/leave/teaLeaveQuery.html",
+									url: 'schapp_teaLeave_leaveSelect'
+								},
+							]
 						},
 					]
 				}
@@ -669,7 +681,7 @@
 						store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
 						show_NOTIFICATION_SETTINGS();
 					} else if (firstLogin == 'unFirstLogin' && !
-					checkNoticePermission()) { //之后的登录（如果手动从设置页关闭了通知权限），检测是否有通知权限，只提示一次
+						checkNoticePermission()) { //之后的登录（如果手动从设置页关闭了通知权限），检测是否有通知权限，只提示一次
 						store.set(window.storageKeyName.ISFIRST, 'noAllowedNotice');
 						show_NOTIFICATION_SETTINGS();
 					} else { //首次登录已默认开启通知权限
@@ -765,11 +777,11 @@
 					setTimeout(function() {
 						store.remove(window.storageKeyName.PERSONALINFO);
 						plus.webview.open('../../html/login/loginIndex.html',
-						'../../html/login/loginIndex.html', {
-							statusbar: {
-								background: "#00CFBD"
-							}
-						});
+							'../../html/login/loginIndex.html', {
+								statusbar: {
+									background: "#00CFBD"
+								}
+							});
 						var curr = plus.webview.currentWebview();
 						var wvs = plus.webview.all();
 						for (var i = 0, len = wvs.length; i < len; i++) {

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/common.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/mui.picker.min.css" />
+		<link href="../../css/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../css/utils/mui.indexedlist.css" rel="stylesheet" />
+		<style>
+			[v-cloak] {
+				display:none !important;
+			}
+			
+			html,
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			.mui-bar {
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+			#done.mui-disabled{
+				color: #FFFFFF;
+			}
+			
+			.mui-bar .mui-btn-link {
+			    color: #FFFFFF;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">选择抄送人</h1>
+			<a id='done' class="mui-btn mui-btn-link mui-pull-right mui-btn-blue mui-disabled">完成</a>
+		</header>
+		<div v-cloak  id="datasource"  class="mui-content">
+			<div v-cloak  id='list' class="mui-indexed-list">
+				<div class="mui-indexed-list-search mui-input-row mui-search">
+					<input style="display: none;" type="search" class="mui-input-clear mui-indexed-list-search-input">
+				</div>
+				<div style="display: none;"  class="mui-indexed-list-bar"></div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul v-cloak class="mui-table-view">
+						<li v-cloak v-for="model in studentList" class="mui-table-view-cell mui-indexed-list-item mui-checkbox mui-right">
+							<template v-if="teacher_is_copy_head_teacher">
+								<template v-if="model.is_master==1">
+									<input type="checkbox" :value="model.value" checked disabled/>{{model.text}}
+								</template>
+								<template v-else>
+									<input type="checkbox" :value="model.value" :checked="model.isChecked"/>{{model.text}}
+								</template>
+							</template>
+							<template v-else>
+								<input type="checkbox" :value="model.value" :checked="model.isChecked"/>{{model.text}}
+							</template>
+						</li>
+					</ul>
+					<p v-if="userType==3" style="padding: 10px 15px;">
+						由于设置了“非班主任代请假默认抄送班主任”,所以班主任是必选的
+					</p>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/utils/mui.min.js"></script>
+		<script src="../../js/utils/mui.indexedlist.js"></script>
+		<script src="../../js/utils/storageKeyName.js"></script>
+		<!-- <script src="../../js/utils/vconsole.min.js"></script> -->
+		<script src="../../js/utils/mui.pullToRefresh.js"></script>
+		<script src="../../js/utils/mui.pullToRefresh.material.js"></script>
+		<script src="../../js/utils/vue.js"></script>
+		<script src="../../js/utils/publicProtocol.js"></script>
+		<script src="../../js/utils/store.js"></script>
+		<script src="../../js/utils/utils.js"></script>
+		<script src="../../js/utils/events.js"></script>
+		<script src="../../js/utils/mui.picker.min.js"></script>
+		<script src="../../js/utils/mui.poppicker.js"></script>
+		<!--加密-->
+		<script src="../../js/libs/RSA/Barrett.js"></script>
+		<script src="../../js/libs/RSA/BigInt.js"></script>
+		<script src="../../js/libs/RSA/RSA.js"></script>
+		<script src="../../js/libs/encryption/RSAEncrypt.js"></script>
+		<script src='../../js/libs/crypto-js/require.js'></script>
+		<script src='../../js/libs/encryption/signHmacSHA1.js'></script>
+		<script src='../../js/libs/jquery.js'></script>
+		<script src='../../js/libs/encryption/sortSign.js'></script>
+		<script type="text/javascript" charset="utf-8">
+			
+			var datasource = new Vue({
+				el: "#datasource",
+				data: {
+					studentList: [],
+					teacher_is_copy_head_teacher:false,
+					userType:0,//请假人身份  0 学生  1家长  2班主任  3 非班主任
+				},
+			});
+			
+			mui.init();
+			mui.ready(function() {
+				let curPage = utils.getDataFromUrl(window.location.href);
+				datasource.studentList=curPage[0];
+				datasource.teacher_is_copy_head_teacher=curPage[1];
+				datasource.userType=curPage[2];
+				if(curPage){
+					setTimeout(function(){
+						var count = list.querySelectorAll('input[type="checkbox"]:checked').length;
+						var value = count ? "完成(" + count + ")" : "完成";
+						done.innerHTML = value;
+						if (count) {
+							if (done.classList.contains("mui-disabled")) {
+								done.classList.remove("mui-disabled");
+							}
+						} else {
+							if (!done.classList.contains("mui-disabled")) {
+								done.classList.add("mui-disabled");
+							}
+						}
+					},100)
+				}
+				var header = document.querySelector('header.mui-bar');
+				var list = document.getElementById('list');
+				var done = document.getElementById('done');
+				//calc hieght
+				list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+				//create
+				window.indexedList = new mui.IndexedList(list);
+				//done event
+				done.addEventListener('tap', function() {
+					var checkboxArray = [].slice.call(list.querySelectorAll('input[type="checkbox"]'));
+					var checkedStudents = [];
+					checkboxArray.forEach(function(box) {
+						if (box.checked) {
+							let obj={};
+							obj.text=box.parentNode.innerText;
+							obj.value=box.value;
+							checkedStudents.push(obj)
+						}
+					});
+					if (checkedStudents.length > 0) {
+						// mui.alert('你选择了: ' + JSON.stringify(checkedStudents));
+						mui.fire(plus.webview.currentWebview().opener(), 'refreshStudent', checkedStudents);
+						setTimeout(function(){
+							mui.back()
+						},100)
+					} else {
+						mui.toast('请先选择抄送人');
+					}
+				}, false);
+				mui('.mui-indexed-list-inner').on('change', 'input', function() {
+					var count = list.querySelectorAll('input[type="checkbox"]:checked').length;
+					var value = count ? "完成(" + count + ")" : "完成";
+					done.innerHTML = value;
+					if (count) {
+						if (done.classList.contains("mui-disabled")) {
+							done.classList.remove("mui-disabled");
+						}
+					} else {
+						if (!done.classList.contains("mui-disabled")) {
+							done.classList.add("mui-disabled");
+						}
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

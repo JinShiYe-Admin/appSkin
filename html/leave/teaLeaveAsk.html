@@ -83,7 +83,7 @@
 			}
 
 			.mui-scroll-wrapper {
-				position: absolute;
+				position: fixed;
 				/* 仅为适配swiper而改动 fixed，原值：absolute */
 			}
 			.leaveContent {
@@ -124,60 +124,33 @@
 				border-radius: 2px;
 				border: 1px solid #D4308D;
 			}
-			
-			
-			
-			
-			.mui-plus .plus{
-				display: inline;
-			}
-			
-			.plus{
-				display: none;
-			}
-			
-			#topPopover {
+			.top-btn{
+				font-size: 15px;
+				border:1px solid #FFFFFF;
+				border-radius: 9px;
+				padding: 1px 5px;
+				line-height: 2.1;
+				height: 35px;
 				position: fixed;
-				top: 16px;
-				right: 6px;
-			}
-			#topPopover .mui-popover-arrow {
-				left: auto;
-				right: 6px;
-			}
-			p {
-				text-indent: 22px;
-			}
-			span.mui-icon {
-				font-size: 14px;
-				color: #007aff;
-				margin-left: -15px;
-				padding-right: 10px;
-			}
-			.mui-popover {
-				height: 95px;
-				width: 150px;
-			}
-			.mui-content {
-				padding: 10px;
+				top: 5px;
+				right: 10px;
 			}
 		</style>
 	</head>
 
 	<body style="background: white;">
 		<header class="mui-bar mui-bar-nav" id="tempHead">
-			<a v-cloak v-if="showBack==2" @click="clickLeftImg" class="mui-icon mui-pull-left">
-				<img v-cloak :src=headImg style="width: 26px;height: 26px;border-radius: 50%;" />
-			</a>
+			<a v-cloak class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
-			<a  class="mui-pull-right" style="font-size: 25px;" href="#topPopover">+</a>
+			<a v-show="showAdd" @tap="add()" class="mui-pull-right top-btn">+代学生请假</a>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
 			<div style="padding: 10px 10px;">
 				<div id="segmentedControl" class="mui-segmented-control">
-					<a @tap="clickSeg(0)" class="mui-control-item mui-active" href="#item1">已发起</a>
-					<a @tap="clickSeg(1)" class="mui-control-item" href="#item2">已通过</a>
-					<!-- <a @tap="clickSeg(2)" class="mui-control-item" href="#item3">已拒绝</a> -->
+					<a @tap="clickSeg(0)" class="mui-control-item mui-active" href="#item1">待审批</a>
+					<a @tap="clickSeg(1)" class="mui-control-item" href="#item2">已审批</a>
+					<a @tap="clickSeg(2)" class="mui-control-item" href="#item3">已发起</a>
+					<a @tap="clickSeg(3)" class="mui-control-item" href="#item4">抄送本人</a>
 				</div>
 			</div>
 			<div class="mui-slider-group">
@@ -192,9 +165,9 @@
 											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
 											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
 											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
-												<span>共计：{{item.apply_time}}</span>
+												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span> 
+												<span>{{item.apply_time}}</span>
 												<span class="leaveType" style="margin-left: 5px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}</span>
-												<span :class="[item.status==0?'leaveType0':item.status==1?'leaveType1':item.status==2?'leaveType2':'']" style="margin-left: 5px;">{{item.status==0?'待审':item.status==1?'通过':item.status==2?'拒绝':''}}</span>
 											</div>
 											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
@@ -229,7 +202,7 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div id="item3" class="mui-control-content">
+				<div id="item3" class="mui-control-content">
 					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
 						<div class="mui-scroll">
 							<div class="row">
@@ -253,16 +226,29 @@
 							</div>
 						</div>
 					</div>
-				</div> -->
-			</div>
-			<div id="topPopover" class="mui-popover">
-				<div class="mui-popover-arrow"></div>
-				<div class="mui-scroll-wrapper">
-					<div class="mui-scroll">
-						<ul class="mui-table-view">
-							<li v-show="showAdd" style="font-size: 15px;" @tap="add" class="mui-table-view-cell">新增请假</li>
-							<li @tap="sendSms" style="font-size: 15px;" class="mui-table-view-cell">一键提醒审批</li>
-						</ul>
+				</div>
+				<div id="item4" class="mui-control-content">
+					<div class="mui-scroll-wrapper" style="margin-top: 100px;">
+						<div class="mui-scroll">
+							<div class="mui-row">
+								<template v-for="item in receive3.data">
+									<div class="mui-row" @tap="toDetails(3,item)" style="padding: 10px 0 0;">
+										<div class="mui-col-xs-11">
+											<div class="leaveContent">{{item.comment}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
+											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
+												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span><br/>
+												<span>{{item.apply_time}}</span>
+												<span class="leaveType" style="margin-left: 5px;">{{item.item_code=='sickLeave'?'病假':item.item_code=='absenceLeave'?'事假':''}}</span>
+											</div>
+											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
+										</div>
+										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
+									</div>
+								</template>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -283,7 +269,7 @@
 		<script src='../../js/libs/jquery.js'></script>
 		<script src='../../js/libs/encryption/sortSign.js'></script>
 		<!---->
-		<script src="../../js/utils/showMenu.js"></script>
+		
 		<script src="../../js/utils/publicProtocol.js"></script>
 		<script src="../../js/utils/store.js"></script>
 		<script src="../../js/utils/utils.js"></script>
@@ -294,18 +280,17 @@
 			mui.init();
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
-			var curPage ={}
 			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
 				el: "#tempHead", 
 				data: {
-					showBack:0,
+					showAdd:0,
 					headTitle: '',
 					headImg: setImg(personal.img_url, 9)
 				},
 				methods: {
-					clickLeftImg: function() {
-						appPay.openMenu();
+					add:function(){
+						utils.mOpenWithData("../../html/leave/teaLeaveAsk_Add.html", {index_code:curPage.access.split('#')[1]});
 					},
 				}
 			});
@@ -314,7 +299,6 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
-					showAdd:0,
 					pageSize:10,//每页条数
 					semFlag: 0, //点击的seg索引
 					receive0: {//待审批
@@ -329,12 +313,18 @@
 						pageNumber: 1,
 						TotalPage: 1
 					},
-					// receive2: {//已发起
-					// 	data: [],
-					// 	refrushFlag: 0,
-					// 	pageNumber: 1,
-					// 	TotalPage: 1
-					// },
+					receive2: {//已发起
+						data: [],
+						refrushFlag: 0,
+						pageNumber: 1,
+						TotalPage: 1
+					},
+					receive3: {//抄送本人
+						data: [],
+						refrushFlag: 0,
+						pageNumber: 1,
+						TotalPage: 1
+					},
 				},
 				methods: {
 					clickSeg: function(flag) {
@@ -346,34 +336,29 @@
 								contentData.receive0.pageNumber = 1; 
 								contentData.receive0.TotalPage = 0; 
 								events.showWaiting();
-								getLeaveList();
+								getLeaveApproveList();
 							} else if (flag == 1 ) {
 								contentData.receive1.refrushFlag = 0; //0刷新1加载更多								contentData.receive1.pageNumber = 1; 								contentData.receive1.TotalPage = 0; 
 								events.showWaiting();
-								getLeaveList(1);
-							} 
-							// else if (flag == 2 ) {
-							// 	contentData.receive2.refrushFlag = 0; //0刷新1加载更多
-							// 	contentData.receive2.pageNumber = 1; 
-							// 	contentData.receive2.TotalPage = 0;
-							// 	events.showWaiting();
-							// 	getLeaveList();
-							// }  
+								getLeaveApproveList();
+							} else if (flag == 2 ) {
+								contentData.receive2.refrushFlag = 0; //0刷新1加载更多
+								contentData.receive2.pageNumber = 1; 
+								contentData.receive2.TotalPage = 0;
+								events.showWaiting();
+								getLeaveList();
+							} else if (flag == 3) {
+								contentData.receive3.refrushFlag = 0; //0刷新1加载更多
+								contentData.receive3.pageNumber = 1; 
+								contentData.receive3.TotalPage = 0;
+								events.showWaiting();
+								getLeaveCopyList();
+							}
 						}
 					},
 					toDetails:function(semFlag,item){
-						mui('#topPopover').popover('hide');
 						console.log(JSON.stringify(item));
-						utils.mOpenWithData("../../html/leave/stuLeave_Detail.html", [semFlag,item,curPage.access.split('#')[1]]);
-					},
-					add:function(){
-						mui('#topPopover').popover('hide');
-						utils.mOpenWithData("../../html/leave/stuLeave_Add.html", {index_code:curPage.access.split('#')[1]});
-					},
-					sendSms:function(){
-						console.log(123)
-						mui('#topPopover').popover('hide');
-						// utils.mOpenWithData("../../html/leave/teaLeaveAsk_Add.html", {index_code:curPage.access.split('#')[1]});
+						utils.mOpenWithData("../../html/leave/teaLeaveAsk_Detail.html", [semFlag,item,curPage.access.split('#')[1]]);
 					},
 				},
 			});
@@ -387,28 +372,6 @@
 						indicators: true, //是否显示滚动条
 						deceleration: deceleration
 					});
-					
-					if(curPage&&JSON.stringify(curPage)=='{}'){//前四个页面时，不显示返回按钮
-						var ws = plus.webview.currentWebview();
-						if (ws.preload) {
-							curPage = ws.preload;
-							tempHead.headTitle = ws.preload.name;
-						}
-						if (ws.preload.index == 0) {
-							tempHead.showBack = 2;
-						}
-					}else{
-						tempHead.showBack = 1;//更多页面打开时，显示返回按钮
-					}
-					
-					
-					mui('body').on('shown', '.mui-popover', function(e) {
-						console.log('shown', e.detail.id);//detail为当前popover元素
-					});
-					mui('body').on('hidden', '.mui-popover', function(e) {
-						console.log('hidden', e.detail.id);//detail为当前popover元素
-					});
-					
 					$.ready(function() {
 						$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
 							$(pullRefreshEl).pullToRefresh({
@@ -419,19 +382,23 @@
 											contentData.receive0.refrushFlag = 0; //0刷新1加载更多
 											contentData.receive0.pageNumber = 1; 
 											contentData.receive0.TotalPage = 0; 
-											getLeaveList();
+											getLeaveApproveList();
 										} else if (contentData.semFlag == 1) {
 											contentData.receive1.refrushFlag = 0; //0刷新1加载更多
 											contentData.receive1.pageNumber = 1; 
 											contentData.receive1.TotalPage = 0; 
-											getLeaveList(1);
-										} 
-										// else if (contentData.semFlag == 2) {
-										// 	contentData.receive2.refrushFlag = 0; //0刷新1加载更多
-										// 	contentData.receive2.pageNumber = 1; 
-										// 	contentData.receive2.TotalPage = 0; 
-										// 	getLeaveList();
-										// }  
+											getLeaveApproveList();
+										} else if (contentData.semFlag == 2) {
+											contentData.receive2.refrushFlag = 0; //0刷新1加载更多
+											contentData.receive2.pageNumber = 1; 
+											contentData.receive2.TotalPage = 0; 
+											getLeaveList();
+										} else if (contentData.semFlag == 3) {
+											contentData.receive3.refrushFlag = 0; //0刷新1加载更多
+											contentData.receive3.pageNumber = 1; 
+											contentData.receive3.TotalPage = 0; 
+											getLeaveCopyList();
+										}
 									}
 								},
 								up: {
@@ -440,7 +407,7 @@
 										if (contentData.semFlag == 0) {
 											contentData.receive0.refrushFlag = 1; //0刷新1加载更多
 											if (contentData.receive0.pageNumber <= contentData.receive0.total_page) {
-												getLeaveList();
+												getLeaveApproveList();
 											}else{
 												setTimeout(()=>{
 													self.endPullUpToRefresh();
@@ -450,21 +417,28 @@
 										} else if (contentData.semFlag == 1) {
 											contentData.receive1.refrushFlag = 1; //0刷新1加载更多
 											if (contentData.receive1.pageNumber <= contentData.receive1.total_page) {
-												getLeaveList(1);
+												getLeaveApproveList();
 											}else{
 												self.endPullUpToRefresh();
 												showPullDownTitle(1,"没有更多了")
 											}
-										} 
-										// else if (contentData.semFlag == 2) {
-										// 	contentData.receive2.refrushFlag = 1; //0刷新1加载更多
-										// 	if (contentData.receive2.pageNumber <= contentData.receive2.total_page) {
-										// 		getLeaveList();
-										// 	}else{
-										// 		self.endPullUpToRefresh();
-										// 		showPullDownTitle(2,"没有更多了")
-										// 	}
-										// }  
+										} else if (contentData.semFlag == 2) {
+											contentData.receive2.refrushFlag = 1; //0刷新1加载更多
+											if (contentData.receive2.pageNumber <= contentData.receive2.total_page) {
+												getLeaveList();
+											}else{
+												self.endPullUpToRefresh();
+												showPullDownTitle(2,"没有更多了")
+											}
+										} else if (contentData.semFlag == 3) {
+											contentData.receive3.refrushFlag = 1; //0刷新1加载更多
+											if (contentData.receive3.pageNumber <= contentData.receive3.total_page) {
+												getLeaveCopyList();
+											}else{
+												self.endPullUpToRefresh();
+												showPullDownTitle(3,"没有更多了")
+											}
+										}
 									}
 								}
 							});
@@ -472,34 +446,41 @@
 					});
 				})(mui);
 
+				curPage = utils.getDataFromUrl(window.location.href);
+				tempHead.headTitle = '学生请假';
+				
 				window.addEventListener('refreshList', function(data) {
 					events.showWaiting();
 					if(contentData.semFlag==0){
 						contentData.receive0.refrushFlag = 0; //0刷新1加载更多
 						contentData.receive0.pageNumber = 1; 
 						contentData.receive0.TotalPage = 0; 
-						getLeaveList();
+						getLeaveApproveList();
 					}else{
 						contentData.receive1.refrushFlag = 0; //0刷新1加载更多
 						contentData.receive1.pageNumber = 1; 
 						contentData.receive1.TotalPage = 0; 
-						getLeaveList(1);
+						getLeaveApproveList();
 					}
-					// contentData.receive2.refrushFlag = 0; //0刷新1加载更多
-					// contentData.receive2.pageNumber = 1; 
-					// contentData.receive2.TotalPage = 0; 
-					// getLeaveList();
-					 
+					contentData.receive2.refrushFlag = 0; //0刷新1加载更多
+					contentData.receive2.pageNumber = 1; 
+					contentData.receive2.TotalPage = 0; 
+					getLeaveList();
+					contentData.receive3.refrushFlag = 0; //0刷新1加载更多
+					contentData.receive3.pageNumber = 1; 
+					contentData.receive3.TotalPage = 0; 
+					getLeaveCopyList();
 				});
+				
 				//获取权限
 				getPermissionByPosition('add', curPage.access, function(data) {
 					console.log('getPermissionByPosition:' + JSON.stringify(data));
 					if (data.code == 0 && data.data.result == 1) {
-						contentData.showAdd = 1;
+						tempHead.showAdd = 1;
 					}
 				});
 				events.showWaiting();
-				getLeaveList();
+				getLeaveApproveList();
 			});
 			
 			
@@ -513,18 +494,21 @@
 				mui(".mui-pull-loading")[index].style.display="inherit"
 				mui(".mui-pull-loading")[index].innerHTML = text;
 			}
-			 
 			
-			//获取申请列表
-			function getLeaveList(_status){
+			// 获取审批列表
+			function getLeaveApproveList() {
 				let receiveObj='receive'+contentData.semFlag
 				comData = {
 					page_size: contentData.pageSize,
 					page_number:contentData[receiveObj].pageNumber,
-					status:_status?_status:'',
 					index_code: curPage.access.split('#')[1],
 				}
-				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryApply', {}, comData, 2, function(data) {
+				if(contentData.semFlag===0){
+					comData.status=1
+				}else if(contentData.semFlag===1){
+					comData.status=2
+				} 
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryApprove', {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						if (contentData[receiveObj].refrushFlag == 0) {
@@ -545,6 +529,76 @@
 							}, 1000)
 						}
 						contentData[receiveObj].pageNumber++;
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			//获取申请列表
+			function getLeaveList(){
+				let receiveObj='receive'+contentData.semFlag
+				comData = {
+					page_size: contentData.pageSize,
+					page_number:contentData.receive2.pageNumber,
+					status:'',
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryApply', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (contentData.receive2.refrushFlag == 0) {
+							contentData.receive2.data = [].concat(data.data.list);
+							if(data.data.list.length<contentData.pageSize){
+								hidePullDownTitle(contentData.semFlag)
+							}
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+							}, 1000)
+						} else {
+							contentData.receive2.data = contentData.receive2.data.concat(data.data.list);
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
+									showPullDownTitle(contentData.semFlag,"没有更多了")
+								}
+							}, 1000)
+						}
+						contentData.receive2.pageNumber++;
+					} else {
+						mui.toast(data.msg);
+					}
+				});
+			}
+			
+			//获取抄送列表
+			var getLeaveCopyList = function() {
+				comData = {
+					page_number:contentData.receive3.pageNumber,
+					page_size: contentData.pageSize,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/qryCopy', {}, comData, 2, function(data) {
+					events.closeWaiting();
+					if (data.code == 0) {
+						if (contentData.receive3.refrushFlag == 0) {
+							contentData.receive3.data = [].concat(data.data.list);
+							if(data.data.list.length<contentData.pageSize){
+								hidePullDownTitle(contentData.semFlag)
+							}
+							setTimeout(() => {
+								self && self.endPullDownToRefresh();
+							}, 1000)
+						} else {
+							contentData.receive3.data = contentData.receive3.data.concat(data.data.list);
+							setTimeout(() => {
+								self && self.endPullUpToRefresh();
+								if (data.data.page_number >= data.data.total_page) {
+									showPullDownTitle(contentData.semFlag,"没有更多了")
+								}
+							}, 1000)
+						}
+						contentData.receive3.pageNumber++;
 					} else {
 						mui.toast(data.msg);
 					}

@@ -17,7 +17,8 @@ student_performance|学生成绩|Zhao|Meng(广西)|开发 <!-- 有滑动列表�
 parents_attendance|学生考勤家长端|zhao|阮本伟|正式
 zhiXueKeTang|智学课堂|zhao|廖建鹏
 stu_actionComment|行为与评语|zhao|阮本伟|正式
-kouYuCePing|口语测评|chen(广西)|廖|开发
+kouYuCePing|口语测评|chen(广西)|廖|正式
+leave|学生请假系统|Liu|Kong|开发
 <!-- 
 打包说明
 1、注释vconsole
