@@ -134,8 +134,16 @@
 				float: left;
 				width: calc(100% - 100px);
 				vertical-align: middle;
-				height: 30px;
+				/* height: 30px; */
 				color: #505050;
+				word-break: break-all;
+				/* 显示省略号 */
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				line-clamp: 2;
+				-webkit-box-orient: vertical;
 			}
 
 			.readClass1 {
@@ -152,6 +160,14 @@
 				font-size: 13px;
 				border-radius: 2px;
 				border: 1px solid #ff8d1a;
+			}
+			
+			.readClass3 {
+				color: #43cf7c;
+				padding: 3px;
+				font-size: 13px;
+				border-radius: 2px;
+				border: 1px solid #43cf7c;
 			}
 		</style>
 	</head>
@@ -174,8 +190,9 @@
 												<div class="divleft">
 													<span v-if="model.status == 1" class="readClass1">未阅</span>
 													<span v-else-if="model.status == 2" class="readClass2">阅卷中</span>
+													<span v-else-if="model.status == 3" class="readClass3">已阅</span>
 												</div>
-												<div class="divright">{{model.name}}</div>
+												<div class="divright">{{model.name}}{{model.custom_name}}</div>
 											</div>
 										</div>
 									</a>
@@ -228,7 +245,11 @@
 					clickLi: function(model) {
 						console.log('clickLi.model:' + JSON.stringify(model));
 						model.access = curPage.access;
-						utils.mOpenWithData("../../html/markingPapers/markingDetail.html", model);
+						if(model.status == 3){
+							utils.mOpenWithData("../../html/markingPapers/markScore.html", model);
+						}else{
+							utils.mOpenWithData("../../html/markingPapers/markingDetail.html", model);
+						}
 					}
 				}
 			});
@@ -303,7 +324,7 @@
 					page_size: '10', //每页记录数
 					index_code: curPage.access.split('#')[1],
 					grd_code: '', //年级代码
-					status: '1,2', //状态,0未启动 1未阅 2阅卷中 3已阅
+					status: '1,2,3', //状态,0未启动 1未阅 2阅卷中 3已阅
 					exam_type: '', //考试类型,1期中、3期末
 					start_time: '', //查询开始时间
 					end_time: '', //查询结束时间
