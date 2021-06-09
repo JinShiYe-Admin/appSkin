@@ -6,61 +6,63 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/common.css" rel="stylesheet" />
 		<style>
-
 			[v-cloak] {
 				visibility: hidden;
-				display:none !important;
+				display: none !important;
 			}
+
 			html,
 			body {
 				background-color: #FFFFFF;
 			}
-			
-			.mui-content{
+
+			.mui-content {
 				background-color: #FFFFFF;
 			}
-			
+
 			.mui-bar~.mui-content .mui-fullscreen {
 				top: 44px;
 				height: auto;
 			}
-			
+
 			.mui-card .mui-control-content {
 				padding: 10px;
 			}
-			
+
 			.mui-control-content {
-				min-height:150px;
+				min-height: 150px;
 			}
-			
+
 			.chart {
 				min-height: 350px;
 				margin: 0px;
 				padding: 0px;
 			}
-			
-			.mui-segmented-control{
+
+			.mui-segmented-control {
 				border: 0;
 			}
-			
-			.tab-btn{
+
+			.tab-btn {
 				margin: 0.3375rem 0;
 				padding: 0 0.5rem;
 				background-color: #FFFFFF;
 				height: 3rem;
 			}
-			
-			.mui-segmented-control .mui-control-item{
+
+			.mui-segmented-control .mui-control-item {
 				color: #000000;
 				font-size: 0.9375rem;
 				line-height: 3rem;
 				border-radius: 0.692rem;
-				box-shadow: 0rem 0rem 0.22rem 0rem rgba(0,0,0,0.5);
+				box-shadow: 0rem 0rem 0.22rem 0rem rgba(0, 0, 0, 0.5);
 			}
+
 			.mui-segmented-control .mui-control-item.mui-active {
 				height: 3rem;
 				font-size: 0.9375rem;
@@ -68,15 +70,15 @@
 				border-radius: 0.692rem;
 				background-color: rgba(216, 236, 243, 1);
 			}
-			
-			.description{
+
+			.description {
 				margin: 0.3125rem 0 0 0;
 				min-height: 3rem;
-				border-radius:1.3375rem;
-				background-color:rgba(216, 236, 243, 1) ;
+				border-radius: 1.3375rem;
+				background-color: rgba(216, 236, 243, 1);
 			}
-			
-			.des-detail{
+
+			.des-detail {
 				padding: 0.3125rem 0.9375rem;
 				font-size: 0.9375rem;
 				min-height: 3rem;
@@ -85,22 +87,22 @@
 				background-color: #FFFFFF;
 				border-bottom: 0.1875rem solid rgba(0, 153, 204, 1);
 			}
-			
-			.echarts-div{
-				box-shadow: 0rem 0rem 0.42rem 0rem rgba(0,0,0,0.5);
-				margin:0.5rem 0 0 0;
+
+			.echarts-div {
+				box-shadow: 0rem 0rem 0.42rem 0rem rgba(0, 0, 0, 0.5);
+				margin: 0.5rem 0 0 0;
 				padding-top: 0.625rem;
 			}
-			
-			.zgf-ul{
+
+			.zgf-ul {
 				width: 1.1625rem;
 				height: 1.1625rem;
 			}
-			
-			.tab-img{
+
+			.tab-img {
 				margin-left: 0.1875rem;
 				width: 1.75rem;
-				height:1.75rem;
+				height: 1.75rem;
 				margin-top: 0.5625rem;
 			}
 		</style>
@@ -115,40 +117,46 @@
 			<div style="text-align: center;margin: 1.225rem 0;">
 				<h4 v-cloak>{{titleName}}</h4>
 			</div>
-			<div style="padding: 0px 8px;"> 
+			<div style="padding: 0px 8px;">
 				<div id="segmentedControl" class="mui-segmented-control mui-row">
-					<div v-cloak class="mui-col-xs-6 tab-btn">  
+					<div v-cloak class="mui-col-xs-6 tab-btn">
 						<a id="pjftab" class="mui-control-item mui-active" href="#pjf">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/pjf.png' /><span class="mui-col-xs-8" v-cloak>平均分:{{tabsDetail.avg_score}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/pjf.png' /><span
+									class="mui-col-xs-8" v-cloak>平均分:{{tabsDetail.avg_score}}</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="zfdtab" class="mui-control-item" href="#zfd">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/zfd.png' /><span class="mui-col-xs-8" v-cloak>主分段:{{tabsDetail.score_section}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/zfd.png' /><span
+									class="mui-col-xs-8" v-cloak>主分段:{{tabsDetail.score_section}}</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="zgftab" class="mui-control-item" href="#zgf">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/zgf.png' /><span class="mui-col-xs-8" v-cloak>最高分:{{tabsDetail.max_score}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/zgf.png' /><span
+									class="mui-col-xs-8" v-cloak>最高分:{{tabsDetail.max_score}}</span>
 							</div>
 						</a>
 					</div>
 					<div v-if="selectType=='qk'" class="mui-col-xs-6 tab-btn">
 						<a id="sxltab" class="mui-control-item" href="#sxl">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/sxl.png' /><span class="mui-col-xs-8" v-cloak>{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/sxl.png' /><span
+									class="mui-col-xs-8"
+									v-cloak>{{tabsDetail.pass_name}}:{{tabsDetail.pass_radio}}%</span>
 							</div>
 						</a>
 					</div>
 					<div class="mui-col-xs-6 tab-btn">
 						<a id="jtbtab" class="mui-control-item" href="#jtb">
 							<div class="mui-row">
-								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/jtb.png' /><span class="mui-col-xs-8" v-cloak>进退比:{{tabsDetail.ranking_step}}</span>
+								<img class="mui-col-xs-4 tab-img" src='../../img/schapp_examination/jtb.png' /><span
+									class="mui-col-xs-8" v-cloak>进退比:{{tabsDetail.ranking_step}}</span>
 							</div>
 						</a>
 					</div>
@@ -163,10 +171,12 @@
 				<div id="pjf" class="mui-control-content mui-active">
 					<h4 style="text-align: center">—— 各班级均分统计 ——</h4>
 					<div class="chart" id="pjfChart"></div>
+					<p style="color: #999999;font-size: 12px;text-align: center;margin-top: -20px;">点击圆柱查看对应班级学生成绩详情</p>
 				</div>
 				<div id="zfd" class="mui-control-content">
 					<h4 style="text-align: center">—— 各分段占比统计 ——</h4>
 					<div class="chart" id="zfdChart"></div>
+					<p style="color: #999999;font-size: 12px;text-align: center;margin-top: -20px;">点击饼图查看对应分段学生成绩详情</p>
 				</div>
 				<div id="zgf" class="mui-control-content">
 					<h4 style="text-align: center">—— 年级排名 ——</h4>
@@ -224,7 +234,7 @@
 			var datasource = new Vue({
 				el: "#datasource",
 				data: {
-					selectType:'',////查询类型 qk 全科考情 dk 单科考情 第一次进入页面默认为qk
+					selectType: '', ////查询类型 qk 全科考情 dk 单科考情 第一次进入页面默认为qk
 					titleName: '',
 					tabsDetail: '', //tab栏数据
 					pjfDetail: '', //平均分接口返回的详情数据
@@ -251,15 +261,16 @@
 					var id = this.getAttribute("id");
 					if (id == 'pjftab') {
 						var obj = datasource.pjfDetail
-						if(obj!=''){
+						if (obj != '') {
 							console.log(JSON.stringify(obj))
 							var des = `本次考试共有${obj.cls_count}个班，合计${obj.stu_count}人次参加考试，平均分${obj.avg_score}分`
 							datasource.description = des
 						}
 					} else if (id == 'zfdtab') {
 						var obj2 = datasource.zfdDetail
-						if(obj2!=''){
-							var des =`${obj2.max_name}分段占比最大，达${obj2.max_radio}%，合计${obj2.max_num}人；${obj2.min_name}分段占比最低，为${obj2.min_radio}%，合计${obj2.min_num}人，需要重点关注`
+						if (obj2 != '') {
+							var des =
+								`${obj2.max_name}分段占比最大，达${obj2.max_radio}%，合计${obj2.max_num}人；${obj2.min_name}分段占比最低，为${obj2.min_radio}%，合计${obj2.min_num}人，需要重点关注`
 							datasource.description = des
 							setTimeout(function() {
 								initZfd()
@@ -267,14 +278,16 @@
 						}
 					} else if (id == 'zgftab') {
 						var obj3 = datasource.zgfDetail
-						if(obj3!=''){
-							var des = `年级最高分${obj3.max_score},最低分${obj3.min_score}，年级排名前10的学生有${obj3.stu_count}人在${obj3.cls_name}班`
+						if (obj3 != '') {
+							var des =
+								`年级最高分${obj3.max_score},最低分${obj3.min_score}，年级排名前10的学生有${obj3.stu_count}人在${obj3.cls_name}班`
 							datasource.description = des
 						}
 					} else if (id == 'sxltab') {
 						var obj4 = datasource.sxlDetail
-						if(obj4 !=''){
-							var des =`本次考试${obj4.max_name}上线率最高，为${obj4.max_radio}%，合计${obj4.max_num}人，${obj4.min_name}最低，为${obj4.min_radio}%，合计${obj4.min_num}人`
+						if (obj4 != '') {
+							var des =
+								`本次考试${obj4.max_name}上线率最高，为${obj4.max_radio}%，合计${obj4.max_num}人，${obj4.min_name}最低，为${obj4.min_radio}%，合计${obj4.min_num}人`
 							datasource.description = des
 							setTimeout(function() {
 								initSxl()
@@ -283,24 +296,25 @@
 					} else if (id == 'jtbtab') {
 						var obj5 = datasource.jtbDetail
 						console.log(JSON.stringify(obj5))
-						console.log(obj5 !='')
-						if(obj5 !=''){ 
+						console.log(obj5 != '')
+						if (obj5 != '') {
 							var des = ''
-							des = `${obj5.max_up_cls_name==null?0:obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num==null?0:obj5.max_up_num}人；${obj5.max_down_cls_name==null?0:obj5.max_down_cls_name}退步人数最多，合计${obj5.max_down_num==null?0:obj5.max_down_num}人；`
+							des =
+								`${obj5.max_up_cls_name==null?0:obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num==null?0:obj5.max_up_num}人；${obj5.max_down_cls_name==null?0:obj5.max_down_cls_name}退步人数最多，合计${obj5.max_down_num==null?0:obj5.max_down_num}人；`
 							if (obj5.max_up_cls_name == null && obj5.max_down_cls_name == null) {
 								des = `本次考试没有进步和退步的学生；`
-							}else if (obj5.max_up_cls_name!=null && obj5.max_down_cls_name == null) {
+							} else if (obj5.max_up_cls_name != null && obj5.max_down_cls_name == null) {
 								des = `${obj5.max_up_cls_name}班进步人数最多，合计${obj5.max_up_num}人；本次考试没有退步的学生；`
-							}else if (obj5.max_up_cls_name == null && obj5.max_down_cls_name != null) {
+							} else if (obj5.max_up_cls_name == null && obj5.max_down_cls_name != null) {
 								des = `本次考试没有进步的学生；${obj5.max_down_cls_name}班退步人数最多，合计${obj5.max_down_num}人；`
-							}  
+							}
 							datasource.description = des
 							setTimeout(function() {
 								initJtb()
 							}, 50)
 						}
 					}
-				}) 
+				})
 
 				curPage = utils.getDataFromUrl(window.location.href);
 				console.log('2222:' + JSON.stringify(curPage));
@@ -318,7 +332,7 @@
 					setTimeout(function() {
 						getZgfDetail()
 					}, 300) //最高分详情
-					if(curPage.selectType=='qk'){
+					if (curPage.selectType == 'qk') {
 						setTimeout(function() {
 							getSxlDetail()
 						}, 400) //上线率详情
@@ -372,7 +386,8 @@
 						datasource.echartsData.pjfValue = valueList;
 
 						//初始化默认显示的tab页  其他的在监听点击事件中初始化
-						let des = `本次考试共有${data.data.cls_count?data.data.cls_count:0}个班，合计${data.data.stu_count?data.data.stu_count:0}人次参加考试，平均分${data.data.avg_score?data.data.avg_score:0}分`
+						let des =
+							`本次考试共有${data.data.cls_count?data.data.cls_count:0}个班，合计${data.data.stu_count?data.data.stu_count:0}人次参加考试，平均分${data.data.avg_score?data.data.avg_score:0}分`
 						datasource.description = des
 						initPjf()
 
@@ -400,16 +415,16 @@
 						let nameList = [];
 						let valueList = [];
 						list.map(function(item) {
-							let name=item.name+'\xa0\xa0'+item.radio+'%'+'\xa0\xa0'+item.num+'人';
+							let name = item.name + '\xa0\xa0' + item.radio + '%' + '\xa0\xa0' + item.num + '人';
 							nameList.push(name)
-							let obj={}
+							let obj = {}
 							console.log(item)
-							obj.value=item.radio
-							obj.name=name
+							obj.value = item.radio
+							obj.name = name
 							valueList.push(obj)
 						})
-						datasource.echartsData.zfdName=nameList
-						datasource.echartsData.zfdValue=valueList
+						datasource.echartsData.zfdName = nameList
+						datasource.echartsData.zfdValue = valueList
 
 						closeWaiting();
 					} else {
@@ -458,15 +473,15 @@
 						let nameList = [];
 						let valueList = [];
 						list.map(function(item) {
-							let name=item.name+'\xa0\xa0'+item.radio+'%'+'\xa0\xa0'+item.num+'人';
+							let name = item.name + '\xa0\xa0' + item.radio + '%' + '\xa0\xa0' + item.num + '人';
 							nameList.push(name)
-							let obj={}
-							obj.value=item.radio
-							obj.name=name
+							let obj = {}
+							obj.value = item.radio
+							obj.name = name
 							valueList.push(obj)
 						})
-						datasource.echartsData.sxlName=nameList
-						datasource.echartsData.sxlValue=valueList
+						datasource.echartsData.sxlName = nameList
+						datasource.echartsData.sxlValue = valueList
 
 						closeWaiting();
 					} else {
@@ -511,10 +526,11 @@
 
 			//关闭加载框
 			function closeWaiting() {
-				if (datasource.pjfDetail != '' && datasource.zfdDetail != '' && datasource.zgfDetail != '' &&  datasource.jtbDetail != '') {
-					if(curPage.selectType=='qk' && datasource.sxlDetail !=''){
-						events.closeWaiting();	
-					}else{
+				if (datasource.pjfDetail != '' && datasource.zfdDetail != '' && datasource.zgfDetail != '' && datasource
+					.jtbDetail != '') {
+					if (curPage.selectType == 'qk' && datasource.sxlDetail != '') {
+						events.closeWaiting();
+					} else {
 						events.closeWaiting();
 					}
 				}
@@ -539,10 +555,21 @@
 						data: ['平均分']
 					},
 					series: [{
-						name:'平均分',
+						name: '平均分',
 						data: datasource.echartsData.pjfValue,
-						type: 'bar'
+						type: 'bar',
 					}]
+				});
+				pjfChart.on('click', function(params) {
+					console.log('params:' + params.dataIndex);
+					var tempM = {};
+					tempM.id = curPage.id;
+					tempM.name = curPage.name;
+					tempM.index_code = curPage.index_code;
+					tempM.cls_code = datasource.pjfDetail.list[params.dataIndex].cls_code;
+					tempM.selectType = curPage.selectType;
+					tempM.subCode = curPage.subCode;
+					utils.mOpenWithData("../../html/schapp_examination/stuResult1.html", tempM);
 				});
 			}
 
@@ -587,6 +614,18 @@
 						},
 						data: datasource.echartsData.zfdValue
 					}]
+				});
+				zfdChart.on('click', function(params) {
+					console.log('params:' + params.dataIndex);
+					console.log('datasource.zfdDetail:'+JSON.stringify(datasource.zfdDetail));
+					var tempM = {};
+					tempM.id = curPage.id;
+					tempM.name = curPage.name;
+					tempM.index_code = curPage.index_code;
+					tempM.cls_code = datasource.zfdDetail.list[params.dataIndex].name;
+					tempM.selectType = curPage.selectType;
+					tempM.subCode = curPage.subCode;
+					utils.mOpenWithData("../../html/schapp_examination/stuResult2.html", tempM);
 				});
 			}
 
