@@ -292,7 +292,7 @@
 						<template v-cloak v-if="pageArray.length>0" v-for="item in pageArray">
 							<div class="mui-row" @tap="toDetails(item)" style="padding: 10px 0 0;">
 								<div class="mui-col-xs-11">
-									<div class="leaveContent">{{item.comment}}</div>
+									<div class="leaveContent">{{item.comment?item.comment:'暂无内容'}}</div>
 									<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
 									<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begintime}} ~ {{item.endtime}}</div>
 									<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
