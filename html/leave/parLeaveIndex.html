@@ -178,9 +178,9 @@
 							<div class="mui-row">
 								<template v-if="receive0.data.length>0" v-for="item in receive0.data">
 									<div class="mui-row" @tap="toDetails(0,item)" style="padding: 10px 0 0;">
-										<div class="mui-col-xs-11">
-											<div class="leaveContent">{{item.comment}}</div>
-											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+										<div class="mui-col-xs-12 mui-navigate-right">
+											<div class="leaveContent">{{item.comment?item.comment:'暂无内容'}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 20px;"></div>
 											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
 											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
 												<span>共计：{{item.apply_time}}</span>
@@ -189,7 +189,7 @@
 											</div>
 											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
-										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
+										<!-- <div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div> -->
 									</div>
 								</template>
 								<template v-else>
@@ -205,9 +205,9 @@
 							<div class="mui-row">
 								<template v-if="receive1.data.length>0" v-for="item in receive1.data">
 									<div class="mui-row" @tap="toDetails(1,item)" style="padding: 10px 0 0;">
-										<div class="mui-col-xs-11">
-											<div class="leaveContent">{{item.comment}}</div>
-											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 0 0 5px;"></div>
+										<div class="mui-col-xs-12 mui-navigate-right">
+											<div class="leaveContent">{{item.comment?item.comment:'暂无内容'}}</div>
+											<div style="height: 0.5px;background-color: #e5e5e5;margin: 5px 20px;"></div>
 											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">{{item.begin_time}} ~ {{item.end_time}}</div>
 											<div style="margin-top: 5px;margin-left: 20px;font-size: 13px;">
 												<span>{{item.grd_name}} {{item.cls_name}}&ensp;{{item.stu_name}}</span>
@@ -216,7 +216,7 @@
 											</div>
 											<div style="height: 1px;background: rgba(153,153,153,0.5);margin: 10px 0 0;"></div>
 										</div>
-										<div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div>
+										<!-- <div class="mui-col-xs-1 mui-navigate-right" style="height: 95px;"></div> -->
 									</div>
 								</template>
 								<template v-else>

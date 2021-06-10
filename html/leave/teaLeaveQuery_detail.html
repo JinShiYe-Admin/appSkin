@@ -128,7 +128,8 @@
 							<input type="text" class="iCss-right" placeholder="暂无数据" :value="detailData.create_user_name" readonly>
 						</div>
 					</template>
-					<div v-cloak class="mui-input-row" style="padding:0 0 10px;">
+					<div class="line"></div>
+					<div v-cloak class="mui-input-row" style="padding:0 0 10px;margin-top: 10px;">
 						<span class="leaveType" style="margin:0 0 0 15px;">{{detailData.item_code=='sickLeave'?'病假':detailData.item_code=='absenceLeave'?'事假':''}}</span>
 						<span class="leaveType-cr" style="margin:0 0 0 15px;">{{detailData.in_out_permission_code=='outSchool'?'可以出校':detailData.in_out_permission_code=='backDorm'?'可回宿舍':''}}</span>
 					</div>
