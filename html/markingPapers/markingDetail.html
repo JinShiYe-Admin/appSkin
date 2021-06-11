@@ -107,7 +107,7 @@
 							<!-- <button class="mui-btn" style="font-size: 13px;color: #00CFBD;width: 140px;height: 40px;margin-left: -7px;">20.0/{{eqsModel.score}}</button> -->
 							<div style="margin-top: 5px;" v-for="(stepModel,index) in eqsModel.step_score_list">
 								<span style="color: white;">({{index+1}})</span>
-								<input type="number" @blur = "inputChange(stepModel)" placeholder="0.0" style="width: 50px;font-size: 13px;"
+								<input type="number" @blur = "inputChange(stepModel)" style="width: 50px;font-size: 13px;"
 									v-model="stepModel.stu_score">
 								<button class="mui-btn" @tap='clickScore(stepModel)' style="font-size: 13px;color: #00CFBD;width: 50px;height: 40px;margin-left: -7px;">/{{stepModel.score}}</button>
 							</div>
@@ -115,7 +115,7 @@
 					</div>
 					<div v-else>
 						<div style="margin-top: 5px;">
-							<input type="number" @blur = "inputChange(eqsModel)" placeholder="0.0" style="width: 90px;font-size: 13px;"
+							<input type="number" @blur = "inputChange(eqsModel)" style="width: 90px;font-size: 13px;"
 								v-model="eqsModel.stu_score">
 							<button class="mui-btn" @tap='clickScore(eqsModel)' style="font-size: 13px;color: #00CFBD;width: 50px;height: 40px;margin-left: -7px;">/{{eqsModel.score}}</button>
 						</div>
@@ -179,6 +179,10 @@
 				dragging = false,
 				posl = {},
 				scale = 1,
+				tempPos = {
+					x: 0,
+					y: 0
+				},
 				pos = {
 					x: 0,
 					y: 0
@@ -190,7 +194,13 @@
 			var start, end = 0;
 			var canvasClickFlag = 0;//判断是否点击事件，0否，1是
 			
-			mui.init();
+			// mui.init();
+			mui.init({
+				//重写物理/虚拟返回按钮，防止与弹出层冲突
+				beforeback: function(){
+					plus.screen.lockOrientation('portrait-primary');
+				}
+			});
 
 			mui.plusReady(function() {
 				var datasource = new Vue({
@@ -256,7 +266,7 @@
 									}
 									tempE.stu_score = tempScore;
 								}
-								if(parseFloat(tempE.stu_score).toFixed(1)>=0&&parseFloat(tempE.stu_score).toFixed(1)<=parseFloat(tempE.score).toFixed(1)){
+								if(parseFloat(tempE.stu_score).toFixed(1)>=0&&parseFloat(tempE.stu_score).toFixed(1)<=parseFloat(tempE.score)){
 									tempEqs.evaluation_id = tempE.evaluation_id;
 									tempEqs.id = tempE.id;
 									tempEqs.question_number = tempE.question_number;
@@ -411,23 +421,27 @@
 				
 
 				canvas.addEventListener('touchstart', function(e) {
-					e.preventDefault()
+					e.preventDefault();
+					// console.log('touchstart');
 					canvasClickFlag = 1;
 					var x = canvas.getBoundingClientRect().left;
 					var y = e.clientY - canvas.getBoundingClientRect().top;
-					console.log('xxxxxxx:'+x);
+					// console.log('xxxxxxx:'+x);
 					if (e.touches.length === 1) {
+						// console.log('touchstart111111111');
 						dragging = true;
 						pos = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY); //坐标转换，将窗口坐标转换成canvas的坐标
-						console.log('pospospos000:'+e.touches[0].clientX+','+e.touches[0].clientY);
-						console.log('pospospos111:'+JSON.stringify(pos));
+						tempPos = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY); //坐标转换，将窗口坐标转换成canvas的坐标
+						// console.log('pospospos000:'+e.touches[0].clientX+','+e.touches[0].clientY);
+						// console.log('pospospos111:'+JSON.stringify(pos));
 						// const localXY = {
 						// 		x: e.clientX - canvas.getBoundingClientRect().left,
 						//     	y: e.clientY - canvas.getBoundingClientRect().top
 						// 	}
-							console.log('localXY:'+canvas.getBoundingClientRect().left);
+							// console.log('localXY:'+canvas.getBoundingClientRect().left);
 					}
 					if (e.touches.length === 2) {
+						console.log('touchstart2222222222');
 						var t1 = e.touches[0];
 						var t2 = e.touches[1];
 						var pos1 = {
@@ -443,13 +457,19 @@
 				});
 				canvas.addEventListener('touchmove', function(e) {
 					e.preventDefault()
-					canvasClickFlag = 0;
+					// canvasClickFlag = 0;
+					// console.log('touchmove');
 					if (e.touches.length === 1) {
 						// 加上dragging区分pos和posl的值，一个为双指，这里为单指的值
 						if (dragging) {
 							posl = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY);
+							if(Math.abs((Math.abs(tempPos.x)-Math.abs(posl.x)))>20||Math.abs((Math.abs(tempPos.y)-Math.abs(posl.y)))>20){
+								// console.log('1111111111111111111111111111111111111111111111111111111111');
+								canvasClickFlag = 0;
+							}
 							var x = posl.x - pos.x;
 							var y = posl.y - pos.y;
+							// console.log('1111111111111111111111111111111111111111111111111111111111:'+x+','+y);
 							imgX += x;
 							imgY += y;
 							pos = JSON.parse(JSON.stringify(posl));
@@ -504,13 +524,14 @@
 					// }
 				});
 				canvas.addEventListener('touchend', function(e) {
-					e.preventDefault()
+					e.preventDefault();
+					// console.log('touchend');
 					if (canvasClickFlag == 1&&datasource.typeFlag>0) {
 						// console.log('canvasClickFlagcanvasClickFlag');
 						// console.log('e.touches3:'+e.touches.length);
 						// pos = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY); //坐标转换，将窗口坐标转换成canvas的坐标
-						console.log('pospospos222:'+JSON.stringify(pos));
-						console.log('imgX:'+imgX+',imgY:'+imgY);
+						// console.log('pospospos222:'+JSON.stringify(pos));
+						// console.log('imgX:'+imgX+',imgY:'+imgY);
 						var tempM = {
 							type:datasource.typeFlag,
 							x:pos.x-imgX,

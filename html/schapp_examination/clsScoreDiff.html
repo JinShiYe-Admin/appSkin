@@ -396,6 +396,11 @@
 
 			//点击确定按钮时，获取现在索引页数据
 			var clickSureGetPageData = function(flag) {
+				if(canvasSideData.grdList.length==0){
+					// 获取数据范围授权：年级
+					getGrdList();
+					return;
+				}
 				if (flag == 0 && contentData.sem0Data.scoreList.length == 0) {
 					//1.25.考情分析-班级成绩趋势-历次成绩
 					getScoreList();
@@ -631,7 +636,7 @@
 			function getSubList() {
 				comData = {
 					op_code: 'index',
-					all_sub: false,
+					all_sub: true,
 					get_sub: true,
 					grd_code: canvasSideData.grdTempValue.value,
 					cls_code: canvasSideData.clsTempValue.value,
@@ -781,22 +786,17 @@
 					sub_code: contentData.sem1Data.subValue.value,
 					index_code: curPage.access.split('#')[1],
 				}
+				if(comData.sub_code == '-1'){
+					comData.sub_code = '';
+				}
 				postDataEncry(window.storageKeyName.INTERFACE_MARKINGPAPERS + 'clsTrend/twoRateList', {}, comData, 2, function(
 					data) {
 					events.closeWaiting();
 					if (data.code == 0) {
 						var tempAvgArray = [];
-						var tempYouXiuArray = [];
-						var tempLiangHaoArray = [];
-						var tempHeGeArray = [];
-						var tempBuHeGeArray = [];
 						for (var a = 0; a < data.data.list.length; a++) {
 							var tempM = data.data.list[a];
 							tempAvgArray.push(tempM.avg);
-							tempYouXiuArray.push(tempM.radio0);
-							tempLiangHaoArray.push(tempM.radio1);
-							tempHeGeArray.push(tempM.radio2);
-							tempBuHeGeArray.push(tempM.radio3);
 						}
 						var pjfChart = echarts.init($('#pjfChart')[0]);
 						pjfChart.setOption({
@@ -821,6 +821,28 @@
 							}]
 						});
 						
+						var tempNameArray = [];
+						var tempSecArray = [];
+						for (var a = 0; a < data.data.tag_list.length; a++) {
+							var tempM = data.data.tag_list[a];
+							tempNameArray.push(tempM.name);
+							var tempSecModel = {
+								label: {
+									show: true,
+									position: 'top'
+								},
+								name: tempM.name,
+								data: [],
+								type: 'line',
+							}
+							var childrenNum = [];
+							for (var b = 0; b < data.data.list.length; b++) {
+								var tempList = data.data.list[b];
+								childrenNum.push(tempList['num'+tempM.key]);
+							}
+							tempSecModel.data = [].concat(childrenNum);
+							tempSecArray.push(tempSecModel);
+						}
 						var qushiChart = echarts.init($('#qushiChart')[0]);
 						qushiChart.setOption({
 							xAxis: {
@@ -831,41 +853,9 @@
 								type: 'value'
 							},
 							legend: {
-								data: ['优秀率','良好率','合格率','不合格率']
+								data: tempNameArray
 							},
-							series: [{
-								label: {
-									show: true,
-									position: 'top'
-								},
-								name: '优秀率',
-								data: tempYouXiuArray,
-								type: 'line',
-							},{
-								label: {
-									show: true,
-									position: 'top'
-								},
-								name: '良好率',
-								data: tempLiangHaoArray,
-								type: 'line',
-							},{
-								label: {
-									show: true,
-									position: 'top'
-								},
-								name: '合格率',
-								data: tempHeGeArray,
-								type: 'line',
-							},{
-								label: {
-									show: true,
-									position: 'top'
-								},
-								name: '不合格率',
-								data: tempBuHeGeArray,
-								type: 'line',
-							}]
+							series: tempSecArray
 						});
 						if (data.data.list.length == 0) {
 							mui.toast('暂无数据');
@@ -884,6 +874,9 @@
 					paper_ids: canvasSideData.selectParperIdList.join(','),
 					sub_code: contentData.sem2Data.subValue.value,
 					index_code: curPage.access.split('#')[1],
+				}
+				if(comData.sub_code == '-1'){
+					comData.sub_code = '';
 				}
 				postDataEncry(window.storageKeyName.INTERFACE_MARKINGPAPERS + 'clsTrend/scoreSectionList', {}, comData, 2, function(
 					data) {

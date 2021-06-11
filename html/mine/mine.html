@@ -86,7 +86,7 @@
 				<div class="user-info">
 					<img v-on:click="clickHeadImg()" class="head-portrait" :src=userImg />
 					<p class="user-text">{{userName}}</p>
-					<p style="text-align: center;">{{userMsg}}</p>
+					<p v-if="userMsg" style="text-align: center;">{{userMsg}}</p>
 				</div>
 			</div>
 			<div class="mui-row" style="background: #EEEEEE;height: 20px;"></div>
@@ -244,9 +244,9 @@
 				var personal = store.get(window.storageKeyName.PERSONALINFO);
 				mine.userName = personal.user_name;
 				if(personal.type_code == 'YHLX0003'){
-					mine.userMsg = personal.sch_name+' '+personal.dpt_name;
+					mine.userMsg = personal.sch_name?personal.sch_name:''+' '+personal.dpt_name?personal.dpt_name:'';
 				}else{
-					mine.userMsg = personal.sch_name+' '+personal.grd_name+' '+personal.cls_name;
+					mine.userMsg = personal.sch_name?personal.sch_name:''+' '+personal.grd_name?grd_name:''+' '+personal.cls_name?personal.cls_name:'';
 					if(personal.type_code == 'YHLX0004'){
 						mine.userMsg = mine.userMsg +' '+ personal.stu_name +"(家长)";
 					}

@@ -301,7 +301,7 @@
 								setTimeout(function() {
 									//结束下拉刷新
 									self.endPullUpToRefresh();
-									if (mui(".mui-table-view-cell").length < 10) {
+									if (mui(".mui-table-view-cell").length < 20) {
 										mui(".mui-pull-loading")[0].innerHTML = "";
 									}
 								}, 1000);
@@ -321,7 +321,7 @@
 				//需要加密的数据
 				comData = {
 					page_number: pageIndex, //当前页数
-					page_size: '10', //每页记录数
+					page_size: '20', //每页记录数
 					index_code: curPage.access.split('#')[1],
 					grd_code: '', //年级代码
 					status: '1,2,3', //状态,0未启动 1未阅 2阅卷中 3已阅
@@ -351,7 +351,7 @@
 								// mui.toast('已加载全部');
 							}
 						}
-						if (mui(".mui-table-view-cell").length < 10) {
+						if (mui(".mui-table-view-cell").length < 20) {
 							mui(".mui-pull-loading")[0].innerHTML = "";
 						}
 					} else {

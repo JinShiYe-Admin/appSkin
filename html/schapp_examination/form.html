@@ -231,9 +231,9 @@
 			<div class="mui-scroll-wrapper" style="margin-top: 44px;">
 				<div class="select">
 					<div class="mui-segmented-control" v-cloak>
+						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showGrd()"><span>{{grdValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
+						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showCls()"><span>{{clsValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 						<a class="mui-control-item" v-cloak href="javascript:void(0)" @tap="showKq()"><span>{{kqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXn()"><span>{{xnValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
-						<a class="mui-control-item" v-cloak href="javaScript:void(0)" @tap="showXq()"><span>{{xqValue.text}}</span><span class="mui-icon mui-icon-arrowdown"></span></a>
 					</div>
 					<div class="line"></div>
 				</div>
@@ -332,12 +332,18 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					kq: [], //考情数组
-					xn: [], //学年数组
-					xq: [], //学期数组
-					kqValue: '', //考情选择值
-					xnValue: '', //学年选择值
-					xqValue: '', //学期选择值
+					grdList: [], //年级数组
+					clsList: [], //班级数组
+					grdValue: {}, //年级选择值
+					clsValue: {}, //班级选择值
+					kqList: [], //班级数组
+					kqValue: {}, //年级选择值
+					// kq: [], //考情数组
+					// xn: [], //学年数组
+					// xq: [], //学期数组
+					// kqValue: '', //考情选择值
+					// xnValue: '', //学年选择值
+					// xqValue: '', //学期选择值
 					selectType:'qk',//查询类型 qk 全科考情 dk 单科考情 第一次进入页面默认为qk
 				},
 				methods: {
@@ -351,7 +357,7 @@
 					},
 					showKq: function() {
 						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.kq);
+						userPicker.setData(datasource.kqList);
 						setTimeout(function() {
 							userPicker.pickers[0].setSelectedValue(datasource.kqValue.value);
 						}, 100);
@@ -373,15 +379,15 @@
 							userPicker = null;
 						});
 					},
-					showXn: function() {
+					showGrd: function() {
 						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.xn);
+						userPicker.setData(datasource.grdList);
 						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.xnValue.value);
+							userPicker.pickers[0].setSelectedValue(datasource.grdValue.value);
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.xnValue = items[0]
+							datasource.grdValue = items[0]
 							//获取考务列表
 							events.showWaiting();
 							pageIndex=1;
@@ -392,15 +398,15 @@
 							userPicker = null;
 						});
 					},
-					showXq: function() {
+					showCls: function() {
 						var userPicker = new $M.PopPicker();
-						userPicker.setData(datasource.xq);
+						userPicker.setData(datasource.clsList);
 						setTimeout(function() {
-							userPicker.pickers[0].setSelectedValue(datasource.xqValue.value);
+							userPicker.pickers[0].setSelectedValue(datasource.clsValue.value);
 						}, 100);
 						userPicker.show(function(items) {
 							console.log(JSON.stringify(items[0]))
-							datasource.xqValue = items[0]
+							datasource.clsValue = items[0]
 							//获取考务列表
 							events.showWaiting();
 							pageIndex=1;
@@ -486,19 +492,94 @@
 
 				events.showWaiting();
 				//获取科目
-				getKmList();
+				// getKmList();
 				//获取学年
-				getXnList();
+				// getXnList();
 				//获取学期
-				getXqList();
+				// getXqList();
+				// 获取数据范围授权：年级
+				getGrdList();
 			});
+			
+			// 获取数据范围授权：年级
+			function getGrdList() {
+				comData = {
+					op_code: 'index',
+					get_grd: true,
+					all_grd: false,
+					index_code: curPage.access.split('#')[1],
+				}
+				events.showWaiting();
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, comData, 2, function(data) {
+					if (data.code == 0) {
+						let grds = data.data.grd_list;
+						let grdList = [];
+						grds.map(function(currentValue) {
+							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部年级';
+							let obj = {};
+							obj.value = currentValue.value;
+							obj.text = name;
+							grdList.push(obj)
+						})
+						if (grdList.length > 0) {
+							datasource.grdList = grdList;
+							datasource.grdValue = grdList[0];
+							let grd_code = grds[0].value;
+							//获取数据范围授权：班级
+							getClsList(grd_code);
+						} else {
+							events.closeWaiting();
+							mui.toast('无数据授权 无法获取年级');
+						}
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
+			//获取数据范围授权：班级
+			function getClsList(grd_code) {
+				const params = {
+					op_code: 'index',
+					grd_code: grd_code ? grd_code : '-1',
+					get_cls: true,
+					all_cls: true,
+					index_code: curPage.access.split('#')[1],
+				}
+				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'acl/dataRange', {}, params, 2, function(data) {
+					if (data.code == 0) {
+						let clss = data.data.cls_list;
+						let clsList = [];
+						clss.map(function(currentValue) {
+							let name = currentValue.name.indexOf('全部') == -1 ? currentValue.name : '全部班级';
+							let obj = {};
+							obj.value = currentValue.value;
+							obj.text = name;
+							clsList.push(obj)
+						})
+			
+						if (clsList.length > 0) {
+							datasource.clsList = clsList;
+							datasource.clsValue = clsList[0];
+							//1.1: 系统科目信息
+							getKmList();
+						} else {
+							events.closeWaiting();
+							mui.toast('无数据授权 无法获取班级');
+						}
+					} else {
+						events.closeWaiting();
+						mui.toast(data.msg);
+					}
+				});
+			}
 			
 			//1.1: 系统科目信息
 			function getKmList() {
 				comData = {
 					op_code:'index',
-					grd_code: "-1",
-					cls_code: "-1",
+					grd_code: datasource.grdValue.value,
+					cls_code: datasource.clsValue.value,
 					get_sub:true,
 					all_sub:false,
 					index_code:  curPage.access.split('#')[1],
@@ -511,9 +592,11 @@
 							 let obj={};
 							 obj.value=currentValue.value;
 							 obj.text=currentValue.name;
-							 kmList.push(obj)
+							 if(currentValue.value!='-1'){
+								 kmList.push(obj)
+							 }
 						})
-						datasource.kq=kmList
+						datasource.kqList=kmList
 						datasource.kqValue=kmList[0]
 						//获取考务列表
 						getPageDataArray();
@@ -554,88 +637,88 @@
 			// 	});
 			// }
 			//获取学年list
-			function getXnList(){
-				comData = {
-					page_number: pageIndex, //当前页数
-					page_size: '1000', //每页记录数
-					index_code: curPage.access.split('#')[1],
-				}
-				postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'year', {}, comData, 2, function(data) {
-					// console.log(JSON.stringify(data))
-					if (data.code == 0) {
-						 let list=[].concat(data.data.list);
-						 let yearList=[]
-						 list.map(function(currentValue){
-								 let obj={};
-								 obj.value=currentValue.year_code;
-								 obj.text=currentValue.year_name;
-								 yearList.push(obj)
-						 })
-						 let newList=yearList.sort(compare("value",0));
-						 console.log(JSON.stringify(newList));
-						 datasource.xn=[{value:'',text:'全部学年'}].concat(newList)
-						 datasource.xnValue={value:'',text:'全部学年'}
-						 //获取考务列表
-						 getPageDataArray();
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					} 
-				});
-			}
+			// function getXnList(){
+			// 	comData = {
+			// 		page_number: pageIndex, //当前页数
+			// 		page_size: '1000', //每页记录数
+			// 		index_code: curPage.access.split('#')[1],
+			// 	}
+			// 	postDataEncry(window.storageKeyName.INTERFACE_HR_SUB + 'year', {}, comData, 2, function(data) {
+			// 		// console.log(JSON.stringify(data))
+			// 		if (data.code == 0) {
+			// 			 let list=[].concat(data.data.list);
+			// 			 let yearList=[]
+			// 			 list.map(function(currentValue){
+			// 					 let obj={};
+			// 					 obj.value=currentValue.year_code;
+			// 					 obj.text=currentValue.year_name;
+			// 					 yearList.push(obj)
+			// 			 })
+			// 			 let newList=yearList.sort(compare("value",0));
+			// 			 console.log(JSON.stringify(newList));
+			// 			 datasource.xn=[{value:'',text:'全部学年'}].concat(newList)
+			// 			 datasource.xnValue={value:'',text:'全部学年'}
+			// 			 //获取考务列表
+			// 			 getPageDataArray();
+			// 		} else {
+			// 			events.closeWaiting();
+			// 			mui.toast(data.msg);
+			// 		} 
+			// 	});
+			// }
 			
 			//1.15: 系统学期信息
-			function getXqList(){
-				comData = {
-					name:'',
-					stat:1,
-					page_number: pageIndex, //当前页数
-					page_size: '1000', //每页记录数
-					index_code: curPage.access.split('#')[1],
-				} 
-				postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'SysTermP', {}, comData, 2, function(data) {
-					// console.log(JSON.stringify(data))
-					if (data.code == 0) {
-						if(data.data!=null){
-							let list=[].concat(data.data.list);
-							let xqList=[]
-							let obj={};
-							obj.value='';
-							obj.text='全部学期';
-							xqList.push(obj)
-							list.map(function(currentValue){
-														 if(currentValue.stat==1){
-															 let obj={};
-															 obj.value=currentValue.term_code;
-															 obj.text=currentValue.term_name;
-															 xqList.push(obj)
-														 }
-							})
-							// console.log(JSON.stringify(xqList))
-							datasource.xq=xqList
-							datasource.xqValue={value:'',text:'全部学期'}
-							 //获取考务列表
-							 getPageDataArray();
-						}else{
-							events.closeWaiting();
-							mui.toast('获取学期信息为空');
-						}
-					} else {
-						events.closeWaiting();
-						mui.toast(data.msg);
-					} 
-				});
-			}
+			// function getXqList(){
+			// 	comData = {
+			// 		name:'',
+			// 		stat:1,
+			// 		page_number: pageIndex, //当前页数
+			// 		page_size: '1000', //每页记录数
+			// 		index_code: curPage.access.split('#')[1],
+			// 	} 
+			// 	postDataEncry(window.storageKeyName.INTERFACE_BASESUB + 'SysTermP', {}, comData, 2, function(data) {
+			// 		// console.log(JSON.stringify(data))
+			// 		if (data.code == 0) {
+			// 			if(data.data!=null){
+			// 				let list=[].concat(data.data.list);
+			// 				let xqList=[]
+			// 				let obj={};
+			// 				obj.value='';
+			// 				obj.text='全部学期';
+			// 				xqList.push(obj)
+			// 				list.map(function(currentValue){
+			// 											 if(currentValue.stat==1){
+			// 												 let obj={};
+			// 												 obj.value=currentValue.term_code;
+			// 												 obj.text=currentValue.term_name;
+			// 												 xqList.push(obj)
+			// 											 }
+			// 				})
+			// 				// console.log(JSON.stringify(xqList))
+			// 				datasource.xq=xqList
+			// 				datasource.xqValue={value:'',text:'全部学期'}
+			// 				 //获取考务列表
+			// 				 getPageDataArray();
+			// 			}else{
+			// 				events.closeWaiting();
+			// 				mui.toast('获取学期信息为空');
+			// 			}
+			// 		} else {
+			// 			events.closeWaiting();
+			// 			mui.toast(data.msg);
+			// 		} 
+			// 	});
+			// }
 			
 			//获取考务列表 需要先等三个先拉选通过接口获取到对应的返回值并设置好默认值，才能调用此接口
 			function getPageDataArray() {
-				console.log(datasource.xnValue.length)
-				if(datasource.kqValue!='' && datasource.xnValue!='' && datasource.xqValue!=''){
+				// console.log(datasource.xnValue.length)
+				if(datasource.kqValue!='' && datasource.grdValue!='' && datasource.clsValue!=''){
 					//需要加密的数据
 					comData = {
 						sub_code: datasource.kqValue.value, //科目代码
-						year_code: datasource.xnValue.value, //学年代码
-						term_code:datasource.xqValue.value, //学期代码
+						// year_code: datasource.xnValue.value, //学年代码
+						// term_code:datasource.xqValue.value, //学期代码
 						page_number: pageIndex, //当前页数
 						page_size: 10, //每页记录数
 						index_code: curPage.access.split('#')[1],
