@@ -26,7 +26,14 @@
 			<h1 v-cloak class="mui-title">{{headTitle}}</h1>
 		</header>
 		<div v-cloak class="mui-content" style="margin-top: 0px;background: white;" id="contentData">
-			
+			<ul v-cloak class="mui-table-view mui-grid-view mui-grid-9" style="background-color: white;padding-left: 7px;margin-top: 0px;">
+				<li v-cloak v-cloak v-for="model in showArray" class="mui-table-view-cell mui-media mui-col-sm-3 mui-col-xs-3" style="border: 0px;padding:10px 5px">
+					<a href="#" @click="clickFunction(model)">
+						<img class="circular-square" :src=model.icon />
+						<div class="mui-media-body divNameCss">{{model.name}}</div>
+					</a>
+				</li>
+			</ul>
 		</div>
 		<script src="../../../js/utils/utils.js"></script>
 		<script src="../../../js/utils/mui.min.js"></script>
@@ -54,6 +61,7 @@
 			mui.init();
 			//获取个人信息
 			var personal = store.get(window.storageKeyName.PERSONALINFO);
+			var curPage = {};
 			console.log('personal:' + JSON.stringify(personal));
 			var tempHead = new Vue({
 				el: "#tempHead",
@@ -73,8 +81,14 @@
 			var contentData = new Vue({
 				el: "#contentData",
 				data: {
+					showArray:[],
 				},
-				methods: {},
+				methods: {
+					clickFunction: function(model) {
+						console.log('index:' + JSON.stringify(model));
+						utils.mOpenWithData(model.href, model);
+					}
+				},
 			});
 			var self = 0;
 			mui.plusReady(function() {
@@ -88,6 +102,7 @@
 					if (ws.preload) {
 						curPage = ws.preload;
 						tempHead.headTitle = ws.preload.name;
+						contentData.showArray=ws.preload.childList;
 					}
 					if (ws.preload.index == 0) {
 						tempHead.showBack = 2;

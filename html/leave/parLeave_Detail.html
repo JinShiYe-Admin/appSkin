@@ -119,72 +119,58 @@
 					<div class="line"></div>
 					<div v-cloak class="mui-input-row">
 						<label class="aCss" >请假事由</label>
-						<textarea maxlength="300" :rows="detailData.comment?(detailData.comment.length>40?detailData.comment.length/12:detailData.comment.length/10):1" readonly>{{detailData.comment?detailData.comment:'暂无内容'}}</textarea>
+						<textarea maxlength="300" :rows="detailData.comment.length>40?detailData.comment.length/12:detailData.comment.length/10" readonly>{{detailData.comment}}</textarea>
 					</div>
-					<template v-if="detailData.create_user_code">
-						<div class="line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" >记录人</label>
-							<input type="text" class="iCss-right" placeholder="暂无数据" :value="detailData.create_user_name" readonly>
-						</div>
-					</template>
-					<div class="line"></div>
-					<div v-cloak class="mui-input-row" style="padding:0 0 10px;margin-top: 10px;">
+					<div v-cloak class="mui-input-row" style="padding:0 0 10px;">
 						<span class="leaveType" style="margin:0 0 0 15px;">{{detailData.item_code=='sickLeave'?'病假':detailData.item_code=='absenceLeave'?'事假':''}}</span>
 						<span class="leaveType-cr" style="margin:0 0 0 15px;">{{detailData.in_out_permission_code=='outSchool'?'可以出校':detailData.in_out_permission_code=='backDorm'?'可回宿舍':''}}</span>
 					</div>
-					<template v-if="detailData.approve_list">
+					<div class="double-line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >审批人</label>
+					</div>
+					<div class="line-green"></div>
+					<div v-cloak class="mui-input-row" style="font-size: 15px;">
+						<ul v-cloak class="mui-table-view no-line">
+							<li v-cloak v-for="(item,index) in detailData.approve_list" class="mui-table-view-cell no-bgc">
+								<a class=""> <!-- mui-navigate-right -->
+									<div class="mui-ellipsis">{{item.approve_user_name}}</div>
+									<p style="margin-top: 0.75rem ;font-size: 13px;">{{item.approve_content}}</p>
+									<template v-if="item.lstatus==0">
+										<div style="position: absolute; right: 10px;top: 15px;">
+											<img src="../../img/stuleave/pass.png" style="width: 15px;height: 15px;">
+										</div>
+									</template>
+									<template v-else-if="item.lstatus==1"> 
+										<div style="position: absolute; right: 10px;top: 15px;">
+											<img src="../../img/stuleave/req.png" style="width: 15px;height: 15px;">
+										</div>
+									</template>
+									<template v-else-if="item.lstatus==2"> 
+										<div style="position: absolute; right: 10px;top: 15px;">
+											<img src="../../img/stuleave/ref.png" style="width: 15px;height: 15px;">
+										</div>
+									</template>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="double-line"></div>
+					<div v-cloak class="mui-input-row">
+						<label class="aCss" >抄送人</label>
+					</div>
+					<div class="line-green"></div>
+					<div v-cloak class="mui-input-row">
+						<label style="width: 100%;font-size: 14px;">
+							<template v-for="(item,index) in detailData.copy_list"><template v-if="index < detailData.copy_list.length-1">{{item.copy_user_name}},</template><template v-else>{{item.copy_user_name}}</template></template>
+						</label>
+					</div>
+					<div v-if="detailData.status==1 || detailData.status==2">
 						<div class="double-line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" >审批人</label>
+						<div style="padding: 10px;">
+							<textarea maxlength="120" style="border: 1px solid rgba(0,207,189,0.3);" rows="6" placeholder="暂无内容" readonly></textarea>
 						</div>
-						<div class="line-green"></div>
-						<div v-cloak class="mui-input-row" style="font-size: 15px;">
-							<ul v-cloak class="mui-table-view no-line">
-								<li v-cloak v-for="(item,index) in detailData.approve_list" class="mui-table-view-cell no-bgc">
-									<a class=""> <!-- mui-navigate-right -->
-										<div class="mui-ellipsis">{{item.approve_user_name}}</div>
-										<p style="margin-top: 0.75rem ;font-size: 13px;">{{item.approve_content}}</p>
-										<template v-if="item.lstatus==0">
-											<div style="position: absolute; right: 10px;top: 15px;">
-												<img src="../../img/stuleave/pass.png" style="width: 15px;height: 15px;">
-											</div>
-										</template>
-										<template v-else-if="item.lstatus==1"> 
-											<div style="position: absolute; right: 10px;top: 15px;">
-												<img src="../../img/stuleave/req.png" style="width: 15px;height: 15px;">
-											</div>
-										</template>
-										<template v-else-if="item.lstatus==2"> 
-											<div style="position: absolute; right: 10px;top: 15px;">
-												<img src="../../img/stuleave/ref.png" style="width: 15px;height: 15px;">
-											</div>
-										</template>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</template>
-					<template v-if="detailData.copy_list">
-						<div class="double-line"></div>
-						<div v-cloak class="mui-input-row">
-							<label class="aCss" >抄送人</label>
-						</div>
-						<div class="line-green"></div>
-						<div v-cloak class="mui-input-row">
-							<label style="width: 100%;font-size: 14px;">
-								<template v-for="(item,index) in detailData.copy_list"><template v-if="index < detailData.copy_list.length-1">{{item.copy_user_name}},</template><template v-else>{{item.copy_user_name}}</template></template>
-							</label>
-						</div>
-					</template>
-					<template v-if="detailData.status">
-						<div v-if="detailData.status==1 || detailData.status==2">
-							<div class="double-line"></div>
-							<div style="padding: 10px;">
-								<textarea maxlength="120" style="border: 1px solid rgba(0,207,189,0.3);" rows="6" placeholder="暂无内容" readonly></textarea>
-							</div>
-						</div>
-					</template>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -200,7 +186,6 @@
 		<script src="../../js/utils/events.js"></script>
 		<script src="../../js/utils/mui.picker.min.js"></script>
 		<script src="../../js/utils/mui.poppicker.js"></script>
-		<script src="../../js/utils/moment.min.js"></script>
 		<!--加密-->
 		<script src="../../js/libs/RSA/Barrett.js"></script>
 		<script src="../../js/libs/RSA/BigInt.js"></script>
@@ -248,7 +233,7 @@
 						id:0,
 						grd_code:"",
 						cls_code:"",
-						status:-1,
+						status:1,
 						approve_comment:'',//审核意见
 					}, //详情
 					index_code:'',
@@ -284,106 +269,82 @@
 			function getLeaveDetail(){
 				events.showWaiting();
 				let itemObj=curPage[1]
-				let url=window.storageKeyName.STULEAVE_API + 'apply/getLeaveByItem'
+				let url=window.storageKeyName.STULEAVE_API + 'apply/getApplyById'
 				comData = {
-					grd_code:itemObj.grd_code,
-					grd_name:itemObj.grd_name,
-					cls_code:itemObj.cls_code,
-					cls_name:itemObj.class_name,
-					stu_code:itemObj.stu_code,
-					stu_name:itemObj.stu_name,
-					begin_time:itemObj.begintime,
-					end_time:itemObj.endtime,
-					apply_time:getApply_time(itemObj.begintime,itemObj.endtime),
-					in_out_permission_code:itemObj.in_out_permission_code,
-					item_code:itemObj.item_code,
-					comment:itemObj.comment?itemObj.comment:'',
-					create_user_name:itemObj.create_user_name,
+					id:itemObj.id,
 					index_code: curPage[2],
 				}
 				console.log("comData: " + JSON.stringify(comData));
 				postDataEncry(url, {}, comData, 2, function(data) {
 					events.closeWaiting();
 					if (data.code == 0) {
-						let leave=data.data
-						if(JSON.stringify(leave)=='{}'){
-							itemObj.cls_name=itemObj.class_name
-							itemObj.apply_time=getApply_time(itemObj.begintime,itemObj.endtime)
-							itemObj.begin_time=itemObj.begintime
-							itemObj.end_time=itemObj.endtime
-							datasource.detailData=itemObj
-						}else{
-							let approveList=leave.approve_list
-							if(approveList){
-								approveList.map((item,index)=>{
-									//lstatus 0 通过 1 待定 2 拒绝
-									if(leave.status==1){//请假审核状态为已通过
+						 let leave=data.data
+						let approveList=leave.approve_list
+						if(approveList){
+							approveList.map((item,index)=>{
+								//lstatus 0 通过 1 待定 2 拒绝
+								if(leave.status==1){//请假审核状态为已通过
+									item.lstatus=0
+								}else if(leave.status==0){//请假审核状态为待审批
+									if(item.status==2){//抄送人审核状态为已批
 										item.lstatus=0
-									}else if(leave.status==0){//请假审核状态为待审批
-										if(item.status==2){//抄送人审核状态为已批
-											item.lstatus=0
-										}else{
-											item.lstatus=1
-										}
-									}else if(leave.status==2){//请假审核状态为已拒绝
-										//找到最后一个已批审核人的下标
-										let num=0;
-										if(leave.status==2){
-											approveList.map((item,index)=>{
-												if(item.status==2){
-													num=index
-												}
-											})
-										}
-										if(item.status==2){//抄送人审核状态为已批
-											item.lstatus=0
-											if(num===index){
-												item.lstatus=2
-											}
-										}else{
-											item.lstatus=1
-										}
+									}else{
+										item.lstatus=1
 									}
-								})
-							}
-							datasource.detailData=leave
+								}else if(leave.status==2){//请假审核状态为已拒绝
+									//找到最后一个已批审核人的下标
+									let num=0;
+									if(leave.status==2){
+										approveList.map((item,index)=>{
+											if(item.status==2){
+												num=index
+											}
+										})
+									}
+									if(item.status==2){//抄送人审核状态为已批
+										item.lstatus=0
+										if(num===index){
+											item.lstatus=2
+										}
+									}else{
+										item.lstatus=1
+									}
+								}
+							})
 						}
+						datasource.detailData=leave
 					} else {
 						mui.toast(data.msg);
 					}
 				});
 			}
 			
-			
-			
-			function getApply_time(begintime,endtime){
-				let diff_times_text=''
-				let difftimesFromMinute=moment(endtime).diff(moment(begintime),'minutes')
-				let difftimesFromHours=moment(endtime).diff(moment(begintime),'hours')
-				let difftimesFromDays=moment(endtime).diff(moment(begintime),'days')
-				let difftimesFromMonths=moment(endtime).diff(moment(begintime),'months')
-				if(difftimesFromHours){
-					if(difftimesFromDays){
-						if(difftimesFromMonths){
-							let days=moment(endtime).subtract(difftimesFromMonths,'months').diff(moment(begintime),'days')
-							let hours=moment(endtime).subtract(difftimesFromMonths,'months').subtract(days,'days').diff(moment(begintime),'hours')
-							let minutes=moment(endtime).subtract(difftimesFromMonths,'months').subtract(days,'days').subtract(hours,'hours').diff(moment(begintime),'minutes')
-							diff_times_text=difftimesFromMonths+'个月 '+days+'天 '+hours+'小时 '+minutes+'分钟'
-							// diff_times_days=moment(endtime).diff(moment(begintime),'days')
-						}else{ 
-							let hours=moment(endtime).subtract(difftimesFromDays,'days').diff(moment(begintime),'hours')
-							let minutes=moment(endtime).subtract(difftimesFromDays,'days').subtract(hours,'hours').diff(moment(begintime),'minutes')
-							diff_times_text=difftimesFromDays+'天 '+hours+'小时 '+minutes+'分钟'
-							// diff_times_days=difftimesFromDays
-						}
-					}else{
-						let minutes=moment(rs.text).subtract(difftimesFromHours,'hours').diff(moment(_begin_time),'minutes')
-						diff_times_text=difftimesFromHours+'小时 '+minutes+'分钟'
+			//审核发送的请假
+			function approveLeave(status){
+				if(datasource.canSub){
+					datasource.canSub=false
+					events.showWaiting();
+					comData = {
+						id:datasource.detailData.id,
+						approve_content:datasource.detailData.approve_comment,
+						status:status,
+						index_code:datasource.index_code
 					}
-				}else{
-					diff_times_text=difftimesFromMinute+'分钟'
+					console.log("comData: " + JSON.stringify(comData));
+					postDataEncry(window.storageKeyName.STULEAVE_API + 'apply/setApprove', {}, comData, 2, function(data) {
+						datasource.canSub=true
+						events.closeWaiting();
+						if (data.code == 0) {
+							mui.toast('操作成功');
+							setTimeout(function(){
+								 mui.fire(plus.webview.currentWebview().opener(), 'refreshList', {});
+								 mui.back()
+							},1500)
+						} else {
+							mui.toast(data.msg);
+						}
+					});
 				}
-				return diff_times_text
 			}
 		</script>
 	</body>
