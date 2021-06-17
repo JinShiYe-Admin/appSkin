@@ -230,6 +230,7 @@
 				display: -webkit-box;
 				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 2;
+				 text-overflow: ellipsis;
 				overflow: hidden;
 				color: #505050;
 				font-size: 14px;
@@ -371,7 +372,7 @@
 				methods: {
 					toDetails: function(model) {
 						console.log(JSON.stringify(model));
-						utils.mOpenWithData("../../html/leave/teaLeaveQuery_Detail.html", [1,model,curPage.access.split('#')[1]]);
+						utils.mOpenWithData("../../html/leave/teaLeaveQuery_detail.html", [1,model,curPage.access.split('#')[1]]);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
