@@ -187,18 +187,12 @@
 					x: 0,
 					y: 0
 				},
-				posTemp = {
-					x: 0,
-					y: 0
-				},
 				newPos = {
 					x: 0,
 					y: 0
 				};
 			var start, end = 0;
 			var canvasClickFlag = 0;//判断是否点击事件，0否，1是
-			var position = [0, 0];
-			var flag = false;
 			
 			// mui.init();
 			mui.init({
@@ -408,7 +402,7 @@
 					);
 					
 					// 添加页面标识
-					// addTypeImg(0);
+					addTypeImg(0);
 					
 					// 设置图片右上角文字
 					// 设置字体
@@ -434,9 +428,6 @@
 					var y = e.clientY - canvas.getBoundingClientRect().top;
 					// console.log('xxxxxxx:'+x);
 					if (e.touches.length === 1) {
-						posTemp = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY);
-						// position[0] = e.touches[0].clientX;
-						// position[1] = e.touches[0].clientY;
 						// console.log('touchstart111111111');
 						dragging = true;
 						pos = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY); //坐标转换，将窗口坐标转换成canvas的坐标
@@ -464,23 +455,6 @@
 						pos = windowToCanvas((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2);
 					}
 				});
-				//画线的函数
-				function drawTemp(posTemp, posTemp000) {
-					console.log('posTemp:'+JSON.stringify(posTemp));
-					console.log('posTemp000:'+JSON.stringify(posTemp000));
-				  context.beginPath();
-				  // context.strokeStyle="green";
-				  // context.fillStyle = "black";
-				  // context.lineWidth = 5;
-				  context.moveTo(posTemp.x, posTemp.y);
-				  context.lineTo(posTemp000.x, posTemp000.y);
-				  context.lineWidth = 2;
-				  context.lineCap = 'round';
-				  context.lineJoin = 'round';
-				  context.strokeStyle = 'red';
-				  context.closePath();
-				  context.stroke();
-				}
 				canvas.addEventListener('touchmove', function(e) {
 					e.preventDefault()
 					// canvasClickFlag = 0;
@@ -488,13 +462,7 @@
 					if (e.touches.length === 1) {
 						// 加上dragging区分pos和posl的值，一个为双指，这里为单指的值
 						if (dragging) {
-							posTemp000 = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY);
-							drawTemp(posTemp, posTemp000);
-							// position[0] = e.touches[0].clientX;
-							// position[1] = e.touches[0].clientY;
-							posTemp = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY);
 							posl = windowToCanvas(e.touches[0].clientX, e.touches[0].clientY);
-							// console.log('posl:'+JSON.stringify(posl));
 							if(Math.abs((Math.abs(tempPos.x)-Math.abs(posl.x)))>20||Math.abs((Math.abs(tempPos.y)-Math.abs(posl.y)))>20){
 								// console.log('1111111111111111111111111111111111111111111111111111111111');
 								canvasClickFlag = 0;
@@ -505,60 +473,55 @@
 							imgX += x;
 							imgY += y;
 							pos = JSON.parse(JSON.stringify(posl));
-							// console.log('pos:'+imgX+','+imgY);
-							// drawImage(); //重新绘制图片
-							// context.beginPath();
-							// context.lineTo(posl.x,posl.y);
-							// context.lineTo(imgX,imgY);
-							// context.strokeStyle="green";
-							// context.stroke();
+							drawImage(); //重新绘制图片
 						}
 					}
 					// 双指中有可能存在移动，所以不加dragging判断，都是用的同一个中心点
-					if (e.touches.length === 2) {
-						posl = JSON.parse(JSON.stringify(pos));
-						var s1 = end;
-						var t1 = e.touches[0];
-						var t2 = e.touches[1];
-						var pos1 = {
-							x: t1.clientX,
-							y: t1.clientY
-						}
-						var pos2 = {
-							x: t2.clientX,
-							y: t2.clientY
-						}
-						pos = windowToCanvas((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2);
-						end = Math.sqrt(Math.pow((pos1.x - pos2.x), 2) + Math.pow((pos1.y - pos2.y), 2));
-						var pianX = posl.x - pos.x;
-						var pianY = posl.y - pos.y;
+					// if (e.touches.length === 2) {
+					// 	posl = JSON.parse(JSON.stringify(pos));
+					// 	var s1 = end;
+					// 	var t1 = e.touches[0];
+					// 	var t2 = e.touches[1];
+					// 	var pos1 = {
+					// 		x: t1.clientX,
+					// 		y: t1.clientY
+					// 	}
+					// 	var pos2 = {
+					// 		x: t2.clientX,
+					// 		y: t2.clientY
+					// 	}
+					// 	pos = windowToCanvas((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2);
+					// 	end = Math.sqrt(Math.pow((pos1.x - pos2.x), 2) + Math.pow((pos1.y - pos2.y), 2));
+					// 	var pianX = posl.x - pos.x;
+					// 	var pianY = posl.y - pos.y;
 
-						newPos = {
-							x: ((pos.x - imgX + pianX) / scale),
-							y: ((pos.y - imgY + pianY) / scale)
-						};
-						// 缩小
-						if (s1 > end) {
-							scale = scale - 0.05;
-							imgX = (1 - scale) * newPos.x + (pos.x -
-								newPos.x);
-							imgY = (1 - scale) * newPos.y + (pos.y - newPos.y);
-							if (scale < 0.1) { //最小缩放1
-								scale = 0.1;
-								drawImage(); //重新绘制图片
-								return
-							}
-							// drawImage(); //重新绘制图片
-							// 放大
-						} else {
-							scale = scale + 0.05;
-							imgX = (1 - scale) * newPos.x + (pos.x -
-								newPos.x);
-							imgY = (1 - scale) * newPos.y + (pos.y - newPos.y);
-							// drawImage();
-						}
-						drawImage();
-					}
+					// 	newPos = {
+					// 		x: ((pos.x - imgX + pianX) / scale),
+					// 		y: ((pos.y - imgY + pianY) / scale)
+					// 	};
+					// 	// 缩小
+					// 	if (s1 > end) {
+					// 		scale = scale - 0.05;
+					// 		imgX = (1 - scale) * newPos.x + (pos.x -
+					// 			newPos.x);
+					// 		imgY = (1 - scale) * newPos.y + (pos.y - newPos.y);
+					// 		if (scale < 0.1) { //最小缩放1
+					// 			scale = 0.1;
+					// 			drawImage(); //重新绘制图片
+					// 			return
+					// 		}
+					// 		// drawImage(); //重新绘制图片
+					// 		// 放大
+					// 	} else {
+					// 		scale = scale + 0.05;
+					// 		imgX = (1 - scale) * newPos.x + (pos.x -
+					// 			newPos.x);
+					// 		imgY = (1 - scale) * newPos.y + (pos.y - newPos.y);
+					// 		// drawImage();
+					// 	}
+					// 	drawImage();
+
+					// }
 				});
 				canvas.addEventListener('touchend', function(e) {
 					e.preventDefault();
@@ -616,27 +579,27 @@
 				}
 				
 				// 添加页面标识
-				// var addTypeImg = function(index){
-				// 	// console.log('datasource.typeArray:'+JSON.stringify(datasource.typeArray));
-				// 	if(datasource.typeArray.length>index){
-				// 		var tempM = datasource.typeArray[index];
-				// 		// console.log('tempM:'+JSON.stringify(tempM));
-				// 		var tempImg = new Image();
-				// 		// 设置图片
-				// 		if(tempM.type == 1){
-				// 			tempImg.src = '../../img/markingPapers/img_right.png';
-				// 		}else if(tempM.type == 2){
-				// 			tempImg.src = '../../img/markingPapers/img_wrong.png';
-				// 		}else if(tempM.type == 3){
-				// 			tempImg.src = '../../img/markingPapers/img_halfRight.png';
-				// 		}
+				var addTypeImg = function(index){
+					// console.log('datasource.typeArray:'+JSON.stringify(datasource.typeArray));
+					if(datasource.typeArray.length>index){
+						var tempM = datasource.typeArray[index];
+						// console.log('tempM:'+JSON.stringify(tempM));
+						var tempImg = new Image();
+						// 设置图片
+						if(tempM.type == 1){
+							tempImg.src = '../../img/markingPapers/img_right.png';
+						}else if(tempM.type == 2){
+							tempImg.src = '../../img/markingPapers/img_wrong.png';
+						}else if(tempM.type == 3){
+							tempImg.src = '../../img/markingPapers/img_halfRight.png';
+						}
 						
-				// 		tempImg.onload = function() {
-				// 			context.drawImage(tempImg, tempM.x+imgX-40, tempM.y+imgY-40);
-				// 			addTypeImg(index+1);
-				// 		}
-				// 	}
-				// }
+						tempImg.onload = function() {
+							context.drawImage(tempImg, tempM.x+imgX-40, tempM.y+imgY-40);
+							addTypeImg(index+1);
+						}
+					}
+				}
 				
 				//1.4.阅卷任务题组列表
 				function getGroupNumberData() {
@@ -731,7 +694,7 @@
 									context.fillStyle = bg;//fillStyle 属性设置或返回用于填充绘画的颜色、渐变或模式。
 									context.fillRect(0, 0, canvas.width, canvas.height);//绘制已填充矩形fillRect(左上角x坐标, 左上角y坐标, 宽, 高)
 									// 添加页面标识
-									// addTypeImg(0);
+									addTypeImg(0);
 								}
 							}else{
 								img.src = '';
