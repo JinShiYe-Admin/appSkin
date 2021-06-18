@@ -230,6 +230,7 @@
 				display: -webkit-box;
 				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 2;
+				 text-overflow: ellipsis;
 				overflow: hidden;
 				color: #505050;
 				font-size: 14px;
@@ -356,13 +357,13 @@
 				el: "#datasource",
 				data: {
 					pageArray: [], //界面总数组
-					grdList:[{text:"全部年级",value:"-1"}],//年级数组
-					clsList:[{text:"全部班级",value:"-1"}],//班级数组
-					stuList:[{text:"全部学生",value:"-1"}],//学生数组
+					grdList:[],//年级数组
+					clsList:[],//班级数组
+					stuList:[],//学生数组
 					// qjList:[{text:'全部考勤',value:''},{text:'病假',value:'sickLeave'},{text:'事假',value:'absenceLeave'}],// 请假类型数组 
-					grdValue:{text:"全部年级",value:"-1"},//年级选择值
-					clsValue:{text:"全部班级",value:"-1"},//班级选择值
-					stuValue:{text:"全部学生",value:"-1"},//学生选择值
+					grdValue:{},//年级选择值
+					clsValue:{},//班级选择值
+					stuValue:{},//学生选择值
 					// dateValue:'',//日期选择值
 					// qjlxValue:{text:'全部考勤',value:''},//请假类型选择值 
 					begintime:moment().subtract(7,'days').format('YYYY-MM-DD'),
@@ -371,7 +372,7 @@
 				methods: {
 					toDetails: function(model) {
 						console.log(JSON.stringify(model));
-						utils.mOpenWithData("../../html/leave/teaLeaveQuery_Detail.html", [1,model,curPage.access.split('#')[1]]);
+						utils.mOpenWithData("../../html/leave/teaLeaveQuery_detail.html", [1,model,curPage.access.split('#')[1]]);
 					},
 					showGrd: function() {
 						var userPicker = new $M.PopPicker();
@@ -389,10 +390,10 @@
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
-								datasource.clsList=[{text:"全部班级",value:"-1"}]
-								datasource.stuList=[{text:"全部学生",value:"-1"}]
-								datasource.clsValue={text:"全部班级",value:"-1"}
-								datasource.stuValue={text:"全部学生",value:"-1"}
+								datasource.clsList=[]
+								datasource.stuList=[]
+								datasource.clsValue={}
+								datasource.stuValue={}
 								getClsList( items[0].value,false) 
 								userPicker.dispose();
 								userPicker = null;
@@ -415,8 +416,8 @@
 								pageIndex = 1;
 								flagRef = 0;
 								datasource.pageArray = [];
-								datasource.stuList=[{text:"全部学生",value:"-1"}]
-								datasource.stuValue={text:"全部学生",value:"-1"}
+								datasource.stuList=[]
+								datasource.stuValue={}
 								getStuList(datasource.grdValue.value,items[0].value);
 								userPicker.dispose();
 								userPicker = null;
@@ -639,13 +640,13 @@
 							datasource.clsValue=clsList[0];
 							getStuList(grd_id,clsList[0].value)
 						}else{
-							events.showWaiting();
+							events.closeWaiting();
 							datasource.clsList=[];
 							datasource.clsValue={};
 							mui.toast('无数据授权 无法获取班级');
 						}
 					}else{
-						events.showWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
@@ -681,11 +682,11 @@
 						}else{
 							datasource.stuList=[];
 							datasource.stuValue={};
-							events.showWaiting();
+							events.closeWaiting();
 							mui.toast('无数据授权 无法获取学生');
 						}
 					}else{
-						events.showWaiting();
+						events.closeWaiting();
 						mui.toast(data.msg);
 					}
 				});
