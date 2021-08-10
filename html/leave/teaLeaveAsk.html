@@ -89,10 +89,7 @@
 			.leaveContent {
 				padding-left: 20px;
 				padding-right: 30px;
-				display: -webkit-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 2;
-				 text-overflow: ellipsis;
+				text-overflow: ellipsis;
 				overflow: hidden;
 				color: #505050;
 				font-size: 14px;
@@ -461,7 +458,7 @@
 				})(mui);
 
 				curPage = utils.getDataFromUrl(window.location.href);
-				tempHead.headTitle = '学生请假';
+				tempHead.headTitle = '教师代请假';
 				
 				window.addEventListener('refreshList', function(data) {
 					events.showWaiting();
