@@ -34,7 +34,6 @@
             "description" : "应用扩展事件"
         },
         "Maps" : {},
-        "UIWebview" : {},
         "Push" : {}
     },
     "fullscreen" : false,
@@ -52,7 +51,7 @@
             "waiting" : true
         },
         "kernel" : {
-            "ios" : "UIWebview"
+            "ios" : "WKWebview"
         },
         "runmode" : "liberate",
         /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/

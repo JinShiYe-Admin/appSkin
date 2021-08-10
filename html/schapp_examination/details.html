@@ -10,6 +10,7 @@
 			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/common.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/weui.min.css"/>
 		<style>
 			[v-cloak] {
 				visibility: hidden;
@@ -622,7 +623,9 @@
 					tempM.id = curPage.id;
 					tempM.name = curPage.name;
 					tempM.index_code = curPage.index_code;
-					tempM.cls_code = datasource.zfdDetail.list[params.dataIndex].name;
+					tempM.grd_code = curPage.grdCode;
+					tempM.cls_code = curPage.clsCode;
+					tempM.fsd_code = datasource.zfdDetail.list[params.dataIndex].name;
 					tempM.selectType = curPage.selectType;
 					tempM.subCode = curPage.subCode;
 					utils.mOpenWithData("../../html/schapp_examination/stuResult2.html", tempM);

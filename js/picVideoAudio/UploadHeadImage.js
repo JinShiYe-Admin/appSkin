@@ -207,7 +207,7 @@ var UploadHeadImage = (function($, mod) {
 		CloudFileUtil.getQNUpToken(getUploadTokenUrl, getToken, function(data) {
 			var QNUptoken = data.data; //token数据
 			var configure = data.configure; //获取token的配置信息
-			//console.log('七牛上传token:' + JSON.stringify(QNUptoken));
+			console.log('七牛上传token:' + JSON.stringify(QNUptoken));
 			if(QNUptoken.Status == 0) { //失败
 				mui.toast('获取上传凭证失败 ' + QNUptoken.Message);
 				//console.log('### ERROR ### 请求上传凭证失败' + QNUptoken.Message);
@@ -288,6 +288,69 @@ var UploadHeadImage = (function($, mod) {
 			//console.log('### ERROR ### 请求上传凭证失败' + type);
 		});
 	}
+	
+	/**
+	 * 上传身份证识别头像
+	 */
+	mod.uploadIDCardHeadImge=function uploadIDCardHeadImge(wd,type,fileName,base64Str,callback,ecallback) {
+		var getToken = {
+			type: type, //str 必填 获取上传token的类型。0上传需要生成缩略图的文件；1上传文件
+			QNFileName: fileName, //str 必填 存放到七牛的文件名
+			appId: window.storageKeyName.QN_APPID, //int 必填 项目id
+			appKey: window.storageKeyName.QN_APPKEY,
+			mainSpace: window.storageKeyName.QN_PB_NAME, //str 必填 私有空间或公有空间
+			uploadSpace: window.storageKeyName.QN_MARKINGPAPERS, //str 必填  上传的空间
+		}
+		CloudFileUtil.getQNUpToken(getUploadTokenUrl, getToken, function(data) {
+			var QNUptoken = data.data; //token数据
+			var configure = data.configure; //获取token的配置信息
+			// console.log('七牛上传token:' + JSON.stringify(QNUptoken));
+			if(QNUptoken.Status == 0) { //失败
+				mui.toast('获取上传凭证失败 ' + QNUptoken.Message);
+				//console.log('### ERROR ### 请求上传凭证失败' + QNUptoken.Message);
+				wd.close();
+			} else {
+				// console.log("上传的Token:"+QNUptoken.Data.Token);
+				// console.log("上传的Domain:"+QNUptoken.Data.Domain);
+				// console.log("上传的base64Str:"+base64Str);
+				var pic = base64Str;
+				var url ='https://upload.qiniu.com/putb64/-1/key/'+encode(fileName); 
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if (xhr.readyState==4){
+						console.log(xhr.responseText);
+						var jobj=JSON.parse(xhr.responseText);
+						if(!jobj.error){
+							var responseUrl=QNUptoken.Data.Domain+JSON.parse(xhr.responseText).key;
+							callback(responseUrl);
+						}else{ 
+							mui.toast('七牛信息上传失败！');
+							console.log("xhr.responseText: " + xhr.responseText);
+							ecallback()
+						}
+					}
+				}
+				xhr.open("POST", url, true);
+				xhr.setRequestHeader("Content-Type", "application/octet-stream");
+				xhr.setRequestHeader("Authorization", "UpToken "+QNUptoken.Data.Token);
+				xhr.send(pic);
+			}
+		}, function(xhr, type, errorThrown) {
+			wd.close();
+			mui.toast('请求上传凭证失败 ' + type);
+			//console.log('### ERROR ### 请求上传凭证失败' + type);
+		});
+	}
+	
+	function encode(str){
+		// 对字符串进行编码
+		var encode = encodeURI(str);
+		// 对编码的字符串转化base64
+		var base64 = btoa(encode);
+		return base64;
+	}
+	
+	//获取私有空间的身份证头像			function getIDCardImg(domain,callback){				var wd =events.showWaiting();				var getDownToken = {					appId: window.storageKeyName.QN_APPID, //int 必填 项目id					appKey: window.storageKeyName.QN_APPKEY,					urls: [domain] //array 必填 需要获取下载token文件的路径				}				var getDownTokenUrl = window.storageKeyName.QNGETDOWNTOKENFILE;				CloudFileUtil.getQNDownToken(getDownTokenUrl, getDownToken, function(data) {					var urlStr = encodeURI(data.Data[0].Value)					callback(urlStr);					wd.close();				}, function(xhr, type, errorThrown) {					mui.toast('获取文件失败 ' + type); 					wd.close();				});			}						//删除私有空间的身份证头像			function deleteIDCardImg(domain){				console.log("开始删除进程咯");				var wd =events.showWaiting();				var data = {					appId: window.storageKeyName.QN_APPID,  					appKey: window.storageKeyName.QN_APPKEY,					urls: [domain]  				}				CloudFileUtil.BatchDelete(window.storageKeyName.QNGETTOKENDELETE,data,function(da){					console.log("da:"+JSON.stringify(da))					console.log("删除成功咯");					wd.close();				},function(xhr, type, errorThrown){					mui.toast("文件删除失败！")					wd.close();				})			}
 
 	/**
 	 * 修改群头像
