@@ -677,16 +677,15 @@
 
 					var firstLogin = store.get(window.storageKeyName.ISFIRST);
 					console.log('firstLogin==========================' + firstLogin)
-					if (firstLogin == null && !checkNoticePermission()) { //首次登陆，检测是否有通知权限，如果没有，弹出提示框
-						store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
-						show_NOTIFICATION_SETTINGS();
-					} else if (firstLogin == 'unFirstLogin' && !
-						checkNoticePermission()) { //之后的登录（如果手动从设置页关闭了通知权限），检测是否有通知权限，只提示一次
-						store.set(window.storageKeyName.ISFIRST, 'noAllowedNotice');
-						show_NOTIFICATION_SETTINGS();
-					} else { //首次登录已默认开启通知权限
-						store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
-					}
+					// if (firstLogin == null && !checkNoticePermission()) { //首次登陆，检测是否有通知权限，如果没有，弹出提示框
+					// 	store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
+					// 	show_NOTIFICATION_SETTINGS();
+					// } else if (firstLogin == 'unFirstLogin' && !checkNoticePermission()) { //之后的登录（如果手动从设置页关闭了通知权限），检测是否有通知权限，只提示一次
+					// 	store.set(window.storageKeyName.ISFIRST, 'noAllowedNotice');
+					// 	show_NOTIFICATION_SETTINGS();
+					// } else { //首次登录已默认开启通知权限
+					// 	store.set(window.storageKeyName.ISFIRST, 'unFirstLogin');
+					// }
 
 					//当设备收到服务器发送的透传消息时，不会触发页面监听的receive事件。当用户点击消息中心消息时会触发监听页面的“click”事件。如果用户点击多个消息时，会多次触发“click”事件。
 					//不符指定合格式的透传消息不会进入系统的消息中心，会在监听“receive”事件的页面触发事件回调。

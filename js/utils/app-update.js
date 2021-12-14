@@ -26,6 +26,8 @@ var appUpdate = (function(mod) {
 					} else{
 						mod.getAppVersion(request.response.results[0],yesCallback,noCallback);
 					}
+				}else{
+					noCallback();
 				}
 			}
 			request.open("post", mod.iosUpdateUrl, true);
